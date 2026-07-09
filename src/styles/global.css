@@ -1,13 +1,10 @@
 @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
 @import "tailwindcss";
 
-:root {
-  /* Cores da marca Royal Splash */
-  --color-marca: #0B1D2E;        /* marinho profundo (fundo) */
-  --color-marca-suave: #12293D;  /* marinho um tom acima (cards) */
-  --color-piscina: #38BDF8;      /* azul-piscina (destaque) */
-  --color-ouro: #C9A96A;         /* dourado champagne (luxo) */
-
-  /* Fonte da marca */
+@theme {
+  --color-marca: #0B1D2E;
+  --color-marca-suave: #12293D;
+  --color-piscina: #38BDF8;
+  --color-ouro: #C9A96A;
   --font-sans: 'Poppins', sans-serif;
 }
