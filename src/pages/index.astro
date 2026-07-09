@@ -3,6 +3,13 @@ import '../styles/global.css';
 import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
 import BotaoWhatsapp from '../components/BotaoWhatsapp.astro';
+import { Image } from 'astro:assets';
+import obra1 from '../assets/obra-1.jpg';
+import obra2 from '../assets/obra-2.jpg';
+import obra3 from '../assets/obra-3.jpg';
+import obra4 from '../assets/obra-4.jpg';
+import obra5 from '../assets/obra-5.jpg';
+import obra6 from '../assets/obra-6.jpg';
 ---
 
 <html lang="pt-BR">
@@ -69,12 +76,12 @@ import BotaoWhatsapp from '../components/BotaoWhatsapp.astro';
           <p class="text-lg text-slate-400 max-w-2xl mx-auto">Conheça alguns dos projetos que já entregamos.</p>
         </div>
         <div class="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
-          <div class="aspect-[4/3] rounded-2xl overflow-hidden border border-white/10 group"><img src="/obras/obra-1.jpg" alt="Piscina de borda infinita Royal Splash" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" /></div>
-          <div class="aspect-[4/3] rounded-2xl overflow-hidden border border-white/10 group"><img src="/obras/obra-2.jpg" alt="Piscina com iluminação LED Royal Splash" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" /></div>
-          <div class="aspect-[4/3] rounded-2xl overflow-hidden border border-white/10 group"><img src="/obras/obra-3.jpg" alt="Área de lazer com piscina Royal Splash" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" /></div>
-          <div class="aspect-[4/3] rounded-2xl overflow-hidden border border-white/10 group"><img src="/obras/obra-4.jpg" alt="Piscina com prainha Royal Splash" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" /></div>
-          <div class="aspect-[4/3] rounded-2xl overflow-hidden border border-white/10 group"><img src="/obras/obra-5.jpg" alt="Spa e ofurô na serra Royal Splash" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" /></div>
-          <div class="aspect-[4/3] rounded-2xl overflow-hidden border border-white/10 group"><img src="/obras/obra-6.jpg" alt="Vista de área de lazer residencial Royal Splash" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" /></div>
+          <div class="aspect-[4/3] rounded-2xl overflow-hidden border border-white/10 group"><Image src={obra1} alt="Piscina de borda infinita Royal Splash" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" /></div>
+          <div class="aspect-[4/3] rounded-2xl overflow-hidden border border-white/10 group"><Image src={obra2} alt="Piscina com iluminação LED Royal Splash" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" /></div>
+          <div class="aspect-[4/3] rounded-2xl overflow-hidden border border-white/10 group"><Image src={obra3} alt="Área de lazer com piscina Royal Splash" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" /></div>
+          <div class="aspect-[4/3] rounded-2xl overflow-hidden border border-white/10 group"><Image src={obra4} alt="Piscina com prainha Royal Splash" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" /></div>
+          <div class="aspect-[4/3] rounded-2xl overflow-hidden border border-white/10 group"><Image src={obra5} alt="Spa e ofurô na serra Royal Splash" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" /></div>
+          <div class="aspect-[4/3] rounded-2xl overflow-hidden border border-white/10 group"><Image src={obra6} alt="Vista de área de lazer residencial Royal Splash" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" /></div>
         </div>
       </div>
     </section>

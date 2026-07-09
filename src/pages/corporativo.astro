@@ -3,6 +3,11 @@ import '../styles/global.css';
 import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
 import BotaoWhatsapp from '../components/BotaoWhatsapp.astro';
+import { Image } from 'astro:assets';
+import corpOlimpica from '../assets/corp-olimpica.jpg';
+import corpHotel from '../assets/corp-hotel.jpg';
+import corpRevestimento from '../assets/corp-revestimento.jpg';
+import corpManutencao from '../assets/corp-manutencao.jpg';
 ---
 
 <html lang="pt-BR">
@@ -27,7 +32,7 @@ import BotaoWhatsapp from '../components/BotaoWhatsapp.astro';
     <section class="py-12 px-6">
       <div class="max-w-5xl mx-auto grid md:grid-cols-2 gap-16 items-center">
         <div class="aspect-[4/3] rounded-2xl overflow-hidden border border-white/10">
-          <img src="/obras/corp-olimpica.jpg" alt="Piscinas olímpicas e complexos aquáticos Royal Splash" class="w-full h-full object-cover" />
+          <Image src={corpOlimpica} alt="Piscinas olímpicas e complexos aquáticos Royal Splash" class="w-full h-full object-cover" />
         </div>
         <div>
           <h3 class="text-2xl md:text-3xl font-semibold mb-4">Piscinas Olímpicas e Complexos Aquáticos</h3>
@@ -40,7 +45,7 @@ import BotaoWhatsapp from '../components/BotaoWhatsapp.astro';
     <section class="py-12 px-6">
       <div class="max-w-5xl mx-auto grid md:grid-cols-2 gap-16 items-center">
         <div class="aspect-[4/3] rounded-2xl overflow-hidden border border-white/10 md:order-2">
-          <img src="/obras/corp-hotel.jpg" alt="Áreas de lazer para hotéis e resorts Royal Splash" class="w-full h-full object-cover" />
+          <Image src={corpHotel} alt="Áreas de lazer para hotéis e resorts Royal Splash" class="w-full h-full object-cover" />
         </div>
         <div class="md:order-1">
           <h3 class="text-2xl md:text-3xl font-semibold mb-4">Áreas de Lazer para Hotéis e Resorts</h3>
@@ -53,7 +58,7 @@ import BotaoWhatsapp from '../components/BotaoWhatsapp.astro';
     <section class="py-12 px-6">
       <div class="max-w-5xl mx-auto grid md:grid-cols-2 gap-16 items-center">
         <div class="aspect-[4/3] rounded-2xl overflow-hidden border border-white/10">
-          <img src="/obras/corp-revestimento.jpg" alt="Substituição submersa de revestimentos Royal Splash" class="w-full h-full object-cover" />
+          <Image src={corpRevestimento} alt="Substituição submersa de revestimentos Royal Splash" class="w-full h-full object-cover" />
         </div>
         <div>
           <h3 class="text-2xl md:text-3xl font-semibold mb-4">Substituição Submersa de Revestimentos</h3>
@@ -66,7 +71,7 @@ import BotaoWhatsapp from '../components/BotaoWhatsapp.astro';
     <section class="py-12 px-6">
       <div class="max-w-5xl mx-auto grid md:grid-cols-2 gap-16 items-center">
         <div class="aspect-[4/3] rounded-2xl overflow-hidden border border-white/10 md:order-2">
-          <img src="/obras/corp-manutencao.jpg" alt="Manutenção expressa de piscinas Royal Splash" class="w-full h-full object-cover" />
+          <Image src={corpManutencao} alt="Manutenção expressa de piscinas Royal Splash" class="w-full h-full object-cover" />
         </div>
         <div class="md:order-1">
           <h3 class="text-2xl md:text-3xl font-semibold mb-4">Manutenção Expressa</h3>
