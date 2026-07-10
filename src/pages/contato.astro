@@ -1,0 +1,45 @@
+---
+import '../styles/global.css';
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+import BotaoWhatsapp from '../components/BotaoWhatsapp.astro';
+import Formulario from '../components/Formulario.astro';
+---
+
+<html lang="pt-BR">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Contato — Royal Splash</title>
+    <meta name="description" content="Fale com a Royal Splash e receba um orçamento sem compromisso para sua piscina ou área de lazer de alto padrão." />
+  </head>
+  <body class="bg-marca text-white pt-20">
+
+    <Header />
+
+    <section class="pt-16 pb-16 px-6 text-center">
+      <span class="text-sm uppercase tracking-widest text-piscina">Fale conosco</span>
+      <h1 class="text-4xl md:text-6xl font-semibold mt-3 mb-4">Vamos conversar</h1>
+      <p class="text-lg text-slate-400 max-w-2xl mx-auto">
+        Conte sobre o seu projeto e nossa equipe entra em contato para um orçamento sem compromisso.
+      </p>
+    </section>
+
+    <section class="pb-16 px-6">
+      <Formulario />
+    </section>
+
+    <section class="pb-24 px-6 text-center">
+      <p class="text-slate-400 mb-6">Prefere falar direto com a gente?</p>
+      <div class="flex flex-col sm:flex-row gap-4 justify-center max-w-xl mx-auto">
+        <a href="https://wa.me/5521982590643" target="_blank" class="bg-piscina hover:opacity-90 text-white font-medium px-8 py-4 rounded-full transition-opacity">Falar no WhatsApp</a>
+        <a href="https://instagram.com/royalsplashoficial" target="_blank" class="border border-white/30 hover:border-white/60 text-white font-medium px-8 py-4 rounded-full transition-colors">Instagram</a>
+      </div>
+      <p class="text-slate-500 mt-8 text-sm">(21) 98259-0643 · contato@royalsplash.com.br</p>
+    </section>
+
+    <Footer />
+    <BotaoWhatsapp />
+
+  </body>
+</html>

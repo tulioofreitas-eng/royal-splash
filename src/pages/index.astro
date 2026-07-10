@@ -3,6 +3,7 @@ import '../styles/global.css';
 import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
 import BotaoWhatsapp from '../components/BotaoWhatsapp.astro';
+import Formulario from '../components/Formulario.astro';
 import { Image } from 'astro:assets';
 import obra1 from '../assets/obra-1.jpg';
 import obra2 from '../assets/obra-2.jpg';
@@ -42,8 +43,7 @@ import procGourmet from '../assets/processo-gourmet.jpg';
           Projetamos e construímos piscinas, saunas e áreas de lazer sob medida — com acabamento impecável e execução própria do início ao fim.
         </p>
         <div class="flex flex-col sm:flex-row gap-4 justify-center">
-          <a href="#contato" class="bg-piscina hover:opacity-90 text-white font-medium px-8 py-4 rounded-full transition-opacity">Solicitar orçamento</a>
-          <a href="#portfolio" class="border border-white/30 hover:border-white/60 text-white font-medium px-8 py-4 rounded-full transition-colors">Ver obras</a>
+          <a href="#portfolio" class="bg-piscina hover:opacity-90 text-white font-medium px-8 py-4 rounded-full transition-opacity">Ver obras</a>
         </div>
       </div>
     </section>
@@ -150,6 +150,7 @@ import procGourmet from '../assets/processo-gourmet.jpg';
             <div class="p-5"><div class="text-piscina text-sm font-bold mb-1">06</div><h3 class="text-lg font-semibold">Área de lazer</h3><p class="text-slate-400 text-sm mt-1">Espaço gourmet, deck e paisagismo — a experiência completa.</p></div>
           </div>
         </div>
+        <p class="text-center text-xs text-slate-600 mt-8">Imagens ilustrativas do processo construtivo.</p>
       </div>
     </section>
 
@@ -172,8 +173,8 @@ import procGourmet from '../assets/processo-gourmet.jpg';
         <h2 class="text-3xl md:text-5xl font-semibold mb-4">Pronto para transformar seu espaço?</h2>
         <p class="text-lg text-slate-400 mb-10">Fale com a gente e receba um orçamento sem compromisso.</p>
         <div class="flex flex-col sm:flex-row gap-4 justify-center">
-          <a href="https://wa.me/5521982590643" target="_blank" class="bg-piscina hover:opacity-90 text-white font-medium px-8 py-4 rounded-full transition-opacity">Falar no WhatsApp</a>
-          <a href="mailto:contato@royalsplash.com.br" class="border border-white/30 hover:border-white/60 text-white font-medium px-8 py-4 rounded-full transition-colors">Enviar e-mail</a>
+          <a href="/contato" class="bg-piscina hover:opacity-90 text-white font-medium px-8 py-4 rounded-full transition-opacity">Solicitar orçamento</a>
+          <a href="https://wa.me/5521982590643" target="_blank" class="border border-white/30 hover:border-white/60 text-white font-medium px-8 py-4 rounded-full transition-colors">Falar no WhatsApp</a>
           <a href="https://instagram.com/royalsplashoficial" target="_blank" class="border border-white/30 hover:border-white/60 text-white font-medium px-8 py-4 rounded-full transition-colors">Instagram</a>
         </div>
         <p class="text-slate-500 mt-8 text-sm">(21) 98259-0643 · contato@royalsplash.com.br</p>

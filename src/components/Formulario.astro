@@ -1,0 +1,47 @@
+---
+---
+<form action="https://formspree.io/f/SEU_ID_AQUI" method="POST" class="text-left max-w-xl mx-auto">
+  <div class="grid sm:grid-cols-2 gap-4 mb-4">
+    <div>
+      <label class="block text-sm text-slate-400 mb-1">Nome</label>
+      <input type="text" name="nome" required class="w-full bg-marca border border-white/15 rounded-lg px-4 py-3 text-white focus:border-piscina focus:outline-none transition-colors" placeholder="Seu nome" />
+    </div>
+    <div>
+      <label class="block text-sm text-slate-400 mb-1">Telefone / WhatsApp</label>
+      <input type="tel" name="telefone" required class="w-full bg-marca border border-white/15 rounded-lg px-4 py-3 text-white focus:border-piscina focus:outline-none transition-colors" placeholder="(00) 00000-0000" />
+    </div>
+  </div>
+
+  <div class="grid sm:grid-cols-2 gap-4 mb-4">
+    <div>
+      <label class="block text-sm text-slate-400 mb-1">E-mail</label>
+      <input type="email" name="email" required class="w-full bg-marca border border-white/15 rounded-lg px-4 py-3 text-white focus:border-piscina focus:outline-none transition-colors" placeholder="seu@email.com" />
+    </div>
+    <div>
+      <label class="block text-sm text-slate-400 mb-1">Cidade</label>
+      <input type="text" name="cidade" class="w-full bg-marca border border-white/15 rounded-lg px-4 py-3 text-white focus:border-piscina focus:outline-none transition-colors" placeholder="Sua cidade" />
+    </div>
+  </div>
+
+  <div class="mb-4">
+    <label class="block text-sm text-slate-400 mb-1">Tipo de projeto</label>
+    <select name="tipo_projeto" class="w-full bg-marca border border-white/15 rounded-lg px-4 py-3 text-white focus:border-piscina focus:outline-none transition-colors">
+      <option value="">Selecione...</option>
+      <option value="Construção de piscina">Construção de piscina</option>
+      <option value="Área de lazer">Área de lazer</option>
+      <option value="Sauna / Spa">Sauna / Spa</option>
+      <option value="Reforma / Revitalização">Reforma / Revitalização</option>
+      <option value="Projeto corporativo">Projeto corporativo (hotel, clube, academia)</option>
+      <option value="Outro">Outro</option>
+    </select>
+  </div>
+
+  <div class="mb-6">
+    <label class="block text-sm text-slate-400 mb-1">Mensagem</label>
+    <textarea name="mensagem" rows="4" class="w-full bg-marca border border-white/15 rounded-lg px-4 py-3 text-white focus:border-piscina focus:outline-none transition-colors" placeholder="Conte um pouco sobre o seu projeto..."></textarea>
+  </div>
+
+  <button type="submit" class="w-full bg-piscina hover:opacity-90 text-white font-medium px-8 py-4 rounded-full transition-opacity">
+    Enviar mensagem
+  </button>
+</form>
