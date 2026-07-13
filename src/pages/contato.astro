@@ -4,10 +4,13 @@ import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
 import BotaoWhatsapp from '../components/BotaoWhatsapp.astro';
 import Formulario from '../components/Formulario.astro';
+import GTMHead from '../components/GTMHead.astro';
+import GTMBody from '../components/GTMBody.astro';
 ---
 
 <html lang="pt-BR">
   <head>
+    <GTMHead />
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>Contato — Royal Splash</title>
@@ -19,6 +22,7 @@ import Formulario from '../components/Formulario.astro';
 <link rel="manifest" href="/site.webmanifest" />
   </head>
   <body class="bg-marca text-white pt-20">
+    <GTMBody />
 
     <Header />
 

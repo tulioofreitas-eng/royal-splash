@@ -3,33 +3,59 @@ import '../../styles/global.css';
 import LPHeader from '../../components/LPHeader.astro';
 import LPFooter from '../../components/LPFooter.astro';
 import BotaoWhatsapp from '../../components/BotaoWhatsapp.astro';
-import Formulario from '../../components/Formulario.astro';
-import Icon from '../../components/Icon.astro';
-import { Image } from 'astro:assets';
-import servicoPiscina from '../../assets/servico-piscina.jpg';
+import FormularioGHL from '../../components/FormularioGHL.astro';import Icon from '../../components/Icon.astro';
+import GoogleReviews from '../../components/GoogleReviews.astro';
+import GaleriaZoom from '../../components/GaleriaZoom.astro';
 import obra1 from '../../assets/obra-1.jpg';
 import obra2 from '../../assets/obra-2.jpg';
 import obra3 from '../../assets/obra-3.jpg';
 import obra4 from '../../assets/obra-4.jpg';
+import obra5 from '../../assets/obra-5.jpg';
+import obra6 from '../../assets/obra-6.jpg';
+import { Image } from 'astro:assets';
+import GTMHead from '../../components/GTMHead.astro';
+import GTMBody from '../../components/GTMBody.astro';
+
+const jsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'LocalBusiness',
+  name: 'Royal Splash',
+  image: 'https://www.royalsplash.com.br/logo.png',
+  telephone: '+5521982590643',
+  email: 'contato@royalsplash.com.br',
+  areaServed: {
+    '@type': 'State',
+    name: 'Rio de Janeiro',
+  },
+  address: {
+    '@type': 'PostalAddress',
+    addressRegion: 'RJ',
+    addressCountry: 'BR',
+  },
+  description: 'Construção e manutenção de piscinas de alto padrão no estado do Rio de Janeiro.',
+};
 ---
 
 <html lang="pt-BR">
   <head>
+    <GTMHead />
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>Construção de Piscinas de Alto Padrão — Royal Splash</title>
-    <meta name="description" content="Projeto e construção de piscinas personalizadas, borda infinita, iluminação LED e automação completa. RJ e SC." />
+    <title>Construção de Piscinas de Alto Padrão no Rio de Janeiro — Royal Splash</title>
+    <meta name="description" content="Projeto e construção de piscinas personalizadas, borda infinita, iluminação LED e automação completa. Atendimento em todo o Rio de Janeiro." />
     <meta name="robots" content="noindex, nofollow" />
     <link rel="icon" type="image/x-icon" href="/favicon.ico" />
+    <script type="application/ld+json" set:html={JSON.stringify(jsonLd)} />
   </head>
   <body class="bg-marca text-white">
+    <GTMBody />
 
     <LPHeader />
 
     <!-- Hero -->
     <section class="relative">
       <div class="absolute inset-0">
-        <Image src={servicoPiscina} alt="Piscina de alto padrão Royal Splash" class="w-full h-full object-cover" />
+        <Image src={obra2} alt="Piscina de alto padrão construída pela Royal Splash no Rio de Janeiro" class="w-full h-full object-cover" />
         <div class="absolute inset-0 bg-marca/80"></div>
       </div>
       <div class="relative max-w-3xl mx-auto text-center px-6 py-24 md:py-32">
@@ -37,7 +63,7 @@ import obra4 from '../../assets/obra-4.jpg';
           Sua piscina dos sonhos, com o padrão de quem exige o melhor
         </h1>
         <p class="text-lg text-slate-300 mb-8 max-w-xl mx-auto">
-          Projeto e construção de piscinas personalizadas — borda infinita, iluminação LED e automação completa. Atendimento no Rio de Janeiro e Santa Catarina.
+          Projeto e construção de piscinas personalizadas — borda infinita, iluminação LED e automação completa. Atendimento premium no Rio de Janeiro.
         </p>
         <a href="#orcamento" class="inline-block bg-ouro hover:opacity-90 text-marca font-semibold px-8 py-4 rounded-full transition-opacity">
           Solicitar orçamento exclusivo
@@ -45,13 +71,16 @@ import obra4 from '../../assets/obra-4.jpg';
       </div>
     </section>
 
-    <!-- Especialistas -->
+    <!-- Google Reviews (2ª dobra) -->
+    <GoogleReviews />
+
+    <!-- Excelência em cada detalhe (com galeria) -->
     <section class="py-16 px-6">
       <div class="max-w-5xl mx-auto grid md:grid-cols-2 gap-12 items-center">
         <div>
           <h2 class="text-3xl font-semibold mb-4">Excelência em <span class="text-piscina">cada detalhe</span></h2>
           <p class="text-slate-400 mb-4">
-            Cada piscina nasce do seu espaço e do seu estilo de vida. Trabalhamos com alvenaria, borda infinita, prainha, iluminação LED e automação completa — do projeto à entrega.
+            Cada piscina nasce do seu espaço e do seu estilo de vida. Trabalhamos com alvenaria, borda infinita, prainha, iluminação LED e automação completa — do projeto à entrega, em qualquer ponto do Rio de Janeiro.
           </p>
           <p class="text-slate-400 mb-6">
             Não competimos por preço, entregamos excelência. Cada projeto é tratado como uma obra única, com os melhores materiais e tecnologias disponíveis.
@@ -62,9 +91,12 @@ import obra4 from '../../assets/obra-4.jpg';
             <li class="flex items-center gap-3 text-slate-300"><Icon name="check" class="w-5 h-5 text-ouro shrink-0" /> Garantia de pontualidade e qualidade</li>
           </ul>
         </div>
-        <div class="aspect-[4/3] rounded-2xl overflow-hidden border border-white/10">
-          <Image src={obra1} alt="Piscina construída pela Royal Splash" class="w-full h-full object-cover" />
-        </div>
+        <GaleriaZoom imagens={[
+          { src: obra1, alt: 'Piscina de alto padrão Royal Splash, Rio de Janeiro' },
+          { src: obra2, alt: 'Área de lazer com piscina construída pela Royal Splash no RJ' },
+          { src: obra3, alt: 'Acabamento premium de piscina Royal Splash' },
+          { src: obra4, alt: 'Iluminação LED em piscina residencial no Rio de Janeiro' },
+        ]} />
       </div>
     </section>
 
@@ -121,43 +153,18 @@ import obra4 from '../../assets/obra-4.jpg';
       </div>
     </section>
 
-    <!-- Galeria -->
+    <!-- Galeria de projetos -->
     <section class="py-16 px-6 bg-marca-suave">
       <div class="max-w-5xl mx-auto">
         <h2 class="text-3xl font-semibold text-center mb-10">Projetos que falam por si</h2>
-        <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
-          <div class="aspect-square rounded-xl overflow-hidden"><Image src={obra1} alt="Obra Royal Splash" class="w-full h-full object-cover" /></div>
-          <div class="aspect-square rounded-xl overflow-hidden"><Image src={obra2} alt="Obra Royal Splash" class="w-full h-full object-cover" /></div>
-          <div class="aspect-square rounded-xl overflow-hidden"><Image src={obra3} alt="Obra Royal Splash" class="w-full h-full object-cover" /></div>
-          <div class="aspect-square rounded-xl overflow-hidden"><Image src={obra4} alt="Obra Royal Splash" class="w-full h-full object-cover" /></div>
-        </div>
-      </div>
-    </section>
-
-    <!-- Depoimentos -->
-    <section class="py-16 px-6">
-      <div class="max-w-5xl mx-auto">
-        <h2 class="text-3xl font-semibold text-center mb-10">O que dizem nossos clientes</h2>
-        <div class="grid md:grid-cols-3 gap-6">
-          <div class="bg-marca-suave rounded-2xl p-6">
-            <div class="text-ouro mb-3">★★★★★</div>
-            <p class="text-slate-300 italic mb-4">"A Royal Splash transformou completamente nossa área de lazer. O nível de detalhe e o acabamento são impecáveis."</p>
-            <p class="font-semibold">Carlos Eduardo</p>
-            <p class="text-sm text-piscina">Barra da Tijuca</p>
-          </div>
-          <div class="bg-marca-suave rounded-2xl p-6">
-            <div class="text-ouro mb-3">★★★★★</div>
-            <p class="text-slate-300 italic mb-4">"Desde o primeiro atendimento até a entrega, extremo profissionalismo. Superou todas as expectativas."</p>
-            <p class="font-semibold">Mariana Albuquerque</p>
-            <p class="text-sm text-piscina">Joá</p>
-          </div>
-          <div class="bg-marca-suave rounded-2xl p-6">
-            <div class="text-ouro mb-3">★★★★★</div>
-            <p class="text-slate-300 italic mb-4">"Minha piscina está sempre cristalina e pronta para uso. Recomendo de olhos fechados."</p>
-            <p class="font-semibold">Roberto Silveira</p>
-            <p class="text-sm text-piscina">Recreio dos Bandeirantes</p>
-          </div>
-        </div>
+        <GaleriaZoom imagens={[
+          { src: obra1, alt: 'Obra Royal Splash, piscina no Rio de Janeiro' },
+          { src: obra2, alt: 'Obra Royal Splash, piscina no Rio de Janeiro' },
+          { src: obra3, alt: 'Obra Royal Splash, piscina no Rio de Janeiro' },
+          { src: obra4, alt: 'Obra Royal Splash, piscina no Rio de Janeiro' },
+          { src: obra5, alt: 'Obra Royal Splash, piscina no Rio de Janeiro' },
+          { src: obra6, alt: 'Obra Royal Splash, piscina no Rio de Janeiro' },
+        ]} />
       </div>
     </section>
 
@@ -177,8 +184,8 @@ import obra4 from '../../assets/obra-4.jpg';
         <h2 class="text-3xl font-semibold mb-3">Solicite seu Orçamento</h2>
         <p class="text-slate-400">Preencha os dados abaixo e nossa equipe entrará em contato para entender seu projeto em detalhes.</p>
       </div>
-      <Formulario tipoPreSelecionado="Construção de piscina" campanha="Google Ads - LP Piscinas" />
-    </section>
+<FormularioGHL />
+</section>
 
     <LPFooter />
     <BotaoWhatsapp />

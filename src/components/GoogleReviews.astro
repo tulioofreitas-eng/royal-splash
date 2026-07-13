@@ -1,0 +1,50 @@
+---
+---
+<section class="py-16 px-6 bg-marca-suave">
+  <div class="max-w-5xl mx-auto">
+    <h2 class="text-3xl font-semibold text-center mb-2">O que dizem no Google</h2>
+    <div id="google-rating-summary" class="text-center text-slate-400 mb-10 hidden">
+      <span class="text-ouro text-xl" id="rating-stars"></span>
+      <span id="rating-text"></span>
+    </div>
+    <div id="reviews-grid" class="grid md:grid-cols-3 gap-6"></div>
+    <div id="reviews-fallback" class="text-center hidden">
+      <p class="text-slate-400 mb-4">Seja um dos primeiros a avaliar nossa experiência no Google.</p>
+      <a href="https://g.page/r/CeRf7BarN5UPEBM/review" target="_blank" class="inline-block border border-ouro text-ouro px-6 py-3 rounded-full hover:bg-ouro hover:text-marca transition-colors">
+        Deixar uma avaliação
+      </a>
+    </div>
+  </div>
+</section>
+
+<script>
+  async function carregarReviews() {
+    try {
+      const res = await fetch('/api/reviews');
+      const data = await res.json();
+      const grid = document.getElementById('reviews-grid')!;
+      const fallback = document.getElementById('reviews-fallback')!;
+      const summary = document.getElementById('google-rating-summary')!;
+
+      if (!data.reviews || data.reviews.length === 0) {
+        fallback.classList.remove('hidden');
+        return;
+      }
+
+      summary.classList.remove('hidden');
+      document.getElementById('rating-stars')!.textContent = '★'.repeat(Math.round(data.rating || 0));
+      document.getElementById('rating-text')!.textContent = ` ${data.rating} · ${data.total} avaliações no Google`;
+
+      grid.innerHTML = data.reviews.slice(0, 6).map((r: any) => `
+        <div class="bg-marca rounded-2xl p-6 border border-white/10">
+          <div class="text-ouro mb-3">${'★'.repeat(r.rating)}</div>
+          <p class="text-slate-300 italic mb-4">"${r.text}"</p>
+          <p class="font-semibold">${r.author_name}</p>
+        </div>
+      `).join('');
+    } catch {
+      document.getElementById('reviews-fallback')?.classList.remove('hidden');
+    }
+  }
+  carregarReviews();
+</script>

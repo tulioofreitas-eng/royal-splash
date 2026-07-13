@@ -1,0 +1,34 @@
+---
+interface Props {
+  imagens: { src: any; alt: string }[];
+}
+const { imagens } = Astro.props;
+import { Image } from 'astro:assets';
+---
+<div class="grid grid-cols-2 gap-3">
+  {imagens.map((img, i) => (
+    <button type="button" class="galeria-zoom-item aspect-square rounded-xl overflow-hidden border border-white/10 group" data-index={i}>
+      <Image src={img.src} alt={img.alt} class="w-full h-full object-cover transition-transform duration-300 group-hover:scale-110" />
+    </button>
+  ))}
+</div>
+
+<div id="lightbox" class="fixed inset-0 bg-black/90 z-50 hidden items-center justify-center p-6" onclick="this.classList.add('hidden'); this.classList.remove('flex')">
+  <img id="lightbox-img" src="" alt="" class="max-w-full max-h-full rounded-lg" />
+</div>
+
+<script>
+  const items = document.querySelectorAll('.galeria-zoom-item');
+  const lightbox = document.getElementById('lightbox')!;
+  const lightboxImg = document.getElementById('lightbox-img') as HTMLImageElement;
+
+  items.forEach((item) => {
+    item.addEventListener('click', () => {
+      const img = item.querySelector('img') as HTMLImageElement;
+      lightboxImg.src = img.src;
+      lightboxImg.alt = img.alt;
+      lightbox.classList.remove('hidden');
+      lightbox.classList.add('flex');
+    });
+  });
+</script>
