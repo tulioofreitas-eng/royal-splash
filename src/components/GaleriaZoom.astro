@@ -1,11 +1,12 @@
 ---
 interface Props {
   imagens: { src: any; alt: string }[];
+  colunas?: string;
 }
-const { imagens } = Astro.props;
+const { imagens, colunas = 'grid-cols-2' } = Astro.props;
 import { Image } from 'astro:assets';
 ---
-<div class="grid grid-cols-2 gap-3">
+<div class={`grid ${colunas} gap-3`}>
   {imagens.map((img, i) => (
     <button type="button" class="galeria-zoom-item aspect-square rounded-xl overflow-hidden border border-white/10 group" data-index={i}>
       <Image src={img.src} alt={img.alt} class="w-full h-full object-cover transition-transform duration-300 group-hover:scale-110" />
