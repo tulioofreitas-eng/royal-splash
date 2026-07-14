@@ -23,6 +23,7 @@ import obra5 from '../../assets/obra-5.jpg';
 import obra6 from '../../assets/obra-6.jpg';
 import obra7 from '../../assets/obra-7.jpg';
 import obra8 from '../../assets/obra-8.jpg';
+import vazamentoReparo from '../../assets/vazamento-reparo.jpg';
 
 const jsonLd = {
   '@context': 'https://schema.org',
@@ -55,8 +56,7 @@ const jsonLd = {
 
     <section class="relative">
       <div class="absolute inset-0">
-        <Image src={servicoVazamento} alt="Detecção de vazamento em piscina no Rio de Janeiro" class="w-full h-full object-cover" />
-        <div class="absolute inset-0 bg-marca/80"></div>
+      <Image src={servicoVazamento} alt="Detecção de vazamento em piscina no Rio de Janeiro" class="w-full h-full object-cover object-[center_30%]" />        <div class="absolute inset-0 bg-marca/80"></div>
       </div>
       <div class="relative max-w-3xl mx-auto text-center px-6 py-14 md:py-20">
         <h1 class="text-3xl md:text-5xl font-semibold mb-4 leading-tight">
@@ -90,11 +90,9 @@ const jsonLd = {
           </ul>
         </div>
         <GaleriaZoom imagens={[
-          { src: processoEscavacao, alt: 'Diagnóstico técnico Royal Splash, Rio de Janeiro' },
-          { src: processoEstrutura, alt: 'Reparo estrutural Royal Splash, Rio de Janeiro' },
-          { src: processoImpermeabilizacao, alt: 'Impermeabilização Royal Splash, RJ' },
-          { src: processoAcabamento, alt: 'Acabamento pós-reparo Royal Splash, Rio de Janeiro' },
-        ]} />
+        { src: servicoVazamento, alt: 'Solução de vazamento Royal Splash, Rio de Janeiro' },
+        { src: vazamentoReparo, alt: 'Localização e reparo de vazamento Royal Splash, Rio de Janeiro' },
+      ]} />
       </div>
     </section>
 
