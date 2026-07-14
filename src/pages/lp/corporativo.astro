@@ -1,0 +1,155 @@
+---
+import '../../styles/global.css';
+import GTMHead from '../../components/GTMHead.astro';
+import GTMBody from '../../components/GTMBody.astro';
+import LPHeader from '../../components/LPHeader.astro';
+import LPFooter from '../../components/LPFooter.astro';
+import BotaoWhatsapp from '../../components/BotaoWhatsapp.astro';
+import FormularioGHL from '../../components/FormularioGHL.astro';
+import Icon from '../../components/Icon.astro';
+import GoogleReviews from '../../components/GoogleReviews.astro';
+import { Image } from 'astro:assets';
+import corpOlimpica from '../../assets/corp-olimpica.jpg';
+import corpHotel from '../../assets/corp-hotel.jpg';
+import corpManutencao from '../../assets/corp-manutencao.jpg';
+
+const jsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'LocalBusiness',
+  name: 'Royal Splash',
+  image: 'https://www.royalsplash.com.br/logo.png',
+  telephone: '+5521982590643',
+  email: 'contato@royalsplash.com.br',
+  areaServed: { '@type': 'State', name: 'Rio de Janeiro' },
+  address: { '@type': 'PostalAddress', addressRegion: 'RJ', addressCountry: 'BR' },
+  description: 'Soluções corporativas em piscinas e áreas de lazer para hotéis, resorts, clubes e academias no Rio de Janeiro.',
+};
+---
+
+<html lang="pt-BR">
+  <head>
+    <GTMHead />
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Soluções Corporativas em Piscinas no Rio de Janeiro — Royal Splash</title>
+    <meta name="description" content="Piscinas olímpicas, áreas de lazer para hotéis e manutenção expressa. Soluções para hotéis, resorts, clubes e academias em todo o Rio de Janeiro." />
+    <meta name="robots" content="noindex, nofollow" />
+    <link rel="icon" type="image/x-icon" href="/favicon.ico" />
+    <script type="application/ld+json" set:html={JSON.stringify(jsonLd)} />
+  </head>
+  <body class="bg-marca text-white">
+    <GTMBody />
+
+    <LPHeader />
+
+    <section class="relative">
+      <div class="absolute inset-0">
+        <Image src={corpHotel} alt="Áreas de lazer corporativas Royal Splash, Rio de Janeiro" class="w-full h-full object-cover" />
+        <div class="absolute inset-0 bg-marca/80"></div>
+      </div>
+      <div class="relative max-w-3xl mx-auto text-center px-6 py-14 md:py-20">
+        <h1 class="text-3xl md:text-5xl font-semibold mb-4 leading-tight">
+          Piscinas e áreas de lazer para elevar o padrão do seu negócio
+        </h1>
+        <p class="text-base md:text-lg text-slate-300 mb-6 max-w-xl mx-auto [text-wrap:balance]">
+  Soluções completas para hotéis, resorts, clubes e academias, do projeto à manutenção, em todo o&nbsp;Rio de&nbsp;Janeiro.
+</p>
+        <a href="#orcamento" class="inline-block bg-ouro hover:opacity-90 text-marca font-semibold px-8 py-4 rounded-full transition-opacity">
+          Solicitar proposta sob medida
+        </a>
+      </div>
+    </section>
+
+    <GoogleReviews />
+
+    <section class="py-16 px-6">
+      <div class="max-w-5xl mx-auto">
+        <h2 class="text-3xl font-semibold text-center mb-4">Soluções para o seu negócio</h2>
+        <p class="text-slate-400 text-center max-w-2xl mx-auto mb-12">
+          Infraestrutura profissional, acabamento de padrão internacional e operação sem interrupções.
+        </p>
+
+        <div class="grid md:grid-cols-2 gap-16 items-center mb-16">
+          <div class="aspect-[4/3] rounded-2xl overflow-hidden border border-white/10">
+            <Image src={corpOlimpica} alt="Piscinas olímpicas e complexos aquáticos Royal Splash" class="w-full h-full object-cover" />
+          </div>
+          <div>
+            <h3 class="text-2xl font-semibold mb-4">Piscinas Olímpicas e Complexos Aquáticos</h3>
+            <p class="text-slate-400 mb-4">Projetamos e executamos piscinas semiolímpicas, olímpicas e recreativas com precisão técnica e segurança normativa, para clubes, escolas, academias e centros esportivos.</p>
+            <p class="text-slate-400">Infraestrutura profissional, acessibilidade e acabamentos preparados para uso intenso.</p>
+          </div>
+        </div>
+
+        <div class="grid md:grid-cols-2 gap-16 items-center mb-16">
+          <div class="aspect-[4/3] rounded-2xl overflow-hidden border border-white/10 md:order-2">
+            <Image src={corpHotel} alt="Áreas de lazer para hotéis e resorts Royal Splash" class="w-full h-full object-cover" />
+          </div>
+          <div class="md:order-1">
+            <h3 class="text-2xl font-semibold mb-4">Áreas de Lazer para Hotéis e Resorts</h3>
+            <p class="text-slate-400 mb-4">Transformamos ambientes externos em diferenciais de experiência para os hóspedes: piscinas sofisticadas, spas, saunas, decks e áreas molhadas.</p>
+            <p class="text-slate-400">Paisagismo integrado, com padrão internacional de acabamento.</p>
+          </div>
+        </div>
+
+        <div class="grid md:grid-cols-2 gap-16 items-center">
+          <div class="aspect-[4/3] rounded-2xl overflow-hidden border border-white/10">
+            <Image src={corpManutencao} alt="Manutenção expressa de piscinas Royal Splash" class="w-full h-full object-cover" />
+          </div>
+          <div>
+            <h3 class="text-2xl font-semibold mb-4">Manutenção Expressa</h3>
+            <p class="text-slate-400 mb-4">Recuperação emergencial da qualidade da água para estabelecimentos que não podem parar. Técnicas avançadas e produtos específicos.</p>
+            <p class="text-slate-400">Monitoramento constante para água limpa, segura e cristalina em até 48 horas.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="py-16 px-6 bg-marca-suave">
+      <div class="max-w-5xl mx-auto text-center">
+        <h2 class="text-3xl font-semibold mb-12">Por que empresas confiam na Royal Splash?</h2>
+        <div class="grid grid-cols-2 md:grid-cols-4 gap-8">
+          <div>
+            <div class="w-14 h-14 rounded-full bg-ouro/10 flex items-center justify-center mb-3 mx-auto text-ouro"><Icon name="users" /></div>
+            <h4 class="font-semibold mb-1">Atendimento Dedicado</h4>
+            <p class="text-sm text-slate-400">Consultoria exclusiva do projeto à entrega.</p>
+          </div>
+          <div>
+            <div class="w-14 h-14 rounded-full bg-ouro/10 flex items-center justify-center mb-3 mx-auto text-ouro"><Icon name="clock" /></div>
+            <h4 class="font-semibold mb-1">Prazos Cumpridos</h4>
+            <p class="text-sm text-slate-400">Compromisso com cronograma, sem impacto na operação.</p>
+          </div>
+          <div>
+            <div class="w-14 h-14 rounded-full bg-ouro/10 flex items-center justify-center mb-3 mx-auto text-ouro"><Icon name="shield" /></div>
+            <h4 class="font-semibold mb-1">Segurança Normativa</h4>
+            <p class="text-sm text-slate-400">Infraestrutura dentro dos padrões técnicos exigidos.</p>
+          </div>
+          <div>
+            <div class="w-14 h-14 rounded-full bg-ouro/10 flex items-center justify-center mb-3 mx-auto text-ouro"><Icon name="cpu" /></div>
+            <h4 class="font-semibold mb-1">Padrão Internacional</h4>
+            <p class="text-sm text-slate-400">Acabamento e tecnologia à altura da sua marca.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="py-16 px-6 text-center border-y border-ouro/20">
+      <h2 class="text-3xl md:text-4xl font-semibold mb-6 max-w-2xl mx-auto">
+        Vamos elevar o padrão do seu negócio?
+      </h2>
+      <a href="#orcamento" class="inline-block bg-ouro hover:opacity-90 text-marca font-semibold px-8 py-4 rounded-full transition-opacity">
+        Falar com nossa equipe
+      </a>
+    </section>
+
+    <section id="orcamento" class="py-16 px-6">
+      <div class="max-w-xl mx-auto text-center mb-10">
+        <h2 class="text-3xl font-semibold mb-3">Solicite uma Proposta</h2>
+        <p class="text-slate-400">Preencha os dados abaixo e nossa equipe entrará em contato para entender seu projeto em detalhes.</p>
+      </div>
+      <FormularioGHL />
+    </section>
+
+    <LPFooter />
+    <BotaoWhatsapp />
+  </body>
+</html>

@@ -1,0 +1,133 @@
+---
+import '../../styles/global.css';
+import GTMHead from '../../components/GTMHead.astro';
+import GTMBody from '../../components/GTMBody.astro';
+import LPHeader from '../../components/LPHeader.astro';
+import LPFooter from '../../components/LPFooter.astro';
+import BotaoWhatsapp from '../../components/BotaoWhatsapp.astro';
+import FormularioGHL from '../../components/FormularioGHL.astro';
+import Icon from '../../components/Icon.astro';
+import GoogleReviews from '../../components/GoogleReviews.astro';
+import { Image } from 'astro:assets';
+import corpRevestimento from '../../assets/corp-revestimento.jpg';
+
+const jsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'LocalBusiness',
+  name: 'Royal Splash',
+  image: 'https://www.royalsplash.com.br/logo.png',
+  telephone: '+5521982590643',
+  email: 'contato@royalsplash.com.br',
+  areaServed: { '@type': 'State', name: 'Rio de Janeiro' },
+  address: { '@type': 'PostalAddress', addressRegion: 'RJ', addressCountry: 'BR' },
+  description: 'Substituição submersa de revestimentos de piscinas, sem esvaziar, no estado do Rio de Janeiro.',
+};
+---
+
+<html lang="pt-BR">
+  <head>
+    <GTMHead />
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Troca de Revestimento de Piscina Sem Esvaziar — Royal Splash</title>
+    <meta name="description" content="Substituição submersa de revestimentos, com a piscina cheia. Sem interromper a operação. Para hotéis, clubes, academias e condomínios no Rio de Janeiro." />
+    <meta name="robots" content="noindex, nofollow" />
+    <link rel="icon" type="image/x-icon" href="/favicon.ico" />
+    <script type="application/ld+json" set:html={JSON.stringify(jsonLd)} />
+  </head>
+  <body class="bg-marca text-white">
+    <GTMBody />
+
+    <LPHeader />
+
+    <section class="relative">
+      <div class="absolute inset-0">
+        <Image src={corpRevestimento} alt="Substituição submersa de revestimentos Royal Splash, Rio de Janeiro" class="w-full h-full object-cover" />
+        <div class="absolute inset-0 bg-marca/80"></div>
+      </div>
+      <div class="relative max-w-3xl mx-auto text-center px-6 py-14 md:py-20">
+        <h1 class="text-3xl md:text-5xl font-semibold mb-4 leading-tight">
+          Troque o revestimento da sua piscina sem esvaziar e sem parar a operação
+        </h1>
+        <p class="text-base md:text-lg text-slate-300 mb-6 max-w-xl mx-auto">
+          Substituição submersa de revestimentos — solução técnica para hotéis, clubes e academias que não podem interromper suas atividades.
+        </p>
+        <a href="#orcamento" class="inline-block bg-ouro hover:opacity-90 text-marca font-semibold px-8 py-4 rounded-full transition-opacity">
+          Solicitar avaliação técnica
+        </a>
+      </div>
+    </section>
+
+    <GoogleReviews />
+
+    <section class="py-16 px-6">
+      <div class="max-w-5xl mx-auto grid md:grid-cols-2 gap-12 items-center">
+        <div>
+          <h2 class="text-3xl font-semibold mb-4">Uma solução <span class="text-piscina">técnica avançada</span></h2>
+          <p class="text-slate-400 mb-4">
+            Trocar o revestimento de uma piscina normalmente exige esvaziar o espaço, interromper o uso por semanas e desperdiçar milhares de litros de água. A substituição submersa resolve isso: o trabalho é feito com a piscina cheia.
+          </p>
+          <p class="text-slate-400 mb-6">
+            Ideal para estabelecimentos que não podem parar — hotéis, clubes, academias e condomínios com piscina em uso constante.
+          </p>
+          <ul class="space-y-3">
+            <li class="flex items-center gap-3 text-slate-300"><Icon name="check" class="w-5 h-5 text-ouro shrink-0" /> Sem esvaziar a piscina</li>
+            <li class="flex items-center gap-3 text-slate-300"><Icon name="check" class="w-5 h-5 text-ouro shrink-0" /> Sem interromper a operação do espaço</li>
+            <li class="flex items-center gap-3 text-slate-300"><Icon name="check" class="w-5 h-5 text-ouro shrink-0" /> Sem desperdício de água</li>
+          </ul>
+        </div>
+        <div class="aspect-[4/3] rounded-2xl overflow-hidden border border-white/10">
+          <Image src={corpRevestimento} alt="Técnica de substituição submersa Royal Splash" class="w-full h-full object-cover" />
+        </div>
+      </div>
+    </section>
+
+    <section class="py-16 px-6 bg-marca-suave">
+      <div class="max-w-5xl mx-auto text-center">
+        <h2 class="text-3xl font-semibold mb-12">Para quem é essa solução?</h2>
+        <div class="grid grid-cols-2 md:grid-cols-4 gap-8">
+          <div>
+            <div class="w-14 h-14 rounded-full bg-ouro/10 flex items-center justify-center mb-3 mx-auto text-ouro"><Icon name="box" /></div>
+            <h4 class="font-semibold mb-1">Hotéis e Resorts</h4>
+            <p class="text-sm text-slate-400">Sem impacto na experiência dos hóspedes.</p>
+          </div>
+          <div>
+            <div class="w-14 h-14 rounded-full bg-ouro/10 flex items-center justify-center mb-3 mx-auto text-ouro"><Icon name="users" /></div>
+            <h4 class="font-semibold mb-1">Clubes e Academias</h4>
+            <p class="text-sm text-slate-400">Mantém o uso da piscina durante a obra.</p>
+          </div>
+          <div>
+            <div class="w-14 h-14 rounded-full bg-ouro/10 flex items-center justify-center mb-3 mx-auto text-ouro"><Icon name="shield" /></div>
+            <h4 class="font-semibold mb-1">Condomínios</h4>
+            <p class="text-sm text-slate-400">Sem transtorno para os moradores.</p>
+          </div>
+          <div>
+            <div class="w-14 h-14 rounded-full bg-ouro/10 flex items-center justify-center mb-3 mx-auto text-ouro"><Icon name="cpu" /></div>
+            <h4 class="font-semibold mb-1">Técnica Especializada</h4>
+            <p class="text-sm text-slate-400">Equipe treinada especificamente nesse método.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="py-16 px-6 text-center border-y border-ouro/20">
+      <h2 class="text-3xl md:text-4xl font-semibold mb-6 max-w-2xl mx-auto">
+        Resolva o revestimento sem parar sua operação
+      </h2>
+      <a href="#orcamento" class="inline-block bg-ouro hover:opacity-90 text-marca font-semibold px-8 py-4 rounded-full transition-opacity">
+        Falar com um especialista
+      </a>
+    </section>
+
+    <section id="orcamento" class="py-16 px-6">
+      <div class="max-w-xl mx-auto text-center mb-10">
+        <h2 class="text-3xl font-semibold mb-3">Solicite uma Avaliação Técnica</h2>
+        <p class="text-slate-400">Preencha os dados abaixo e nossa equipe entrará em contato para avaliar seu caso.</p>
+      </div>
+      <FormularioGHL />
+    </section>
+
+    <LPFooter />
+    <BotaoWhatsapp />
+  </body>
+</html>

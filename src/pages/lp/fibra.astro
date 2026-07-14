@@ -1,0 +1,186 @@
+---
+import '../../styles/global.css';
+import GTMHead from '../../components/GTMHead.astro';
+import GTMBody from '../../components/GTMBody.astro';
+import LPHeader from '../../components/LPHeader.astro';
+import LPFooter from '../../components/LPFooter.astro';
+import BotaoWhatsapp from '../../components/BotaoWhatsapp.astro';
+import FormularioGHL from '../../components/FormularioGHL.astro';
+import Icon from '../../components/Icon.astro';
+import GoogleReviews from '../../components/GoogleReviews.astro';
+import GaleriaZoom from '../../components/GaleriaZoom.astro';
+import { Image } from 'astro:assets';
+import servicoFibra from '../../assets/servico-fibra.jpg';
+import obra1 from '../../assets/obra-1.jpg';
+import obra2 from '../../assets/obra-2.jpg';
+import obra3 from '../../assets/obra-3.jpg';
+import obra4 from '../../assets/obra-4.jpg';
+import obra5 from '../../assets/obra-5.jpg';
+import obra6 from '../../assets/obra-6.jpg';
+import obra7 from '../../assets/obra-7.jpg';
+import obra8 from '../../assets/obra-8.jpg';
+
+const jsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'LocalBusiness',
+  name: 'Royal Splash',
+  image: 'https://www.royalsplash.com.br/logo.png',
+  telephone: '+5521982590643',
+  email: 'contato@royalsplash.com.br',
+  areaServed: { '@type': 'State', name: 'Rio de Janeiro' },
+  address: { '@type': 'PostalAddress', addressRegion: 'RJ', addressCountry: 'BR' },
+description: 'Restauração e pintura de piscinas de fibra no estado do Rio de Janeiro.',};
+---
+
+<html lang="pt-BR">
+  <head>
+    <GTMHead />
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Restauração de Piscina de Fibra no Rio de Janeiro — Royal Splash</title>
+<meta name="description" content="Restauração de piscinas de fibra com pintura em Gel Coat ou Tinta PU. Diagnóstico honesto e acabamento premium em todo o Rio de Janeiro." />
+    <meta name="robots" content="noindex, nofollow" />
+    <link rel="icon" type="image/x-icon" href="/favicon.ico" />
+    <script type="application/ld+json" set:html={JSON.stringify(jsonLd)} />
+  </head>
+  <body class="bg-marca text-white">
+    <GTMBody />
+
+    <LPHeader />
+
+    <section class="relative">
+      <div class="absolute inset-0">
+        <Image src={servicoFibra} alt="Piscina de fibra de alto padrão Royal Splash, Rio de Janeiro" class="w-full h-full object-cover" />
+        <div class="absolute inset-0 bg-marca/80"></div>
+      </div>
+      <div class="relative max-w-3xl mx-auto text-center px-6 py-14 md:py-20">
+        <h1 class="text-3xl md:text-5xl font-semibold mb-4 leading-tight">
+  Sua piscina de fibra perdeu o brilho? Nós restauramos
+</h1>
+<p class="text-base md:text-lg text-slate-300 mb-6 max-w-xl mx-auto">
+  Restauração completa com pintura em Gel Coat ou Tinta PU. Devolvemos a beleza e a proteção da sua piscina, em todo o Rio de Janeiro.
+</p>
+        <a href="#orcamento" class="inline-block bg-ouro hover:opacity-90 text-marca font-semibold px-8 py-4 rounded-full transition-opacity">
+          Solicitar orçamento gratuito
+        </a>
+      </div>
+    </section>
+
+    <GoogleReviews />
+
+    <section class="py-16 px-6">
+      <div class="max-w-5xl mx-auto grid md:grid-cols-2 gap-12 items-center">
+        <div>
+          <h2 class="text-3xl font-semibold mb-4">Especialistas em <span class="text-piscina">Restauração de Fibra</span></h2>
+<p class="text-slate-400 mb-4">
+  Trabalhamos com reforma e revitalização de piscinas de fibra existentes — trincas, desbotamento e sinais de desgaste, com pintura em Gel Coat ou Tinta PU, conforme o estado da sua piscina.
+</p>
+<p class="text-slate-400 mb-6">
+  Cada caso é avaliado individualmente: nem toda ocorrência (como bolhas mais profundas) pode ser 100% eliminada, mas nosso diagnóstico é honesto sobre o que é possível alcançar. Atendimento em todo o Rio de Janeiro.
+</p>
+<ul class="space-y-3">
+  <li class="flex items-center gap-3 text-slate-300"><Icon name="check" class="w-5 h-5 text-ouro shrink-0" /> Gel Coat ou Tinta PU, conforme o caso</li>
+  <li class="flex items-center gap-3 text-slate-300"><Icon name="check" class="w-5 h-5 text-ouro shrink-0" /> Reparo de trincas e desgaste estrutural</li>
+  <li class="flex items-center gap-3 text-slate-300"><Icon name="check" class="w-5 h-5 text-ouro shrink-0" /> Diagnóstico honesto antes de qualquer orçamento</li>
+</ul>
+        </div>
+        <GaleriaZoom imagens={[
+          { src: obra1, alt: 'Piscina de fibra Royal Splash, Rio de Janeiro' },
+          { src: obra2, alt: 'Instalação de piscina de fibra Royal Splash, RJ' },
+          { src: obra3, alt: 'Acabamento gel coat Royal Splash' },
+          { src: obra4, alt: 'Piscina de fibra premium Royal Splash, Rio de Janeiro' },
+        ]} />
+      </div>
+    </section>
+
+    <section class="py-16 px-6 bg-marca-suave">
+      <div class="max-w-5xl mx-auto">
+        <h2 class="text-3xl font-semibold text-center mb-12">Nossos Serviços</h2>
+        <div class="grid md:grid-cols-3 gap-6">
+          <div class="bg-marca border border-ouro/30 rounded-2xl p-6">
+  <div class="w-14 h-14 rounded-full bg-ouro/10 flex items-center justify-center mb-4 text-ouro"><Icon name="droplet" /></div>
+  <h3 class="text-xl font-semibold mb-2">Pintura em Gel Coat</h3>
+  <p class="text-slate-400">Restaura o acabamento original da fibra, com alta resistência a produtos químicos e raios UV.</p>
+</div>
+<div class="bg-marca border border-white/10 rounded-2xl p-6">
+  <div class="w-14 h-14 rounded-full bg-ouro/10 flex items-center justify-center mb-4 text-ouro"><Icon name="sun" /></div>
+  <h3 class="text-xl font-semibold mb-2">Pintura em Tinta PU</h3>
+  <p class="text-slate-400">Alternativa de alta aderência e flexibilidade, indicada conforme o estado da superfície.</p>
+</div>
+<div class="bg-marca border border-white/10 rounded-2xl p-6">
+  <div class="w-14 h-14 rounded-full bg-ouro/10 flex items-center justify-center mb-4 text-ouro"><Icon name="wrench" /></div>
+  <h3 class="text-xl font-semibold mb-2">Reparo de Trincas</h3>
+  <p class="text-slate-400">Correção de rachaduras e desgaste estrutural, com avaliação transparente do que é possível resolver.</p>
+</div>
+        </div>
+      </div>
+    </section>
+
+    <section class="py-16 px-6">
+      <div class="max-w-5xl mx-auto text-center">
+        <h2 class="text-3xl font-semibold mb-12">Por que a Royal Splash?</h2>
+        <div class="grid grid-cols-2 md:grid-cols-4 gap-8">
+          <div>
+            <div class="w-14 h-14 rounded-full bg-ouro/10 flex items-center justify-center mb-3 mx-auto text-ouro"><Icon name="users" /></div>
+            <h4 class="font-semibold mb-1">Avaliação Gratuita</h4>
+            <p class="text-sm text-slate-400">Visitamos o local para diagnóstico preciso, sem compromisso.</p>
+          </div>
+          <div>
+            <div class="w-14 h-14 rounded-full bg-ouro/10 flex items-center justify-center mb-3 mx-auto text-ouro"><Icon name="shield" /></div>
+            <h4 class="font-semibold mb-1">Especialistas em Fibra</h4>
+            <p class="text-sm text-slate-400">Profissionais treinados especificamente em fibra de vidro.</p>
+          </div>
+          <div>
+            <div class="w-14 h-14 rounded-full bg-ouro/10 flex items-center justify-center mb-3 mx-auto text-ouro"><Icon name="cpu" /></div>
+            <h4 class="font-semibold mb-1">Materiais Premium</h4>
+            <p class="text-sm text-slate-400">Gel Coat isoftálico e resinas de alta performance.</p>
+          </div>
+          <div>
+            <div class="w-14 h-14 rounded-full bg-ouro/10 flex items-center justify-center mb-3 mx-auto text-ouro"><Icon name="clock" /></div>
+            <h4 class="font-semibold mb-1">Serviço Rápido</h4>
+            <p class="text-sm text-slate-400">Entrega no prazo combinado, sem sujeira desnecessária.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="py-16 px-6 bg-marca-suave">
+      <div class="max-w-5xl mx-auto">
+        <h2 class="text-3xl font-semibold text-center mb-10">Projetos que falam por si</h2>
+        <GaleriaZoom
+          colunas="grid-cols-2 md:grid-cols-4"
+          imagens={[
+            { src: obra1, alt: 'Obra Royal Splash, Rio de Janeiro' },
+            { src: obra2, alt: 'Obra Royal Splash, Rio de Janeiro' },
+            { src: obra3, alt: 'Obra Royal Splash, Rio de Janeiro' },
+            { src: obra4, alt: 'Obra Royal Splash, Rio de Janeiro' },
+            { src: obra5, alt: 'Obra Royal Splash, Rio de Janeiro' },
+            { src: obra6, alt: 'Obra Royal Splash, Rio de Janeiro' },
+            { src: obra7, alt: 'Obra Royal Splash, Rio de Janeiro' },
+            { src: obra8, alt: 'Obra Royal Splash, Rio de Janeiro' },
+          ]}
+        />
+      </div>
+    </section>
+
+    <section class="py-16 px-6 bg-marca-suave text-center border-y border-ouro/20">
+      <h2 class="text-3xl md:text-4xl font-semibold mb-6 max-w-2xl mx-auto">
+  Dê nova vida à sua piscina de fibra
+</h2>
+      <a href="#orcamento" class="inline-block bg-ouro hover:opacity-90 text-marca font-semibold px-8 py-4 rounded-full transition-opacity">
+        Falar com um especialista
+      </a>
+    </section>
+
+    <section id="orcamento" class="py-16 px-6">
+      <div class="max-w-xl mx-auto text-center mb-10">
+        <h2 class="text-3xl font-semibold mb-3">Solicite seu Orçamento</h2>
+        <p class="text-slate-400">Preencha os dados abaixo e nossa equipe entrará em contato para entender seu projeto em detalhes.</p>
+      </div>
+      <FormularioGHL />
+    </section>
+
+    <LPFooter />
+    <BotaoWhatsapp />
+  </body>
+</html>
