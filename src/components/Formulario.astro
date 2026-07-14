@@ -45,6 +45,10 @@ const { tipoPreSelecionado = '', campanha = '' } = Astro.props;
       <option value="Outro" selected={tipoPreSelecionado === 'Outro'}>Outro</option>
     </select>
   </div>
+  <div class="mb-4 hidden" id="campo-descreva-outro">
+    <label class="block text-sm text-slate-400 mb-1">Descreva o projeto</label>
+    <input type="text" name="descreva_projeto" class="w-full bg-marca border border-white/15 rounded-lg px-4 py-3 text-white focus:border-piscina focus:outline-none transition-colors" placeholder="Qual seria o tipo de projeto?" />
+  </div>
 
   <div class="mb-6">
     <label class="block text-sm text-slate-400 mb-1">Mensagem</label>
@@ -58,6 +62,18 @@ const { tipoPreSelecionado = '', campanha = '' } = Astro.props;
 
 <script>
   const form = document.querySelector('form[action*="formspree"]') as HTMLFormElement;
+const selectTipo = document.querySelector('select[name="tipo_projeto"]') as HTMLSelectElement;
+  const campoOutro = document.getElementById('campo-descreva-outro');
+
+  function atualizarCampoOutro() {
+    if (selectTipo?.value === 'Outro') {
+      campoOutro?.classList.remove('hidden');
+    } else {
+      campoOutro?.classList.add('hidden');
+    }
+  }
+  selectTipo?.addEventListener('change', atualizarCampoOutro);
+  atualizarCampoOutro();
   form?.addEventListener('submit', async (e) => {
     e.preventDefault();
     const submitBtn = form.querySelector('button[type="submit"]') as HTMLButtonElement;
