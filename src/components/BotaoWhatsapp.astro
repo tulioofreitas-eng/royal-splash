@@ -35,6 +35,12 @@
         <option value="Outro">Outro</option>
       </select>
     </div>
+    <div style="display:flex; align-items:flex-start; gap:10px; margin-bottom:16px;">
+  <input type="checkbox" id="wa-consentimento" required style="margin-top:4px; accent-color:#38BDF8; cursor:pointer; flex-shrink:0;" />
+  <label for="wa-consentimento" style="font-size:0.8rem; color:#94a3b8; line-height:1.4; cursor:pointer;">
+    Li e concordo com a <a href="/politica-de-privacidade" target="_blank" rel="noopener" style="color:#38BDF8;">Política de Privacidade</a> e autorizo o contato da Royal Splash.
+  </label>
+</div>
     <div style="display:flex; gap:10px;">
       <button type="button" id="wa-cancelar" style="flex:1; background:transparent; border:1px solid rgba(255,255,255,0.2); color:#94a3b8; padding:12px; border-radius:9999px; cursor:pointer;">Cancelar</button>
       <button type="button" id="wa-enviar" style="flex:2; background:#22c55e; border:none; color:#fff; font-weight:600; padding:12px; border-radius:9999px; cursor:pointer;">Continuar no WhatsApp</button>
@@ -68,6 +74,11 @@
     const telefone = (document.getElementById('wa-telefone') as HTMLInputElement).value.trim();
     const tipo = (document.getElementById('wa-tipo') as HTMLSelectElement).value;
 
+    const consentimento = (document.getElementById('wa-consentimento') as HTMLInputElement).checked;
+  if (!consentimento) {
+    alert('Por favor, confirme que leu a Política de Privacidade.');
+    return;
+  }
     if (!nome || !telefone) {
       alert('Por favor, preencha nome e telefone.');
       return;

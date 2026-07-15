@@ -1,0 +1,104 @@
+---
+import '../styles/global.css';
+import GTMHead from '../components/GTMHead.astro';
+import GTMBody from '../components/GTMBody.astro';
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+import BotaoWhatsapp from '../components/BotaoWhatsapp.astro';
+---
+
+<html lang="pt-BR">
+  <head>
+    <GTMHead />
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Política de Privacidade — Royal Splash</title>
+    <meta name="description" content="Política de Privacidade da Royal Splash: como coletamos, usamos e protegemos seus dados pessoais." />
+    <link rel="icon" type="image/x-icon" href="/favicon.ico" />
+  </head>
+  <body class="bg-marca text-white pt-20">
+    <GTMBody />
+
+    <Header />
+
+    <main class="max-w-3xl mx-auto px-6 py-16">
+      <h1 class="text-3xl md:text-4xl font-semibold mb-2">Política de Privacidade</h1>
+      <p class="text-sm text-slate-500 mb-10">Última atualização: julho de 2026</p>
+
+      <div class="space-y-8 text-slate-300 leading-relaxed">
+        <section>
+          <p>A Royal Splash (parte do MTM Group) respeita a sua privacidade e trata seus dados pessoais em conformidade com a Lei Geral de Proteção de Dados (Lei nº 13.709/2018 — LGPD). Esta política explica quais dados coletamos, por que coletamos, e quais são os seus direitos.</p>
+        </section>
+
+        <section>
+          <h2 class="text-xl font-semibold text-white mb-3">1. Quais dados coletamos</h2>
+          <p class="mb-3">Quando você preenche um formulário em nosso site ou em uma de nossas páginas de campanha, coletamos:</p>
+          <ul class="list-disc list-inside space-y-1">
+            <li>Nome</li>
+            <li>Telefone / WhatsApp</li>
+            <li>E-mail (quando solicitado)</li>
+            <li>Tipo de projeto de interesse e, quando aplicável, uma descrição do que você procura</li>
+          </ul>
+          <p class="mt-3">Não coletamos dados sensíveis (saúde, origem racial, opinião política, etc.) e não solicitamos nenhuma informação além do necessário para entrar em contato e apresentar uma proposta.</p>
+        </section>
+
+        <section>
+          <h2 class="text-xl font-semibold text-white mb-3">2. Por que coletamos esses dados</h2>
+          <p class="mb-3">Usamos essas informações exclusivamente para:</p>
+          <ul class="list-disc list-inside space-y-1">
+            <li>Entrar em contato para entender sua necessidade e apresentar um orçamento</li>
+            <li>Agendar visitas técnicas, quando aplicável</li>
+            <li>Enviar comunicações sobre o andamento do seu atendimento</li>
+          </ul>
+          <p class="mt-3">Não vendemos, alugamos ou compartilhamos seus dados com terceiros para fins de marketing de outras empresas.</p>
+        </section>
+
+        <section>
+          <h2 class="text-xl font-semibold text-white mb-3">3. Com quem seus dados são compartilhados</h2>
+          <p class="mb-3">Para operar nossos formulários de contato, utilizamos os seguintes prestadores de serviço (processadores de dados), que recebem apenas o necessário para o funcionamento do formulário:</p>
+          <ul class="list-disc list-inside space-y-1">
+            <li><strong class="text-white">Formspree, Inc.</strong> — processa os envios do formulário de contato do site principal.</li>
+            <li><strong class="text-white">HighLevel (GoHighLevel)</strong> — processa os envios dos formulários das páginas de campanha (landing pages).</li>
+            <li><strong class="text-white">Google (Google Ads / Tag Manager)</strong> — mede o desempenho de nossas campanhas publicitárias.</li>
+          </ul>
+          <p class="mt-3">Todos atuam como <strong class="text-white">operadores</strong> dos dados (processam em nosso nome, sob nossas instruções), enquanto a Royal Splash é a <strong class="text-white">controladora</strong> dos dados.</p>
+        </section>
+
+        <section>
+          <h2 class="text-xl font-semibold text-white mb-3">4. Por quanto tempo guardamos seus dados</h2>
+          <p>Mantemos seus dados pelo tempo necessário para concluir o atendimento e cumprir obrigações legais ou contratuais. Você pode solicitar a exclusão a qualquer momento (veja o item 6).</p>
+        </section>
+
+        <section>
+          <h2 class="text-xl font-semibold text-white mb-3">5. Cookies</h2>
+          <p>Nosso site pode usar cookies técnicos para o funcionamento de formulários e, quando aplicável, ferramentas de analytics (como Google Tag Manager) para entender o desempenho de nossas páginas. Você pode gerenciar cookies nas configurações do seu navegador.</p>
+        </section>
+
+        <section>
+          <h2 class="text-xl font-semibold text-white mb-3">6. Seus direitos como titular dos dados</h2>
+          <p class="mb-3">Conforme a LGPD, você tem direito a:</p>
+          <ul class="list-disc list-inside space-y-1">
+            <li>Confirmar a existência de tratamento dos seus dados</li>
+            <li>Acessar os dados que temos sobre você</li>
+            <li>Corrigir dados incompletos, inexatos ou desatualizados</li>
+            <li>Solicitar a exclusão dos seus dados</li>
+            <li>Revogar o consentimento a qualquer momento</li>
+            <li>Solicitar a portabilidade dos dados a outro fornecedor</li>
+          </ul>
+          <p class="mt-3">Para exercer qualquer um desses direitos, entre em contato pelo e-mail <a href="mailto:contato@royalsplash.com.br" class="text-piscina hover:opacity-80">contato@royalsplash.com.br</a>.</p>
+        </section>
+
+        <section>
+  <h2 class="text-xl font-semibold text-white mb-3">7. Contato</h2>
+  <p>
+    E-mail: <a href="mailto:contato@royalsplash.com.br" class="text-piscina hover:opacity-80">contato@royalsplash.com.br</a><br />
+    Telefone/WhatsApp: <a href="https://wa.me/5521982590643" target="_blank" rel="noopener" class="text-piscina hover:opacity-80">(21) 98259-0643</a>
+  </p>
+</section>
+      </div>
+    </main>
+
+    <Footer />
+    <BotaoWhatsapp />
+  </body>
+</html>

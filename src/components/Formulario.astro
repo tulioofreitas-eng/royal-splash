@@ -1,4 +1,5 @@
 ---
+import ConsentCheckbox from './ConsentCheckbox.astro';
 interface Props {
   tipoPreSelecionado?: string;
   campanha?: string;
@@ -55,6 +56,8 @@ const { tipoPreSelecionado = '', campanha = '' } = Astro.props;
     <textarea name="mensagem" rows="4" class="w-full bg-marca border border-white/15 rounded-lg px-4 py-3 text-white focus:border-piscina focus:outline-none transition-colors" placeholder="Conte um pouco sobre o seu projeto..."></textarea>
   </div>
 
+  <ConsentCheckbox />
+  
   <button type="submit" class="w-full bg-piscina hover:opacity-90 text-white font-medium px-8 py-4 rounded-full transition-opacity">
     Enviar mensagem
   </button>
