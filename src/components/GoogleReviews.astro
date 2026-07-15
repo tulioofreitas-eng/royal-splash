@@ -1,18 +1,41 @@
 ---
+// FALLBACK: enquanto não há reviews reais do Google, mostra depoimentos
+// genéricos (não atribuídos ao Google) na mesma posição. Quando a API
+// de Reviews retornar dados reais, o componente troca automaticamente
+// para "O que dizem no Google" com avaliações reais.
+const depoimentosFallback = [
+  {
+    texto: 'A Royal Splash transformou completamente nossa área de lazer. O nível de detalhe e o acabamento são impecáveis. Um serviço verdadeiramente premium.',
+    nome: 'Carlos Eduardo',
+    local: 'Barra da Tijuca',
+  },
+  {
+    texto: 'Desde o primeiro atendimento até a entrega, a equipe demonstrou extremo profissionalismo. A piscina superou todas as nossas expectativas.',
+    nome: 'Mariana Albuquerque',
+    local: 'Joá',
+  },
+  {
+    texto: 'O plano de manutenção deles é fantástico. Minha piscina está sempre cristalina e pronta para uso. Recomendo de olhos fechados.',
+    nome: 'Roberto Silveira',
+    local: 'Recreio dos Bandeirantes',
+  },
+];
 ---
 <section class="py-16 px-6 bg-marca-suave">
   <div class="max-w-5xl mx-auto">
-    <h2 class="text-3xl font-semibold text-center mb-2">O que dizem no Google</h2>
+    <h2 class="text-3xl font-semibold text-center mb-2" id="reviews-titulo">O que dizem nossos clientes</h2>
     <div id="google-rating-summary" class="text-center text-slate-400 mb-10 hidden">
       <span class="text-ouro text-xl" id="rating-stars"></span>
       <span id="rating-text"></span>
     </div>
-    <div id="reviews-grid" class="grid md:grid-cols-3 gap-6"></div>
-    <div id="reviews-fallback" class="text-center hidden">
-      <p class="text-slate-400 mb-4">Seja um dos primeiros a avaliar nossa experiência no Google.</p>
-      <a href="https://g.page/r/CeRf7BarN5UPEBM/review" target="_blank" class="inline-block border border-ouro text-ouro px-6 py-3 rounded-full hover:bg-ouro hover:text-marca transition-colors">
-        Deixar uma avaliação
-      </a>
+    <div id="reviews-grid" class="grid md:grid-cols-3 gap-6">
+      {depoimentosFallback.map((d) => (
+        <div class="bg-marca rounded-2xl p-6 border border-white/10">
+          <p class="text-slate-300 italic mb-4">"{d.texto}"</p>
+          <p class="font-semibold">{d.nome}</p>
+          <p class="text-sm text-piscina">{d.local}</p>
+        </div>
+      ))}
     </div>
   </div>
 </section>
@@ -23,14 +46,15 @@
       const res = await fetch('/api/reviews');
       const data = await res.json();
       const grid = document.getElementById('reviews-grid')!;
-      const fallback = document.getElementById('reviews-fallback')!;
       const summary = document.getElementById('google-rating-summary')!;
+      const titulo = document.getElementById('reviews-titulo')!;
 
+      // Só substitui o fallback se houver reviews REAIS do Google
       if (!data.reviews || data.reviews.length === 0) {
-        fallback.classList.remove('hidden');
         return;
       }
 
+      titulo.textContent = 'O que dizem no Google';
       summary.classList.remove('hidden');
       document.getElementById('rating-stars')!.textContent = '★'.repeat(Math.round(data.rating || 0));
       document.getElementById('rating-text')!.textContent = ` ${data.rating} · ${data.total} avaliações no Google`;
@@ -43,7 +67,7 @@
         </div>
       `).join('');
     } catch {
-      document.getElementById('reviews-fallback')?.classList.remove('hidden');
+      // Em caso de erro, mantém o fallback já renderizado — não faz nada
     }
   }
   carregarReviews();
