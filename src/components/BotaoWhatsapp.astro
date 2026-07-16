@@ -84,6 +84,14 @@
       return;
     }
 
+    // Registra o lead no sistema-mtm antes de abrir o WhatsApp — se isso
+    // falhar, não trava o fluxo do usuário, só deixa de registrar.
+    fetch('/api/lead', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ nome, telefone, tipo_projeto: tipo, origem: 'whatsapp' }),
+    }).catch(() => {});
+
     const mensagem = `Olá! Me chamo ${nome} (${telefone}). Tenho interesse em: ${tipo || 'um orçamento'}.`;
     const url = `https://wa.me/5521982590643?text=${encodeURIComponent(mensagem)}`;
     window.open(url, '_blank');

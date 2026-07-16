@@ -83,6 +83,12 @@ const selectTipo = document.querySelector('select[name="tipo_projeto"]') as HTML
     const textoOriginal = submitBtn.textContent;
     submitBtn.disabled = true;
     submitBtn.textContent = 'Enviando...';
+
+    // Registra o lead no sistema-mtm em paralelo, sem bloquear nem depender
+    // do envio pro Formspree — se isso falhar, o usuário nem percebe, o
+    // Formspree continua sendo o caminho principal de notificação.
+    fetch('/api/lead', { method: 'POST', body: new FormData(form) }).catch(() => {});
+
     try {
       const response = await fetch(form.action, { method: 'POST', body: new FormData(form), headers: { Accept: 'application/json' } });
       if (response.ok) {
