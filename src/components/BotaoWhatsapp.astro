@@ -49,14 +49,39 @@
 </div>
 
 <script>
+  // ═══════════════════════════════════════════════════════════════════════
+  // TESTE TEMPORÁRIO — modal de qualificação desligado a pedido do Marco,
+  // pra medir clique "cru" sem obrigar preenchimento. Pra REATIVAR o
+  // modal, troca essa linha pra true — é a única mudança necessária,
+  // todo o resto do código do modal continua intacto abaixo.
+  // ═══════════════════════════════════════════════════════════════════════
+  const MODAL_ATIVO = false;
+
+  const NUMERO_WHATSAPP = '5521982590643';
   const botoesAbrir = document.querySelectorAll('#btn-abrir-whatsapp, .abrir-whatsapp-modal');
   const modal = document.getElementById('whatsapp-modal')!;
   const btnCancelar = document.getElementById('wa-cancelar')!;
   const btnEnviar = document.getElementById('wa-enviar')!;
 
+  function registrarClique() {
+    fetch('/api/whatsapp-click', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ pagina: window.location.pathname }),
+    }).catch(() => {});
+  }
+
   botoesAbrir.forEach((btn) => {
     btn.addEventListener('click', (e) => {
       e.preventDefault();
+
+      if (!MODAL_ATIVO) {
+        registrarClique();
+        const url = `https://wa.me/${NUMERO_WHATSAPP}?text=${encodeURIComponent('Olá! Tenho interesse em um orçamento.')}`;
+        window.open(url, '_blank');
+        return;
+      }
+
       modal.style.display = 'flex';
     });
   });
@@ -93,7 +118,7 @@
     }).catch(() => {});
 
     const mensagem = `Olá! Me chamo ${nome} (${telefone}). Tenho interesse em: ${tipo || 'um orçamento'}.`;
-    const url = `https://wa.me/5521982590643?text=${encodeURIComponent(mensagem)}`;
+    const url = `https://wa.me/${NUMERO_WHATSAPP}?text=${encodeURIComponent(mensagem)}`;
     window.open(url, '_blank');
     modal.style.display = 'none';
   });
