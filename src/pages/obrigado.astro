@@ -54,10 +54,23 @@ import GTMBody from '../components/GTMBody.astro';
         };
 
         let campanha: string | null = null;
+
         try {
-          campanha = sessionStorage.getItem('mtm_campanha');
-          sessionStorage.removeItem('mtm_campanha');
+          const cookieMatch = document.cookie
+            .split('; ')
+            .find((linha) => linha.startsWith('mtm_campanha='));
+          if (cookieMatch) {
+            campanha = decodeURIComponent(cookieMatch.split('=')[1]);
+            document.cookie = 'mtm_campanha=; path=/; max-age=0';
+          }
         } catch {}
+
+        if (!campanha) {
+          try {
+            campanha = sessionStorage.getItem('mtm_campanha');
+            sessionStorage.removeItem('mtm_campanha');
+          } catch {}
+        }
 
         if (!campanha) {
           const matchLp = document.referrer.match(/\/lp\/([^/?#]+)/);
