@@ -53,9 +53,21 @@ import GTMBody from '../components/GTMBody.astro';
           email: params.get('email') ?? '',
         };
 
-        const matchLp = document.referrer.match(/\/lp\/([^/?#]+)/);
-        if (matchLp) {
-          payload.campanha = `lp-${matchLp[1]}`;
+        let campanha: string | null = null;
+        try {
+          campanha = sessionStorage.getItem('mtm_campanha');
+          sessionStorage.removeItem('mtm_campanha');
+        } catch {}
+
+        if (!campanha) {
+          const matchLp = document.referrer.match(/\/lp\/([^/?#]+)/);
+          if (matchLp) {
+            campanha = `lp-${matchLp[1]}`;
+          }
+        }
+
+        if (campanha) {
+          payload.campanha = campanha;
         }
 
         fetch('/api/lead', {

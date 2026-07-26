@@ -6,3 +6,12 @@
     <span class="text-lg font-semibold tracking-wide">ROYAL SPLASH</span>
   </a>
 </header>
+
+<script>
+  const matchLp = window.location.pathname.match(/\/lp\/([^/?#]+)/);
+  if (matchLp) {
+    try {
+      sessionStorage.setItem('mtm_campanha', `lp-${matchLp[1]}`);
+    } catch {}
+  }
+</script>
