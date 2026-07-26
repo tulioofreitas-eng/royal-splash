@@ -42,5 +42,28 @@ import GTMBody from '../components/GTMBody.astro';
 
     <Footer />
     <BotaoWhatsapp />
+
+    <script>
+      const params = new URLSearchParams(window.location.search);
+
+      if (params.get('lead') === '1') {
+        const payload: Record<string, string> = {
+          nome: params.get('nome') ?? '',
+          telefone: params.get('telefone') ?? '',
+          email: params.get('email') ?? '',
+        };
+
+        const matchLp = document.referrer.match(/\/lp\/([^/?#]+)/);
+        if (matchLp) {
+          payload.campanha = `lp-${matchLp[1]}`;
+        }
+
+        fetch('/api/lead', {
+          method: 'POST',
+          body: JSON.stringify(payload),
+          headers: { 'Content-Type': 'application/json' },
+        }).catch(() => {});
+      }
+    </script>
   </body>
 </html>
