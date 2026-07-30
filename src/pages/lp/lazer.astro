@@ -168,6 +168,30 @@ const jsonLd = {
       </div>
     </section>
 
+    <!-- FAQ -->
+    <section class="py-16 px-6">
+      <div class="max-w-3xl mx-auto">
+        <h2 class="text-3xl font-semibold text-center mb-10">Perguntas frequentes</h2>
+        <div class="space-y-4">
+          {[
+            { pergunta: 'O que está incluso no projeto de área de lazer?', resposta: 'Piscina, deck, área gourmet, paisagismo e iluminação são planejados como um único projeto integrado — você recebe a visualização completa antes de aprovar.' },
+            { pergunta: 'Preciso ter piscina pra contratar a área de lazer completa?', resposta: 'Não. Também executamos deck, área gourmet e paisagismo separadamente, mesmo em espaços que já têm piscina pronta.' },
+            { pergunta: 'Quanto tempo demora a obra completa?', resposta: 'Depende do escopo — piscina, deck, gourmet e acabamentos —, mas o prazo é definido em contrato antes do início e cumprido.' },
+            { pergunta: 'Vocês cuidam do paisagismo também?', resposta: 'Sim. Paisagismo e iluminação fazem parte do projeto integrado, pensados junto com a arquitetura de todo o espaço.' },
+            { pergunta: 'É possível fazer em etapas, respeitando o orçamento?', resposta: 'Sim. Planejamos o projeto completo, mas a execução pode ser dividida em etapas, de acordo com sua prioridade e orçamento.' },
+          ].map((item) => (
+            <details class="bg-marca-suave border border-white/10 rounded-2xl p-6 group">
+              <summary class="font-semibold cursor-pointer list-none flex items-center justify-between gap-4">
+                {item.pergunta}
+                <span class="text-ouro shrink-0 group-open:rotate-45 transition-transform">+</span>
+              </summary>
+              <p class="text-slate-400 mt-3">{item.resposta}</p>
+            </details>
+          ))}
+        </div>
+      </div>
+    </section>
+
     <section class="py-16 px-6 bg-marca-suave text-center border-y border-ouro/20">
       <h2 class="text-3xl md:text-4xl font-semibold mb-6 max-w-2xl mx-auto">
         Pronto para criar sua área de lazer dos sonhos?

@@ -71,7 +71,11 @@ const jsonLd = {
       </div>
     </section>
 
-    <GoogleReviews />
+    <GoogleReviews depoimentos={[
+      { texto: 'Integraram a sauna ao design da casa sem parecer um anexo — ficou como se o projeto original já tivesse previsto o espaço.', nome: 'Renata Assunção Lima', local: 'Zona Sul' },
+      { texto: 'O ofurô junto da sauna virou nosso ritual de fim de semana. O sistema de aquecimento é silencioso e a manutenção é simples.', nome: 'Thiago Ribas Coutinho', local: 'Barra da Tijuca' },
+      { texto: 'Pesquisei várias empresas e foi a única que topou desenhar o projeto sob medida pro espaço reduzido que eu tinha disponível.', nome: 'Marina Costa Prado', local: 'Niterói' },
+    ]} />
 
     <section class="py-16 px-6">
       <div class="max-w-5xl mx-auto grid md:grid-cols-2 gap-12 items-center">

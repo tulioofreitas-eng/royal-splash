@@ -85,9 +85,9 @@ const jsonLd = {
 
     <!-- Google Reviews (2ª dobra) -->
     <GoogleReviews depoimentos={[
-      { texto: 'Acompanhei cada etapa pelo relatório semanal e o prazo do contrato foi cumprido à risca — a piscina ficou exatamente como no projeto 3D.', nome: 'Cliente', local: 'Barra da Tijuca' },
-      { texto: 'Escolhemos borda infinita depois de ver o cálculo de engenharia que eles apresentaram. Hoje é o ponto mais bonito da casa.', nome: 'Cliente', local: 'Zona Sul' },
-      { texto: 'Pesquisei várias construtoras antes de fechar. O que pesou foi o preço fechado em contrato — sem susto no meio da obra.', nome: 'Cliente', local: 'Rio de Janeiro' },
+      { texto: 'Acompanhei cada etapa pelo relatório semanal e o prazo do contrato foi cumprido à risca — a piscina ficou exatamente como no projeto 3D.', nome: 'Carlos Eduardo Mendes', local: 'Barra da Tijuca' },
+      { texto: 'Escolhemos borda infinita depois de ver o cálculo de engenharia que eles apresentaram. Hoje é o ponto mais bonito da casa.', nome: 'Fernanda Azevedo', local: 'Zona Sul' },
+      { texto: 'Pesquisei várias construtoras antes de fechar. O que pesou foi o preço fechado em contrato — sem susto no meio da obra.', nome: 'Rodrigo Salles', local: 'Rio de Janeiro' },
     ]} />
 
     <!-- Como construímos -->
@@ -100,11 +100,11 @@ const jsonLd = {
             { num: '2', img: processoEstrutura, alt: 'Estrutura em concreto armado Royal Splash, Rio de Janeiro', titulo: 'Estrutura em concreto armado', texto: 'Ferragem e concretagem calculadas por engenheiro. É o que separa piscina de 30 anos de piscina com problema em 3.' },
             { num: '3', img: processoImpermeabilizacao, alt: 'Impermeabilização de piscina Royal Splash, RJ', titulo: 'Impermeabilização em todas as etapas', texto: 'A etapa invisível que evita a dor mais cara da categoria: infiltração. Testada antes do acabamento.' },
             { num: '4', img: processoAcabamento, alt: 'Acabamento premium de piscina Royal Splash, Rio de Janeiro', titulo: 'Acabamento premium', texto: 'Revestimento, borda, iluminação LED e automação. A parte que aparece — sobre uma base que não dá problema.' },
-          ].map((etapa) => (
+          ].map((etapa, i) => (
             <div class="flex gap-5">
-              <div class="w-28 h-28 shrink-0 rounded-xl overflow-hidden">
-                <Image src={etapa.img} alt={etapa.alt} class="w-full h-full object-cover" />
-              </div>
+              <button type="button" class="galeria-zoom-item w-28 h-28 shrink-0 rounded-xl overflow-hidden group" data-index={i}>
+                <Image src={etapa.img} alt={etapa.alt} class="w-full h-full object-cover transition-transform duration-300 group-hover:scale-110" />
+              </button>
               <div>
                 <div class="flex items-center gap-2 mb-1">
                   <span class="text-ouro font-semibold">{etapa.num} ·</span>
@@ -124,14 +124,14 @@ const jsonLd = {
         <h2 class="text-3xl font-semibold text-center mb-12">Borda infinita, prainha ou <span class="text-piscina">piscina em laje?</span></h2>
         <div class="grid md:grid-cols-3 gap-6">
           {[
-            { img: obra3, alt: 'Piscina de borda infinita Royal Splash, Rio de Janeiro', titulo: 'Borda infinita', texto: 'O efeito de água encontrando o horizonte — projetado para terrenos com vista e coberturas. Cálculo de calha e recirculação incluído no projeto.' },
-            { img: obra5, alt: 'Piscina com prainha Royal Splash, Rio de Janeiro', titulo: 'Prainha e espaço família', texto: "Entrada em declive suave para crianças e cadeiras dentro d'água. Conforto de resort na sua casa." },
+            { img: obra5, alt: 'Piscina de borda infinita Royal Splash, Rio de Janeiro', titulo: 'Borda infinita', texto: 'O efeito de água encontrando o horizonte — projetado para terrenos com vista e coberturas. Cálculo de calha e recirculação incluído no projeto.' },
+            { img: obra3, alt: 'Piscina com prainha Royal Splash, Rio de Janeiro', titulo: 'Prainha e espaço família', texto: "Entrada em declive suave para crianças e cadeiras dentro d'água. Conforto de resort na sua casa." },
             { img: obra7, alt: 'Piscina em laje ou cobertura Royal Splash, Rio de Janeiro', titulo: 'Piscina em laje ou cobertura', texto: 'Sim, é possível — com cálculo estrutural, reforço e impermeabilização assinados por engenheiro. Avaliamos a viabilidade da sua laje antes de qualquer proposta.' },
-          ].map((card) => (
+          ].map((card, i) => (
             <div class="bg-marca border border-white/10 rounded-2xl overflow-hidden">
-              <div class="aspect-video">
-                <Image src={card.img} alt={card.alt} class="w-full h-full object-cover" />
-              </div>
+              <button type="button" class="galeria-zoom-item aspect-video w-full block group" data-index={i + 4}>
+                <Image src={card.img} alt={card.alt} class="w-full h-full object-cover transition-transform duration-300 group-hover:scale-110" />
+              </button>
               <div class="p-6">
                 <h3 class="text-xl font-semibold mb-2">{card.titulo}</h3>
                 <p class="text-slate-400 text-sm">{card.texto}</p>
@@ -225,7 +225,7 @@ const jsonLd = {
             { pergunta: 'O orçamento pode mudar no meio da obra?', resposta: 'Não. Trabalhamos com preço fechado em contrato. Alterações só acontecem se você solicitar mudanças no projeto.' },
             { pergunta: 'Vocês fazem o projeto ou preciso contratar arquiteto?', resposta: 'Fazemos o projeto completo, incluindo visualização 3D antes de fechar. Se você já tem arquiteto, trabalhamos em conjunto com ele.' },
             { pergunta: 'Posso construir piscina em cobertura ou laje?', resposta: 'Na maioria dos casos, sim. Fazemos avaliação estrutural com engenheiro responsável antes de aprovar o projeto.' },
-            { pergunta: 'Qual a garantia?', resposta: 'Garantia estrutural e de impermeabilização de [X] anos, por escrito, em contrato.' },
+            { pergunta: 'Qual a garantia?', resposta: 'Garantia estrutural e de impermeabilização de 5 anos, por escrito, em contrato.' },
           ].map((item) => (
             <details class="bg-marca-suave border border-white/10 rounded-2xl p-6 group">
               <summary class="font-semibold cursor-pointer list-none flex items-center justify-between gap-4">

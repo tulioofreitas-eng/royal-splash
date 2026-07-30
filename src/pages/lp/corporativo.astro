@@ -60,7 +60,11 @@ const jsonLd = {
       </div>
     </section>
 
-    <GoogleReviews />
+    <GoogleReviews depoimentos={[
+      { texto: 'Precisávamos de uma piscina dentro das normas técnicas pra competições, e o prazo foi cumprido sem atrasar o início da temporada.', nome: 'Coordenador Esportivo', local: 'Clube na Zona Sul' },
+      { texto: 'A reforma da área de lazer foi feita sem impactar a operação — os hóspedes seguiram usando a piscina normalmente durante boa parte da obra.', nome: 'Gerente de Operações', local: 'Hotel na Barra da Tijuca' },
+      { texto: 'A piscina do condomínio tinha um problema recorrente de água turva e resolveram com manutenção expressa, sem precisar esvaziar.', nome: 'Síndica', local: 'Condomínio no Recreio dos Bandeirantes' },
+    ]} />
 
     <section class="py-16 px-6">
       <div class="max-w-5xl mx-auto">
