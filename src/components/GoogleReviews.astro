@@ -3,7 +3,13 @@
 // genéricos (não atribuídos ao Google) na mesma posição. Quando a API
 // de Reviews retornar dados reais, o componente troca automaticamente
 // para "O que dizem no Google" com avaliações reais.
-const depoimentosFallback = [
+interface Depoimento {
+  texto: string;
+  nome: string;
+  local?: string;
+}
+
+const depoimentosFallback: Depoimento[] = [
   {
     texto: 'A Royal Splash transformou completamente nossa área de lazer. O nível de detalhe e o acabamento são impecáveis. Um serviço verdadeiramente premium.',
     nome: 'Carlos Eduardo',
@@ -20,6 +26,12 @@ const depoimentosFallback = [
     local: 'Recreio dos Bandeirantes',
   },
 ];
+
+interface Props {
+  depoimentos?: Depoimento[];
+}
+
+const { depoimentos = depoimentosFallback } = Astro.props;
 ---
 <section class="py-16 px-6 bg-marca-suave">
   <div class="max-w-5xl mx-auto">
@@ -29,11 +41,11 @@ const depoimentosFallback = [
       <span id="rating-text"></span>
     </div>
     <div id="reviews-grid" class="grid md:grid-cols-3 gap-6">
-      {depoimentosFallback.map((d) => (
+      {depoimentos.map((d) => (
         <div class="bg-marca rounded-2xl p-6 border border-white/10">
           <p class="text-slate-300 italic mb-4">"{d.texto}"</p>
           <p class="font-semibold">{d.nome}</p>
-          <p class="text-sm text-piscina">{d.local}</p>
+          {d.local && <p class="text-sm text-piscina">{d.local}</p>}
         </div>
       ))}
     </div>

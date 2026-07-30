@@ -71,30 +71,72 @@ const jsonLd = {
       </div>
     </section>
 
-    <GoogleReviews />
+    <!-- Antes/depois -->
+    <section class="py-16 px-6">
+      <div class="max-w-5xl mx-auto">
+        <h2 class="text-3xl font-semibold text-center mb-10">De piscina antiga a <span class="text-piscina">área premium</span> — o mesmo espaço, outra piscina</h2>
+        <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+          {[
+            { img: reformaAntes, alt: 'Piscina antes da reforma Royal Splash, Rio de Janeiro', legenda: 'Antes' },
+            { img: reformaRemocao, alt: 'Remoção de revestimento antigo Royal Splash, RJ', legenda: 'Remoção' },
+            { img: reformaAplicacao, alt: 'Aplicação de novo revestimento Royal Splash', legenda: 'Aplicação' },
+            { img: reformaDepois, alt: 'Piscina reformada Royal Splash, Rio de Janeiro', legenda: 'Depois' },
+          ].map((foto) => (
+            <figure class="rounded-xl overflow-hidden border border-white/10">
+              <div class="aspect-square">
+                <Image src={foto.img} alt={foto.alt} class="w-full h-full object-cover" />
+              </div>
+              <figcaption class="text-center text-sm text-slate-400 py-2 bg-marca-suave">{foto.legenda}</figcaption>
+            </figure>
+          ))}
+        </div>
+      </div>
+    </section>
+
+    <GoogleReviews depoimentos={[
+      { texto: 'A piscina tinha mais de 10 anos e parece nova depois da reforma — aproveitamos pra colocar aquecimento e hoje uso o ano inteiro.', nome: 'Cliente' },
+      { texto: 'Não imaginava que dava pra transformar minha piscina comum sem quebrar tudo. Ficou pronta bem mais rápido do que eu esperava.', nome: 'Cliente' },
+      { texto: 'Instalamos automação por aplicativo na mesma obra da reforma — hoje controlo filtragem e iluminação pelo celular.', nome: 'Cliente' },
+    ]} />
 
     <section class="py-16 px-6">
-      <div class="max-w-5xl mx-auto grid md:grid-cols-2 gap-12 items-center">
-        <div>
-          <h2 class="text-3xl font-semibold mb-4">Revitalização em <span class="text-piscina">cada detalhe</span></h2>
-          <p class="text-slate-400 mb-4">
-            Piscina antiga, revestimento desgastado ou sistema ultrapassado? Fazemos a reforma completa: novo acabamento, iluminação LED, automação e modernização estrutural — sem precisar reconstruir do zero.
-          </p>
-          <p class="text-slate-400 mb-6">
-            Atendimento em todo o estado do Rio de Janeiro, com projeto personalizado pra sua piscina atual.
-          </p>
-          <ul class="space-y-3">
-            <li class="flex items-center gap-3 text-slate-300"><Icon name="check" class="w-5 h-5 text-ouro shrink-0" /> Novos revestimentos e acabamentos</li>
-            <li class="flex items-center gap-3 text-slate-300"><Icon name="check" class="w-5 h-5 text-ouro shrink-0" /> Modernização de iluminação e automação</li>
-            <li class="flex items-center gap-3 text-slate-300"><Icon name="check" class="w-5 h-5 text-ouro shrink-0" /> Prazo otimizado, sem obra longa</li>
-          </ul>
+      <div class="max-w-3xl mx-auto text-center">
+        <h2 class="text-3xl font-semibold mb-4">Revitalização em <span class="text-piscina">cada detalhe</span></h2>
+        <p class="text-slate-400 mb-4">
+          Piscina antiga, revestimento desgastado ou sistema ultrapassado? Fazemos a reforma completa: novo acabamento, iluminação LED, automação e modernização estrutural — sem precisar reconstruir do zero.
+        </p>
+        <p class="text-slate-400 mb-6">
+          Atendimento em todo o estado do Rio de Janeiro, com projeto personalizado pra sua piscina atual.
+        </p>
+        <ul class="space-y-3 inline-flex flex-col text-left">
+          <li class="flex items-center gap-3 text-slate-300"><Icon name="check" class="w-5 h-5 text-ouro shrink-0" /> Novos revestimentos e acabamentos</li>
+          <li class="flex items-center gap-3 text-slate-300"><Icon name="check" class="w-5 h-5 text-ouro shrink-0" /> Modernização de iluminação e automação</li>
+          <li class="flex items-center gap-3 text-slate-300"><Icon name="check" class="w-5 h-5 text-ouro shrink-0" /> Prazo otimizado, sem obra longa</li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- Modernize, não só reforme -->
+    <section class="py-16 px-6">
+      <div class="max-w-5xl mx-auto">
+        <h2 class="text-3xl font-semibold text-center mb-4">Modernize, <span class="text-piscina">não só reforme</span></h2>
+        <p class="text-slate-400 text-center max-w-2xl mx-auto mb-12">
+          Trocar o revestimento resolve a aparência. Modernizar transforma a experiência. Na mesma obra, sua piscina pode ganhar:
+        </p>
+        <div class="grid md:grid-cols-2 gap-6 max-w-3xl mx-auto">
+          {[
+            { titulo: 'Aquecimento', texto: 'use a piscina o ano inteiro, não só no verão' },
+            { titulo: 'Automação por aplicativo', texto: 'filtragem, iluminação e aquecimento no celular' },
+            { titulo: 'Tratamento com sal', texto: 'água mais suave e menos manutenção química' },
+            { titulo: 'Iluminação LED subaquática', texto: 'a piscina vira o centro da casa à noite' },
+            { titulo: 'Conversão para borda infinita', texto: 'em piscinas com estrutura e posição favoráveis, avaliamos a transformação completa' },
+          ].map((upgrade) => (
+            <div class="flex items-start gap-3">
+              <Icon name="check" class="w-5 h-5 text-ouro shrink-0 mt-1" />
+              <p class="text-slate-300"><span class="font-semibold">{upgrade.titulo}</span> — {upgrade.texto}</p>
+            </div>
+          ))}
         </div>
-        <GaleriaZoom imagens={[
-  { src: reformaAntes, alt: 'Piscina antes da reforma Royal Splash, Rio de Janeiro' },
-  { src: reformaRemocao, alt: 'Remoção de revestimento antigo Royal Splash, RJ' },
-  { src: reformaAplicacao, alt: 'Aplicação de novo revestimento Royal Splash' },
-  { src: reformaDepois, alt: 'Piscina reformada Royal Splash, Rio de Janeiro' },
-]} />
       </div>
     </section>
 
@@ -165,6 +207,30 @@ const jsonLd = {
             { src: obra8, alt: 'Obra Royal Splash, Rio de Janeiro' },
           ]}
         />
+      </div>
+    </section>
+
+    <!-- FAQ -->
+    <section class="py-16 px-6">
+      <div class="max-w-3xl mx-auto">
+        <h2 class="text-3xl font-semibold text-center mb-10">Perguntas frequentes</h2>
+        <div class="space-y-4">
+          {[
+            { pergunta: 'Preciso quebrar tudo para reformar?', resposta: 'Não. Na maioria dos casos a estrutura é aproveitada — trocamos revestimento, hidráulica e equipamentos sem reconstruir.' },
+            { pergunta: 'Quanto tempo a piscina fica parada?', resposta: 'O prazo é definido na avaliação técnica e registrado em contrato. Reformas são obras mais curtas que construção.' },
+            { pergunta: 'Dá para transformar minha piscina comum em borda infinita?', resposta: 'Depende da estrutura e da posição. Fazemos a avaliação de viabilidade na visita técnica, sem compromisso.' },
+            { pergunta: 'Vale a pena instalar aquecimento na reforma?', resposta: 'É o momento ideal — a hidráulica já está aberta, o custo de instalação cai e a piscina passa a ser usada o ano todo.' },
+            { pergunta: 'A reforma tem garantia?', resposta: 'Sim. Garantia por escrito sobre os serviços executados, definida em contrato.' },
+          ].map((item) => (
+            <details class="bg-marca-suave border border-white/10 rounded-2xl p-6 group">
+              <summary class="font-semibold cursor-pointer list-none flex items-center justify-between gap-4">
+                {item.pergunta}
+                <span class="text-ouro shrink-0 group-open:rotate-45 transition-transform">+</span>
+              </summary>
+              <p class="text-slate-400 mt-3">{item.resposta}</p>
+            </details>
+          ))}
+        </div>
       </div>
     </section>
 

@@ -11,18 +11,6 @@ import GoogleReviews from '../../components/GoogleReviews.astro';
 import GaleriaZoom from '../../components/GaleriaZoom.astro';
 import { Image } from 'astro:assets';
 import servicoVazamento from '../../assets/servico-vazamento.jpg';
-import processoEscavacao from '../../assets/processo-escavacao.jpg';
-import processoEstrutura from '../../assets/processo-estrutura.jpg';
-import processoImpermeabilizacao from '../../assets/processo-impermeabilizacao.jpg';
-import processoAcabamento from '../../assets/processo-acabamento.jpg';
-import obra1 from '../../assets/obra-1.jpg';
-import obra2 from '../../assets/obra-2.jpg';
-import obra3 from '../../assets/obra-3.jpg';
-import obra4 from '../../assets/obra-4.jpg';
-import obra5 from '../../assets/obra-5.jpg';
-import obra6 from '../../assets/obra-6.jpg';
-import obra7 from '../../assets/obra-7.jpg';
-import obra8 from '../../assets/obra-8.jpg';
 import vazamentoReparo from '../../assets/vazamento-reparo.jpg';
 
 const jsonLd = {
@@ -63,7 +51,7 @@ const jsonLd = {
           Sua piscina está perdendo água? Encontramos o vazamento
         </h1>
         <p class="text-base md:text-lg text-slate-300 mb-6 max-w-xl mx-auto">
-          Detecção precisa com equipamentos especializados e reparo definitivo. Atendimento rápido em todo o Rio de Janeiro.
+          Detecção eletrônica sem quebrar e sem esvaziar a piscina. Visita técnica em até [48h] em todo o Rio de Janeiro.
         </p>
         <a href="#orcamento" class="inline-block bg-ouro hover:opacity-90 text-marca font-semibold px-8 py-4 rounded-full transition-opacity">
           Solicitar orçamento gratuito
@@ -71,7 +59,36 @@ const jsonLd = {
       </div>
     </section>
 
-    <GoogleReviews />
+    <!-- Evaporação ou vazamento? -->
+    <section class="py-16 px-6">
+      <div class="max-w-3xl mx-auto">
+        <h2 class="text-3xl font-semibold text-center mb-4">Evaporação ou vazamento? <span class="text-piscina">Descubra em 2 minutos</span></h2>
+        <p class="text-slate-400 text-center mb-8">
+          Toda piscina perde um pouco de água por evaporação — até cerca de 1 cm por dia em dias quentes. Acima disso, o cenário mais provável é vazamento. Fique atento aos sinais:
+        </p>
+        <ul class="space-y-3 max-w-xl mx-auto mb-8">
+          <li class="flex items-center gap-3 text-slate-300"><Icon name="check" class="w-5 h-5 text-ouro shrink-0" /> Nível baixando todo dia, mesmo sem uso e com a bomba desligada</li>
+          <li class="flex items-center gap-3 text-slate-300"><Icon name="check" class="w-5 h-5 text-ouro shrink-0" /> Perda maior que 1 cm por dia de forma constante</li>
+          <li class="flex items-center gap-3 text-slate-300"><Icon name="check" class="w-5 h-5 text-ouro shrink-0" /> Bolhas de ar no retorno da água — indicam ar entrando na tubulação</li>
+          <li class="flex items-center gap-3 text-slate-300"><Icon name="check" class="w-5 h-5 text-ouro shrink-0" /> Conta de água subindo sem mudança de consumo na casa</li>
+          <li class="flex items-center gap-3 text-slate-300"><Icon name="check" class="w-5 h-5 text-ouro shrink-0" /> Área ao redor da piscina sempre úmida ou revestimento soltando</li>
+        </ul>
+        <p class="text-slate-300 text-center mb-8">
+          Reconheceu 1 ou mais sinais? O diagnóstico profissional localiza o ponto exato — sem quebrar nada por tentativa e erro.
+        </p>
+        <div class="text-center">
+          <a href="#orcamento" class="inline-block bg-ouro hover:opacity-90 text-marca font-semibold px-8 py-4 rounded-full transition-opacity">
+            Agendar diagnóstico
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <GoogleReviews depoimentos={[
+      { texto: 'Detectaram o vazamento sem esvaziar a piscina nem quebrar nada — foi certeiro de primeira.', nome: 'Cliente' },
+      { texto: 'A conta de água tinha disparado sem explicação, e localizaram o ponto exato rápido.', nome: 'Cliente' },
+      { texto: 'Depois de uma tentativa sem sucesso com outra empresa, acharam o vazamento na tubulação enterrada com o equipamento certo.', nome: 'Cliente' },
+    ]} />
 
     <section class="py-16 px-6">
       <div class="max-w-5xl mx-auto grid md:grid-cols-2 gap-12 items-center">
@@ -103,7 +120,7 @@ const jsonLd = {
           <div class="bg-marca border border-ouro/30 rounded-2xl p-6">
             <div class="w-14 h-14 rounded-full bg-ouro/10 flex items-center justify-center mb-4 text-ouro"><Icon name="droplet" /></div>
             <h3 class="text-xl font-semibold mb-2">Diagnóstico Preciso</h3>
-            <p class="text-slate-400">Equipamentos de detecção acústica e teste de pressão pra localizar o vazamento com exatidão.</p>
+            <p class="text-slate-400">Equipamentos de detecção acústica (geofone eletrônico) e teste de pressão — com a piscina cheia — pra localizar o vazamento com exatidão.</p>
           </div>
           <div class="bg-marca border border-white/10 rounded-2xl p-6">
             <div class="w-14 h-14 rounded-full bg-ouro/10 flex items-center justify-center mb-4 text-ouro"><Icon name="wrench" /></div>
@@ -149,20 +166,38 @@ const jsonLd = {
 
     <section class="py-16 px-6 bg-marca-suave">
       <div class="max-w-5xl mx-auto">
-        <h2 class="text-3xl font-semibold text-center mb-10">Projetos que falam por si</h2>
+        <h2 class="text-3xl font-semibold text-center mb-10">Nosso <span class="text-piscina">serviço</span> em ação</h2>
         <GaleriaZoom
-          colunas="grid-cols-2 md:grid-cols-4"
+          colunas="grid-cols-1 md:grid-cols-2"
           imagens={[
-            { src: obra1, alt: 'Obra Royal Splash, Rio de Janeiro' },
-            { src: obra2, alt: 'Obra Royal Splash, Rio de Janeiro' },
-            { src: obra3, alt: 'Obra Royal Splash, Rio de Janeiro' },
-            { src: obra4, alt: 'Obra Royal Splash, Rio de Janeiro' },
-            { src: obra5, alt: 'Obra Royal Splash, Rio de Janeiro' },
-            { src: obra6, alt: 'Obra Royal Splash, Rio de Janeiro' },
-            { src: obra7, alt: 'Obra Royal Splash, Rio de Janeiro' },
-            { src: obra8, alt: 'Obra Royal Splash, Rio de Janeiro' },
+            { src: servicoVazamento, alt: 'Equipamento de detecção de vazamento em ação Royal Splash, Rio de Janeiro' },
+            { src: vazamentoReparo, alt: 'Reparo de vazamento executado Royal Splash, Rio de Janeiro' },
           ]}
         />
+      </div>
+    </section>
+
+    <!-- FAQ -->
+    <section class="py-16 px-6">
+      <div class="max-w-3xl mx-auto">
+        <h2 class="text-3xl font-semibold text-center mb-10">Perguntas frequentes</h2>
+        <div class="space-y-4">
+          {[
+            { pergunta: 'Precisa esvaziar a piscina para achar o vazamento?', resposta: 'Não. A detecção é feita com a piscina cheia, usando equipamentos eletrônicos.' },
+            { pergunta: 'Vocês quebram o piso para procurar?', resposta: 'Não fazemos quebra por tentativa. Primeiro localizamos o ponto exato; só então o reparo é feito no local certo.' },
+            { pergunta: 'Em quanto tempo vocês atendem?', resposta: 'Visita técnica em até [48h] na capital e Grande Rio. Casos urgentes, consulte disponibilidade no WhatsApp.' },
+            { pergunta: 'E se o vazamento for na tubulação enterrada?', resposta: 'É o caso mais comum — e exatamente onde a detecção acústica é mais eficaz. Localizamos o trecho sem escavar às cegas.' },
+            { pergunta: 'O reparo tem garantia?', resposta: 'Sim. Garantia por escrito sobre o ponto reparado, definida em contrato.' },
+          ].map((item) => (
+            <details class="bg-marca-suave border border-white/10 rounded-2xl p-6 group">
+              <summary class="font-semibold cursor-pointer list-none flex items-center justify-between gap-4">
+                {item.pergunta}
+                <span class="text-ouro shrink-0 group-open:rotate-45 transition-transform">+</span>
+              </summary>
+              <p class="text-slate-400 mt-3">{item.resposta}</p>
+            </details>
+          ))}
+        </div>
       </div>
     </section>
 

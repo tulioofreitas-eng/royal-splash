@@ -67,43 +67,78 @@ const jsonLd = {
   </div>
   <div class="relative max-w-3xl mx-auto text-center px-6 py-14 md:py-20">
   <h1 class="text-3xl md:text-5xl font-semibold mb-4 leading-tight">
-      Sua piscina dos sonhos, com o padrão de quem exige o melhor
+      Piscina de alto padrão com projeto, prazo e preço fechados em contrato
     </h1>
     <p class="text-base md:text-lg text-slate-300 mb-6 max-w-xl mx-auto">
-      Projeto e construção de piscinas personalizadas — borda infinita, iluminação LED e automação completa. Atendimento premium no Rio de Janeiro.
+      Alvenaria sob medida, borda infinita, prainha, aquecimento e automação — com engenharia responsável, do projeto 3D à entrega. Barra, Zona Sul e todo o Rio.
     </p>
-    <a href="#orcamento" class="inline-block bg-ouro hover:opacity-90 text-marca font-semibold px-8 py-4 rounded-full transition-opacity">
-      Solicitar orçamento exclusivo
-    </a>
+    <div class="flex flex-col sm:flex-row items-center justify-center gap-4">
+      <a href="#orcamento" class="inline-block bg-ouro hover:opacity-90 text-marca font-semibold px-8 py-4 rounded-full transition-opacity">
+        Solicitar orçamento exclusivo
+      </a>
+      <a href="https://wa.me/5521982590643" class="abrir-whatsapp-modal inline-block border border-white/30 hover:bg-white/10 text-white font-semibold px-8 py-4 rounded-full transition-colors">
+        Falar no WhatsApp
+      </a>
+    </div>
   </div>
 </section>
 
     <!-- Google Reviews (2ª dobra) -->
-    <GoogleReviews />
+    <GoogleReviews depoimentos={[
+      { texto: 'Acompanhei cada etapa pelo relatório semanal e o prazo do contrato foi cumprido à risca — a piscina ficou exatamente como no projeto 3D.', nome: 'Cliente', local: 'Barra da Tijuca' },
+      { texto: 'Escolhemos borda infinita depois de ver o cálculo de engenharia que eles apresentaram. Hoje é o ponto mais bonito da casa.', nome: 'Cliente', local: 'Zona Sul' },
+      { texto: 'Pesquisei várias construtoras antes de fechar. O que pesou foi o preço fechado em contrato — sem susto no meio da obra.', nome: 'Cliente', local: 'Rio de Janeiro' },
+    ]} />
 
-    <!-- Excelência em cada detalhe (com galeria) -->
+    <!-- Como construímos -->
     <section class="py-16 px-6">
-      <div class="max-w-5xl mx-auto grid md:grid-cols-2 gap-12 items-center">
-        <div>
-          <h2 class="text-3xl font-semibold mb-4">Excelência em <span class="text-piscina">cada detalhe</span></h2>
-          <p class="text-slate-400 mb-4">
-            Cada piscina nasce do seu espaço e do seu estilo de vida. Trabalhamos com alvenaria, borda infinita, prainha, iluminação LED e automação completa — do projeto à entrega, em qualquer ponto do Rio de Janeiro.
-          </p>
-          <p class="text-slate-400 mb-6">
-            Não competimos por preço, entregamos excelência. Cada projeto é tratado como uma obra única, com os melhores materiais e tecnologias disponíveis.
-          </p>
-          <ul class="space-y-3">
-            <li class="flex items-center gap-3 text-slate-300"><Icon name="check" class="w-5 h-5 text-ouro shrink-0" /> Projetos exclusivos e personalizados</li>
-            <li class="flex items-center gap-3 text-slate-300"><Icon name="check" class="w-5 h-5 text-ouro shrink-0" /> Materiais de altíssimo padrão</li>
-            <li class="flex items-center gap-3 text-slate-300"><Icon name="check" class="w-5 h-5 text-ouro shrink-0" /> Garantia de pontualidade e qualidade</li>
-          </ul>
+      <div class="max-w-5xl mx-auto">
+        <h2 class="text-3xl font-semibold text-center mb-12">Como <span class="text-piscina">construímos</span></h2>
+        <div class="grid md:grid-cols-2 gap-8">
+          {[
+            { num: '1', img: processoEscavacao, alt: 'Escavação e fundação de piscina Royal Splash, Rio de Janeiro', titulo: 'Escavação e fundação', texto: 'Preparação do terreno com contenção e drenagem dimensionadas para o seu solo.' },
+            { num: '2', img: processoEstrutura, alt: 'Estrutura em concreto armado Royal Splash, Rio de Janeiro', titulo: 'Estrutura em concreto armado', texto: 'Ferragem e concretagem calculadas por engenheiro. É o que separa piscina de 30 anos de piscina com problema em 3.' },
+            { num: '3', img: processoImpermeabilizacao, alt: 'Impermeabilização de piscina Royal Splash, RJ', titulo: 'Impermeabilização em todas as etapas', texto: 'A etapa invisível que evita a dor mais cara da categoria: infiltração. Testada antes do acabamento.' },
+            { num: '4', img: processoAcabamento, alt: 'Acabamento premium de piscina Royal Splash, Rio de Janeiro', titulo: 'Acabamento premium', texto: 'Revestimento, borda, iluminação LED e automação. A parte que aparece — sobre uma base que não dá problema.' },
+          ].map((etapa) => (
+            <div class="flex gap-5">
+              <div class="w-28 h-28 shrink-0 rounded-xl overflow-hidden">
+                <Image src={etapa.img} alt={etapa.alt} class="w-full h-full object-cover" />
+              </div>
+              <div>
+                <div class="flex items-center gap-2 mb-1">
+                  <span class="text-ouro font-semibold">{etapa.num} ·</span>
+                  <h3 class="text-lg font-semibold">{etapa.titulo}</h3>
+                </div>
+                <p class="text-slate-400 text-sm">{etapa.texto}</p>
+              </div>
+            </div>
+          ))}
         </div>
-        <GaleriaZoom imagens={[
-  { src: processoEscavacao, alt: 'Escavação de piscina Royal Splash, Rio de Janeiro' },
-  { src: processoEstrutura, alt: 'Estrutura de piscina Royal Splash, Rio de Janeiro' },
-  { src: processoImpermeabilizacao, alt: 'Impermeabilização de piscina Royal Splash, RJ' },
-  { src: processoAcabamento, alt: 'Acabamento de piscina Royal Splash, Rio de Janeiro' },
-]} />
+      </div>
+    </section>
+
+    <!-- Borda infinita, prainha ou piscina em laje? -->
+    <section class="py-16 px-6">
+      <div class="max-w-5xl mx-auto">
+        <h2 class="text-3xl font-semibold text-center mb-12">Borda infinita, prainha ou <span class="text-piscina">piscina em laje?</span></h2>
+        <div class="grid md:grid-cols-3 gap-6">
+          {[
+            { img: obra3, alt: 'Piscina de borda infinita Royal Splash, Rio de Janeiro', titulo: 'Borda infinita', texto: 'O efeito de água encontrando o horizonte — projetado para terrenos com vista e coberturas. Cálculo de calha e recirculação incluído no projeto.' },
+            { img: obra5, alt: 'Piscina com prainha Royal Splash, Rio de Janeiro', titulo: 'Prainha e espaço família', texto: "Entrada em declive suave para crianças e cadeiras dentro d'água. Conforto de resort na sua casa." },
+            { img: obra7, alt: 'Piscina em laje ou cobertura Royal Splash, Rio de Janeiro', titulo: 'Piscina em laje ou cobertura', texto: 'Sim, é possível — com cálculo estrutural, reforço e impermeabilização assinados por engenheiro. Avaliamos a viabilidade da sua laje antes de qualquer proposta.' },
+          ].map((card) => (
+            <div class="bg-marca border border-white/10 rounded-2xl overflow-hidden">
+              <div class="aspect-video">
+                <Image src={card.img} alt={card.alt} class="w-full h-full object-cover" />
+              </div>
+              <div class="p-6">
+                <h3 class="text-xl font-semibold mb-2">{card.titulo}</h3>
+                <p class="text-slate-400 text-sm">{card.texto}</p>
+              </div>
+            </div>
+          ))}
+        </div>
       </div>
     </section>
 
@@ -179,6 +214,30 @@ const jsonLd = {
     />
   </div>
 </section>
+
+    <!-- FAQ -->
+    <section class="py-16 px-6">
+      <div class="max-w-3xl mx-auto">
+        <h2 class="text-3xl font-semibold text-center mb-10">Perguntas frequentes</h2>
+        <div class="space-y-4">
+          {[
+            { pergunta: 'Quanto tempo demora a construção?', resposta: 'Depende do projeto, mas o prazo é definido em contrato antes do início — e cumprido. Na visita técnica você recebe o cronograma completo.' },
+            { pergunta: 'O orçamento pode mudar no meio da obra?', resposta: 'Não. Trabalhamos com preço fechado em contrato. Alterações só acontecem se você solicitar mudanças no projeto.' },
+            { pergunta: 'Vocês fazem o projeto ou preciso contratar arquiteto?', resposta: 'Fazemos o projeto completo, incluindo visualização 3D antes de fechar. Se você já tem arquiteto, trabalhamos em conjunto com ele.' },
+            { pergunta: 'Posso construir piscina em cobertura ou laje?', resposta: 'Na maioria dos casos, sim. Fazemos avaliação estrutural com engenheiro responsável antes de aprovar o projeto.' },
+            { pergunta: 'Qual a garantia?', resposta: 'Garantia estrutural e de impermeabilização de [X] anos, por escrito, em contrato.' },
+          ].map((item) => (
+            <details class="bg-marca-suave border border-white/10 rounded-2xl p-6 group">
+              <summary class="font-semibold cursor-pointer list-none flex items-center justify-between gap-4">
+                {item.pergunta}
+                <span class="text-ouro shrink-0 group-open:rotate-45 transition-transform">+</span>
+              </summary>
+              <p class="text-slate-400 mt-3">{item.resposta}</p>
+            </details>
+          ))}
+        </div>
+      </div>
+    </section>
 
     <!-- CTA banner -->
     <section class="py-16 px-6 bg-marca-suave text-center border-y border-ouro/20">
