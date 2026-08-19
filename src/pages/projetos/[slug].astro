@@ -1,0 +1,59 @@
+---
+import RoyalCaseDetail from "../../components/site/RoyalCaseDetail.astro";
+import SiteHeader from "../../components/site/SiteHeader.astro";
+import {
+  royalCases,
+  royalEvidence,
+} from "../../content/royal/cases.ts";
+import {
+  royalCaseDetails,
+} from "../../content/royal/case-details.ts";
+import {
+  selectRoyalPublicCaseDetails,
+} from "../../content/royal/case-detail.ts";
+import type {
+  RoyalPublicCaseDetail,
+} from "../../content/royal/case-detail.ts";
+import SiteLayout from "../../layouts/SiteLayout.astro";
+
+interface Props {
+  record: RoyalPublicCaseDetail;
+}
+
+export function getStaticPaths() {
+  const publicCaseDetails =
+    selectRoyalPublicCaseDetails({
+      cases: royalCases,
+      evidence: royalEvidence,
+      details: royalCaseDetails,
+    });
+
+  return publicCaseDetails.map(
+    (record) => ({
+      params: {
+        slug:
+          record.siteCase.slug,
+      },
+      props: {
+        record,
+      },
+    }),
+  );
+}
+
+const {
+  record,
+} = Astro.props;
+---
+
+<SiteLayout
+  title={`${record.siteCase.title} — Projetos — Royal Splash`}
+  robots="noindex, nofollow"
+  bodyClass="site-functional-case-detail"
+>
+  <SiteHeader slot="header" />
+
+  <RoyalCaseDetail
+    record={record}
+  />
+</SiteLayout>

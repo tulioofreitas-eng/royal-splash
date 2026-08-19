@@ -5,15 +5,25 @@ import {
   royalEvidence,
 } from "../content/royal/cases.ts";
 import {
-  selectRoyalPublicCases,
-} from "../content/royal/publication.ts";
+  royalCaseDetails,
+} from "../content/royal/case-details.ts";
+import {
+  selectRoyalPublicCaseDetails,
+} from "../content/royal/case-detail.ts";
 import SiteLayout from "../layouts/SiteLayout.astro";
 
-const publicCases =
-  selectRoyalPublicCases({
+const publicCaseDetails =
+  selectRoyalPublicCaseDetails({
     cases: royalCases,
     evidence: royalEvidence,
+    details: royalCaseDetails,
   });
+
+const publicCases =
+  publicCaseDetails.map(
+    ({ siteCase }) =>
+      siteCase,
+  );
 ---
 
 <SiteLayout
@@ -88,7 +98,11 @@ const publicCases =
           {publicCases.map((siteCase) => (
             <article data-case-id={siteCase.id}>
               <h3>
-                {siteCase.title}
+                <a
+                  href={`/projetos/${siteCase.slug}`}
+                >
+                  {siteCase.title}
+                </a>
               </h3>
 
               <p>

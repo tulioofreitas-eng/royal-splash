@@ -1,0 +1,330 @@
+---
+import type {
+  RoyalCaseNarrativeKind,
+  RoyalPublicCaseDetail,
+} from "../../content/royal/case-detail.ts";
+
+interface Props {
+  record: RoyalPublicCaseDetail;
+}
+
+const {
+  record,
+} = Astro.props;
+
+const {
+  siteCase,
+  detail,
+  evidence,
+} = record;
+
+const blockHeadings:
+  Record<
+    RoyalCaseNarrativeKind,
+    string
+  > = {
+    context: "Contexto",
+    challenge: "Desafio",
+    reasoning: "Raciocínio",
+    royal_scope: "Escopo Royal",
+    solution: "Solução",
+    execution: "Execução",
+    detail: "Detalhe",
+    outcome: "Resultado",
+  };
+
+const supportingEvidence =
+  evidence.filter(
+    (item) =>
+      item.kind !== "testimonial" &&
+      item.kind !== "metric",
+  );
+
+const testimonials =
+  detail.testimonialEvidenceRefs
+    .map(
+      (evidenceRef) =>
+        evidence.find(
+          (item) =>
+            item.id ===
+            evidenceRef,
+        ),
+    )
+    .filter(
+      (
+        item,
+      ): item is NonNullable<
+        typeof item
+      > =>
+        item !== undefined,
+    );
+
+const metrics =
+  detail.metricEvidenceRefs
+    .map(
+      (evidenceRef) =>
+        evidence.find(
+          (item) =>
+            item.id ===
+            evidenceRef,
+        ),
+    )
+    .filter(
+      (
+        item,
+      ): item is NonNullable<
+        typeof item
+      > =>
+        item !== undefined,
+    );
+---
+
+<article
+  class="case-detail"
+  data-case-detail
+  data-case-id={siteCase.id}
+>
+  <header
+    class="case-detail-section case-detail-entry"
+    data-case-detail-stage="entry"
+  >
+    <p class="case-detail-eyebrow">
+      Projeto
+    </p>
+
+    <h1>
+      {siteCase.title}
+    </h1>
+
+    <p>
+      {siteCase.summary}
+    </p>
+
+    <a href="/projetos">
+      Voltar para Projetos
+    </a>
+  </header>
+
+  {
+    detail.blocks.map(
+      (block) => (
+        <section
+          class="case-detail-section"
+          aria-labelledby={`case-${block.id}-heading`}
+          data-case-detail-stage={block.kind}
+        >
+          <h2
+            id={`case-${block.id}-heading`}
+          >
+            {blockHeadings[block.kind]}
+          </h2>
+
+          <p>
+            {block.body}
+          </p>
+        </section>
+      ),
+    )
+  }
+
+  <section
+    class="case-detail-section"
+    aria-labelledby="case-evidence-heading"
+    data-case-detail-stage="evidence"
+  >
+    <h2 id="case-evidence-heading">
+      Evidências verificadas
+    </h2>
+
+    {
+      supportingEvidence.length === 0 ? (
+        <p>
+          As evidências verificadas deste Case
+          não possuem apresentação textual
+          adicional nesta superfície.
+        </p>
+      ) : (
+        <ul>
+          {supportingEvidence.map((item) => (
+            <li>
+              <strong>
+                {item.title ?? "Evidência verificada"}
+              </strong>
+
+              {
+                item.summary && (
+                  <p>
+                    {item.summary}
+                  </p>
+                )
+              }
+            </li>
+          ))}
+        </ul>
+      )
+    }
+  </section>
+
+  {
+    testimonials.length > 0 && (
+      <section
+        class="case-detail-section"
+        aria-labelledby="case-testimonials-heading"
+        data-case-detail-stage="testimonial"
+      >
+        <h2 id="case-testimonials-heading">
+          Depoimentos verificados
+        </h2>
+
+        <ul>
+          {testimonials.map((item) => (
+            <li>
+              <strong>
+                {item.title ?? "Depoimento verificado"}
+              </strong>
+
+              {
+                item.summary && (
+                  <p>
+                    {item.summary}
+                  </p>
+                )
+              }
+            </li>
+          ))}
+        </ul>
+      </section>
+    )
+  }
+
+  {
+    metrics.length > 0 && (
+      <section
+        class="case-detail-section"
+        aria-labelledby="case-metrics-heading"
+        data-case-detail-stage="metric"
+      >
+        <h2 id="case-metrics-heading">
+          Métricas verificadas
+        </h2>
+
+        <ul>
+          {metrics.map((item) => (
+            <li>
+              <strong>
+                {item.title ?? "Métrica verificada"}
+              </strong>
+
+              {
+                item.summary && (
+                  <p>
+                    {item.summary}
+                  </p>
+                )
+              }
+            </li>
+          ))}
+        </ul>
+      </section>
+    )
+  }
+
+  <section
+    class="case-detail-section case-detail-conversion"
+    aria-labelledby="case-action-heading"
+    data-case-detail-stage="qualified-action"
+  >
+    <h2 id="case-action-heading">
+      Avance com o contexto do seu projeto
+    </h2>
+
+    <p>
+      Use o fluxo estruturado quando houver
+      contexto suficiente para iniciar a conversa.
+    </p>
+
+    <div class="case-detail-actions">
+      <a
+        class="case-detail-primary-action"
+        href="/inicie-seu-projeto"
+        data-analytics-cta
+        data-analytics-component="royal_case_detail"
+        data-analytics-subject="project_start"
+        data-analytics-channel="site_form"
+      >
+        Inicie seu projeto
+      </a>
+
+      <a href="/contato">
+        Contato e canais auxiliares
+      </a>
+    </div>
+  </section>
+</article>
+
+<style is:global>
+  body.site-functional-case-detail {
+    margin: 0;
+    background: Canvas;
+    color: CanvasText;
+    font-family: system-ui, sans-serif;
+    line-height: 1.5;
+  }
+
+  body.site-functional-case-detail * {
+    box-sizing: border-box;
+  }
+
+  body.site-functional-case-detail a {
+    color: inherit;
+  }
+
+  body.site-functional-case-detail a:focus-visible {
+    outline: 3px solid currentColor;
+    outline-offset: 3px;
+  }
+</style>
+
+<style>
+  .case-detail-section {
+    width: min(100% - 2rem, 64rem);
+    margin-inline: auto;
+    padding-block: 3rem;
+  }
+
+  .case-detail-entry {
+    padding-block-start: 4rem;
+  }
+
+  .case-detail-section + .case-detail-section {
+    border-block-start: 1px solid currentColor;
+  }
+
+  .case-detail-eyebrow {
+    font-weight: 700;
+  }
+
+  .case-detail-section > p,
+  .case-detail-section li p {
+    max-width: 65ch;
+  }
+
+  .case-detail-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+    align-items: center;
+    margin-block-start: 1.5rem;
+  }
+
+  .case-detail-actions a,
+  .case-detail-entry > a {
+    display: inline-block;
+    padding: 0.75rem;
+  }
+
+  .case-detail-primary-action {
+    border: 2px solid currentColor;
+    font-weight: 700;
+  }
+</style>
