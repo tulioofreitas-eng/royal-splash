@@ -1,0 +1,681 @@
+<section
+  class="structured-intake"
+  aria-labelledby="structured-intake-heading"
+  data-structured-intake
+>
+  <header class="structured-intake__header">
+    <h2 id="structured-intake-heading">
+      Contexto do seu projeto
+    </h2>
+    <p>
+      Este fluxo funcional coleta apenas os dados necessários
+      para verificar a estrutura de envio durante a Tranche 2B.
+    </p>
+  </header>
+
+  <ol
+    class="structured-intake__progress"
+    aria-label="Progresso do formulário"
+  >
+    <li aria-current="step" data-progress-step="1">
+      Contexto
+    </li>
+    <li data-progress-step="2">
+      Necessidade
+    </li>
+    <li data-progress-step="3">
+      Condições
+    </li>
+    <li data-progress-step="4">
+      Contato
+    </li>
+  </ol>
+
+  <form
+    data-intake-form
+    action="/api/site-lead-preview"
+    method="post"
+    novalidate
+  >
+    <fieldset data-intake-step="1">
+      <legend>1. Contexto do projeto</legend>
+
+      <label for="project-context">
+        Contexto
+      </label>
+
+      <select
+        id="project-context"
+        name="projectContext"
+        required
+        aria-describedby="project-context-error"
+      >
+        <option value="">
+          Selecione um contexto
+        </option>
+        <option value="residencial">
+          Residencial
+        </option>
+        <option value="corporativo_institucional">
+          Corporativo / Institucional
+        </option>
+      </select>
+
+      <p
+        id="project-context-error"
+        class="structured-intake__field-error"
+        data-error-for="project-context"
+        hidden
+      ></p>
+
+      <div class="structured-intake__controls">
+        <button type="button" data-next-step>
+          Continuar
+        </button>
+      </div>
+    </fieldset>
+
+    <fieldset data-intake-step="2" hidden>
+      <legend>2. Necessidade / escopo</legend>
+
+      <label for="project-need">
+        Descreva brevemente o que você precisa
+      </label>
+
+      <textarea
+        id="project-need"
+        name="projectNeed"
+        rows="5"
+        required
+        aria-describedby="project-need-error"
+      ></textarea>
+
+      <p
+        id="project-need-error"
+        class="structured-intake__field-error"
+        data-error-for="project-need"
+        hidden
+      ></p>
+
+      <div class="structured-intake__controls">
+        <button type="button" data-previous-step>
+          Voltar
+        </button>
+        <button type="button" data-next-step>
+          Continuar
+        </button>
+      </div>
+    </fieldset>
+
+    <fieldset data-intake-step="3" hidden>
+      <legend>3. Condições relevantes</legend>
+
+      <label for="project-city">
+        Cidade
+        <span>(opcional neste fixture)</span>
+      </label>
+
+      <input
+        id="project-city"
+        name="city"
+        type="text"
+        autocomplete="address-level2"
+      />
+
+      <div class="structured-intake__controls">
+        <button type="button" data-previous-step>
+          Voltar
+        </button>
+        <button type="button" data-next-step>
+          Continuar
+        </button>
+      </div>
+    </fieldset>
+
+    <fieldset data-intake-step="4" hidden>
+      <legend>4. Contato e consentimento</legend>
+
+      <label for="contact-name">
+        Nome
+      </label>
+
+      <input
+        id="contact-name"
+        name="name"
+        type="text"
+        autocomplete="name"
+        required
+        aria-describedby="contact-name-error"
+      />
+
+      <p
+        id="contact-name-error"
+        class="structured-intake__field-error"
+        data-error-for="contact-name"
+        hidden
+      ></p>
+
+      <label for="contact-email">
+        E-mail
+      </label>
+
+      <input
+        id="contact-email"
+        name="email"
+        type="email"
+        autocomplete="email"
+        aria-describedby="contact-channel-error"
+      />
+
+      <label for="contact-phone">
+        Telefone
+      </label>
+
+      <input
+        id="contact-phone"
+        name="phone"
+        type="tel"
+        autocomplete="tel"
+        aria-describedby="contact-channel-error"
+      />
+
+      <p
+        id="contact-channel-error"
+        class="structured-intake__field-error"
+        data-contact-channel-error
+        hidden
+      ></p>
+
+      <div class="structured-intake__consent">
+        <input
+          id="project-consent"
+          name="consent"
+          type="checkbox"
+          required
+          aria-describedby="project-consent-error"
+        />
+
+        <label for="project-consent">
+          Concordo com o envio destas informações conforme a
+          <a href="/politica-de-privacidade">
+            Política de Privacidade
+          </a>.
+        </label>
+      </div>
+
+      <p
+        id="project-consent-error"
+        class="structured-intake__field-error"
+        data-error-for="project-consent"
+        hidden
+      ></p>
+
+      <div class="structured-intake__controls">
+        <button type="button" data-previous-step>
+          Voltar
+        </button>
+
+        <button type="submit">
+          Enviar contexto do projeto
+        </button>
+      </div>
+    </fieldset>
+
+    <p
+      class="structured-intake__submission-error"
+      role="alert"
+      data-submission-error
+      hidden
+    >
+      Não foi possível enviar as informações.
+      Revise os dados e tente novamente.
+    </p>
+  </form>
+
+  <div
+    class="structured-intake__success"
+    role="status"
+    tabindex="-1"
+    data-intake-success
+    hidden
+  >
+    <h3>Informações recebidas</h3>
+    <p>
+      O envio foi recebido pelo ambiente de verificação
+      da experiência do Site.
+    </p>
+  </div>
+</section>
+
+<script>
+  const intake = document.querySelector(
+    "[data-structured-intake]",
+  );
+
+  if (intake instanceof HTMLElement) {
+    const form = intake.querySelector(
+      "[data-intake-form]",
+    );
+
+    if (form instanceof HTMLFormElement) {
+      const steps = Array.from(
+        form.querySelectorAll("[data-intake-step]"),
+      ).filter(
+        (step): step is HTMLFieldSetElement =>
+          step instanceof HTMLFieldSetElement,
+      );
+
+      const progressItems = Array.from(
+        intake.querySelectorAll("[data-progress-step]"),
+      );
+
+      const success = intake.querySelector(
+        "[data-intake-success]",
+      );
+
+      const submissionError = form.querySelector(
+        "[data-submission-error]",
+      );
+
+      let currentStep = 0;
+
+      const clearFieldError = (
+        control: HTMLInputElement |
+          HTMLSelectElement |
+          HTMLTextAreaElement,
+      ) => {
+        control.removeAttribute("aria-invalid");
+
+        const error = form.querySelector(
+          `[data-error-for="${control.id}"]`,
+        );
+
+        if (error instanceof HTMLElement) {
+          error.textContent = "";
+          error.hidden = true;
+        }
+      };
+
+      const setFieldError = (
+        control: HTMLInputElement |
+          HTMLSelectElement |
+          HTMLTextAreaElement,
+        message: string,
+      ) => {
+        control.setAttribute("aria-invalid", "true");
+
+        const error = form.querySelector(
+          `[data-error-for="${control.id}"]`,
+        );
+
+        if (error instanceof HTMLElement) {
+          error.textContent = message;
+          error.hidden = false;
+        }
+
+        control.focus();
+      };
+
+      const showStep = (index: number) => {
+        currentStep = index;
+
+        steps.forEach((step, stepIndex) => {
+          step.hidden = stepIndex !== index;
+        });
+
+        progressItems.forEach(
+          (item, stepIndex) => {
+            if (stepIndex === index) {
+              item.setAttribute(
+                "aria-current",
+                "step",
+              );
+            } else {
+              item.removeAttribute("aria-current");
+            }
+          },
+        );
+
+        const firstControl =
+          steps[index]?.querySelector(
+            "input, select, textarea",
+          );
+
+        if (firstControl instanceof HTMLElement) {
+          firstControl.focus();
+        }
+      };
+
+      const validateStep = (
+        index: number,
+      ): boolean => {
+        if (index === 0) {
+          const context = form.elements.namedItem(
+            "projectContext",
+          );
+
+          if (context instanceof HTMLSelectElement) {
+            clearFieldError(context);
+
+            if (!context.value) {
+              setFieldError(
+                context,
+                "Selecione o contexto do projeto.",
+              );
+              return false;
+            }
+          }
+        }
+
+        if (index === 1) {
+          const need = form.elements.namedItem(
+            "projectNeed",
+          );
+
+          if (
+            need instanceof HTMLTextAreaElement
+          ) {
+            clearFieldError(need);
+
+            if (!need.value.trim()) {
+              setFieldError(
+                need,
+                "Descreva brevemente a necessidade do projeto.",
+              );
+              return false;
+            }
+          }
+        }
+
+        if (index === 3) {
+          const name = form.elements.namedItem("name");
+          const email = form.elements.namedItem("email");
+          const phone = form.elements.namedItem("phone");
+          const consent =
+            form.elements.namedItem("consent");
+
+          if (name instanceof HTMLInputElement) {
+            clearFieldError(name);
+
+            if (!name.value.trim()) {
+              setFieldError(
+                name,
+                "Informe seu nome.",
+              );
+              return false;
+            }
+          }
+
+          const contactError = form.querySelector(
+            "[data-contact-channel-error]",
+          );
+
+          if (
+            email instanceof HTMLInputElement &&
+            phone instanceof HTMLInputElement &&
+            contactError instanceof HTMLElement
+          ) {
+            email.removeAttribute("aria-invalid");
+            phone.removeAttribute("aria-invalid");
+            contactError.textContent = "";
+            contactError.hidden = true;
+
+            if (
+              !email.value.trim() &&
+              !phone.value.trim()
+            ) {
+              email.setAttribute(
+                "aria-invalid",
+                "true",
+              );
+              phone.setAttribute(
+                "aria-invalid",
+                "true",
+              );
+              contactError.textContent =
+                "Informe pelo menos um contato: e-mail ou telefone.";
+              contactError.hidden = false;
+              email.focus();
+              return false;
+            }
+
+            if (
+              email.value.trim() &&
+              !email.validity.valid
+            ) {
+              email.setAttribute(
+                "aria-invalid",
+                "true",
+              );
+              contactError.textContent =
+                "Informe um endereço de e-mail válido.";
+              contactError.hidden = false;
+              email.focus();
+              return false;
+            }
+          }
+
+          if (
+            consent instanceof HTMLInputElement
+          ) {
+            clearFieldError(consent);
+
+            if (!consent.checked) {
+              setFieldError(
+                consent,
+                "Confirme o consentimento antes de enviar.",
+              );
+              return false;
+            }
+          }
+        }
+
+        return true;
+      };
+
+      form
+        .querySelectorAll("[data-next-step]")
+        .forEach((button) => {
+          button.addEventListener("click", () => {
+            if (
+              validateStep(currentStep) &&
+              currentStep < steps.length - 1
+            ) {
+              showStep(currentStep + 1);
+            }
+          });
+        });
+
+      form
+        .querySelectorAll("[data-previous-step]")
+        .forEach((button) => {
+          button.addEventListener("click", () => {
+            if (currentStep > 0) {
+              showStep(currentStep - 1);
+            }
+          });
+        });
+
+      form.addEventListener(
+        "submit",
+        async (event) => {
+          event.preventDefault();
+
+          if (!validateStep(3)) {
+            return;
+          }
+
+          if (
+            submissionError instanceof HTMLElement
+          ) {
+            submissionError.hidden = true;
+          }
+
+          const data = new FormData(form);
+
+          const payload = {
+            projectContext: String(
+              data.get("projectContext") ?? "",
+            ),
+            projectNeed: String(
+              data.get("projectNeed") ?? "",
+            ),
+            city: String(
+              data.get("city") ?? "",
+            ),
+            name: String(
+              data.get("name") ?? "",
+            ),
+            email: String(
+              data.get("email") ?? "",
+            ),
+            phone: String(
+              data.get("phone") ?? "",
+            ),
+            consent:
+              data.get("consent") === "on",
+          };
+
+          try {
+            const response = await fetch(
+              "/api/site-lead-preview",
+              {
+                method: "POST",
+                headers: {
+                  "content-type":
+                    "application/json",
+                },
+                body: JSON.stringify(payload),
+              },
+            );
+
+            if (!response.ok) {
+              throw new Error(
+                "Preview ingress rejected submission.",
+              );
+            }
+
+            form.hidden = true;
+
+            if (success instanceof HTMLElement) {
+              success.hidden = false;
+              success.focus();
+            }
+          } catch {
+            if (
+              submissionError instanceof HTMLElement
+            ) {
+              submissionError.hidden = false;
+              submissionError.focus();
+            }
+          }
+        },
+      );
+    }
+  }
+</script>
+
+<style>
+  .structured-intake {
+    width: min(100% - 2rem, 48rem);
+    margin-inline: auto;
+    padding-block: 3rem;
+  }
+
+  .structured-intake__progress {
+    display: grid;
+    gap: 0.5rem;
+    margin-block: 2rem;
+    padding-inline-start: 1.5rem;
+  }
+
+  .structured-intake__progress
+    [aria-current="step"] {
+    font-weight: 700;
+    text-decoration: underline;
+  }
+
+  .structured-intake fieldset {
+    display: grid;
+    gap: 0.75rem;
+    border: 1px solid currentColor;
+    padding: 1.25rem;
+  }
+
+  .structured-intake fieldset[hidden] {
+    display: none;
+  }
+
+  .structured-intake input,
+  .structured-intake select,
+  .structured-intake textarea,
+  .structured-intake button {
+    font: inherit;
+  }
+
+  .structured-intake input,
+  .structured-intake select,
+  .structured-intake textarea {
+    width: 100%;
+    padding: 0.75rem;
+    border: 1px solid currentColor;
+    background: Canvas;
+    color: CanvasText;
+  }
+
+  .structured-intake input:focus-visible,
+  .structured-intake select:focus-visible,
+  .structured-intake textarea:focus-visible,
+  .structured-intake button:focus-visible,
+  .structured-intake a:focus-visible {
+    outline: 3px solid currentColor;
+    outline-offset: 3px;
+  }
+
+  .structured-intake__controls {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+    margin-block-start: 1rem;
+  }
+
+  .structured-intake button {
+    border: 2px solid currentColor;
+    background: transparent;
+    color: inherit;
+    padding: 0.75rem 1rem;
+    cursor: pointer;
+  }
+
+  .structured-intake__field-error,
+  .structured-intake__submission-error {
+    font-weight: 700;
+  }
+
+  .structured-intake__consent {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    gap: 0.75rem;
+    align-items: start;
+    margin-block-start: 0.75rem;
+  }
+
+  .structured-intake__consent input {
+    width: auto;
+    margin-block-start: 0.25rem;
+  }
+
+  .structured-intake__success {
+    border: 2px solid currentColor;
+    padding: 1.25rem;
+  }
+
+  @media (min-width: 40rem) {
+    .structured-intake__progress {
+      grid-template-columns:
+        repeat(4, minmax(0, 1fr));
+      list-style-position: inside;
+      padding-inline-start: 0;
+    }
+  }
+</style>

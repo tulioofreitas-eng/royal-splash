@@ -1,21 +1,77 @@
 ---
 import SiteHeader from "../components/site/SiteHeader.astro";
+import StructuredIntake from "../components/site/StructuredIntake.astro";
 import SiteLayout from "../layouts/SiteLayout.astro";
 ---
 
 <SiteLayout
   title="Inicie seu projeto — Royal Splash"
   robots="noindex, nofollow"
+  bodyClass="site-functional-intake"
 >
   <SiteHeader slot="header" />
 
-  <section aria-labelledby="project-start-heading">
+  <section
+    class="project-start"
+    aria-labelledby="project-start-heading"
+  >
     <h1 id="project-start-heading">
       Inicie seu projeto
     </h1>
+
     <p>
-      Superfície funcional reservada para o structured
-      intake da Tranche 2B.
+      Compartilhe o contexto necessário para iniciar
+      um envio estruturado pelo Site.
     </p>
   </section>
+
+  <StructuredIntake />
+
+  <section
+    class="project-start project-start--auxiliary"
+    aria-labelledby="auxiliary-contact-heading"
+  >
+    <h2 id="auxiliary-contact-heading">
+      Precisa de outro canal?
+    </h2>
+
+    <p>
+      Contato direto permanece disponível como caminho auxiliar.
+    </p>
+
+    <a href="/contato">
+      Ver canais de contato
+    </a>
+  </section>
 </SiteLayout>
+
+<style is:global>
+  body.site-functional-intake {
+    margin: 0;
+    background: Canvas;
+    color: CanvasText;
+    font-family: system-ui, sans-serif;
+    line-height: 1.5;
+  }
+
+  body.site-functional-intake * {
+    box-sizing: border-box;
+  }
+
+  body.site-functional-intake a {
+    color: inherit;
+  }
+</style>
+
+<style>
+  .project-start {
+    width: min(100% - 2rem, 48rem);
+    margin-inline: auto;
+    padding-block: 3rem 1rem;
+  }
+
+  .project-start--auxiliary {
+    border-block-start: 1px solid currentColor;
+    padding-block: 2rem 3rem;
+  }
+</style>
