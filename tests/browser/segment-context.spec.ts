@@ -75,7 +75,7 @@ for (const segment of segments) {
 
     await expect(page).toHaveURL(
       new RegExp(
-        `/inicie-seu-projeto\\?context=${segment.context}&source=segment_context$`,
+        `/inicie-seu-projeto\\?context=${segment.context}&source=segment_context&pageRef=%2F${segment.route.slice(1)}$`,
       ),
     );
 

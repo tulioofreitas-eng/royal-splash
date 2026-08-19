@@ -144,8 +144,17 @@ test(
         "utf8",
       );
 
+    const intake =
+      await readFile(
+        new URL(
+          "../../src/components/site/StructuredIntake.astro",
+          import.meta.url,
+        ),
+        "utf8",
+      );
+
     const executable =
-      `${helper}\n${runtime}`;
+      `${helper}\n${runtime}\n${intake}`;
 
     assert.doesNotMatch(
       executable,
@@ -164,7 +173,27 @@ test(
 
     assert.match(
       runtime,
+      /normalizeConversionPageRef/,
+    );
+
+    assert.match(
+      runtime,
+      /searchParams\.set\(\s*"pageRef"/,
+    );
+
+    assert.match(
+      runtime,
       /\/inicie-seu-projeto/,
+    );
+
+    assert.match(
+      intake,
+      /searchParams\.get\(\s*"pageRef"/,
+    );
+
+    assert.doesNotMatch(
+      intake,
+      /document\.referrer/,
     );
   },
 );

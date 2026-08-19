@@ -5,6 +5,7 @@
 
 <script>
   import {
+    normalizeConversionPageRef,
     normalizeConversionSourceRef,
   } from "../../conversion/origin.ts";
 
@@ -49,13 +50,23 @@
             .analyticsComponent,
         );
 
-      if (!source) {
+      const pageRef =
+        normalizeConversionPageRef(
+          window.location.pathname,
+        );
+
+      if (!source || !pageRef) {
         return;
       }
 
       targetUrl.searchParams.set(
         "source",
         source,
+      );
+
+      targetUrl.searchParams.set(
+        "pageRef",
+        pageRef,
       );
 
       anchor.setAttribute(

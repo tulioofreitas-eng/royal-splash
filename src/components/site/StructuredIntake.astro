@@ -269,29 +269,6 @@
       const contextFromUrl =
         searchParams.get("context");
 
-      let referrerPageRef:
-        string | undefined;
-
-      if (document.referrer) {
-        try {
-          const referrer =
-            new URL(
-              document.referrer,
-            );
-
-          if (
-            referrer.origin ===
-              window.location.origin
-          ) {
-            referrerPageRef =
-              referrer.pathname;
-          }
-        } catch {
-          referrerPageRef =
-            undefined;
-        }
-      }
-
       const conversionOrigin =
         normalizeConversionOrigin({
           source:
@@ -299,7 +276,9 @@
               "source",
             ),
           pageRef:
-            referrerPageRef,
+            searchParams.get(
+              "pageRef",
+            ),
         });
 
       if (

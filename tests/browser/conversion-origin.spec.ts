@@ -116,6 +116,14 @@ test.describe(
           "royal_projects",
         );
 
+        expect(
+          intakeUrl.searchParams.get(
+            "pageRef",
+          ),
+        ).toBe(
+          "/projetos",
+        );
+
         await completeMinimalIntake(
           page,
         );
@@ -212,6 +220,14 @@ test.describe(
           "segment_context",
         );
 
+        expect(
+          intakeUrl.searchParams.get(
+            "pageRef",
+          ),
+        ).toBe(
+          "/servicos",
+        );
+
         await expect(
           page.getByLabel(
             "Contexto",
@@ -264,6 +280,71 @@ test.describe(
         ).toBe(
           "site_header",
         );
+
+        expect(
+          intakeUrl.searchParams.get(
+            "pageRef",
+          ),
+        ).toBe(
+          "/sobre",
+        );
+      },
+    );
+
+    test(
+      "explicit origin survives direct intake navigation without relying on referrer",
+      async ({
+        page,
+      }) => {
+        await page.goto(
+          "/inicie-seu-projeto?source=royal_projects&pageRef=%2Fprojetos",
+        );
+
+        await completeMinimalIntake(
+          page,
+        );
+
+        const requestPromise =
+          page.waitForRequest(
+            (request) =>
+              request.url().includes(
+                "/api/site-lead-preview",
+              ) &&
+              request.method() ===
+                "POST",
+          );
+
+        await page.getByRole(
+          "button",
+          {
+            name:
+              "Enviar contexto do projeto",
+          },
+        ).click();
+
+        const request =
+          await requestPromise;
+
+        const payload =
+          request.postDataJSON();
+
+        expect(
+          payload.source,
+        ).toBe(
+          "royal_projects",
+        );
+
+        expect(
+          payload.pageRef,
+        ).toBe(
+          "/projetos",
+        );
+
+        await expect(
+          page.getByRole(
+            "status",
+          ),
+        ).toBeVisible();
       },
     );
   },
