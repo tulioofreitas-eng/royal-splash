@@ -120,3 +120,114 @@ test("Supabase client initialization is isolated to Production helper", () => {
     );
   }
 });
+
+test("whatsapp-click keeps Preview mock-only before Production persistence", () => {
+  const source = read("src/pages/api/whatsapp-click.ts");
+
+  const mockGuard = source.indexOf('leadProvider === "mock"');
+  const productionImport = source.indexOf(
+    'await import("../../safety/production-supabase.ts")',
+  );
+
+  assert.ok(mockGuard >= 0, "whatsapp-click must keep the mock provider guard");
+  assert.ok(
+    productionImport > mockGuard,
+    "Production persistence must load only after the mock-only exit",
+  );
+
+  assert.match(
+    source,
+    /JSON\.stringify\(\{ ok: true, mock: true \}\)/,
+    "non-Production must keep the explicit mock response",
+  );
+
+  const productionInitialization = source.indexOf(
+    "createProductionSupabaseClient();",
+  );
+
+  assert.ok(
+    productionInitialization > productionImport,
+    "Production Supabase must initialize only after the lazy Production import",
+  );
+
+  assert.doesNotMatch(
+    source.slice(0, productionImport),
+    /createProductionSupabaseClient\(\)/,
+    "Production Supabase must not initialize before the mock-only exit",
+  );
+});
+
+test("whatsapp-click preserves pre-T1-S0 best-effort Production semantics", () => {
+  const source = read("src/pages/api/whatsapp-click.ts");
+
+  assert.match(
+    source,
+    /let pagina: string \| null = null;/,
+    "pagina must default to null",
+  );
+
+  assert.match(
+    source,
+    /const corpo = await request\.json\(\);/,
+    "request JSON parsing must remain inside the tolerant parsing block",
+  );
+
+  assert.match(
+    source,
+    /typeof corpo\?\.pagina === "string"/,
+    "pagina must only accept string input",
+  );
+
+  assert.match(
+    source,
+    /corpo\.pagina\.slice\(0, 255\)/,
+    "pagina must preserve the historical 255-character limit",
+  );
+
+  assert.match(
+    source,
+    /catch \{\s*\/\/ corpo vazio\/ inválido — segue sem página, não é motivo pra falhar\s*\}/,
+    "malformed or empty JSON must remain non-fatal",
+  );
+
+  assert.match(
+    source,
+    /empresa_id: EMPRESA_ID,\s*pagina,/,
+    "Production insert must preserve pagina as null when no valid page exists",
+  );
+
+  assert.doesNotMatch(
+    source,
+    /pagina:\s*String\(/,
+    "pagina must not be coerced from null to an empty string",
+  );
+
+  assert.match(
+    source,
+    /if \(error\) \{[\s\S]*?console\.error\("Erro ao registrar clique:", error\);[\s\S]*?\}[\s\S]*?return new Response\(JSON\.stringify\(\{ ok: true \}\), \{ status: 200 \}\);/,
+    "tracking failure must remain best-effort and return success",
+  );
+
+  const okResponses =
+    source.match(
+      /return new Response\(JSON\.stringify\(\{ ok: true \}\), \{ status: 200 \}\);/g,
+    ) ?? [];
+
+  assert.equal(
+    okResponses.length,
+    2,
+    "normal Production path and outer failure path must both return HTTP 200",
+  );
+
+  assert.doesNotMatch(
+    source,
+    /status:\s*500/,
+    "whatsapp-click must not return HTTP 500 for tracking failures",
+  );
+
+  assert.doesNotMatch(
+    source,
+    /JSON\.stringify\(\{ error:/,
+    "whatsapp-click must not replace its best-effort success response with an error payload",
+  );
+});
