@@ -6,14 +6,206 @@ import SiteLayout from "../layouts/SiteLayout.astro";
 <SiteLayout
   title="Método Royal — Royal Splash"
   robots="noindex, nofollow"
+  bodyClass="site-functional-method"
 >
   <SiteHeader slot="header" />
 
-  <section aria-labelledby="method-heading">
-    <h1 id="method-heading">Método Royal</h1>
+  <section
+    class="method-section method-entry"
+    aria-labelledby="method-heading"
+    data-method-stage="entry"
+  >
+    <p class="method-eyebrow">
+      Método Royal
+    </p>
+
+    <h1 id="method-heading">
+      Método Royal
+    </h1>
+
     <p>
-      Superfície funcional reservada para implementação
-      controlada na Tranche 2B.
+      Esta superfície organiza a compreensão do método
+      dentro da experiência digital sem antecipar etapas,
+      compromissos ou afirmações que ainda dependam de
+      conteúdo institucional controlado.
+    </p>
+
+    <div class="method-actions">
+      <a href="/projetos">
+        Ver Projetos
+      </a>
+
+      <a href="/sobre">
+        Conhecer A Royal
+      </a>
+    </div>
+  </section>
+
+  <section
+    class="method-section"
+    aria-labelledby="method-context-heading"
+    data-method-stage="context"
+  >
+    <h2 id="method-context-heading">
+      Contexto antes do processo
+    </h2>
+
+    <p>
+      A compreensão do método começa pelo contexto do projeto.
+      As experiências Residencial e Corporativo / Institucional
+      ajudam a organizar essa entrada antes do fluxo qualificado.
+    </p>
+
+    <div class="method-links">
+      <a href="/servicos">
+        Explorar Residencial
+      </a>
+
+      <a href="/corporativo">
+        Explorar Corporativo / Institucional
+      </a>
+    </div>
+  </section>
+
+  <section
+    class="method-section"
+    aria-labelledby="method-controlled-heading"
+    data-method-stage="controlled-method"
+  >
+    <h2 id="method-controlled-heading">
+      Método detalhado
+    </h2>
+
+    <p>
+      Etapas, responsabilidades, critérios e demais elementos
+      específicos do Método Royal devem ser publicados somente
+      a partir de uma fonte institucional controlada.
+    </p>
+
+    <p>
+      Enquanto esse conteúdo não estiver disponível para esta
+      implementação, a experiência preserva o espaço funcional
+      sem transformar hipótese de UX em verdade de marca.
     </p>
   </section>
+
+  <section
+    class="method-section"
+    aria-labelledby="method-proof-heading"
+    data-method-stage="proof"
+  >
+    <h2 id="method-proof-heading">
+      Método precisa de evidência
+    </h2>
+
+    <p>
+      A área de Projetos é o caminho destinado a conectar
+      contexto, execução e evidências conforme casos e materiais
+      verificáveis forem disponibilizados para publicação.
+    </p>
+
+    <a href="/projetos">
+      Explorar Projetos
+    </a>
+  </section>
+
+  <section
+    class="method-section method-conversion"
+    aria-labelledby="method-action-heading"
+    data-method-stage="qualified-action"
+  >
+    <h2 id="method-action-heading">
+      Avance com o contexto do seu projeto
+    </h2>
+
+    <p>
+      Quando houver contexto suficiente para iniciar a conversa
+      estruturada, siga para o intake do projeto.
+    </p>
+
+    <div class="method-actions">
+      <a
+        class="method-primary-action"
+        href="/inicie-seu-projeto"
+        data-analytics-cta
+        data-analytics-component="royal_method"
+        data-analytics-subject="project_start"
+        data-analytics-channel="site_form"
+      >
+        Inicie seu projeto
+      </a>
+
+      <a href="/contato">
+        Contato e canais auxiliares
+      </a>
+    </div>
+  </section>
 </SiteLayout>
+
+<style is:global>
+  body.site-functional-method {
+    margin: 0;
+    background: Canvas;
+    color: CanvasText;
+    font-family: system-ui, sans-serif;
+    line-height: 1.5;
+  }
+
+  body.site-functional-method * {
+    box-sizing: border-box;
+  }
+
+  body.site-functional-method a {
+    color: inherit;
+  }
+
+  body.site-functional-method a:focus-visible {
+    outline: 3px solid currentColor;
+    outline-offset: 3px;
+  }
+</style>
+
+<style>
+  .method-section {
+    width: min(100% - 2rem, 64rem);
+    margin-inline: auto;
+    padding-block: 3rem;
+  }
+
+  .method-entry {
+    padding-block-start: 4rem;
+  }
+
+  .method-section + .method-section {
+    border-block-start: 1px solid currentColor;
+  }
+
+  .method-eyebrow {
+    font-weight: 700;
+  }
+
+  .method-section > p {
+    max-width: 65ch;
+  }
+
+  .method-actions,
+  .method-links {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+    align-items: center;
+    margin-block-start: 1.5rem;
+  }
+
+  .method-actions a,
+  .method-links a,
+  .method-section > a {
+    display: inline-block;
+    padding: 0.75rem;
+  }
+
+  .method-primary-action {
+    border: 2px solid currentColor;
+    font-weight: 700;
+  }
+</style>
