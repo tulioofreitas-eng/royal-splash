@@ -1,5 +1,6 @@
 ---
 import MainContent from "../components/runtime/MainContent.astro";
+import SemanticAnalytics from "../components/runtime/SemanticAnalytics.astro";
 import SkipLink from "../components/runtime/SkipLink.astro";
 
 interface Props {
@@ -37,6 +38,7 @@ const {
       <slot />
     </MainContent>
     <slot name="footer" />
+    <SemanticAnalytics />
     <slot name="body-end" />
   </body>
 </html>

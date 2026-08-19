@@ -578,6 +578,22 @@
               );
             }
 
+            window.dispatchEvent(
+              new CustomEvent(
+                "site:lead-submitted",
+                {
+                  detail: {
+                    componentRef:
+                      "structured_intake",
+                    subjectRef:
+                      payload.projectContext,
+                    channelRef:
+                      "site_form",
+                  },
+                },
+              ),
+            );
+
             form.hidden = true;
 
             if (success instanceof HTMLElement) {
