@@ -1,0 +1,318 @@
+---
+const currentPath = Astro.url.pathname;
+
+const navigationItems = [
+  {
+    href: "/projetos",
+    label: "Projetos",
+    routes: ["/projetos"],
+  },
+  {
+    href: "/servicos",
+    label: "Residencial",
+    routes: ["/servicos"],
+  },
+  {
+    href: "/corporativo",
+    label: "Corporativo / Institucional",
+    routes: ["/corporativo"],
+  },
+  {
+    href: "/metodo-royal",
+    label: "Método Royal",
+    routes: ["/metodo-royal"],
+  },
+  {
+    href: "/sobre",
+    label: "A Royal",
+    routes: ["/sobre"],
+  },
+] as const;
+
+const isCurrent = (routes: readonly string[]) =>
+  routes.some(
+    (route) =>
+      currentPath === route ||
+      currentPath.startsWith(`${route}/`),
+  );
+
+const projectStartIsCurrent =
+  currentPath === "/inicie-seu-projeto" ||
+  currentPath.startsWith("/inicie-seu-projeto/");
+---
+
+<header class="site-header" data-site-header>
+  <nav
+    class="site-header__bar"
+    aria-label="Navegação principal"
+  >
+    <a
+      class="site-header__identity"
+      href="/"
+      aria-label="Royal Splash — Início"
+      aria-current={currentPath === "/" ? "page" : undefined}
+    >
+      Royal Splash
+    </a>
+
+    <div class="site-header__desktop">
+      {
+        navigationItems.map((item) => (
+          <a
+            href={item.href}
+            aria-current={
+              isCurrent(item.routes)
+                ? "page"
+                : undefined
+            }
+          >
+            {item.label}
+          </a>
+        ))
+      }
+
+      <a
+        class="site-header__primary-action"
+        href="/inicie-seu-projeto"
+        aria-current={
+          projectStartIsCurrent
+            ? "page"
+            : undefined
+        }
+      >
+        Inicie seu projeto
+      </a>
+    </div>
+
+    <button
+      class="site-header__trigger"
+      type="button"
+      aria-expanded="false"
+      aria-controls="site-mobile-navigation"
+      data-site-nav-trigger
+    >
+      Abrir navegação
+    </button>
+  </nav>
+
+  <div
+    class="site-header__mobile"
+    id="site-mobile-navigation"
+    data-site-mobile-navigation
+    hidden
+  >
+    <nav aria-label="Navegação móvel">
+      {
+        navigationItems.map((item) => (
+          <a
+            href={item.href}
+            aria-current={
+              isCurrent(item.routes)
+                ? "page"
+                : undefined
+            }
+          >
+            {item.label}
+          </a>
+        ))
+      }
+
+      <a
+        class="site-header__primary-action"
+        href="/inicie-seu-projeto"
+        aria-current={
+          projectStartIsCurrent
+            ? "page"
+            : undefined
+        }
+      >
+        Inicie seu projeto
+      </a>
+
+      <div class="site-header__auxiliary">
+        <a href="/contato">Contato</a>
+      </div>
+    </nav>
+  </div>
+</header>
+
+<script>
+  const header = document.querySelector("[data-site-header]");
+
+  if (header instanceof HTMLElement) {
+    const trigger = header.querySelector("[data-site-nav-trigger]");
+    const mobileNavigation = header.querySelector(
+      "[data-site-mobile-navigation]",
+    );
+
+    if (
+      trigger instanceof HTMLButtonElement &&
+      mobileNavigation instanceof HTMLElement
+    ) {
+      const firstLink =
+        mobileNavigation.querySelector("a");
+
+      const setOpen = (
+        open: boolean,
+        restoreFocus = false,
+      ) => {
+        trigger.setAttribute(
+          "aria-expanded",
+          String(open),
+        );
+
+        trigger.textContent = open
+          ? "Fechar navegação"
+          : "Abrir navegação";
+
+        mobileNavigation.hidden = !open;
+
+        if (open) {
+          requestAnimationFrame(() => {
+            if (firstLink instanceof HTMLElement) {
+              firstLink.focus();
+            }
+          });
+        } else if (restoreFocus) {
+          trigger.focus();
+        }
+      };
+
+      trigger.addEventListener("click", () => {
+        const isOpen =
+          trigger.getAttribute("aria-expanded") ===
+          "true";
+
+        setOpen(!isOpen, isOpen);
+      });
+
+      mobileNavigation
+        .querySelectorAll("a")
+        .forEach((link) => {
+          link.addEventListener("click", () => {
+            setOpen(false);
+          });
+        });
+
+      document.addEventListener("keydown", (event) => {
+        if (
+          event.key === "Escape" &&
+          trigger.getAttribute("aria-expanded") ===
+            "true"
+        ) {
+          setOpen(false, true);
+        }
+      });
+    }
+  }
+</script>
+
+<style>
+  .site-header {
+    position: sticky;
+    inset-block-start: 0;
+    z-index: 1000;
+    background: Canvas;
+    color: CanvasText;
+    border-block-end: 1px solid currentColor;
+  }
+
+  .site-header a {
+    color: inherit;
+    text-decoration: none;
+  }
+
+  .site-header a:hover {
+    text-decoration: underline;
+  }
+
+  .site-header a:focus-visible,
+  .site-header button:focus-visible {
+    outline: 3px solid currentColor;
+    outline-offset: 3px;
+  }
+
+  .site-header a[aria-current="page"] {
+    text-decoration: underline;
+    text-decoration-thickness: 0.15em;
+    text-underline-offset: 0.3em;
+  }
+
+  .site-header__bar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    max-width: 80rem;
+    min-height: 4.5rem;
+    margin-inline: auto;
+    padding-inline: 1rem;
+  }
+
+  .site-header__identity {
+    font-weight: 700;
+    white-space: nowrap;
+  }
+
+  .site-header__desktop {
+    display: none;
+  }
+
+  .site-header__trigger {
+    border: 2px solid currentColor;
+    background: transparent;
+    color: inherit;
+    padding: 0.65rem 0.85rem;
+    font: inherit;
+    cursor: pointer;
+  }
+
+  .site-header__mobile {
+    border-block-start: 1px solid currentColor;
+    padding: 1rem;
+  }
+
+  .site-header__mobile[hidden] {
+    display: none;
+  }
+
+  .site-header__mobile nav {
+    display: grid;
+    gap: 0.5rem;
+    max-width: 80rem;
+    margin-inline: auto;
+  }
+
+  .site-header__mobile a {
+    display: block;
+    padding: 0.75rem;
+  }
+
+  .site-header__primary-action {
+    border: 2px solid currentColor;
+    font-weight: 700;
+  }
+
+  .site-header__auxiliary {
+    margin-block-start: 0.75rem;
+    padding-block-start: 0.75rem;
+    border-block-start: 1px solid currentColor;
+  }
+
+  @media (min-width: 64rem) {
+    .site-header__desktop {
+      display: flex;
+      align-items: center;
+      gap: 1.25rem;
+    }
+
+    .site-header__desktop a {
+      padding: 0.5rem;
+    }
+
+    .site-header__trigger,
+    .site-header__mobile {
+      display: none;
+    }
+  }
+</style>

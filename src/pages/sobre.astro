@@ -1,7 +1,7 @@
 ---
 import '../styles/global.css';
 import SiteLayout from '../layouts/SiteLayout.astro';
-import Header from '../components/Header.astro';
+import SiteHeader from '../components/site/SiteHeader.astro';
 import Footer from '../components/Footer.astro';
 import BotaoWhatsapp from '../components/BotaoWhatsapp.astro';
 import { Image } from 'astro:assets';
@@ -25,7 +25,7 @@ import GTMBody from '../components/GTMBody.astro';
   </Fragment>
 
   <GTMBody slot="body-start" />
-  <Header slot="header" />
+  <SiteHeader slot="header" />
 
     <section class="pt-16 pb-16 px-6 text-center">
       <span class="text-sm uppercase tracking-widest text-piscina">Quem somos</span>
