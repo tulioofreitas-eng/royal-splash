@@ -2,6 +2,9 @@ export const prerender = false;
 
 import type { APIRoute } from "astro";
 import {
+  normalizeConversionOrigin,
+} from "../../conversion/origin.ts";
+import {
   SITE_LEAD_SCHEMA_VERSION,
   type SiteLeadIngress,
 } from "../../domains/leads/contracts.ts";
@@ -16,6 +19,8 @@ interface PreviewIntakePayload {
   email?: unknown;
   phone?: unknown;
   consent?: unknown;
+  source?: unknown;
+  pageRef?: unknown;
 }
 
 function normalizedText(
@@ -98,6 +103,14 @@ export const POST: APIRoute = async ({
     const email = normalizedText(body.email);
     const phone = normalizedText(body.phone);
 
+    const conversionOrigin =
+      normalizeConversionOrigin({
+        source:
+          body.source,
+        pageRef:
+          body.pageRef,
+      });
+
     const context = projectContext
       ? contextLabel(projectContext)
       : undefined;
@@ -136,7 +149,15 @@ export const POST: APIRoute = async ({
       },
       acquisition: {
         ingressChannel: "site_form",
-        pageRef: "/inicie-seu-projeto",
+        ...(conversionOrigin.source
+          ? {
+              source:
+                conversionOrigin.source,
+            }
+          : {}),
+        pageRef:
+          conversionOrigin.pageRef ??
+          "/inicie-seu-projeto",
       },
       consent: {
         state: "granted",

@@ -1,0 +1,70 @@
+<div
+  hidden
+  data-conversion-origin-runtime
+></div>
+
+<script>
+  import {
+    normalizeConversionSourceRef,
+  } from "../../conversion/origin.ts";
+
+  document.addEventListener(
+    "click",
+    (event) => {
+      if (
+        !(event.target instanceof Element)
+      ) {
+        return;
+      }
+
+      const anchor =
+        event.target.closest(
+          "a[data-analytics-cta]",
+        );
+
+      if (
+        !(anchor instanceof HTMLAnchorElement)
+      ) {
+        return;
+      }
+
+      const targetUrl =
+        new URL(
+          anchor.href,
+          window.location.href,
+        );
+
+      if (
+        targetUrl.origin !==
+          window.location.origin ||
+        targetUrl.pathname !==
+          "/inicie-seu-projeto"
+      ) {
+        return;
+      }
+
+      const source =
+        normalizeConversionSourceRef(
+          anchor.dataset
+            .analyticsComponent,
+        );
+
+      if (!source) {
+        return;
+      }
+
+      targetUrl.searchParams.set(
+        "source",
+        source,
+      );
+
+      anchor.setAttribute(
+        "href",
+        `${targetUrl.pathname}${targetUrl.search}${targetUrl.hash}`,
+      );
+    },
+    {
+      capture: true,
+    },
+  );
+</script>

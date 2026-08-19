@@ -248,6 +248,10 @@
 </section>
 
 <script>
+  import {
+    normalizeConversionOrigin,
+  } from "../../conversion/origin.ts";
+
   const intake = document.querySelector(
     "[data-structured-intake]",
   );
@@ -258,10 +262,56 @@
     );
 
     if (form instanceof HTMLFormElement) {
-      const contextFromUrl =
+      const searchParams =
         new URL(window.location.href)
-          .searchParams
-          .get("context");
+          .searchParams;
+
+      const contextFromUrl =
+        searchParams.get("context");
+
+      let referrerPageRef:
+        string | undefined;
+
+      if (document.referrer) {
+        try {
+          const referrer =
+            new URL(
+              document.referrer,
+            );
+
+          if (
+            referrer.origin ===
+              window.location.origin
+          ) {
+            referrerPageRef =
+              referrer.pathname;
+          }
+        } catch {
+          referrerPageRef =
+            undefined;
+        }
+      }
+
+      const conversionOrigin =
+        normalizeConversionOrigin({
+          source:
+            searchParams.get(
+              "source",
+            ),
+          pageRef:
+            referrerPageRef,
+        });
+
+      if (
+        conversionOrigin.source &&
+        conversionOrigin.pageRef
+      ) {
+        intake.dataset.conversionSource =
+          conversionOrigin.source;
+
+        intake.dataset.conversionPage =
+          conversionOrigin.pageRef;
+      }
 
       const contextControl =
         form.elements.namedItem(
@@ -557,6 +607,7 @@
             ),
             consent:
               data.get("consent") === "on",
+            ...conversionOrigin,
           };
 
           try {

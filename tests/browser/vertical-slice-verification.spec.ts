@@ -87,7 +87,7 @@ test.describe(
         .click();
 
       await expect(page).toHaveURL(
-        /\/inicie-seu-projeto\?context=residencial$/,
+        /\/inicie-seu-projeto\?context=residencial&source=segment_context$/,
       );
 
       const context =
@@ -305,7 +305,7 @@ test.describe(
         .click();
 
       await expect(page).toHaveURL(
-        /\/inicie-seu-projeto\?context=corporativo_institucional$/,
+        /\/inicie-seu-projeto\?context=corporativo_institucional&source=segment_context$/,
       );
 
       await expectNoHorizontalOverflow(
