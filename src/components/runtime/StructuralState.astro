@@ -1,0 +1,32 @@
+---
+type StructuralState =
+  | "loading"
+  | "empty"
+  | "error";
+
+interface Props {
+  state: StructuralState;
+}
+
+const {
+  state,
+} = Astro.props;
+
+const role =
+  state === "error"
+    ? "alert"
+    : "status";
+
+const ariaLive =
+  state === "error"
+    ? "assertive"
+    : "polite";
+---
+
+<div
+  data-structural-state={state}
+  role={role}
+  aria-live={ariaLive}
+>
+  <slot />
+</div>
