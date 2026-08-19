@@ -1,19 +1,227 @@
 ---
 import SiteHeader from "../components/site/SiteHeader.astro";
+import {
+  royalCases,
+  royalEvidence,
+} from "../content/royal/cases.ts";
+import {
+  selectRoyalPublicCases,
+} from "../content/royal/publication.ts";
 import SiteLayout from "../layouts/SiteLayout.astro";
+
+const publicCases =
+  selectRoyalPublicCases({
+    cases: royalCases,
+    evidence: royalEvidence,
+  });
 ---
 
 <SiteLayout
   title="Projetos — Royal Splash"
   robots="noindex, nofollow"
+  bodyClass="site-functional-projects"
 >
   <SiteHeader slot="header" />
 
-  <section aria-labelledby="projects-heading">
-    <h1 id="projects-heading">Projetos</h1>
-    <p>
-      Superfície funcional reservada para implementação
-      controlada na Tranche 2B.
+  <section
+    class="projects-section projects-entry"
+    aria-labelledby="projects-heading"
+    data-projects-stage="entry"
+  >
+    <p class="projects-eyebrow">
+      Projetos
     </p>
+
+    <h1 id="projects-heading">
+      Projetos
+    </h1>
+
+    <p>
+      Esta área reúne somente Cases e evidências
+      que estejam aptos à publicação dentro do
+      fluxo controlado da Royal Splash.
+    </p>
+
+    <div class="projects-actions">
+      <a href="/metodo-royal">
+        Conhecer Método Royal
+      </a>
+
+      <a href="/sobre">
+        Conhecer A Royal
+      </a>
+    </div>
+  </section>
+
+  <section
+    class="projects-section"
+    aria-labelledby="projects-library-heading"
+    data-projects-stage="library"
+    data-projects-count={publicCases.length}
+  >
+    <h2 id="projects-library-heading">
+      Projetos disponíveis
+    </h2>
+
+    {
+      publicCases.length === 0 ? (
+        <div
+          class="projects-empty"
+          data-projects-state="empty"
+        >
+          <h3>
+            Nenhum projeto verificado disponível
+            nesta superfície
+          </h3>
+
+          <p>
+            Materiais sem verificação ou sem
+            autorização explícita de publicação
+            não são apresentados como Cases.
+          </p>
+        </div>
+      ) : (
+        <div
+          class="projects-list"
+          data-projects-state="available"
+        >
+          {publicCases.map((siteCase) => (
+            <article data-case-id={siteCase.id}>
+              <h3>
+                {siteCase.title}
+              </h3>
+
+              <p>
+                {siteCase.summary}
+              </p>
+            </article>
+          ))}
+        </div>
+      )
+    }
+  </section>
+
+  <section
+    class="projects-section projects-conversion"
+    aria-labelledby="projects-action-heading"
+    data-projects-stage="qualified-action"
+  >
+    <h2 id="projects-action-heading">
+      Avance com o contexto do seu projeto
+    </h2>
+
+    <p>
+      Use o fluxo estruturado quando houver
+      contexto suficiente para iniciar a conversa.
+    </p>
+
+    <div class="projects-actions">
+      <a
+        class="projects-primary-action"
+        href="/inicie-seu-projeto"
+        data-analytics-cta
+        data-analytics-component="royal_projects"
+        data-analytics-subject="project_start"
+        data-analytics-channel="site_form"
+      >
+        Inicie seu projeto
+      </a>
+
+      <a href="/contato">
+        Contato e canais auxiliares
+      </a>
+    </div>
   </section>
 </SiteLayout>
+
+<style is:global>
+  body.site-functional-projects {
+    margin: 0;
+    background: Canvas;
+    color: CanvasText;
+    font-family: system-ui, sans-serif;
+    line-height: 1.5;
+  }
+
+  body.site-functional-projects * {
+    box-sizing: border-box;
+  }
+
+  body.site-functional-projects a {
+    color: inherit;
+  }
+
+  body.site-functional-projects a:focus-visible {
+    outline: 3px solid currentColor;
+    outline-offset: 3px;
+  }
+</style>
+
+<style>
+  .projects-section {
+    width: min(100% - 2rem, 64rem);
+    margin-inline: auto;
+    padding-block: 3rem;
+  }
+
+  .projects-entry {
+    padding-block-start: 4rem;
+  }
+
+  .projects-section + .projects-section {
+    border-block-start: 1px solid currentColor;
+  }
+
+  .projects-eyebrow {
+    font-weight: 700;
+  }
+
+  .projects-section > p,
+  .projects-empty > p,
+  .projects-list p {
+    max-width: 65ch;
+  }
+
+  .projects-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+    align-items: center;
+    margin-block-start: 1.5rem;
+  }
+
+  .projects-actions a {
+    display: inline-block;
+    padding: 0.75rem;
+  }
+
+  .projects-primary-action {
+    border: 2px solid currentColor;
+    font-weight: 700;
+  }
+
+  .projects-empty {
+    margin-block-start: 1.5rem;
+    padding: 1rem;
+    border: 1px solid currentColor;
+  }
+
+  .projects-empty > :first-child {
+    margin-block-start: 0;
+  }
+
+  .projects-empty > :last-child {
+    margin-block-end: 0;
+  }
+
+  .projects-list {
+    display: grid;
+    gap: 1rem;
+    margin-block-start: 1.5rem;
+  }
+
+  .projects-list article {
+    padding: 1rem;
+    border: 1px solid currentColor;
+  }
+</style>
