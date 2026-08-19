@@ -1,105 +1,236 @@
 ---
-import '../styles/global.css';
-import SiteLayout from '../layouts/SiteLayout.astro';
-import SiteHeader from '../components/site/SiteHeader.astro';
-import Footer from '../components/Footer.astro';
-import BotaoWhatsapp from '../components/BotaoWhatsapp.astro';
-import { Image } from 'astro:assets';
-import sobreEquipe from '../assets/sobre-equipe.jpg';
-import GTMHead from '../components/GTMHead.astro';
-import GTMBody from '../components/GTMBody.astro';
+import SiteHeader from "../components/site/SiteHeader.astro";
+import SiteLayout from "../layouts/SiteLayout.astro";
 ---
 
 <SiteLayout
-  title="Sobre — Royal Splash"
-  description="Mais de 20 anos de experiência em engenharia e construção. Conheça a Royal Splash, o braço de piscinas e áreas de lazer de alto padrão do grupo."
-  bodyClass="bg-marca text-white pt-20"
+  title="A Royal — Royal Splash"
+  robots="noindex, nofollow"
+  bodyClass="site-functional-trust"
 >
-  <Fragment slot="head">
-    <GTMHead />
-    <link rel="icon" type="image/x-icon" href="/favicon.ico" />
-    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-    <link rel="icon" type="image/png" sizes="96x96" href="/favicon-96x96.png" />
-    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
-    <link rel="manifest" href="/site.webmanifest" />
-  </Fragment>
-
-  <GTMBody slot="body-start" />
   <SiteHeader slot="header" />
 
-    <section class="pt-16 pb-16 px-6 text-center">
-      <span class="text-sm uppercase tracking-widest text-piscina">Quem somos</span>
-      <h1 class="text-4xl md:text-6xl font-semibold mt-3 mb-4">Sobre a Royal Splash</h1>
-      <p class="text-lg text-slate-400 max-w-2xl mx-auto">
-        Excelência em cada detalhe — do primeiro traço do projeto à primeira mergulhada.
-      </p>
-    </section>
+  <section
+    class="trust-section trust-entry"
+    aria-labelledby="trust-heading"
+    data-trust-stage="entry"
+  >
+    <p class="trust-eyebrow">
+      A Royal
+    </p>
 
-    <section class="py-12 px-6">
-      <div class="max-w-5xl mx-auto grid md:grid-cols-2 gap-16 items-center">
-        <div class="aspect-[3/4] rounded-2xl overflow-hidden border border-white/10">
-          <Image src={sobreEquipe} alt="Equipe Royal Splash em reunião de projeto" class="w-full h-full object-cover" />
-        </div>
-        <div>
-          <h2 class="text-2xl md:text-3xl font-semibold mb-4">Nossa história</h2>
-          <p class="text-slate-400 mb-4">A Royal Splash nasce de uma bagagem que poucos no mercado têm: mais de 20 anos do nosso grupo projetando, construindo e executando obras de alto padrão. Ao longo dessas duas décadas, acumulamos algo que não se improvisa — domínio técnico, equipe própria e um olhar obsessivo pelo acabamento.</p>
-          <p class="text-slate-400 mb-4">Foi dessa experiência em engenharia e construção que surgiu a Royal Splash: o braço dedicado a transformar quintais, coberturas e áreas externas em verdadeiros refúgios de lazer. Piscinas de borda infinita, spas, saunas e áreas gourmet — cada projeto carrega o mesmo rigor de quem já entregou centenas de obras.</p>
-          <p class="text-slate-400">Hoje atuamos do Rio de Janeiro ao litoral de Santa Catarina, levando o mesmo padrão de excelência para residências e grandes empreendimentos. Do primeiro traço à primeira mergulhada, tudo passa pela nossa equipe — porque acreditamos que o que importa não se terceiriza.</p>
-        </div>
-      </div>
-    </section>
+    <h1 id="trust-heading">
+      A Royal
+    </h1>
 
-    <section class="py-16 px-6 border-t border-white/10">
-      <div class="max-w-5xl mx-auto grid grid-cols-2 md:grid-cols-4 gap-8 text-center">
-        <div>
-          <div class="text-4xl font-bold mb-2" style="color:#C9A96A;">20+</div>
-          <p class="text-slate-400">Anos de experiência do grupo</p>
-        </div>
-        <div>
-          <div class="text-4xl font-bold mb-2" style="color:#C9A96A;">500+</div>
-          <p class="text-slate-400">Piscinas e projetos entregues</p>
-        </div>
-        <div>
-          <div class="text-4xl font-bold mb-2" style="color:#C9A96A;">2</div>
-          <p class="text-slate-400">Estados atendidos</p>
-        </div>
-        <div>
-          <div class="text-4xl font-bold mb-2" style="color:#C9A96A;">100%</div>
-          <p class="text-slate-400">Projeto e execução próprios</p>
-        </div>
-      </div>
-    </section>
+    <p>
+      Encontre o contexto institucional disponível e siga
+      para projetos, método e os próximos passos da experiência.
+    </p>
 
-    <section class="py-16 px-6 border-t border-white/10">
-      <div class="max-w-5xl mx-auto">
-        <div class="text-center mb-12">
-          <h2 class="text-3xl md:text-4xl font-semibold">O que nos move</h2>
-        </div>
-        <div class="grid gap-8 md:grid-cols-3">
-          <div class="bg-marca-suave border border-white/10 rounded-2xl p-8">
-            <h3 class="text-lg font-semibold mb-2">Excelência</h3>
-            <p class="text-slate-400">Acabamento impecável em cada detalhe. Não entregamos nada que não colocaríamos na nossa própria casa.</p>
-          </div>
-          <div class="bg-marca-suave border border-white/10 rounded-2xl p-8">
-            <h3 class="text-lg font-semibold mb-2">Transparência</h3>
-            <p class="text-slate-400">Projeto detalhado, cronograma claro e comunicação honesta do começo ao fim da obra.</p>
-          </div>
-          <div class="bg-marca-suave border border-white/10 rounded-2xl p-8">
-            <h3 class="text-lg font-semibold mb-2">Compromisso</h3>
-            <p class="text-slate-400">Uma equipe só, do projeto à entrega. Assumimos a responsabilidade por tudo que construímos.</p>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <section class="py-24 px-6 text-center border-t border-white/10">
-      <h2 class="text-3xl md:text-4xl font-semibold mb-4">Vamos conversar sobre o seu projeto?</h2>
-      <p class="text-slate-400 mb-8">Fale com a gente e descubra o que a Royal Splash pode fazer pelo seu espaço.</p>
-      <a href="https://wa.me/5521982590643" target="_blank" class="inline-block bg-piscina hover:opacity-90 text-white font-medium px-8 py-4 rounded-full transition-opacity">
-        Falar no WhatsApp
+    <div class="trust-actions">
+      <a href="/projetos">
+        Ver Projetos
       </a>
-    </section>
 
-  <Footer slot="footer" />
-  <BotaoWhatsapp slot="body-end" />
+      <a href="/metodo-royal">
+        Conhecer Método Royal
+      </a>
+    </div>
+  </section>
+
+  <section
+    class="trust-section"
+    aria-labelledby="institutional-context-heading"
+    data-trust-stage="institutional-context"
+  >
+    <h2 id="institutional-context-heading">
+      Contexto institucional
+    </h2>
+
+    <p>
+      Informações institucionais devem ser publicadas a partir
+      de fontes controladas. Nesta implementação funcional,
+      métricas, histórico e demais afirmações que ainda dependam
+      de comprovação versionada permanecem fora da superfície.
+    </p>
+  </section>
+
+  <section
+    class="trust-section"
+    aria-labelledby="trust-references-heading"
+    data-trust-stage="references"
+  >
+    <h2 id="trust-references-heading">
+      Referências para sua avaliação
+    </h2>
+
+    <div class="trust-grid">
+      <article>
+        <h3>
+          Projetos e evidências
+        </h3>
+
+        <p>
+          Consulte a área de Projetos para acessar referências
+          verificadas conforme estiverem disponíveis para publicação.
+        </p>
+
+        <a href="/projetos">
+          Explorar Projetos
+        </a>
+      </article>
+
+      <article>
+        <h3>
+          Método Royal
+        </h3>
+
+        <p>
+          Consulte a estrutura de método disponível para compreender
+          como o processo é apresentado na experiência digital.
+        </p>
+
+        <a href="/metodo-royal">
+          Conhecer Método Royal
+        </a>
+      </article>
+
+      <article>
+        <h3>
+          Conteúdo institucional controlado
+        </h3>
+
+        <p>
+          História, métricas, abrangência, equipe e demais afirmações
+          institucionais dependem de fonte controlada antes de sua
+          publicação nesta superfície.
+        </p>
+      </article>
+    </div>
+  </section>
+
+  <section
+    class="trust-section trust-conversion"
+    aria-labelledby="trust-action-heading"
+    data-trust-stage="qualified-action"
+  >
+    <h2 id="trust-action-heading">
+      Próximo passo
+    </h2>
+
+    <p>
+      Se já houver contexto suficiente para avançar,
+      use o fluxo estruturado do projeto.
+    </p>
+
+    <div class="trust-actions">
+      <a
+        class="trust-primary-action"
+        href="/inicie-seu-projeto"
+        data-analytics-cta
+        data-analytics-component="royal_trust"
+        data-analytics-subject="project_start"
+        data-analytics-channel="site_form"
+      >
+        Inicie seu projeto
+      </a>
+
+      <a href="/contato">
+        Contato e canais auxiliares
+      </a>
+    </div>
+  </section>
 </SiteLayout>
+
+<style is:global>
+  body.site-functional-trust {
+    margin: 0;
+    background: Canvas;
+    color: CanvasText;
+    font-family: system-ui, sans-serif;
+    line-height: 1.5;
+  }
+
+  body.site-functional-trust * {
+    box-sizing: border-box;
+  }
+
+  body.site-functional-trust a {
+    color: inherit;
+  }
+
+  body.site-functional-trust a:focus-visible {
+    outline: 3px solid currentColor;
+    outline-offset: 3px;
+  }
+</style>
+
+<style>
+  .trust-section {
+    width: min(100% - 2rem, 64rem);
+    margin-inline: auto;
+    padding-block: 3rem;
+  }
+
+  .trust-entry {
+    padding-block-start: 4rem;
+  }
+
+  .trust-section + .trust-section {
+    border-block-start: 1px solid currentColor;
+  }
+
+  .trust-eyebrow {
+    font-weight: 700;
+  }
+
+  .trust-section > p {
+    max-width: 65ch;
+  }
+
+  .trust-grid {
+    display: grid;
+    gap: 1rem;
+    margin-block-start: 1.5rem;
+  }
+
+  .trust-grid article {
+    padding: 1rem;
+    border: 1px solid currentColor;
+  }
+
+  .trust-grid article > :first-child {
+    margin-block-start: 0;
+  }
+
+  .trust-grid article > :last-child {
+    margin-block-end: 0;
+  }
+
+  .trust-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+    align-items: center;
+    margin-block-start: 1.5rem;
+  }
+
+  .trust-actions a,
+  .trust-grid a {
+    display: inline-block;
+    padding: 0.75rem;
+  }
+
+  .trust-primary-action {
+    border: 2px solid currentColor;
+    font-weight: 700;
+  }
+
+  @media (min-width: 48rem) {
+    .trust-grid {
+      grid-template-columns:
+        repeat(3, minmax(0, 1fr));
+    }
+  }
+</style>

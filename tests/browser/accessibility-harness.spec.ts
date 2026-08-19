@@ -25,7 +25,9 @@ test("representative Site runtime exposes browser accessibility foundations", as
     page,
   }).analyze();
 
-  expect(Array.isArray(accessibilityScanResults.violations)).toBe(true);
+  expect(
+    accessibilityScanResults.violations,
+  ).toEqual([]);
 
   console.log(
     `AXE_BASELINE_VIOLATIONS=${accessibilityScanResults.violations.length}`,
