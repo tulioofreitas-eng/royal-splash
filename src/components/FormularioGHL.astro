@@ -1,19 +1,28 @@
 ---
+import { getCurrentEnvironmentContract } from "../safety/runtime.ts";
+
+const { leadProvider } = getCurrentEnvironmentContract();
+const allowProductionLeadEgress = leadProvider === "production";
 ---
-<iframe
-  src="https://link.starterfunnels.com/widget/form/l6TTv9NLTH0Qsy608A7G"
-  style="width:100%;height:700px;border:none;border-radius:8px"
-  id="inline-l6TTv9NLTH0Qsy608A7G"
-  data-layout="{'id':'INLINE'}"
-  data-trigger-type="alwaysShow"
-  data-trigger-value=""
-  data-activation-type="alwaysActivated"
-  data-activation-value=""
-  data-deactivation-type="neverDeactivate"
-  data-deactivation-value=""
-  data-form-name="Form Royal"
-  data-layout-iframe-id="inline-l6TTv9NLTH0Qsy608A7G"
-  data-form-id="l6TTv9NLTH0Qsy608A7G"
-  title="Form Royal"
-></iframe>
-<script is:inline src="https://link.starterfunnels.com/js/form_embed.js"></script>
+
+{allowProductionLeadEgress && (
+  <>
+    <iframe
+      src="https://link.starterfunnels.com/widget/form/l6TTv9NLTH0Qsy608A7G"
+      style="width:100%;height:700px;border:none;border-radius:8px"
+      id="inline-l6TTv9NLTH0Qsy608A7G"
+      data-layout="{'id':'INLINE'}"
+      data-trigger-type="alwaysShow"
+      data-trigger-value=""
+      data-activation-type="alwaysActivated"
+      data-activation-value=""
+      data-deactivation-type="neverDeactivate"
+      data-deactivation-value=""
+      data-form-name="Form Royal"
+      data-layout-iframe-id="inline-l6TTv9NLTH0Qsy608A7G"
+      data-form-id="l6TTv9NLTH0Qsy608A7G"
+      title="Form Royal"
+    ></iframe>
+    <script is:inline src="https://link.starterfunnels.com/js/form_embed.js"></script>
+  </>
+)}
