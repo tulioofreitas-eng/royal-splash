@@ -1,0 +1,204 @@
+---
+import SiteHeader from "./SiteHeader.astro";
+import SiteLayout from "../../layouts/SiteLayout.astro";
+
+type SegmentContext =
+  | "residencial"
+  | "corporativo_institucional";
+
+interface Props {
+  context: SegmentContext;
+  title: string;
+  intro: string;
+}
+
+const {
+  context,
+  title,
+  intro,
+} = Astro.props;
+
+const isResidential =
+  context === "residencial";
+
+const contextLabel = isResidential
+  ? "Residencial"
+  : "Corporativo / Institucional";
+
+const qualifiedActionLabel = isResidential
+  ? "Inicie seu projeto residencial"
+  : "Inicie seu projeto corporativo / institucional";
+
+const qualifiedActionHref =
+  `/inicie-seu-projeto?context=${encodeURIComponent(context)}`;
+---
+
+<SiteLayout
+  title={`${title} — Royal Splash`}
+  robots="noindex, nofollow"
+  bodyClass="site-functional-segment"
+>
+  <SiteHeader slot="header" />
+
+  <section
+    class="segment-context segment-context--entry"
+    aria-labelledby="segment-context-heading"
+    data-segment-context={context}
+  >
+    <p class="segment-context__eyebrow">
+      Contexto {contextLabel}
+    </p>
+
+    <h1 id="segment-context-heading">
+      {title}
+    </h1>
+
+    <p>
+      {intro}
+    </p>
+
+    <div class="segment-context__actions">
+      <a
+        class="segment-context__primary-action"
+        href={qualifiedActionHref}
+        data-segment-qualified-action
+      >
+        {qualifiedActionLabel}
+      </a>
+
+      <a href="/projetos">
+        Ver Projetos
+      </a>
+    </div>
+  </section>
+
+  <section
+    class="segment-context"
+    aria-labelledby="segment-proof-heading"
+  >
+    <h2 id="segment-proof-heading">
+      Projetos e evidências
+    </h2>
+
+    <p>
+      Consulte projetos e evidências verificadas disponíveis
+      antes de avançar para uma decisão.
+    </p>
+
+    <a href="/projetos">
+      Explorar Projetos
+    </a>
+  </section>
+
+  <section
+    class="segment-context"
+    aria-labelledby="segment-method-heading"
+  >
+    <h2 id="segment-method-heading">
+      Método
+    </h2>
+
+    <p>
+      Consulte a estrutura de método e processo disponível
+      para compreender como o projeto pode avançar.
+    </p>
+
+    <a href="/metodo-royal">
+      Conhecer Método Royal
+    </a>
+  </section>
+
+  <section
+    class="segment-context segment-context--conversion"
+    aria-labelledby="segment-action-heading"
+  >
+    <h2 id="segment-action-heading">
+      Avance com o contexto do seu projeto
+    </h2>
+
+    <p>
+      O fluxo estruturado preservará o contexto selecionado
+      para a próxima etapa.
+    </p>
+
+    <div class="segment-context__actions">
+      <a
+        class="segment-context__primary-action"
+        href={qualifiedActionHref}
+        data-segment-qualified-action
+      >
+        {qualifiedActionLabel}
+      </a>
+
+      <a href="/contato">
+        Contato e canais auxiliares
+      </a>
+    </div>
+  </section>
+</SiteLayout>
+
+<style is:global>
+  body.site-functional-segment {
+    margin: 0;
+    background: Canvas;
+    color: CanvasText;
+    font-family: system-ui, sans-serif;
+    line-height: 1.5;
+  }
+
+  body.site-functional-segment * {
+    box-sizing: border-box;
+  }
+
+  body.site-functional-segment a {
+    color: inherit;
+  }
+
+  body.site-functional-segment a:focus-visible {
+    outline: 3px solid currentColor;
+    outline-offset: 3px;
+  }
+</style>
+
+<style>
+  .segment-context {
+    width: min(100% - 2rem, 64rem);
+    margin-inline: auto;
+    padding-block: 3rem;
+  }
+
+  .segment-context--entry {
+    padding-block-start: 4rem;
+  }
+
+  .segment-context + .segment-context {
+    border-block-start: 1px solid currentColor;
+  }
+
+  .segment-context__eyebrow {
+    font-weight: 700;
+  }
+
+  .segment-context > p {
+    max-width: 65ch;
+  }
+
+  .segment-context__actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+    align-items: center;
+    margin-block-start: 1.5rem;
+  }
+
+  .segment-context__actions a,
+  .segment-context > a {
+    display: inline-block;
+    padding: 0.75rem;
+  }
+
+  .segment-context__primary-action {
+    border: 2px solid currentColor;
+    font-weight: 700;
+  }
+</style>

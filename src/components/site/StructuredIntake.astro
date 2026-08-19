@@ -258,6 +258,29 @@
     );
 
     if (form instanceof HTMLFormElement) {
+      const contextFromUrl =
+        new URL(window.location.href)
+          .searchParams
+          .get("context");
+
+      const contextControl =
+        form.elements.namedItem(
+          "projectContext",
+        );
+
+      if (
+        contextControl instanceof HTMLSelectElement &&
+        (
+          contextFromUrl === "residencial" ||
+          contextFromUrl ===
+            "corporativo_institucional"
+        )
+      ) {
+        contextControl.value = contextFromUrl;
+        intake.dataset.initialContext =
+          contextFromUrl;
+      }
+
       const steps = Array.from(
         form.querySelectorAll("[data-intake-step]"),
       ).filter(
