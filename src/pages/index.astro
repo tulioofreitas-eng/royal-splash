@@ -1,195 +1,216 @@
 ---
-import '../styles/global.css';
-import Header from '../components/Header.astro';
-import Footer from '../components/Footer.astro';
-import BotaoWhatsapp from '../components/BotaoWhatsapp.astro';
-import Formulario from '../components/Formulario.astro';
-import { Image } from 'astro:assets';
-import obra1 from '../assets/obra-1.jpg';
-import obra2 from '../assets/obra-2.jpg';
-import obra3 from '../assets/obra-3.jpg';
-import obra4 from '../assets/obra-4.jpg';
-import obra5 from '../assets/obra-5.jpg';
-import obra6 from '../assets/obra-6.jpg';
-import procEscavacao from '../assets/processo-escavacao.jpg';
-import procEstrutura from '../assets/processo-estrutura.jpg';
-import procImpermeabilizacao from '../assets/processo-impermeabilizacao.jpg';
-import procConcretagem from '../assets/processo-concretagem.jpg';
-import procAcabamento from '../assets/processo-acabamento.jpg';
-import procGourmet from '../assets/processo-gourmet.jpg';
-import GTMHead from '../components/GTMHead.astro';
-import GTMBody from '../components/GTMBody.astro';
+import SegmentRouter from "../components/site/SegmentRouter.astro";
+import SiteHeader from "../components/site/SiteHeader.astro";
+import SiteLayout from "../layouts/SiteLayout.astro";
 ---
 
-<html lang="pt-BR">
-  <head>
-    <GTMHead />
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>Royal Splash — Piscinas de Alto Padrão</title>
-    <meta name="description" content="Projetamos e construímos piscinas, saunas e áreas de lazer sob medida. Excelência em cada detalhe, do Rio de Janeiro a Santa Catarina." />
-  <link rel="icon" type="image/x-icon" href="/favicon.ico" />
-<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-<link rel="icon" type="image/png" sizes="96x96" href="/favicon-96x96.png" />
-<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
-<link rel="manifest" href="/site.webmanifest" />
-  </head>
-  <body class="bg-marca text-white">
-    <GTMBody />
+<SiteLayout
+  title="Royal Splash"
+  robots="noindex, nofollow"
+  bodyClass="site-functional-home"
+>
+  <SiteHeader slot="header" />
 
-    <Header />
+  <section
+    class="home-section home-entry"
+    aria-labelledby="home-heading"
+    data-home-stage="entry"
+  >
+    <p class="home-eyebrow">
+      Royal Splash
+    </p>
 
-    <section class="relative min-h-screen flex items-center justify-center overflow-hidden pt-24 pb-12">
-      <div class="absolute inset-0 bg-gradient-to-br from-marca-suave via-marca to-marca"></div>
-      <div class="relative z-10 max-w-3xl mx-auto px-6 text-center">
-       <p class="text-[11px] sm:text-sm md:text-base uppercase tracking-normal sm:tracking-widest text-piscina mb-6 leading-relaxed">
-         · Piscinas de alto padrão · <br class="sm:hidden" /> 
+    <h1 id="home-heading">
+      Encontre o contexto certo para avançar.
+    </h1>
+
+    <p>
+      Explore o contexto relevante, consulte projetos e evidências
+      disponíveis e avance quando estiver pronto para iniciar seu projeto.
+    </p>
+
+    <div class="home-actions">
+      <a
+        class="home-primary-action"
+        href="/inicie-seu-projeto"
+      >
+        Inicie seu projeto
+      </a>
+
+      <a href="/projetos">
+        Ver Projetos
+      </a>
+    </div>
+  </section>
+
+  <SegmentRouter />
+
+  <section
+    class="home-section"
+    aria-labelledby="proof-heading"
+    data-home-stage="proof"
+  >
+    <h2 id="proof-heading">
+      Projetos e evidências
+    </h2>
+
+    <p>
+      Consulte a área de Projetos para acessar conteúdo de prova
+      estruturado conforme evidências verificadas estiverem disponíveis.
+    </p>
+
+    <a href="/projetos">
+      Explorar Projetos
+    </a>
+  </section>
+
+  <section
+    class="home-section"
+    aria-labelledby="method-trust-heading"
+    data-home-stage="method-trust"
+  >
+    <h2 id="method-trust-heading">
+      Método e confiança
+    </h2>
+
+    <div class="home-bridge-grid">
+      <article>
+        <h3>Método Royal</h3>
+        <p>
+          Entenda a estrutura de método e processo sustentada
+          pelas evidências disponíveis.
         </p>
-        <h1 class="text-4xl md:text-6xl font-semibold leading-tight mb-6">
-          Excelência em cada detalhe, do projeto ao primeiro mergulho.
-        </h1>
-        <p class="text-lg md:text-xl text-slate-300 mb-10">
-          Projetamos e construímos piscinas, saunas e áreas de lazer sob medida — com acabamento impecável e execução própria do início ao fim.
+        <a href="/metodo-royal">
+          Conhecer Método Royal
+        </a>
+      </article>
+
+      <article>
+        <h3>A Royal</h3>
+        <p>
+          Acesse a superfície institucional destinada à compreensão
+          e confiança sobre a Royal.
         </p>
-        <div class="flex flex-col sm:flex-row gap-4 justify-center">
-          <a href="#portfolio" class="bg-piscina hover:opacity-90 text-white font-medium px-8 py-4 rounded-full transition-opacity">Ver obras</a>
-        </div>
-      </div>
-    </section>
+        <a href="/sobre">
+          Conhecer A Royal
+        </a>
+      </article>
+    </div>
+  </section>
 
-    <section id="servicos" class="bg-marca py-24 px-6 scroll-mt-20">
-      <div class="max-w-6xl mx-auto">
-        <div class="text-center mb-16">
-          <h2 class="text-3xl md:text-5xl font-semibold mb-4">O que construímos</h2>
-          <p class="text-lg text-slate-400 max-w-2xl mx-auto">Soluções completas para transformar seu espaço num refúgio de lazer.</p>
-        </div>
-        <div class="grid gap-6 md:grid-cols-2 lg:grid-cols-4">
-          <div class="bg-marca-suave border border-white/10 rounded-2xl p-8 hover:border-piscina/50 transition-colors">
-            <h3 class="text-xl font-semibold mb-3">Construção de Piscinas</h3>
-            <p class="text-slate-400">Alvenaria, borda infinita, prainha, iluminação LED e automação. Cada piscina sob medida para o seu espaço.</p>
-          </div>
-          <div class="bg-marca-suave border border-white/10 rounded-2xl p-8 hover:border-piscina/50 transition-colors">
-            <h3 class="text-xl font-semibold mb-3">Áreas de Lazer</h3>
-            <p class="text-slate-400">Espaço gourmet, decks, paisagismo, iluminação e duchas. O ambiente inteiro pensado como uma experiência.</p>
-          </div>
-          <div class="bg-marca-suave border border-white/10 rounded-2xl p-8 hover:border-piscina/50 transition-colors">
-            <h3 class="text-xl font-semibold mb-3">Saunas & Spas</h3>
-            <p class="text-slate-400">Saunas secas e úmidas, spas e ofurôs. Bem-estar com o acabamento Royal Splash.</p>
-          </div>
-          <div class="bg-marca-suave border border-white/10 rounded-2xl p-8 hover:border-piscina/50 transition-colors">
-            <h3 class="text-xl font-semibold mb-3">Reforma e Revitalização</h3>
-            <p class="text-slate-400">Recuperação estrutural e estética da sua piscina, incluindo fibra. Devolvemos vida ao seu espaço.</p>
-          </div>
-        </div>
-      </div>
-    </section>
+  <section
+    class="home-section home-conversion"
+    aria-labelledby="conversion-heading"
+    data-home-stage="qualified-action"
+  >
+    <h2 id="conversion-heading">
+      Próximo passo
+    </h2>
 
-    <section id="portfolio" class="bg-marca-suave py-24 px-6 scroll-mt-20">
-      <div class="max-w-6xl mx-auto">
-        <div class="text-center mb-16">
-          <h2 class="text-3xl md:text-5xl font-semibold mb-4">Obras que falam por si</h2>
-          <p class="text-lg text-slate-400 max-w-2xl mx-auto">Conheça alguns dos projetos que já entregamos.</p>
-        </div>
-        <div class="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
-          <div class="aspect-[4/3] rounded-2xl overflow-hidden border border-white/10 group"><Image src={obra1} alt="Piscina de borda infinita Royal Splash" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" /></div>
-          <div class="aspect-[4/3] rounded-2xl overflow-hidden border border-white/10 group"><Image src={obra2} alt="Piscina com iluminação LED Royal Splash" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" /></div>
-          <div class="aspect-[4/3] rounded-2xl overflow-hidden border border-white/10 group"><Image src={obra3} alt="Área de lazer com piscina Royal Splash" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" /></div>
-          <div class="aspect-[4/3] rounded-2xl overflow-hidden border border-white/10 group"><Image src={obra4} alt="Piscina com prainha Royal Splash" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" /></div>
-          <div class="aspect-[4/3] rounded-2xl overflow-hidden border border-white/10 group"><Image src={obra5} alt="Spa e ofurô na serra Royal Splash" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" /></div>
-          <div class="aspect-[4/3] rounded-2xl overflow-hidden border border-white/10 group"><Image src={obra6} alt="Vista de área de lazer residencial Royal Splash" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" /></div>
-        </div>
-      </div>
-    </section>
+    <p>
+      Quando fizer sentido avançar, compartilhe o contexto
+      do seu projeto pelo fluxo estruturado.
+    </p>
 
-    <section class="bg-marca py-24 px-6">
-      <div class="max-w-6xl mx-auto">
-        <div class="text-center mb-16"><h2 class="text-3xl md:text-5xl font-semibold mb-4">Por que Royal Splash?</h2></div>
-        <div class="grid gap-8 md:grid-cols-2 lg:grid-cols-4">
-          <div><div class="text-piscina text-3xl font-bold mb-3">01</div><h3 class="text-lg font-semibold mb-2">Projeto sob medida</h3><p class="text-slate-400">Nada de solução pronta. Cada piscina nasce do seu espaço e do seu jeito de viver.</p></div>
-          <div><div class="text-piscina text-3xl font-bold mb-3">02</div><h3 class="text-lg font-semibold mb-2">Acabamento impecável</h3><p class="text-slate-400">"Excelência em cada detalhe" não é slogan — é o nosso padrão de entrega.</p></div>
-          <div><div class="text-piscina text-3xl font-bold mb-3">03</div><h3 class="text-lg font-semibold mb-2">Execução própria</h3><p class="text-slate-400">Do projeto à obra, uma equipe só. Não terceirizamos o que importa.</p></div>
-          <div><div class="text-piscina text-3xl font-bold mb-3">04</div><h3 class="text-lg font-semibold mb-2">Tecnologia e automação</h3><p class="text-slate-400">Iluminação, aquecimento e controle da piscina na palma da mão.</p></div>
-        </div>
-      </div>
-    </section>
+    <div class="home-actions">
+      <a
+        class="home-primary-action"
+        href="/inicie-seu-projeto"
+      >
+        Inicie seu projeto
+      </a>
 
-    <section class="bg-marca-suave py-24 px-6">
-      <div class="max-w-4xl mx-auto">
-        <div class="text-center mb-16"><h2 class="text-3xl md:text-5xl font-semibold mb-4">Do sonho ao primeiro mergulho</h2></div>
-        <div class="space-y-8">
-          <div class="flex gap-6 items-start"><div class="shrink-0 w-12 h-12 rounded-full bg-piscina flex items-center justify-center font-semibold">1</div><div><h3 class="text-lg font-semibold mb-1">Conversa e projeto</h3><p class="text-slate-400">Entendemos seu espaço, seu gosto e seu orçamento, e desenhamos a solução ideal.</p></div></div>
-          <div class="flex gap-6 items-start"><div class="shrink-0 w-12 h-12 rounded-full bg-piscina flex items-center justify-center font-semibold">2</div><div><h3 class="text-lg font-semibold mb-1">Planejamento</h3><p class="text-slate-400">Projeto detalhado, cronograma e transparência do começo ao fim.</p></div></div>
-          <div class="flex gap-6 items-start"><div class="shrink-0 w-12 h-12 rounded-full bg-piscina flex items-center justify-center font-semibold">3</div><div><h3 class="text-lg font-semibold mb-1">Execução</h3><p class="text-slate-400">Construímos com o padrão Royal Splash, no prazo combinado.</p></div></div>
-          <div class="flex gap-6 items-start"><div class="shrink-0 w-12 h-12 rounded-full bg-piscina flex items-center justify-center font-semibold">4</div><div><h3 class="text-lg font-semibold mb-1">Entrega</h3><p class="text-slate-400">Você recebe pronto para aproveitar — e seguimos por perto.</p></div></div>
-        </div>
-      </div>
-    </section>
+      <a href="/contato">
+        Contato e canais auxiliares
+      </a>
+    </div>
+  </section>
+</SiteLayout>
 
-    <!-- ===== NOSSO PROCESSO ===== -->
-    <section class="bg-marca py-24 px-6">
-      <div class="max-w-6xl mx-auto">
-        <div class="text-center mb-16">
-          <span class="text-sm uppercase tracking-widest text-piscina">Da terra à água</span>
-          <h2 class="text-3xl md:text-5xl font-semibold mt-2 mb-4">Nosso processo</h2>
-          <p class="text-lg text-slate-400 max-w-2xl mx-auto">Cada obra é executada por etapas, com rigor técnico do primeiro dia ao acabamento final.</p>
-        </div>
-        <div class="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-          <div class="rounded-2xl overflow-hidden border border-white/10 bg-marca-suave">
-            <div class="aspect-[4/3] overflow-hidden"><Image src={procEscavacao} alt="Escavação da piscina com máquina" class="w-full h-full object-cover" /></div>
-            <div class="p-5"><div class="text-piscina text-sm font-bold mb-1">01</div><h3 class="text-lg font-semibold">Escavação</h3><p class="text-slate-400 text-sm mt-1">Preparação do terreno e abertura da cava com equipamento próprio.</p></div>
-          </div>
-          <div class="rounded-2xl overflow-hidden border border-white/10 bg-marca-suave">
-            <div class="aspect-[4/3] overflow-hidden"><Image src={procEstrutura} alt="Estrutura e ferragem da piscina" class="w-full h-full object-cover" /></div>
-            <div class="p-5"><div class="text-piscina text-sm font-bold mb-1">02</div><h3 class="text-lg font-semibold">Estrutura</h3><p class="text-slate-400 text-sm mt-1">Ferragem e alvenaria que garantem resistência e durabilidade.</p></div>
-          </div>
-          <div class="rounded-2xl overflow-hidden border border-white/10 bg-marca-suave">
-            <div class="aspect-[4/3] overflow-hidden"><Image src={procImpermeabilizacao} alt="Impermeabilização da piscina" class="w-full h-full object-cover" /></div>
-            <div class="p-5"><div class="text-piscina text-sm font-bold mb-1">03</div><h3 class="text-lg font-semibold">Impermeabilização</h3><p class="text-slate-400 text-sm mt-1">A etapa técnica que evita infiltrações e protege a estrutura.</p></div>
-          </div>
-          <div class="rounded-2xl overflow-hidden border border-white/10 bg-marca-suave">
-            <div class="aspect-[4/3] overflow-hidden"><Image src={procConcretagem} alt="Concretagem do piso da piscina" class="w-full h-full object-cover" /></div>
-            <div class="p-5"><div class="text-piscina text-sm font-bold mb-1">04</div><h3 class="text-lg font-semibold">Concretagem</h3><p class="text-slate-400 text-sm mt-1">Base sólida e nivelada, executada com precisão.</p></div>
-          </div>
-          <div class="rounded-2xl overflow-hidden border border-white/10 bg-marca-suave">
-            <div class="aspect-[4/3] overflow-hidden"><Image src={procAcabamento} alt="Revestimento e acabamento da piscina" class="w-full h-full object-cover" /></div>
-            <div class="p-5"><div class="text-piscina text-sm font-bold mb-1">05</div><h3 class="text-lg font-semibold">Revestimento</h3><p class="text-slate-400 text-sm mt-1">Acabamento impecável, aplicado peça por peça pela nossa equipe.</p></div>
-          </div>
-          <div class="rounded-2xl overflow-hidden border border-white/10 bg-marca-suave">
-            <div class="aspect-[4/3] overflow-hidden"><Image src={procGourmet} alt="Construção de área gourmet e lazer" class="w-full h-full object-cover" /></div>
-            <div class="p-5"><div class="text-piscina text-sm font-bold mb-1">06</div><h3 class="text-lg font-semibold">Área de lazer</h3><p class="text-slate-400 text-sm mt-1">Espaço gourmet, deck e paisagismo — a experiência completa.</p></div>
-          </div>
-        </div>
-      </div>
-    </section>
+<style is:global>
+  body.site-functional-home {
+    margin: 0;
+    background: Canvas;
+    color: CanvasText;
+    font-family: system-ui, sans-serif;
+    line-height: 1.5;
+  }
 
-    <section class="bg-marca-suave py-24 px-6">
-      <div class="max-w-6xl mx-auto">
-        <div class="text-center mb-16">
-          <h2 class="text-3xl md:text-5xl font-semibold mb-4">Quem já mergulhou com a gente</h2>
-          <p class="text-lg text-slate-400 max-w-2xl mx-auto">A satisfação de quem confiou seu espaço à Royal Splash.</p>
-        </div>
-        <div class="grid gap-6 md:grid-cols-3">
-          <div class="bg-marca border border-white/10 rounded-2xl p-8"><div class="text-piscina text-4xl mb-4">"</div><p class="text-slate-300 mb-6">Do projeto à entrega, foi tudo muito transparente. A piscina de borda infinita ficou exatamente como imaginamos — e o acabamento impressiona todo mundo que visita.</p><div class="border-t border-white/10 pt-4"><p class="font-semibold">Cliente Residencial</p><p class="text-sm text-slate-500">Casa em condomínio · Rio de Janeiro</p></div></div>
-          <div class="bg-marca border border-white/10 rounded-2xl p-8"><div class="text-piscina text-4xl mb-4">"</div><p class="text-slate-300 mb-6">Contratamos para a área de lazer do hotel e o resultado elevou a experiência dos hóspedes. Prazo cumprido e equipe extremamente profissional do começo ao fim.</p><div class="border-t border-white/10 pt-4"><p class="font-semibold">Cliente Corporativo</p><p class="text-sm text-slate-500">Rede hoteleira · Santa Catarina</p></div></div>
-          <div class="bg-marca border border-white/10 rounded-2xl p-8"><div class="text-piscina text-4xl mb-4">"</div><p class="text-slate-300 mb-6">Fizemos a reforma completa da piscina antiga e parece nova. Recuperaram a estrutura, trocaram o revestimento e ainda modernizaram a iluminação. Recomendo sem pensar.</p><div class="border-t border-white/10 pt-4"><p class="font-semibold">Cliente Residencial</p><p class="text-sm text-slate-500">Reforma de piscina · Região Serrana</p></div></div>
-        </div>
-      </div>
-    </section>
+  body.site-functional-home * {
+    box-sizing: border-box;
+  }
 
-    <section id="contato" class="bg-marca py-24 px-6 scroll-mt-20">
-      <div class="max-w-2xl mx-auto text-center">
-        <h2 class="text-3xl md:text-5xl font-semibold mb-4">Pronto para transformar seu espaço?</h2>
-        <p class="text-lg text-slate-400 mb-10">Fale com a gente e receba um orçamento sem compromisso.</p>
-        <div class="flex flex-col sm:flex-row gap-4 justify-center">
-          <a href="/contato" class="bg-piscina hover:opacity-90 text-white font-medium px-8 py-4 rounded-full transition-opacity">Solicitar orçamento</a>
-<button type="button" class="abrir-whatsapp-modal border border-white/30 hover:border-white/60 text-white font-medium px-8 py-4 rounded-full transition-colors">Falar no WhatsApp</button>          <a href="https://instagram.com/royalsplashoficial" target="_blank" class="border border-white/30 hover:border-white/60 text-white font-medium px-8 py-4 rounded-full transition-colors">Instagram</a>
-        </div>
-        <p class="text-slate-500 mt-8 text-sm">(21) 98259-0643 · contato@royalsplash.com.br</p>
-      </div>
-    </section>
+  body.site-functional-home a {
+    color: inherit;
+  }
 
-    <Footer />
-    <BotaoWhatsapp />
+  body.site-functional-home a:focus-visible {
+    outline: 3px solid currentColor;
+    outline-offset: 3px;
+  }
+</style>
 
-  </body>
-</html>
+<style>
+  .home-section {
+    width: min(100% - 2rem, 72rem);
+    margin-inline: auto;
+    padding-block: 3rem;
+  }
+
+  .home-entry {
+    padding-block-start: 4rem;
+  }
+
+  .home-eyebrow {
+    font-weight: 700;
+  }
+
+  .home-entry h1 {
+    max-width: 20ch;
+  }
+
+  .home-entry > p:not(.home-eyebrow),
+  .home-section > p {
+    max-width: 65ch;
+  }
+
+  .home-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+    align-items: center;
+    margin-block-start: 1.5rem;
+  }
+
+  .home-actions a,
+  .home-section > a,
+  .home-bridge-grid a {
+    display: inline-block;
+    padding: 0.75rem;
+  }
+
+  .home-primary-action {
+    border: 2px solid currentColor;
+    font-weight: 700;
+  }
+
+  .home-bridge-grid {
+    display: grid;
+    gap: 1rem;
+  }
+
+  .home-bridge-grid article {
+    padding: 1.25rem;
+    border: 1px solid currentColor;
+  }
+
+  .home-conversion {
+    border-block-start: 1px solid currentColor;
+  }
+
+  @media (min-width: 48rem) {
+    .home-bridge-grid {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  }
+</style>

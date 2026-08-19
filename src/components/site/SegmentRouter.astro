@@ -1,0 +1,80 @@
+<section
+  class="segment-router"
+  aria-labelledby="segment-router-heading"
+  data-segment-router
+>
+  <div class="segment-router__intro">
+    <h2 id="segment-router-heading">
+      Escolha seu contexto
+    </h2>
+    <p>
+      Siga pela experiência que corresponde ao contexto do seu projeto.
+    </p>
+  </div>
+
+  <div class="segment-router__options">
+    <article>
+      <h3>Residencial</h3>
+      <p>
+        Explore a jornada destinada a necessidades em contexto residencial.
+      </p>
+      <a href="/servicos">
+        Explorar Residencial
+      </a>
+    </article>
+
+    <article>
+      <h3>Corporativo / Institucional</h3>
+      <p>
+        Explore a jornada destinada a contextos corporativos ou institucionais.
+      </p>
+      <a href="/corporativo">
+        Explorar Corporativo / Institucional
+      </a>
+    </article>
+  </div>
+</section>
+
+<style>
+  .segment-router {
+    display: grid;
+    gap: 1.5rem;
+    padding-block: 3rem;
+    border-block: 1px solid currentColor;
+  }
+
+  .segment-router__intro,
+  .segment-router__options {
+    max-width: 72rem;
+    width: min(100% - 2rem, 72rem);
+    margin-inline: auto;
+  }
+
+  .segment-router__options {
+    display: grid;
+    gap: 1rem;
+  }
+
+  .segment-router article {
+    padding: 1.25rem;
+    border: 1px solid currentColor;
+  }
+
+  .segment-router a {
+    display: inline-block;
+    margin-block-start: 0.5rem;
+    color: inherit;
+    font-weight: 700;
+  }
+
+  .segment-router a:focus-visible {
+    outline: 3px solid currentColor;
+    outline-offset: 3px;
+  }
+
+  @media (min-width: 48rem) {
+    .segment-router__options {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  }
+</style>
