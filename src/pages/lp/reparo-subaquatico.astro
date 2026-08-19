@@ -1,5 +1,6 @@
 ---
 import '../../styles/global.css';
+import LandingLayout from '../../layouts/LandingLayout.astro';
 import GTMHead from '../../components/GTMHead.astro';
 import GTMBody from '../../components/GTMBody.astro';
 import LPHeader from '../../components/LPHeader.astro';
@@ -24,21 +25,20 @@ const jsonLd = {
 };
 ---
 
-<html lang="pt-BR">
-  <head>
+<LandingLayout
+  title="Troca de Revestimento de Piscina Sem Esvaziar — Royal Splash"
+  description="Substituição submersa de revestimentos, com a piscina cheia. Sem interromper a operação. Para hotéis, clubes, academias e condomínios no Rio de Janeiro."
+  robots="noindex, nofollow"
+  bodyClass="bg-marca text-white"
+>
+  <Fragment slot="head">
     <GTMHead />
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>Troca de Revestimento de Piscina Sem Esvaziar — Royal Splash</title>
-    <meta name="description" content="Substituição submersa de revestimentos, com a piscina cheia. Sem interromper a operação. Para hotéis, clubes, academias e condomínios no Rio de Janeiro." />
-    <meta name="robots" content="noindex, nofollow" />
     <link rel="icon" type="image/x-icon" href="/favicon.ico" />
     <script type="application/ld+json" set:html={JSON.stringify(jsonLd)} />
-  </head>
-  <body class="bg-marca text-white">
-    <GTMBody />
+  </Fragment>
 
-    <LPHeader />
+  <GTMBody slot="body-start" />
+  <LPHeader slot="header" />
 
     <section class="relative">
       <div class="absolute inset-0">
@@ -155,7 +155,6 @@ const jsonLd = {
       <FormularioGHL />
     </section>
 
-    <LPFooter />
-    <BotaoWhatsapp />
-  </body>
-</html>
+  <LPFooter slot="footer" />
+  <BotaoWhatsapp slot="body-end" />
+</LandingLayout>

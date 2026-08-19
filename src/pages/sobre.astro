@@ -1,5 +1,6 @@
 ---
 import '../styles/global.css';
+import SiteLayout from '../layouts/SiteLayout.astro';
 import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
 import BotaoWhatsapp from '../components/BotaoWhatsapp.astro';
@@ -9,23 +10,22 @@ import GTMHead from '../components/GTMHead.astro';
 import GTMBody from '../components/GTMBody.astro';
 ---
 
-<html lang="pt-BR">
-  <head>
+<SiteLayout
+  title="Sobre — Royal Splash"
+  description="Mais de 20 anos de experiência em engenharia e construção. Conheça a Royal Splash, o braço de piscinas e áreas de lazer de alto padrão do grupo."
+  bodyClass="bg-marca text-white pt-20"
+>
+  <Fragment slot="head">
     <GTMHead />
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>Sobre — Royal Splash</title>
-    <meta name="description" content="Mais de 20 anos de experiência em engenharia e construção. Conheça a Royal Splash, o braço de piscinas e áreas de lazer de alto padrão do grupo." />
-  <link rel="icon" type="image/x-icon" href="/favicon.ico" />
-<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-<link rel="icon" type="image/png" sizes="96x96" href="/favicon-96x96.png" />
-<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
-<link rel="manifest" href="/site.webmanifest" />
-  </head>
-  <body class="bg-marca text-white pt-20">
-    <GTMBody />
+    <link rel="icon" type="image/x-icon" href="/favicon.ico" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="icon" type="image/png" sizes="96x96" href="/favicon-96x96.png" />
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
+    <link rel="manifest" href="/site.webmanifest" />
+  </Fragment>
 
-    <Header />
+  <GTMBody slot="body-start" />
+  <Header slot="header" />
 
     <section class="pt-16 pb-16 px-6 text-center">
       <span class="text-sm uppercase tracking-widest text-piscina">Quem somos</span>
@@ -100,8 +100,6 @@ import GTMBody from '../components/GTMBody.astro';
       </a>
     </section>
 
-    <Footer />
-    <BotaoWhatsapp />
-
-  </body>
-</html>
+  <Footer slot="footer" />
+  <BotaoWhatsapp slot="body-end" />
+</SiteLayout>
