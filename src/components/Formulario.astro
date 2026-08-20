@@ -25,29 +25,29 @@ const formAction = isProductionLeadEgress
 
   <div class="grid sm:grid-cols-2 gap-4 mb-4">
     <div>
-      <label class="block text-sm text-slate-400 mb-1">Nome</label>
-      <input type="text" name="nome" required class="w-full bg-marca border border-white/15 rounded-lg px-4 py-3 text-white focus:border-piscina focus:outline-none transition-colors" placeholder="Seu nome" />
+      <label for="lead-nome" class="block text-sm text-slate-400 mb-1">Nome</label>
+      <input type="text" id="lead-nome" name="nome" required class="w-full bg-marca border border-white/15 rounded-lg px-4 py-3 text-white focus:border-piscina focus:outline-none transition-colors" placeholder="Seu nome" />
     </div>
     <div>
-      <label class="block text-sm text-slate-400 mb-1">Telefone / WhatsApp</label>
-      <input type="tel" name="telefone" required class="w-full bg-marca border border-white/15 rounded-lg px-4 py-3 text-white focus:border-piscina focus:outline-none transition-colors" placeholder="(00) 00000-0000" />
+      <label for="lead-telefone" class="block text-sm text-slate-400 mb-1">Telefone / WhatsApp</label>
+      <input type="tel" id="lead-telefone" name="telefone" required class="w-full bg-marca border border-white/15 rounded-lg px-4 py-3 text-white focus:border-piscina focus:outline-none transition-colors" placeholder="(00) 00000-0000" />
     </div>
   </div>
 
   <div class="grid sm:grid-cols-2 gap-4 mb-4">
     <div>
-      <label class="block text-sm text-slate-400 mb-1">E-mail</label>
-      <input type="email" name="email" required class="w-full bg-marca border border-white/15 rounded-lg px-4 py-3 text-white focus:border-piscina focus:outline-none transition-colors" placeholder="seu@email.com" />
+      <label for="lead-email" class="block text-sm text-slate-400 mb-1">E-mail</label>
+      <input type="email" id="lead-email" name="email" required class="w-full bg-marca border border-white/15 rounded-lg px-4 py-3 text-white focus:border-piscina focus:outline-none transition-colors" placeholder="seu@email.com" />
     </div>
     <div>
-      <label class="block text-sm text-slate-400 mb-1">Cidade</label>
-      <input type="text" name="cidade" class="w-full bg-marca border border-white/15 rounded-lg px-4 py-3 text-white focus:border-piscina focus:outline-none transition-colors" placeholder="Sua cidade" />
+      <label for="lead-cidade" class="block text-sm text-slate-400 mb-1">Cidade</label>
+      <input type="text" id="lead-cidade" name="cidade" class="w-full bg-marca border border-white/15 rounded-lg px-4 py-3 text-white focus:border-piscina focus:outline-none transition-colors" placeholder="Sua cidade" />
     </div>
   </div>
 
   <div class="mb-4">
-    <label class="block text-sm text-slate-400 mb-1">Tipo de projeto</label>
-    <select name="tipo_projeto" class="w-full bg-marca border border-white/15 rounded-lg px-4 py-3 text-white focus:border-piscina focus:outline-none transition-colors">
+    <label for="lead-tipo-projeto" class="block text-sm text-slate-400 mb-1">Tipo de projeto</label>
+    <select id="lead-tipo-projeto" name="tipo_projeto" class="w-full bg-marca border border-white/15 rounded-lg px-4 py-3 text-white focus:border-piscina focus:outline-none transition-colors">
       <option value="" selected={tipoPreSelecionado === ''}>Selecione...</option>
       <option value="Construção de piscina" selected={tipoPreSelecionado === 'Construção de piscina'}>Construção de piscina</option>
       <option value="Área de lazer" selected={tipoPreSelecionado === 'Área de lazer'}>Área de lazer</option>
@@ -60,13 +60,13 @@ const formAction = isProductionLeadEgress
     </select>
   </div>
   <div class="mb-4 hidden" id="campo-descreva-outro">
-    <label class="block text-sm text-slate-400 mb-1">Descreva o projeto</label>
-    <input type="text" name="descreva_projeto" class="w-full bg-marca border border-white/15 rounded-lg px-4 py-3 text-white focus:border-piscina focus:outline-none transition-colors" placeholder="Qual seria o tipo de projeto?" />
+    <label for="lead-descreva-projeto" class="block text-sm text-slate-400 mb-1">Descreva o projeto</label>
+    <input type="text" id="lead-descreva-projeto" name="descreva_projeto" class="w-full bg-marca border border-white/15 rounded-lg px-4 py-3 text-white focus:border-piscina focus:outline-none transition-colors" placeholder="Qual seria o tipo de projeto?" />
   </div>
 
   <div class="mb-6">
-    <label class="block text-sm text-slate-400 mb-1">Mensagem</label>
-    <textarea name="mensagem" rows="4" class="w-full bg-marca border border-white/15 rounded-lg px-4 py-3 text-white focus:border-piscina focus:outline-none transition-colors" placeholder="Conte um pouco sobre o seu projeto..."></textarea>
+    <label for="lead-mensagem" class="block text-sm text-slate-400 mb-1">Mensagem</label>
+    <textarea id="lead-mensagem" name="mensagem" rows="4" class="w-full bg-marca border border-white/15 rounded-lg px-4 py-3 text-white focus:border-piscina focus:outline-none transition-colors" placeholder="Conte um pouco sobre o seu projeto..."></textarea>
   </div>
 
   <ConsentCheckbox />
