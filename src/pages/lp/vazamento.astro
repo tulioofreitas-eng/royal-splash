@@ -17,9 +17,8 @@ const jsonLd = {
   image: 'https://www.royalsplash.com.br/logo.png',
   telephone: '+5521982590643',
   email: 'contato@royalsplash.com.br',
-  areaServed: { '@type': 'State', name: 'Rio de Janeiro' },
   address: { '@type': 'PostalAddress', addressRegion: 'RJ', addressCountry: 'BR' },
-  description: 'Detecção e reparo de vazamento em piscinas no estado do Rio de Janeiro.',
+  description: 'Detecção e reparo de vazamento em piscinas.',
 };
 ---
 
@@ -28,8 +27,8 @@ const jsonLd = {
     <GTMHead />
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>Detecção de Vazamento em Piscinas no Rio de Janeiro — Royal Splash</title>
-    <meta name="description" content="Sua piscina está perdendo água? Detectamos e reparamos vazamentos em todo o Rio de Janeiro." />
+    <title>Detecção de Vazamento em Piscinas — Royal Splash</title>
+    <meta name="description" content="Sua piscina está perdendo água? Detectamos e reparamos vazamentos." />
     <meta name="robots" content="noindex, nofollow" />
     <link rel="icon" type="image/x-icon" href="/favicon.ico" />
     <script type="application/ld+json" set:html={JSON.stringify(jsonLd)} />
@@ -41,7 +40,7 @@ const jsonLd = {
 
     <section class="relative">
       <div class="absolute inset-0">
-      <Image src={servicoVazamento} alt="Detecção de vazamento em piscina no Rio de Janeiro" class="w-full h-full object-cover object-[center_30%]" />        <div class="absolute inset-0 bg-marca/80"></div>
+      <Image src={servicoVazamento} alt="Detecção de vazamento em piscina" class="w-full h-full object-cover object-[center_30%]" />        <div class="absolute inset-0 bg-marca/80"></div>
       </div>
       <div class="relative max-w-3xl mx-auto text-center px-6 py-14 md:py-20">
         <h1 class="text-3xl md:text-5xl font-semibold mb-4 leading-tight">
@@ -56,9 +55,6 @@ const jsonLd = {
         <h2 class="text-3xl font-semibold mb-4"><span class="text-piscina">Detecção de Vazamentos</span></h2>
         <p class="text-slate-400 mb-4">
           Piscina perdendo nível de água constantemente? Pode ser vazamento estrutural, em tubulação ou no revestimento.
-        </p>
-        <p class="text-slate-400 mb-6">
-          Atendemos em todo o estado do Rio de Janeiro.
         </p>
         <ul class="space-y-3 inline-flex flex-col text-left">
         </ul>
