@@ -23,9 +23,7 @@ const cases = [
       /visita de diagnóstico é gratuita e sem compromisso/i,
     ],
     preserved: [
-      /Gel Coat/i,
-      /Tinta PU/i,
-      /Materiais Premium/i,
+      /Restauração de Fibra/i,
     ],
   },
   {
