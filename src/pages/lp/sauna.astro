@@ -7,7 +7,6 @@ import LPFooter from '../../components/LPFooter.astro';
 import BotaoWhatsapp from '../../components/BotaoWhatsapp.astro';
 import FormularioGHL from '../../components/FormularioGHL.astro';
 import Icon from '../../components/Icon.astro';
-import GoogleReviews from '../../components/GoogleReviews.astro';
 import GaleriaZoom from '../../components/GaleriaZoom.astro';
 import { Image } from 'astro:assets';
 import servicoSauna from '../../assets/servico-sauna.jpg';
@@ -71,11 +70,6 @@ const jsonLd = {
       </div>
     </section>
 
-    <GoogleReviews depoimentos={[
-      { texto: 'Integraram a sauna ao design da casa sem parecer um anexo — ficou como se o projeto original já tivesse previsto o espaço.', nome: 'Renata Assunção Lima', local: 'Zona Sul' },
-      { texto: 'O ofurô junto da sauna virou nosso ritual de fim de semana. O sistema de aquecimento é silencioso e a manutenção é simples.', nome: 'Thiago Ribas Coutinho', local: 'Barra da Tijuca' },
-      { texto: 'Pesquisei várias empresas e foi a única que topou desenhar o projeto sob medida pro espaço reduzido que eu tinha disponível.', nome: 'Marina Costa Prado', local: 'Niterói' },
-    ]} />
 
     <section class="py-16 px-6">
       <div class="max-w-5xl mx-auto grid md:grid-cols-2 gap-12 items-center">
@@ -90,7 +84,6 @@ const jsonLd = {
           <ul class="space-y-3">
             <li class="flex items-center gap-3 text-slate-300"><Icon name="check" class="w-5 h-5 text-ouro shrink-0" /> Projetos sob medida</li>
             <li class="flex items-center gap-3 text-slate-300"><Icon name="check" class="w-5 h-5 text-ouro shrink-0" /> Materiais e acabamentos premium</li>
-            <li class="flex items-center gap-3 text-slate-300"><Icon name="check" class="w-5 h-5 text-ouro shrink-0" /> Instalação completa, com garantia</li>
           </ul>
         </div>
         <GaleriaZoom imagens={[
@@ -115,11 +108,6 @@ const jsonLd = {
             <div class="w-14 h-14 rounded-full bg-ouro/10 flex items-center justify-center mb-4 text-ouro"><Icon name="droplet" /></div>
             <h3 class="text-xl font-semibold mb-2">Spa e Ofurô</h3>
             <p class="text-slate-400">Espaços completos de relaxamento, integrados à área de lazer.</p>
-          </div>
-          <div class="bg-marca border border-white/10 rounded-2xl p-6">
-            <div class="w-14 h-14 rounded-full bg-ouro/10 flex items-center justify-center mb-4 text-ouro"><Icon name="shield" /></div>
-            <h3 class="text-xl font-semibold mb-2">Garantia Completa</h3>
-            <p class="text-slate-400">Acompanhamento pós-instalação e suporte técnico.</p>
           </div>
         </div>
       </div>

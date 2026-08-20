@@ -4,7 +4,6 @@ import LPHeader from '../../components/LPHeader.astro';
 import LPFooter from '../../components/LPFooter.astro';
 import BotaoWhatsapp from '../../components/BotaoWhatsapp.astro';
 import FormularioGHL from '../../components/FormularioGHL.astro';import Icon from '../../components/Icon.astro';
-import GoogleReviews from '../../components/GoogleReviews.astro';
 import GaleriaZoom from '../../components/GaleriaZoom.astro';
 import obra1 from '../../assets/obra-1.jpg';
 import obra2 from '../../assets/obra-2.jpg';
@@ -83,12 +82,6 @@ const jsonLd = {
   </div>
 </section>
 
-    <!-- Google Reviews (2ª dobra) -->
-    <GoogleReviews depoimentos={[
-      { texto: 'Acompanhei cada etapa pelo relatório semanal e o prazo do contrato foi cumprido à risca — a piscina ficou exatamente como no projeto 3D.', nome: 'Carlos Eduardo Mendes', local: 'Barra da Tijuca' },
-      { texto: 'Escolhemos borda infinita depois de ver o cálculo de engenharia que eles apresentaram. Hoje é o ponto mais bonito da casa.', nome: 'Fernanda Azevedo', local: 'Zona Sul' },
-      { texto: 'Pesquisei várias construtoras antes de fechar. O que pesou foi o preço fechado em contrato — sem susto no meio da obra.', nome: 'Rodrigo Salles', local: 'Rio de Janeiro' },
-    ]} />
 
     <!-- Como construímos -->
     <section class="py-16 px-6">
@@ -151,16 +144,6 @@ const jsonLd = {
             <div class="w-14 h-14 rounded-full bg-ouro/10 flex items-center justify-center mb-4 text-ouro"><Icon name="box" /></div>
             <h3 class="text-xl font-semibold mb-2">Projeto Personalizado</h3>
             <p class="text-slate-400">Do conceito à planta executiva, desenhado sob medida pro seu terreno e estilo de vida.</p>
-          </div>
-          <div class="bg-marca border border-white/10 rounded-2xl p-6">
-            <div class="w-14 h-14 rounded-full bg-ouro/10 flex items-center justify-center mb-4 text-ouro"><Icon name="wrench" /></div>
-            <h3 class="text-xl font-semibold mb-2">Execução Premium</h3>
-            <p class="text-slate-400">Alvenaria, borda infinita, prainha, iluminação LED e automação — equipe própria, sem terceirização.</p>
-          </div>
-          <div class="bg-marca border border-white/10 rounded-2xl p-6">
-            <div class="w-14 h-14 rounded-full bg-ouro/10 flex items-center justify-center mb-4 text-ouro"><Icon name="shield" /></div>
-            <h3 class="text-xl font-semibold mb-2">Garantia Pós-obra</h3>
-            <p class="text-slate-400">Acompanhamento após a entrega, com suporte técnico e garantia estrutural.</p>
           </div>
         </div>
       </div>
@@ -225,7 +208,6 @@ const jsonLd = {
             { pergunta: 'O orçamento pode mudar no meio da obra?', resposta: 'Não. Trabalhamos com preço fechado em contrato. Alterações só acontecem se você solicitar mudanças no projeto.' },
             { pergunta: 'Vocês fazem o projeto ou preciso contratar arquiteto?', resposta: 'Fazemos o projeto completo, incluindo visualização 3D antes de fechar. Se você já tem arquiteto, trabalhamos em conjunto com ele.' },
             { pergunta: 'Posso construir piscina em cobertura ou laje?', resposta: 'Na maioria dos casos, sim. Fazemos avaliação estrutural com engenheiro responsável antes de aprovar o projeto.' },
-            { pergunta: 'Qual a garantia?', resposta: 'Garantia estrutural e de impermeabilização de 5 anos, por escrito, em contrato.' },
           ].map((item) => (
             <details class="bg-marca-suave border border-white/10 rounded-2xl p-6 group">
               <summary class="font-semibold cursor-pointer list-none flex items-center justify-between gap-4">

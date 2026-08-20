@@ -8,7 +8,6 @@ import LPFooter from '../../components/LPFooter.astro';
 import BotaoWhatsapp from '../../components/BotaoWhatsapp.astro';
 import FormularioGHL from '../../components/FormularioGHL.astro';
 import Icon from '../../components/Icon.astro';
-import GoogleReviews from '../../components/GoogleReviews.astro';
 import { Image } from 'astro:assets';
 import corpRevestimento from '../../assets/corp-revestimento.jpg';
 
@@ -58,11 +57,6 @@ const jsonLd = {
       </div>
     </section>
 
-    <GoogleReviews depoimentos={[
-      { texto: 'Trocamos o revestimento inteiro sem fechar a piscina um único dia — os alunos nem perceberam a obra acontecendo.', nome: 'Fábio Werneck', local: 'Barra da Tijuca' },
-      { texto: 'Economizamos uma fortuna em água que seria desperdiçada esvaziando a piscina. A técnica é realmente diferente de tudo que eu já tinha visto.', nome: 'Luciana Prado Amorim', local: 'Zona Sul' },
-      { texto: 'Equipe especializada, trabalho limpo e a piscina do condomínio nunca ficou fora de uso durante o serviço.', nome: 'Ricardo Bittencourt', local: 'Niterói' },
-    ]} />
 
     <section class="py-16 px-6">
       <div class="max-w-5xl mx-auto grid md:grid-cols-2 gap-12 items-center">
@@ -124,7 +118,6 @@ const jsonLd = {
             { pergunta: 'Quanto tempo demora o serviço?', resposta: 'Depende da área da piscina, mas é bem mais rápido que uma troca convencional, já que não há espera pra encher ou esvaziar.' },
             { pergunta: 'Funciona em qualquer tipo de piscina?', resposta: 'Na maioria dos casos, sim. Fazemos uma avaliação técnica prévia pra confirmar a viabilidade no seu caso.' },
             { pergunta: 'A piscina pode continuar em uso durante o serviço?', resposta: 'Em geral, sim, com interrupções pontuais e programadas — ideal pra hotéis, clubes e academias que não podem parar.' },
-            { pergunta: 'O resultado tem garantia?', resposta: 'Sim. Garantia por escrito sobre o serviço executado, definida em contrato.' },
           ].map((item) => (
             <details class="bg-marca-suave border border-white/10 rounded-2xl p-6 group">
               <summary class="font-semibold cursor-pointer list-none flex items-center justify-between gap-4">

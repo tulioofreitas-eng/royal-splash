@@ -7,7 +7,6 @@ import LPFooter from '../../components/LPFooter.astro';
 import BotaoWhatsapp from '../../components/BotaoWhatsapp.astro';
 import FormularioGHL from '../../components/FormularioGHL.astro';
 import Icon from '../../components/Icon.astro';
-import GoogleReviews from '../../components/GoogleReviews.astro';
 import GaleriaZoom from '../../components/GaleriaZoom.astro';
 import { Image } from 'astro:assets';
 import servicoVazamento from '../../assets/servico-vazamento.jpg';
@@ -85,11 +84,6 @@ const jsonLd = {
       </div>
     </section>
 
-    <GoogleReviews depoimentos={[
-      { texto: 'Detectaram o vazamento sem esvaziar a piscina nem quebrar nada — foi certeiro de primeira.', nome: 'Roberto Lima', local: 'Barra da Tijuca' },
-      { texto: 'A conta de água tinha disparado sem explicação, e localizaram o ponto exato rápido.', nome: 'Patrícia Gonçalves', local: 'Zona Sul' },
-      { texto: 'Depois de uma tentativa sem sucesso com outra empresa, acharam o vazamento na tubulação enterrada com o equipamento certo.', nome: 'Eduardo Martins', local: 'Niterói' },
-    ]} />
 
     <section class="py-16 px-6">
       <div class="max-w-3xl mx-auto text-center">
@@ -103,7 +97,6 @@ const jsonLd = {
         <ul class="space-y-3 inline-flex flex-col text-left">
           <li class="flex items-center gap-3 text-slate-300"><Icon name="check" class="w-5 h-5 text-ouro shrink-0" /> Detecção sem quebra desnecessária</li>
           <li class="flex items-center gap-3 text-slate-300"><Icon name="check" class="w-5 h-5 text-ouro shrink-0" /> Diagnóstico rápido e preciso</li>
-          <li class="flex items-center gap-3 text-slate-300"><Icon name="check" class="w-5 h-5 text-ouro shrink-0" /> Reparo definitivo, com garantia</li>
         </ul>
       </div>
     </section>
@@ -121,11 +114,6 @@ const jsonLd = {
             <div class="w-14 h-14 rounded-full bg-ouro/10 flex items-center justify-center mb-4 text-ouro"><Icon name="wrench" /></div>
             <h3 class="text-xl font-semibold mb-2">Reparo Definitivo</h3>
             <p class="text-slate-400">Correção estrutural, de tubulação ou revestimento, sem gambiarra.</p>
-          </div>
-          <div class="bg-marca border border-white/10 rounded-2xl p-6">
-            <div class="w-14 h-14 rounded-full bg-ouro/10 flex items-center justify-center mb-4 text-ouro"><Icon name="shield" /></div>
-            <h3 class="text-xl font-semibold mb-2">Garantia do Serviço</h3>
-            <p class="text-slate-400">Acompanhamento pós-reparo pra garantir que o problema não volte.</p>
           </div>
         </div>
       </div>
@@ -183,7 +171,6 @@ const jsonLd = {
             /* Prazo de 48h ainda não confirmado pelo time operacional — validar antes de publicar de vez */
             { pergunta: 'Em quanto tempo vocês atendem?', resposta: 'Visita técnica em até 48 horas na capital e Grande Rio. Casos urgentes, consulte disponibilidade no WhatsApp.' },
             { pergunta: 'E se o vazamento for na tubulação enterrada?', resposta: 'É o caso mais comum — e exatamente onde a detecção acústica é mais eficaz. Localizamos o trecho sem escavar às cegas.' },
-            { pergunta: 'O reparo tem garantia?', resposta: 'Sim. Garantia por escrito sobre o ponto reparado, definida em contrato.' },
           ].map((item) => (
             <details class="bg-marca-suave border border-white/10 rounded-2xl p-6 group">
               <summary class="font-semibold cursor-pointer list-none flex items-center justify-between gap-4">

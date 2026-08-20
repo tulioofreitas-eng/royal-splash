@@ -7,7 +7,6 @@ import LPFooter from '../../components/LPFooter.astro';
 import BotaoWhatsapp from '../../components/BotaoWhatsapp.astro';
 import FormularioGHL from '../../components/FormularioGHL.astro';
 import Icon from '../../components/Icon.astro';
-import GoogleReviews from '../../components/GoogleReviews.astro';
 import GaleriaZoom from '../../components/GaleriaZoom.astro';
 import { Image } from 'astro:assets';
 import servicoFibra from '../../assets/servico-fibra.jpg';
@@ -63,11 +62,6 @@ description: 'Restauração e pintura de piscinas de fibra no estado do Rio de J
       </div>
     </section>
 
-    <GoogleReviews depoimentos={[
-      { texto: 'A piscina de fibra tinha trincas visíveis havia anos e ficou impecável depois da restauração.', nome: 'Beatriz Nogueira', local: 'Jacarepaguá' },
-      { texto: 'Fizeram o diagnóstico presencial e explicaram exatamente o porquê da indicação antes de fechar qualquer coisa.', nome: 'André Luiz Ferreira', local: 'Barra da Tijuca' },
-      { texto: 'Rápido — poucos dias de serviço e a piscina já estava pronta pra uso de novo.', nome: 'Camila Duarte', local: 'Recreio dos Bandeirantes' },
-    ]} />
 
     <section class="py-16 px-6">
       <div class="max-w-5xl mx-auto grid md:grid-cols-2 gap-12 items-center">
@@ -175,7 +169,6 @@ description: 'Restauração e pintura de piscinas de fibra no estado do Rio de J
             { pergunta: 'Gel Coat ou Tinta PU: qual o melhor para minha piscina?', resposta: 'Depende do estado da superfície. O diagnóstico presencial define a indicação — e explicamos o porquê da escolha.' },
             { pergunta: 'Toda trinca tem conserto?', resposta: 'A maioria sim. Bolhas profundas e danos estruturais graves têm limite de recuperação — e avisamos com transparência antes do orçamento.' },
             { pergunta: 'Quanto tempo dura a restauração?', resposta: 'Em geral, poucos dias de serviço mais o tempo de cura. O prazo exato é definido na avaliação.' },
-            { pergunta: 'Quanto tempo dura o resultado?', resposta: 'Com Gel Coat isoftálico e manutenção adequada da água, a superfície restaurada dura muitos anos. A garantia é definida em contrato.' },
             { pergunta: 'A avaliação é paga?', resposta: 'Não. A visita de diagnóstico é gratuita e sem compromisso.' },
           ].map((item) => (
             <details class="bg-marca-suave border border-white/10 rounded-2xl p-6 group">

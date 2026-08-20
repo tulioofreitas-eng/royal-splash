@@ -7,7 +7,6 @@ import LPFooter from '../../components/LPFooter.astro';
 import BotaoWhatsapp from '../../components/BotaoWhatsapp.astro';
 import FormularioGHL from '../../components/FormularioGHL.astro';
 import Icon from '../../components/Icon.astro';
-import GoogleReviews from '../../components/GoogleReviews.astro';
 import GaleriaZoom from '../../components/GaleriaZoom.astro';
 import { Image } from 'astro:assets';
 import servicoReforma from '../../assets/servico-reforma.jpg';
@@ -93,11 +92,6 @@ const jsonLd = {
       </div>
     </section>
 
-    <GoogleReviews depoimentos={[
-      { texto: 'A piscina tinha mais de 10 anos e parece nova depois da reforma — aproveitamos pra colocar aquecimento e hoje uso o ano inteiro.', nome: 'Marcelo Tavares', local: 'Recreio dos Bandeirantes' },
-      { texto: 'Não imaginava que dava pra transformar minha piscina comum sem quebrar tudo. Ficou pronta bem mais rápido do que eu esperava.', nome: 'Juliana Ramos', local: 'Barra da Tijuca' },
-      { texto: 'Instalamos automação por aplicativo na mesma obra da reforma — hoje controlo filtragem e iluminação pelo celular.', nome: 'Paulo Henrique Costa', local: 'Niterói' },
-    ]} />
 
     <section class="py-16 px-6">
       <div class="max-w-3xl mx-auto text-center">
@@ -154,11 +148,6 @@ const jsonLd = {
             <div class="w-14 h-14 rounded-full bg-ouro/10 flex items-center justify-center mb-4 text-ouro"><Icon name="cpu" /></div>
             <h3 class="text-xl font-semibold mb-2">Automação e Iluminação</h3>
             <p class="text-slate-400">Sistemas modernos de controle, aquecimento e iluminação LED.</p>
-          </div>
-          <div class="bg-marca border border-white/10 rounded-2xl p-6">
-            <div class="w-14 h-14 rounded-full bg-ouro/10 flex items-center justify-center mb-4 text-ouro"><Icon name="shield" /></div>
-            <h3 class="text-xl font-semibold mb-2">Garantia Pós-obra</h3>
-            <p class="text-slate-400">Acompanhamento após a entrega, com suporte técnico.</p>
           </div>
         </div>
       </div>
@@ -221,7 +210,6 @@ const jsonLd = {
             { pergunta: 'Quanto tempo a piscina fica parada?', resposta: 'O prazo é definido na avaliação técnica e registrado em contrato. Reformas são obras mais curtas que construção.' },
             { pergunta: 'Dá para transformar minha piscina comum em borda infinita?', resposta: 'Depende da estrutura e da posição. Fazemos a avaliação de viabilidade na visita técnica, sem compromisso.' },
             { pergunta: 'Vale a pena instalar aquecimento na reforma?', resposta: 'É o momento ideal — a hidráulica já está aberta, o custo de instalação cai e a piscina passa a ser usada o ano todo.' },
-            { pergunta: 'A reforma tem garantia?', resposta: 'Sim. Garantia por escrito sobre os serviços executados, definida em contrato.' },
           ].map((item) => (
             <details class="bg-marca-suave border border-white/10 rounded-2xl p-6 group">
               <summary class="font-semibold cursor-pointer list-none flex items-center justify-between gap-4">
