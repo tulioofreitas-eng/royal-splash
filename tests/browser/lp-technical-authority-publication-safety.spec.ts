@@ -23,11 +23,12 @@ const cases = [
       /visualização 3D antes de fechar/i,
       /avaliação estrutural com engenheiro responsável/i,
       /Posso construir piscina em cobertura ou laje/i,
+      /Equipe Qualificada/i,
+      /Profissionais treinados em alto padrão/i,
     ],
     preserved: [
       /Alvenaria sob medida/i,
       /Fazemos o projeto completo/i,
-      /Equipe Qualificada/i,
       /Tecnologia de Ponta/i,
       /alto padrão/i,
     ],
@@ -36,13 +37,65 @@ const cases = [
     route: "/lp/sauna",
     forbidden: [
       /sistemas de aquecimento eficientes e seguros/i,
+      /Equipe Qualificada/i,
+      /Profissionais treinados em alto padrão/i,
     ],
     preserved: [
       /Projetos personalizados com sistemas de aquecimento/i,
+      /Tecnologia de Ponta/i,
+    ],
+  },  {
+    route: "/lp/fibra",
+    forbidden: [
+      /Especialistas em Restauração de Fibra/i,
+      /Especialistas em Fibra/i,
+      /Profissionais treinados especificamente em fibra de vidro/i,
+    ],
+    preserved: [
+      /Restauração de Fibra/i,
+      /Gel Coat/i,
+      /Tinta PU/i,
+      /Materiais Premium/i,
+    ],
+  },
+  {
+    route: "/lp/lazer",
+    forbidden: [
       /Equipe Qualificada/i,
+      /Profissionais treinados em alto padrão/i,
+    ],
+    preserved: [
+      /Atendimento Premium/i,
       /Tecnologia de Ponta/i,
     ],
   },
+  {
+    route: "/lp/reforma",
+    forbidden: [
+      /Equipe Qualificada/i,
+      /Profissionais treinados em alto padrão/i,
+    ],
+    preserved: [
+      /Atendimento Premium/i,
+      /Tecnologia de Ponta/i,
+      /modernização estrutural/i,
+    ],
+  },
+  {
+    route: "/lp/vazamento",
+    forbidden: [
+      /Especialistas em Detecção de Vazamentos/i,
+      /Equipe Qualificada/i,
+      /Profissionais treinados em detecção técnica/i,
+    ],
+    preserved: [
+      /Detecção de Vazamentos/i,
+      /Tecnologia de Ponta/i,
+      /Equipamentos de detecção acústica e pressão/i,
+      /ponto exato/i,
+    ],
+  },
+
 ];
 
 for (const {

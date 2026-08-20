@@ -36,7 +36,6 @@ const cases = [
     ],
     preserved: [
       /Tecnologia de Ponta/i,
-      /alto padrão/i,
     ],
   },
   {
@@ -74,7 +73,6 @@ const cases = [
     ],
     preserved: [
       /Tecnologia de Ponta/i,
-      /alto padrão/i,
     ],
   },
   {
