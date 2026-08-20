@@ -11,15 +11,6 @@ import { Image } from 'astro:assets';
 import servicoFibra from '../../assets/servico-fibra.jpg';
 
 
-const jsonLd = {
-  '@context': 'https://schema.org',
-  '@type': 'LocalBusiness',
-  name: 'Royal Splash',
-  image: 'https://www.royalsplash.com.br/logo.png',
-  telephone: '+5521982590643',
-  email: 'contato@royalsplash.com.br',
-  address: { '@type': 'PostalAddress', addressRegion: 'RJ', addressCountry: 'BR' },
-description: 'Restauração e pintura de piscinas de fibra.',};
 ---
 
 <html lang="pt-BR">
@@ -31,7 +22,6 @@ description: 'Restauração e pintura de piscinas de fibra.',};
 <meta name="description" content="Restauração de piscinas de fibra." />
     <meta name="robots" content="noindex, nofollow" />
     <link rel="icon" type="image/x-icon" href="/favicon.ico" />
-    <script type="application/ld+json" set:html={JSON.stringify(jsonLd)} />
   </head>
   <body class="bg-marca text-white">
     <GTMBody />

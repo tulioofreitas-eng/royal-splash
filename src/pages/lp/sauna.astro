@@ -15,16 +15,6 @@ import saunaSpa from '../../assets/sauna-spa.jpg';
 import saunaAquecedor from '../../assets/sauna-aquecedor.jpg';
 import saunaEspacoIntegrado from '../../assets/sauna-espaco-integrado.jpg';
 
-const jsonLd = {
-  '@context': 'https://schema.org',
-  '@type': 'LocalBusiness',
-  name: 'Royal Splash',
-  image: 'https://www.royalsplash.com.br/logo.png',
-  telephone: '+5521982590643',
-  email: 'contato@royalsplash.com.br',
-  address: { '@type': 'PostalAddress', addressRegion: 'RJ', addressCountry: 'BR' },
-  description: 'Construção e instalação de saunas e spas de alto padrão.',
-};
 ---
 
 <html lang="pt-BR">
@@ -36,7 +26,6 @@ const jsonLd = {
     <meta name="description" content="Construção e instalação de saunas e spas personalizados. Conforto e bem-estar." />
     <meta name="robots" content="noindex, nofollow" />
     <link rel="icon" type="image/x-icon" href="/favicon.ico" />
-    <script type="application/ld+json" set:html={JSON.stringify(jsonLd)} />
   </head>
   <body class="bg-marca text-white">
     <GTMBody />

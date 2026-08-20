@@ -10,16 +10,6 @@ import Icon from '../../components/Icon.astro';
 import { Image } from 'astro:assets';
 import servicoReforma from '../../assets/servico-reforma.jpg';
 
-const jsonLd = {
-  '@context': 'https://schema.org',
-  '@type': 'LocalBusiness',
-  name: 'Royal Splash',
-  image: 'https://www.royalsplash.com.br/logo.png',
-  telephone: '+5521982590643',
-  email: 'contato@royalsplash.com.br',
-  address: { '@type': 'PostalAddress', addressRegion: 'RJ', addressCountry: 'BR' },
-  description: 'Reforma e revitalização de piscinas de alto padrão.',
-};
 ---
 
 <html lang="pt-BR">
@@ -31,7 +21,6 @@ const jsonLd = {
     <meta name="description" content="Sua piscina perdeu o brilho? Revitalizamos com acabamento premium, novos revestimentos e automação." />
     <meta name="robots" content="noindex, nofollow" />
     <link rel="icon" type="image/x-icon" href="/favicon.ico" />
-    <script type="application/ld+json" set:html={JSON.stringify(jsonLd)} />
   </head>
   <body class="bg-marca text-white">
     <GTMBody />

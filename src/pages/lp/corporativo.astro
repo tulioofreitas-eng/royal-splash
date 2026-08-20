@@ -12,16 +12,6 @@ import corpOlimpica from '../../assets/corp-olimpica.jpg';
 import corpHotel from '../../assets/corp-hotel.jpg';
 import corpManutencao from '../../assets/corp-manutencao.jpg';
 
-const jsonLd = {
-  '@context': 'https://schema.org',
-  '@type': 'LocalBusiness',
-  name: 'Royal Splash',
-  image: 'https://www.royalsplash.com.br/logo.png',
-  telephone: '+5521982590643',
-  email: 'contato@royalsplash.com.br',
-  address: { '@type': 'PostalAddress', addressRegion: 'RJ', addressCountry: 'BR' },
-  description: 'Soluções corporativas em piscinas e áreas de lazer para hotéis, resorts, clubes e academias.',
-};
 ---
 
 <html lang="pt-BR">
@@ -33,7 +23,6 @@ const jsonLd = {
     <meta name="description" content="Piscinas olímpicas, áreas de lazer para hotéis e manutenção expressa. Soluções para hotéis, resorts, clubes e academias." />
     <meta name="robots" content="noindex, nofollow" />
     <link rel="icon" type="image/x-icon" href="/favicon.ico" />
-    <script type="application/ld+json" set:html={JSON.stringify(jsonLd)} />
   </head>
   <body class="bg-marca text-white">
     <GTMBody />
