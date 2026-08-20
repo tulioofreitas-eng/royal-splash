@@ -52,6 +52,8 @@ const cases = [
   {
     route: "/lp/reforma",
     forbidden: [
+      /custo de instalação cai/i,
+      /sem compromisso/i,
       /Solicitar orçamento gratuito/i,
       /Prazo otimizado, sem obra longa/i,
       /Prazos Cumpridos/i,
@@ -59,7 +61,6 @@ const cases = [
     ],
     preserved: [
       /modernização estrutural/i,
-      /sem compromisso/i,
       /Tecnologia de Ponta/i,
     ],
   },

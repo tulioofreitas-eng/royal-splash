@@ -65,7 +65,7 @@ const jsonLd = {
           Piscina antiga, revestimento desgastado ou sistema ultrapassado? Fazemos a reforma completa: novo acabamento, iluminação LED, automação e modernização estrutural — sem precisar reconstruir do zero.
         </p>
         <p class="text-slate-400 mb-6">
-          Atendimento em todo o estado do Rio de Janeiro, com projeto personalizado pra sua piscina atual.
+          Atendimento em todo o estado do Rio de Janeiro.
         </p>
         <ul class="space-y-3 inline-flex flex-col text-left">
           <li class="flex items-center gap-3 text-slate-300"><Icon name="check" class="w-5 h-5 text-ouro shrink-0" /> Novos revestimentos e acabamentos</li>
@@ -84,11 +84,8 @@ const jsonLd = {
         </p>
         <div class="grid md:grid-cols-2 gap-6 max-w-3xl mx-auto">
           {[
-            { titulo: 'Aquecimento', texto: 'use a piscina o ano inteiro, não só no verão' },
             { titulo: 'Automação por aplicativo', texto: 'filtragem, iluminação e aquecimento no celular' },
-            { titulo: 'Tratamento com sal', texto: 'água mais suave e menos manutenção química' },
             { titulo: 'Iluminação LED subaquática', texto: 'a piscina vira o centro da casa à noite' },
-            { titulo: 'Conversão para borda infinita', texto: 'em piscinas com estrutura e posição favoráveis, avaliamos a transformação completa' },
           ].map((upgrade) => (
             <div class="flex items-start gap-3">
               <Icon name="check" class="w-5 h-5 text-ouro shrink-0 mt-1" />
@@ -144,8 +141,6 @@ const jsonLd = {
         <div class="space-y-4">
           {[
             { pergunta: 'Preciso quebrar tudo para reformar?', resposta: 'Não. Na maioria dos casos a estrutura é aproveitada — trocamos revestimento, hidráulica e equipamentos sem reconstruir.' },
-            { pergunta: 'Dá para transformar minha piscina comum em borda infinita?', resposta: 'Depende da estrutura e da posição. Fazemos a avaliação de viabilidade na visita técnica, sem compromisso.' },
-            { pergunta: 'Vale a pena instalar aquecimento na reforma?', resposta: 'É o momento ideal — a hidráulica já está aberta, o custo de instalação cai e a piscina passa a ser usada o ano todo.' },
           ].map((item) => (
             <details class="bg-marca-suave border border-white/10 rounded-2xl p-6 group">
               <summary class="font-semibold cursor-pointer list-none flex items-center justify-between gap-4">
