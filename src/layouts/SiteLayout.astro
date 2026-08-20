@@ -3,6 +3,7 @@ import ConversionOrigin from "../components/runtime/ConversionOrigin.astro";
 import MainContent from "../components/runtime/MainContent.astro";
 import SemanticAnalytics from "../components/runtime/SemanticAnalytics.astro";
 import SkipLink from "../components/runtime/SkipLink.astro";
+import { getCurrentSeoRobots } from "../seo/runtime.ts";
 
 interface Props {
   title: string;
@@ -19,6 +20,9 @@ const {
   robots,
   bodyClass,
 } = Astro.props;
+
+const effectiveRobots =
+  getCurrentSeoRobots(robots);
 ---
 
 <!doctype html>
@@ -28,7 +32,7 @@ const {
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>{title}</title>
     {description && <meta name="description" content={description} />}
-    {robots && <meta name="robots" content={robots} />}
+    {effectiveRobots && <meta name="robots" content={effectiveRobots} />}
     <slot name="head" />
   </head>
   <body class={bodyClass} data-template-family="site">

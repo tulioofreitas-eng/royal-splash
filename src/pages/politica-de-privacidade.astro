@@ -5,6 +5,9 @@ import GTMBody from '../components/GTMBody.astro';
 import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
 import BotaoWhatsapp from '../components/BotaoWhatsapp.astro';
+import { getCurrentSeoRobots } from '../seo/runtime.ts';
+
+const robots = getCurrentSeoRobots();
 ---
 
 <html lang="pt-BR">
@@ -14,6 +17,7 @@ import BotaoWhatsapp from '../components/BotaoWhatsapp.astro';
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>Política de Privacidade — Royal Splash</title>
     <meta name="description" content="Política de Privacidade da Royal Splash: como coletamos, usamos e protegemos seus dados pessoais." />
+    {robots && <meta name="robots" content={robots} />}
     <link rel="icon" type="image/x-icon" href="/favicon.ico" />
   </head>
   <body class="bg-marca text-white pt-20">
