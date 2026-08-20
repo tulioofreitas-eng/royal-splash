@@ -7,13 +7,8 @@ import LPFooter from '../../components/LPFooter.astro';
 import BotaoWhatsapp from '../../components/BotaoWhatsapp.astro';
 import FormularioGHL from '../../components/FormularioGHL.astro';
 import Icon from '../../components/Icon.astro';
-import GaleriaZoom from '../../components/GaleriaZoom.astro';
 import { Image } from 'astro:assets';
 import servicoFibra from '../../assets/servico-fibra.jpg';
-import fibraAntes from '../../assets/fibra-antes.jpg';
-import fibraAplicacao from '../../assets/fibra-aplicacao.jpg';
-import fibraDetalhe from '../../assets/fibra-detalhe.jpg';
-import fibraDepois from '../../assets/fibra-depois.jpg';
 
 
 const jsonLd = {
@@ -64,7 +59,7 @@ description: 'Restauração e pintura de piscinas de fibra no estado do Rio de J
 
 
     <section class="py-16 px-6">
-      <div class="max-w-5xl mx-auto grid md:grid-cols-2 gap-12 items-center">
+      <div class="max-w-3xl mx-auto">
         <div>
           <h2 class="text-3xl font-semibold mb-4">Especialistas em <span class="text-piscina">Restauração de Fibra</span></h2>
 <p class="text-slate-400 mb-4">
@@ -79,12 +74,7 @@ description: 'Restauração e pintura de piscinas de fibra no estado do Rio de J
   <li class="flex items-center gap-3 text-slate-300"><Icon name="check" class="w-5 h-5 text-ouro shrink-0" /> Diagnóstico honesto antes de qualquer orçamento</li>
 </ul>
         </div>
-        <GaleriaZoom imagens={[
-  { src: fibraAntes, alt: 'Piscina de fibra antes da restauração Royal Splash, Rio de Janeiro' },
-  { src: fibraAplicacao, alt: 'Aplicação de gel coat Royal Splash, RJ' },
-  { src: fibraDetalhe, alt: 'Detalhe da superfície restaurada Royal Splash' },
-  { src: fibraDepois, alt: 'Piscina de fibra restaurada Royal Splash, Rio de Janeiro' },
-]} />
+
       </div>
     </section>
 
@@ -139,26 +129,7 @@ description: 'Restauração e pintura de piscinas de fibra no estado do Rio de J
       </div>
     </section>
 
-    <section class="py-16 px-6 bg-marca-suave">
-      <div class="max-w-5xl mx-auto">
-        <h2 class="text-3xl font-semibold text-center mb-10">Antes e depois da <span class="text-piscina">restauração</span></h2>
-        <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
-          {[
-            { img: fibraAntes, alt: 'Piscina de fibra antes da restauração Royal Splash, Rio de Janeiro', legenda: 'Antes' },
-            { img: fibraAplicacao, alt: 'Aplicação de gel coat Royal Splash, RJ', legenda: 'Aplicação' },
-            { img: fibraDetalhe, alt: 'Detalhe da superfície restaurada Royal Splash', legenda: 'Detalhe' },
-            { img: fibraDepois, alt: 'Piscina de fibra restaurada Royal Splash, Rio de Janeiro', legenda: 'Depois' },
-          ].map((foto) => (
-            <figure class="rounded-xl overflow-hidden border border-white/10">
-              <div class="aspect-square">
-                <Image src={foto.img} alt={foto.alt} class="w-full h-full object-cover" />
-              </div>
-              <figcaption class="text-center text-sm text-slate-400 py-2 bg-marca">{foto.legenda}</figcaption>
-            </figure>
-          ))}
-        </div>
-      </div>
-    </section>
+
 
     <!-- FAQ -->
     <section class="py-16 px-6">

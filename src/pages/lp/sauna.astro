@@ -10,14 +10,6 @@ import Icon from '../../components/Icon.astro';
 import GaleriaZoom from '../../components/GaleriaZoom.astro';
 import { Image } from 'astro:assets';
 import servicoSauna from '../../assets/servico-sauna.jpg';
-import obra1 from '../../assets/obra-1.jpg';
-import obra2 from '../../assets/obra-2.jpg';
-import obra3 from '../../assets/obra-3.jpg';
-import obra4 from '../../assets/obra-4.jpg';
-import obra5 from '../../assets/obra-5.jpg';
-import obra6 from '../../assets/obra-6.jpg';
-import obra7 from '../../assets/obra-7.jpg';
-import obra8 from '../../assets/obra-8.jpg';
 import saunaInterior from '../../assets/sauna-interior.jpg';
 import saunaSpa from '../../assets/sauna-spa.jpg';
 import saunaAquecedor from '../../assets/sauna-aquecedor.jpg';
@@ -141,24 +133,7 @@ const jsonLd = {
       </div>
     </section>
 
-    <section class="py-16 px-6 bg-marca-suave">
-      <div class="max-w-5xl mx-auto">
-        <h2 class="text-3xl font-semibold text-center mb-10">Projetos que falam por si</h2>
-        <GaleriaZoom
-          colunas="grid-cols-2 md:grid-cols-4"
-          imagens={[
-            { src: obra1, alt: 'Obra Royal Splash, Rio de Janeiro' },
-            { src: obra2, alt: 'Obra Royal Splash, Rio de Janeiro' },
-            { src: obra3, alt: 'Obra Royal Splash, Rio de Janeiro' },
-            { src: obra4, alt: 'Obra Royal Splash, Rio de Janeiro' },
-            { src: obra5, alt: 'Obra Royal Splash, Rio de Janeiro' },
-            { src: obra6, alt: 'Obra Royal Splash, Rio de Janeiro' },
-            { src: obra7, alt: 'Obra Royal Splash, Rio de Janeiro' },
-            { src: obra8, alt: 'Obra Royal Splash, Rio de Janeiro' },
-          ]}
-        />
-      </div>
-    </section>
+
 
     <section class="py-16 px-6 bg-marca-suave text-center border-y border-ouro/20">
       <h2 class="text-3xl md:text-4xl font-semibold mb-6 max-w-2xl mx-auto">

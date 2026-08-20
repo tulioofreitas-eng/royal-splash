@@ -7,10 +7,8 @@ import LPFooter from '../../components/LPFooter.astro';
 import BotaoWhatsapp from '../../components/BotaoWhatsapp.astro';
 import FormularioGHL from '../../components/FormularioGHL.astro';
 import Icon from '../../components/Icon.astro';
-import GaleriaZoom from '../../components/GaleriaZoom.astro';
 import { Image } from 'astro:assets';
 import servicoVazamento from '../../assets/servico-vazamento.jpg';
-import vazamentoReparo from '../../assets/vazamento-reparo.jpg';
 
 const jsonLd = {
   '@context': 'https://schema.org',
@@ -147,18 +145,7 @@ const jsonLd = {
       </div>
     </section>
 
-    <section class="py-16 px-6 bg-marca-suave">
-      <div class="max-w-5xl mx-auto">
-        <h2 class="text-3xl font-semibold text-center mb-10">Nosso <span class="text-piscina">serviço</span> em ação</h2>
-        <GaleriaZoom
-          colunas="grid-cols-1 md:grid-cols-2"
-          imagens={[
-            { src: servicoVazamento, alt: 'Equipamento de detecção de vazamento em ação Royal Splash, Rio de Janeiro' },
-            { src: vazamentoReparo, alt: 'Reparo de vazamento executado Royal Splash, Rio de Janeiro' },
-          ]}
-        />
-      </div>
-    </section>
+
 
     <!-- FAQ -->
     <section class="py-16 px-6">

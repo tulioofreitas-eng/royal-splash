@@ -7,21 +7,8 @@ import LPFooter from '../../components/LPFooter.astro';
 import BotaoWhatsapp from '../../components/BotaoWhatsapp.astro';
 import FormularioGHL from '../../components/FormularioGHL.astro';
 import Icon from '../../components/Icon.astro';
-import GaleriaZoom from '../../components/GaleriaZoom.astro';
 import { Image } from 'astro:assets';
 import servicoReforma from '../../assets/servico-reforma.jpg';
-import obra1 from '../../assets/obra-1.jpg';
-import obra2 from '../../assets/obra-2.jpg';
-import obra3 from '../../assets/obra-3.jpg';
-import obra4 from '../../assets/obra-4.jpg';
-import obra5 from '../../assets/obra-5.jpg';
-import obra6 from '../../assets/obra-6.jpg';
-import obra7 from '../../assets/obra-7.jpg';
-import obra8 from '../../assets/obra-8.jpg';
-import reformaAntes from '../../assets/reforma-antes.jpg';
-import reformaRemocao from '../../assets/reforma-remocao.jpg';
-import reformaAplicacao from '../../assets/reforma-aplicacao.jpg';
-import reformaDepois from '../../assets/reforma-depois.jpg';
 
 const jsonLd = {
   '@context': 'https://schema.org',
@@ -71,26 +58,7 @@ const jsonLd = {
     </section>
 
     <!-- Antes/depois -->
-    <section class="py-16 px-6">
-      <div class="max-w-5xl mx-auto">
-        <h2 class="text-3xl font-semibold text-center mb-10">De piscina antiga a <span class="text-piscina">área premium</span> — o mesmo espaço, outra piscina</h2>
-        <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
-          {[
-            { img: reformaAntes, alt: 'Piscina antes da reforma Royal Splash, Rio de Janeiro', legenda: 'Antes' },
-            { img: reformaRemocao, alt: 'Remoção de revestimento antigo Royal Splash, RJ', legenda: 'Remoção' },
-            { img: reformaAplicacao, alt: 'Aplicação de novo revestimento Royal Splash', legenda: 'Aplicação' },
-            { img: reformaDepois, alt: 'Piscina reformada Royal Splash, Rio de Janeiro', legenda: 'Depois' },
-          ].map((foto) => (
-            <figure class="rounded-xl overflow-hidden border border-white/10">
-              <div class="aspect-square">
-                <Image src={foto.img} alt={foto.alt} class="w-full h-full object-cover" />
-              </div>
-              <figcaption class="text-center text-sm text-slate-400 py-2 bg-marca-suave">{foto.legenda}</figcaption>
-            </figure>
-          ))}
-        </div>
-      </div>
-    </section>
+
 
 
     <section class="py-16 px-6">
@@ -181,24 +149,7 @@ const jsonLd = {
       </div>
     </section>
 
-    <section class="py-16 px-6 bg-marca-suave">
-      <div class="max-w-5xl mx-auto">
-        <h2 class="text-3xl font-semibold text-center mb-10">Projetos que falam por si</h2>
-        <GaleriaZoom
-          colunas="grid-cols-2 md:grid-cols-4"
-          imagens={[
-            { src: obra1, alt: 'Obra Royal Splash, Rio de Janeiro' },
-            { src: obra2, alt: 'Obra Royal Splash, Rio de Janeiro' },
-            { src: obra3, alt: 'Obra Royal Splash, Rio de Janeiro' },
-            { src: obra4, alt: 'Obra Royal Splash, Rio de Janeiro' },
-            { src: obra5, alt: 'Obra Royal Splash, Rio de Janeiro' },
-            { src: obra6, alt: 'Obra Royal Splash, Rio de Janeiro' },
-            { src: obra7, alt: 'Obra Royal Splash, Rio de Janeiro' },
-            { src: obra8, alt: 'Obra Royal Splash, Rio de Janeiro' },
-          ]}
-        />
-      </div>
-    </section>
+
 
     <!-- FAQ -->
     <section class="py-16 px-6">
