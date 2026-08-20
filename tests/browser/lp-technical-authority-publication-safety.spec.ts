@@ -84,6 +84,12 @@ const cases = [
   {
     route: "/lp/reforma",
     forbidden: [
+      /sem precisar reconstruir do zero/i,
+      /estrutura é aproveitada/i,
+      /sem reconstruir/i,
+      /aproveitamos a obra aberta/i,
+      /Automação por aplicativo/i,
+      /filtragem, iluminação e aquecimento no celular/i,
       /projeto personalizado/i,
       /use a piscina o ano inteiro/i,
       /Tratamento com sal/i,
@@ -94,12 +100,6 @@ const cases = [
       /Profissionais treinados em alto padrão/i,
     ],
     preserved: [
-      /sem precisar reconstruir do zero/i,
-      /estrutura é aproveitada/i,
-      /sem reconstruir/i,
-      /aproveitamos a obra aberta/i,
-      /Automação por aplicativo/i,
-      /filtragem, iluminação e aquecimento no celular/i,
       /Atendimento Premium/i,
       /Tecnologia de Ponta/i,
       /modernização estrutural/i,
