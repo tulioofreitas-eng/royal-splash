@@ -57,23 +57,6 @@ test("/lp/piscinas suppresses coupled unverified proof and technical surfaces", 
     page.locator("#lightbox"),
   ).toHaveCount(0);
 
-  // Explicitly preserved for the next material-claims pass.
-  expect(bodyText).toMatch(
-    /prazo e preço fechados em contrato/i,
-  );
-
-  expect(bodyText).toMatch(
-    /Prazos Cumpridos/i,
-  );
-
-  const faqText = (
-    await page.locator("details").allTextContents()
-  )
-    .join(" ")
-    .replace(/\s+/g, " ")
-    .trim();
-
-  expect(faqText).toMatch(
-    /preço fechado em contrato/i,
-  );
+  // Material claims are owned by downstream
+  // publication-safety regression coverage.
 });
