@@ -4,11 +4,27 @@ interface Props {
   colunas?: string;
 }
 const { imagens, colunas = 'grid-cols-2' } = Astro.props;
-import { Image } from 'astro:assets';
+import { Image, getImage } from 'astro:assets';
+
+const lightboxSources = await Promise.all(
+  imagens.map(async (img) => {
+    if (typeof img.src === 'string') {
+      return img.src;
+    }
+
+    const lightboxImage = await getImage({
+      src: img.src,
+      width: img.src.width,
+      height: img.src.height,
+    });
+
+    return lightboxImage.src;
+  }),
+);
 ---
 <div class={`grid ${colunas} gap-3`}>
   {imagens.map((img, i) => (
-    <button type="button" class="galeria-zoom-item aspect-square rounded-xl overflow-hidden border border-white/10 group" data-index={i}>
+    <button type="button" class="galeria-zoom-item aspect-square rounded-xl overflow-hidden border border-white/10 group" data-index={i} data-lightbox-src={lightboxSources[i]}>
       <Image src={img.src} alt={img.alt} class="w-full h-full object-cover transition-transform duration-300 group-hover:scale-110" />
     </button>
   ))}
@@ -26,7 +42,11 @@ import { Image } from 'astro:assets';
   items.forEach((item) => {
     item.addEventListener('click', () => {
       const img = item.querySelector('img') as HTMLImageElement;
-      lightboxImg.src = img.src;
+      const lightboxSrc = item.getAttribute('data-lightbox-src');
+
+      if (!lightboxSrc) return;
+
+      lightboxImg.src = lightboxSrc;
       lightboxImg.alt = img.alt;
       lightbox.classList.remove('hidden');
       lightbox.classList.add('flex');
