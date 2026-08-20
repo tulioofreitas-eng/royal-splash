@@ -47,26 +47,18 @@ const jsonLd = {
         <h1 class="text-3xl md:text-5xl font-semibold mb-4 leading-tight">
           Sua piscina está perdendo água? Encontramos o vazamento
         </h1>
-        {/* Prazo de 48h ainda não confirmado pelo time operacional — validar antes de publicar de vez */}
         <p class="text-base md:text-lg text-slate-300 mb-6 max-w-xl mx-auto">
-          Detecção eletrônica sem quebrar e sem esvaziar a piscina. Visita técnica em até 48 horas em todo o Rio de Janeiro.
+          Detecção eletrônica sem quebrar e sem esvaziar a piscina.
         </p>
-        <a href="#orcamento" class="inline-block bg-ouro hover:opacity-90 text-marca font-semibold px-8 py-4 rounded-full transition-opacity">
-          Solicitar orçamento gratuito
-        </a>
       </div>
     </section>
 
     <!-- Evaporação ou vazamento? -->
     <section class="py-16 px-6">
       <div class="max-w-3xl mx-auto">
-        <h2 class="text-3xl font-semibold text-center mb-4">Evaporação ou vazamento? <span class="text-piscina">Descubra em 2&nbsp;minutos</span></h2>
-        <p class="text-slate-400 text-center mb-8">
-          Toda piscina perde um pouco de água por evaporação — até cerca de 1 cm por dia em dias quentes. Acima disso, o cenário mais provável é vazamento. Fique atento aos sinais:
-        </p>
+        <h2 class="text-3xl font-semibold text-center mb-4">Evaporação ou vazamento?</h2>
         <ul class="space-y-3 max-w-xl mx-auto mb-8">
           <li class="flex items-center gap-3 text-slate-300"><Icon name="check" class="w-5 h-5 text-ouro shrink-0" /> Nível baixando todo dia, mesmo sem uso e com a bomba desligada</li>
-          <li class="flex items-center gap-3 text-slate-300"><Icon name="check" class="w-5 h-5 text-ouro shrink-0" /> Perda maior que 1 cm por dia de forma constante</li>
           <li class="flex items-center gap-3 text-slate-300"><Icon name="check" class="w-5 h-5 text-ouro shrink-0" /> Bolhas de ar no retorno da água — indicam ar entrando na tubulação</li>
           <li class="flex items-center gap-3 text-slate-300"><Icon name="check" class="w-5 h-5 text-ouro shrink-0" /> Conta de água subindo sem mudança de consumo na casa</li>
           <li class="flex items-center gap-3 text-slate-300"><Icon name="check" class="w-5 h-5 text-ouro shrink-0" /> Área ao redor da piscina sempre úmida ou revestimento soltando</li>
@@ -90,7 +82,7 @@ const jsonLd = {
           Piscina perdendo nível de água constantemente? Pode ser vazamento estrutural, em tubulação ou no revestimento. Usamos equipamentos de detecção acústica e testes de pressão pra localizar a origem com precisão, sem quebra-quebra desnecessário.
         </p>
         <p class="text-slate-400 mb-6">
-          Atendemos em todo o estado do Rio de Janeiro, com diagnóstico rápido e reparo definitivo.
+          Atendemos em todo o estado do Rio de Janeiro.
         </p>
         <ul class="space-y-3 inline-flex flex-col text-left">
           <li class="flex items-center gap-3 text-slate-300"><Icon name="check" class="w-5 h-5 text-ouro shrink-0" /> Detecção sem quebra desnecessária</li>
@@ -110,7 +102,7 @@ const jsonLd = {
           </div>
           <div class="bg-marca border border-white/10 rounded-2xl p-6">
             <div class="w-14 h-14 rounded-full bg-ouro/10 flex items-center justify-center mb-4 text-ouro"><Icon name="wrench" /></div>
-            <h3 class="text-xl font-semibold mb-2">Reparo Definitivo</h3>
+            <h3 class="text-xl font-semibold mb-2">Reparo</h3>
             <p class="text-slate-400">Correção estrutural, de tubulação ou revestimento, sem gambiarra.</p>
           </div>
         </div>
@@ -121,11 +113,6 @@ const jsonLd = {
       <div class="max-w-5xl mx-auto text-center">
         <h2 class="text-3xl font-semibold mb-12">Por que a Royal Splash?</h2>
         <div class="grid grid-cols-2 md:grid-cols-4 gap-8">
-          <div>
-            <div class="w-14 h-14 rounded-full bg-ouro/10 flex items-center justify-center mb-3 mx-auto text-ouro"><Icon name="clock" /></div>
-            <h4 class="font-semibold mb-1">Atendimento Rápido</h4>
-            <p class="text-sm text-slate-400">Diagnóstico ágil pra evitar desperdício de água.</p>
-          </div>
           <div>
             <div class="w-14 h-14 rounded-full bg-ouro/10 flex items-center justify-center mb-3 mx-auto text-ouro"><Icon name="shield" /></div>
             <h4 class="font-semibold mb-1">Equipe Qualificada</h4>
@@ -155,8 +142,6 @@ const jsonLd = {
           {[
             { pergunta: 'Precisa esvaziar a piscina para achar o vazamento?', resposta: 'Não. A detecção é feita com a piscina cheia, usando equipamentos eletrônicos.' },
             { pergunta: 'Vocês quebram o piso para procurar?', resposta: 'Não fazemos quebra por tentativa. Primeiro localizamos o ponto exato; só então o reparo é feito no local certo.' },
-            /* Prazo de 48h ainda não confirmado pelo time operacional — validar antes de publicar de vez */
-            { pergunta: 'Em quanto tempo vocês atendem?', resposta: 'Visita técnica em até 48 horas na capital e Grande Rio. Casos urgentes, consulte disponibilidade no WhatsApp.' },
             { pergunta: 'E se o vazamento for na tubulação enterrada?', resposta: 'É o caso mais comum — e exatamente onde a detecção acústica é mais eficaz. Localizamos o trecho sem escavar às cegas.' },
           ].map((item) => (
             <details class="bg-marca-suave border border-white/10 rounded-2xl p-6 group">

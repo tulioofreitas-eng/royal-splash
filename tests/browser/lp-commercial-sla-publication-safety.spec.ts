@@ -79,6 +79,27 @@ const cases = [
       /alto padrão/i,
     ],
   },
+  {
+    route: "/lp/vazamento",
+    forbidden: [
+      /Solicitar orçamento gratuito/i,
+      /Visita técnica em até 48 horas/i,
+      /Descubra em 2 minutos/i,
+      /1 cm por dia/i,
+      /Reparo Definitivo/i,
+      /Atendimento Rápido/i,
+      /Em quanto tempo vocês atendem/i,
+      /Casos urgentes/i,
+    ],
+    preserved: [
+      /ponto exato/i,
+      /geofone eletrônico/i,
+      /teste de pressão/i,
+      /piscina cheia/i,
+      /sem esvaziar/i,
+      /sem escavar às cegas/i,
+    ],
+  },
 ];
 
 for (const {
