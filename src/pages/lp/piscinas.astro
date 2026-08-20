@@ -4,19 +4,7 @@ import LPHeader from '../../components/LPHeader.astro';
 import LPFooter from '../../components/LPFooter.astro';
 import BotaoWhatsapp from '../../components/BotaoWhatsapp.astro';
 import FormularioGHL from '../../components/FormularioGHL.astro';import Icon from '../../components/Icon.astro';
-import GaleriaZoom from '../../components/GaleriaZoom.astro';
-import obra1 from '../../assets/obra-1.jpg';
 import obra2 from '../../assets/obra-2.jpg';
-import obra3 from '../../assets/obra-3.jpg';
-import obra4 from '../../assets/obra-4.jpg';
-import obra5 from '../../assets/obra-5.jpg';
-import obra6 from '../../assets/obra-6.jpg';
-import obra7 from '../../assets/obra-7.jpg';
-import obra8 from '../../assets/obra-8.jpg';
-import processoEscavacao from '../../assets/processo-escavacao.jpg';
-import processoEstrutura from '../../assets/processo-estrutura.jpg';
-import processoImpermeabilizacao from '../../assets/processo-impermeabilizacao.jpg';
-import processoAcabamento from '../../assets/processo-acabamento.jpg';
 import { Image } from 'astro:assets';
 import GTMHead from '../../components/GTMHead.astro';
 import GTMBody from '../../components/GTMBody.astro';
@@ -83,57 +71,9 @@ const jsonLd = {
 </section>
 
 
-    <!-- Como construímos -->
-    <section class="py-16 px-6">
-      <div class="max-w-5xl mx-auto">
-        <h2 class="text-3xl font-semibold text-center mb-12">Como <span class="text-piscina">construímos</span></h2>
-        <div class="grid md:grid-cols-2 gap-8">
-          {[
-            { num: '1', img: processoEscavacao, alt: 'Escavação e fundação de piscina Royal Splash, Rio de Janeiro', titulo: 'Escavação e fundação', texto: 'Preparação do terreno com contenção e drenagem dimensionadas para o seu solo.' },
-            { num: '2', img: processoEstrutura, alt: 'Estrutura em concreto armado Royal Splash, Rio de Janeiro', titulo: 'Estrutura em concreto armado', texto: 'Ferragem e concretagem calculadas por engenheiro. É o que separa piscina de 30 anos de piscina com problema em 3.' },
-            { num: '3', img: processoImpermeabilizacao, alt: 'Impermeabilização de piscina Royal Splash, RJ', titulo: 'Impermeabilização em todas as etapas', texto: 'A etapa invisível que evita a dor mais cara da categoria: infiltração. Testada antes do acabamento.' },
-            { num: '4', img: processoAcabamento, alt: 'Acabamento premium de piscina Royal Splash, Rio de Janeiro', titulo: 'Acabamento premium', texto: 'Revestimento, borda, iluminação LED e automação. A parte que aparece — sobre uma base que não dá problema.' },
-          ].map((etapa, i) => (
-            <div class="flex gap-5">
-              <button type="button" class="galeria-zoom-item w-28 h-28 shrink-0 rounded-xl overflow-hidden group" data-index={i}>
-                <Image src={etapa.img} alt={etapa.alt} class="w-full h-full object-cover transition-transform duration-300 group-hover:scale-110" />
-              </button>
-              <div>
-                <div class="flex items-center gap-2 mb-1">
-                  <span class="text-ouro font-semibold">{etapa.num} ·</span>
-                  <h3 class="text-lg font-semibold">{etapa.titulo}</h3>
-                </div>
-                <p class="text-slate-400 text-sm">{etapa.texto}</p>
-              </div>
-            </div>
-          ))}
-        </div>
-      </div>
-    </section>
 
-    <!-- Borda infinita, prainha ou piscina em laje? -->
-    <section class="py-16 px-6">
-      <div class="max-w-5xl mx-auto">
-        <h2 class="text-3xl font-semibold text-center mb-12">Borda infinita, prainha ou <span class="text-piscina">piscina em laje?</span></h2>
-        <div class="grid md:grid-cols-3 gap-6">
-          {[
-            { img: obra5, alt: 'Piscina de borda infinita Royal Splash, Rio de Janeiro', titulo: 'Borda infinita', texto: 'O efeito de água encontrando o horizonte — projetado para terrenos com vista e coberturas. Cálculo de calha e recirculação incluído no projeto.' },
-            { img: obra3, alt: 'Piscina com prainha Royal Splash, Rio de Janeiro', titulo: 'Prainha e espaço família', texto: "Entrada em declive suave para crianças e cadeiras dentro d'água. Conforto de resort na sua casa." },
-            { img: obra7, alt: 'Piscina em laje ou cobertura Royal Splash, Rio de Janeiro', titulo: 'Piscina em laje ou cobertura', texto: 'Sim, é possível — com cálculo estrutural, reforço e impermeabilização assinados por engenheiro. Avaliamos a viabilidade da sua laje antes de qualquer proposta.' },
-          ].map((card, i) => (
-            <div class="bg-marca border border-white/10 rounded-2xl overflow-hidden">
-              <button type="button" class="galeria-zoom-item aspect-video w-full block group" data-index={i + 4}>
-                <Image src={card.img} alt={card.alt} class="w-full h-full object-cover transition-transform duration-300 group-hover:scale-110" />
-              </button>
-              <div class="p-6">
-                <h3 class="text-xl font-semibold mb-2">{card.titulo}</h3>
-                <p class="text-slate-400 text-sm">{card.texto}</p>
-              </div>
-            </div>
-          ))}
-        </div>
-      </div>
-    </section>
+
+
 
     <!-- Serviços -->
     <section class="py-16 px-6 bg-marca-suave">
@@ -178,25 +118,7 @@ const jsonLd = {
       </div>
     </section>
 
-    <!-- Galeria de projetos -->
-<section class="py-16 px-6 bg-marca-suave">
-  <div class="max-w-5xl mx-auto">
-    <h2 class="text-3xl font-semibold text-center mb-10">Projetos que falam por si</h2>
-    <GaleriaZoom
-      colunas="grid-cols-2 md:grid-cols-4"
-      imagens={[
-        { src: obra1, alt: 'Obra Royal Splash, piscina no Rio de Janeiro' },
-        { src: obra2, alt: 'Obra Royal Splash, piscina no Rio de Janeiro' },
-        { src: obra3, alt: 'Obra Royal Splash, piscina no Rio de Janeiro' },
-        { src: obra4, alt: 'Obra Royal Splash, piscina no Rio de Janeiro' },
-        { src: obra5, alt: 'Obra Royal Splash, piscina no Rio de Janeiro' },
-        { src: obra6, alt: 'Obra Royal Splash, piscina no Rio de Janeiro' },
-        { src: obra7, alt: 'Obra Royal Splash, piscina no Rio de Janeiro' },
-        { src: obra8, alt: 'Obra Royal Splash, piscina no Rio de Janeiro' },
-      ]}
-    />
-  </div>
-</section>
+
 
     <!-- FAQ -->
     <section class="py-16 px-6">
