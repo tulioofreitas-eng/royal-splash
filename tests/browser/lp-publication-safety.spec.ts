@@ -6,7 +6,6 @@ const landingRoutes = [
   "/lp/lazer",
   "/lp/piscinas",
   "/lp/reforma",
-  "/lp/reparo-subaquatico",
   "/lp/sauna",
   "/lp/vazamento",
 ];
@@ -80,3 +79,31 @@ for (const route of landingRoutes) {
     expect(reviewRequests).toEqual([]);
   });
 }
+
+test("/lp/reparo-subaquatico is held out of the current release candidate", async ({
+  page,
+}) => {
+  const response = await page.goto(
+    "/lp/reparo-subaquatico",
+    {
+      waitUntil: "domcontentloaded",
+    },
+  );
+
+  expect(response).not.toBeNull();
+  expect(response?.status()).toBe(404);
+
+  expect(
+    new URL(page.url()).pathname,
+  ).toBe(
+    "/lp/reparo-subaquatico",
+  );
+
+  const bodyText = await page
+    .locator("body")
+    .innerText();
+
+  expect(bodyText).not.toMatch(
+    /sem esvaziar|piscina cheia|sem interromper|sem parar|substituição submersa|Técnica Especializada|Equipe treinada especificamente nesse método/i,
+  );
+});

@@ -42,9 +42,9 @@ test("/sobre is a representative site composition", async () => {
   assert.doesNotMatch(source, /LandingLayout/);
 });
 
-test("/lp/reparo-subaquatico is a representative landing composition", async () => {
+test("held reparo-subaquatico source preserves the landing composition outside public routing", async () => {
   const source = await readRepoFile(
-    "src/pages/lp/reparo-subaquatico.astro",
+    "src/held-routes/lp/reparo-subaquatico.astro",
   );
 
   assert.match(source, /LandingLayout/);
