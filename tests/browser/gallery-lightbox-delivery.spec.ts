@@ -3,11 +3,14 @@ import {
   test,
 } from "@playwright/test";
 
+const expectedSizes =
+  "(min-width: 1072px) 427px, "
+  + "(min-width: 768px) calc(44.8vw - 3.36rem), "
+  + "calc(89.6vw - 3.58rem)";
+
 const routes = [
   {
-    route:
-      "/lp/lazer",
-
+    route: "/lp/lazer",
     items: [
       "Área de lazer completa",
       "Área gourmet integrada",
@@ -15,11 +18,8 @@ const routes = [
       "Área de lazer à noite",
     ],
   },
-
   {
-    route:
-      "/lp/sauna",
-
+    route: "/lp/sauna",
     items: [
       "Sauna residencial de alto padrão",
       "Spa e ofurô",
@@ -37,32 +37,20 @@ for (
   of routes
 ) {
   test(
-    `${route} separates gallery thumbnail and enlarged delivery`,
+    `${route} uses responsive gallery thumbnails with independent full-resolution lightbox delivery`,
     async ({
       page,
     }) => {
       await page.setViewportSize({
-        width:
-          390,
-
-        height:
-          844,
+        width: 390,
+        height: 844,
       });
 
       const response =
-        await page.goto(
-          route,
-        );
+        await page.goto(route);
 
-      expect(
-        response,
-      ).not.toBeNull();
-
-      expect(
-        response?.ok(),
-      ).toBe(
-        true,
-      );
+      expect(response).not.toBeNull();
+      expect(response?.ok()).toBe(true);
 
       for (
         const alt
@@ -75,9 +63,7 @@ for (
 
         await expect(
           thumbnail,
-        ).toHaveCount(
-          1,
-        );
+        ).toHaveCount(1);
 
         await expect(
           thumbnail,
@@ -93,34 +79,72 @@ for (
           "async",
         );
 
-        expect(
-          await thumbnail
-            .getAttribute(
-              "srcset",
-            ),
-        ).toBeNull();
+        await expect(
+          thumbnail,
+        ).toHaveAttribute(
+          "sizes",
+          expectedSizes,
+        );
 
-        expect(
-          await thumbnail
-            .getAttribute(
-              "sizes",
-            ),
-        ).toBeNull();
-
-        const button =
-          thumbnail.locator(
-            "..",
+        const srcset =
+          await thumbnail.getAttribute(
+            "srcset",
           );
 
+        expect(srcset).toBeTruthy();
+
+        for (
+          const candidate
+          of [
+            "320w",
+            "480w",
+            "640w",
+            "960w",
+            "1280w",
+          ]
+        ) {
+          expect(
+            srcset,
+          ).toContain(
+            candidate,
+          );
+        }
+
+        const button =
+          thumbnail.locator("..");
+
         const lightboxSource =
-          await button
-            .getAttribute(
-              "data-lightbox-src",
-            );
+          await button.getAttribute(
+            "data-lightbox-src",
+          );
 
         expect(
           lightboxSource,
         ).toBeTruthy();
+
+        const currentThumbnailSource =
+          await thumbnail.evaluate(
+            (
+              image,
+            ) =>
+              image.currentSrc,
+          );
+
+        expect(
+          currentThumbnailSource,
+        ).toBeTruthy();
+
+        expect(
+          new URL(
+            currentThumbnailSource,
+            page.url(),
+          ).href,
+        ).not.toBe(
+          new URL(
+            lightboxSource!,
+            page.url(),
+          ).href,
+        );
 
         await button.click();
 
@@ -150,12 +174,10 @@ for (
                 image,
               ) =>
                 image.complete
-                ? image.naturalWidth
-                : 0,
+                  ? image.naturalWidth
+                  : 0,
             ),
-        ).toBe(
-          1376,
-        );
+        ).toBe(1376);
 
         await expect.poll(
           async () =>
@@ -164,20 +186,17 @@ for (
                 image,
               ) =>
                 image.complete
-                ? image.naturalHeight
-                : 0,
+                  ? image.naturalHeight
+                  : 0,
             ),
-        ).toBe(
-          768,
-        );
+        ).toBe(768);
 
         await page.evaluate(
           () => {
             const lightbox =
-              document
-                .getElementById(
-                  "lightbox",
-                );
+              document.getElementById(
+                "lightbox",
+              );
 
             lightbox
               ?.classList
