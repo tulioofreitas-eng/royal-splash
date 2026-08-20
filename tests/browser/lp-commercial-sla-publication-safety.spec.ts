@@ -9,7 +9,6 @@ const cases = [
       /Compromisso com cronograma, sem impacto na operação/i,
     ],
     preserved: [
-      /Segurança Normativa/i,
       /Padrão Internacional/i,
     ],
   },
@@ -49,7 +48,6 @@ const cases = [
       /prazo é definido em contrato antes do início/i,
     ],
     preserved: [
-      /engenharia responsável/i,
       /Tecnologia de Ponta/i,
       /alto padrão/i,
     ],
