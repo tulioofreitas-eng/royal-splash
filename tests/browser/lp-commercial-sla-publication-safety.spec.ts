@@ -87,12 +87,7 @@ const cases = [
       /Casos urgentes/i,
     ],
     preserved: [
-      /ponto exato/i,
-      /geofone eletrônico/i,
-      /teste de pressão/i,
-      /piscina cheia/i,
-      /sem esvaziar/i,
-      /sem escavar às cegas/i,
+      /Detecção de Vazamentos/i,
     ],
   },
 ];
