@@ -5,12 +5,15 @@ import SemanticAnalytics from "../components/runtime/SemanticAnalytics.astro";
 import SkipLink from "../components/runtime/SkipLink.astro";
 import { getCurrentSeoRobots } from "../seo/runtime.ts";
 
+type SiteVisualMode = "functional" | "brand";
+
 interface Props {
   title: string;
   description?: string;
   lang?: string;
   robots?: string;
   bodyClass?: string;
+  visualMode?: SiteVisualMode;
 }
 
 const {
@@ -19,6 +22,7 @@ const {
   lang = "pt-BR",
   robots,
   bodyClass,
+  visualMode = "functional",
 } = Astro.props;
 
 const effectiveRobots =
@@ -35,7 +39,11 @@ const effectiveRobots =
     {effectiveRobots && <meta name="robots" content={effectiveRobots} />}
     <slot name="head" />
   </head>
-  <body class={bodyClass} data-template-family="site">
+  <body
+    class={bodyClass}
+    data-template-family="site"
+    data-site-visual={visualMode}
+  >
     <slot name="body-start" />
     <SkipLink />
     <slot name="header" />
