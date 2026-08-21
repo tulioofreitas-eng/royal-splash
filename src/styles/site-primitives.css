@@ -16,7 +16,7 @@
  * THIS FILE IS NOT BRAND SOURCE OF TRUTH.
  */
 
-body[data-template-family="site"][data-site-visual="brand"] .site-primitive-page {
+body[data-template-family="site"][data-site-visual="brand"].site-primitive-page {
   margin: 0;
   background: var(--site-color-page-background);
   color: var(--site-color-text-primary);
@@ -26,9 +26,9 @@ body[data-template-family="site"][data-site-visual="brand"] .site-primitive-page
   line-height: var(--site-leading-body);
 }
 
-body[data-template-family="site"][data-site-visual="brand"] .site-primitive-page *,
-body[data-template-family="site"][data-site-visual="brand"] .site-primitive-page *::before,
-body[data-template-family="site"][data-site-visual="brand"] .site-primitive-page *::after {
+body[data-template-family="site"][data-site-visual="brand"].site-primitive-page *,
+body[data-template-family="site"][data-site-visual="brand"].site-primitive-page *::before,
+body[data-template-family="site"][data-site-visual="brand"].site-primitive-page *::after {
   box-sizing: border-box;
 }
 

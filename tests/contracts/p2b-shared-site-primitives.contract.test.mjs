@@ -62,16 +62,38 @@ test("site-brand remains a single semantic-token rule, not an entrypoint", async
 
 test("shared primitive API is complete, explicitly scoped, and semantic", async () => {
   const css = withoutComments(await readFile(SITE_PRIMITIVES, "utf8"));
+  const pageHost = `${BRAND_SCOPE}.site-primitive-page`;
+  const obsoletePageHost = `${BRAND_SCOPE} .site-primitive-page`;
+
   for (const primitive of requiredPrimitives) {
     assert.match(css, new RegExp(`\\.site-primitive-${primitive.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")}\\b`));
   }
+
+  assert.match(
+    css,
+    new RegExp(`${pageHost.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")}\\s*\\{`),
+  );
+  assert.doesNotMatch(
+    css,
+    new RegExp(
+      `${obsoletePageHost.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")}(?=\\s*(?:[,{*]))`,
+    ),
+  );
+  for (const suffix of [" *", " *::before", " *::after"]) {
+    assert.ok(css.includes(`${pageHost}${suffix}`));
+  }
+
   const selectors = [...css.matchAll(/(?:^|\})\s*([^@{}][^{}]*)\{/gm)]
     .map((match) => match[1].trim())
     .filter((selector) => !selector.startsWith("@media"))
     .flatMap((selector) => selector.split(",").map((part) => part.trim()));
   assert.ok(selectors.length > 0);
   for (const selector of selectors) {
-    assert.ok(selector.startsWith(`${BRAND_SCOPE} .site-primitive-`), `unscoped selector: ${selector}`);
+    assert.ok(
+      selector.startsWith(`${BRAND_SCOPE} .site-primitive-`) ||
+        selector.startsWith(pageHost),
+      `unscoped selector: ${selector}`,
+    );
   }
   assert.doesNotMatch(css, new RegExp(`${BRAND_SCOPE.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")}\\s*\\{`));
   assert.match(css, /var\(\s*--site-/);
