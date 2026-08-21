@@ -122,8 +122,13 @@ test("primitive availability does not migrate production consumers", async () =>
     if (/visualMode\s*=\s*["']brand["']/.test(source)) brandConsumers.push(relative);
     if (source.includes("site-primitive-")) primitiveConsumers.push(relative);
   }
-  assert.deepEqual(brandConsumers, ["src/pages/metodo-royal.astro", "src/pages/sobre.astro"]);
-  assert.deepEqual(primitiveConsumers, ["src/pages/metodo-royal.astro", "src/pages/sobre.astro"]);
+  const authorizedConsumers = [
+    "src/pages/metodo-royal.astro",
+    "src/pages/sobre.astro",
+    "src/components/site/SegmentContextPage.astro",
+  ];
+  assert.deepEqual(brandConsumers, authorizedConsumers);
+  assert.deepEqual(primitiveConsumers, authorizedConsumers);
   for (const component of ["Button", "Card", "Section", "Surface", "Typography"]) {
     assert.ok(!files.some((file) => file.endsWith(`/${component}.astro`)), `${component}.astro must not exist`);
   }

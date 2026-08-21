@@ -150,5 +150,9 @@ test("only approved pages opt into Site Brand mode", async () => {
     }
   }
 
-  assert.deepEqual(optIns, ["src/pages/metodo-royal.astro", "src/pages/sobre.astro"]);
+  assert.deepEqual(optIns, [
+    "src/pages/metodo-royal.astro",
+    "src/pages/sobre.astro",
+    "src/components/site/SegmentContextPage.astro",
+  ]);
 });

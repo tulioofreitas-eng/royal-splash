@@ -2,8 +2,10 @@ import { expect, test, type Page } from "@playwright/test";
 
 const functionalRoutes = ["/", "/projetos"];
 const brandRoutes = [
-  { route: "/sobre", heading: "A Royal", entryStage: "trust" },
-  { route: "/metodo-royal", heading: "Método Royal", entryStage: "method" },
+  { route: "/sobre", heading: "A Royal", bodySelector: '[data-trust-stage="entry"] > p' },
+  { route: "/metodo-royal", heading: "Método Royal", bodySelector: '[data-method-stage="entry"] > p' },
+  { route: "/servicos", heading: "Residencial", bodySelector: '[data-segment-context="residencial"] > p' },
+  { route: "/corporativo", heading: "Corporativo / Institucional", bodySelector: '[data-segment-context="corporativo_institucional"] > p' },
 ];
 
 async function expectNoHorizontalOverflow(page: Page): Promise<void> {
@@ -33,7 +35,7 @@ for (const route of functionalRoutes) {
   });
 }
 
-for (const { route, heading, entryStage } of brandRoutes) {
+for (const { route, heading, bodySelector } of brandRoutes) {
   test(`${route} is an authorized Brand consumer with Brand typography`, async ({ page }) => {
     await page.goto(route);
     await expect(page.locator("body")).toHaveAttribute("data-site-visual", "brand");
@@ -43,7 +45,7 @@ for (const { route, heading, entryStage } of brandRoutes) {
     await expect(page.getByRole("heading", { level: 1, name: heading })).toHaveCSS(
       "font-family", /Cormorant Garamond/,
     );
-    await expect(page.locator(`[data-${entryStage}-stage="entry"] > p`).last()).toHaveCSS(
+    await expect(page.locator(bodySelector).last()).toHaveCSS(
       "font-family", /Hanken Grotesk/,
     );
   });
