@@ -118,5 +118,5 @@ test("About is the only Site page activating Brand", async () => {
     }
   }
 
-  assert.deepEqual(optIns, ["src/pages/sobre.astro"]);
+  assert.deepEqual(optIns, ["src/pages/metodo-royal.astro", "src/pages/sobre.astro"]);
 });

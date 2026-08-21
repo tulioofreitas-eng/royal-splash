@@ -6,83 +6,84 @@ import SiteLayout from "../layouts/SiteLayout.astro";
 <SiteLayout
   title="Método Royal — Royal Splash"
   robots="noindex, nofollow"
-  bodyClass="site-functional-method"
+  bodyClass="site-brand-method site-primitive-page"
+  visualMode="brand"
 >
-  <SiteHeader slot="header" />
+  <SiteHeader slot="header" visualMode="brand" />
 
   <section
-    class="method-section method-entry"
+    class="method-section method-entry site-primitive-section site-primitive-section--entry"
     aria-labelledby="method-heading"
     data-method-stage="entry"
   >
-    <p class="method-eyebrow">
+    <p class="method-eyebrow site-primitive-eyebrow site-primitive-supporting">
       Método Royal
     </p>
 
-    <h1 id="method-heading">
+    <h1 id="method-heading" class="site-primitive-page-title site-primitive-reading">
       Método Royal
     </h1>
 
-    <p>
+    <p class="site-primitive-body site-primitive-supporting site-primitive-reading">
       Esta superfície organiza a compreensão do método
       dentro da experiência digital sem antecipar etapas,
       compromissos ou afirmações que ainda dependam de
       conteúdo institucional controlado.
     </p>
 
-    <div class="method-actions">
-      <a href="/projetos">
+    <div class="method-actions site-primitive-actions">
+      <a class="site-primitive-action site-primitive-action--tertiary" href="/projetos">
         Ver Projetos
       </a>
 
-      <a href="/sobre">
+      <a class="site-primitive-action site-primitive-action--tertiary" href="/sobre">
         Conhecer A Royal
       </a>
     </div>
   </section>
 
   <section
-    class="method-section"
+    class="method-section site-primitive-section site-primitive-datum-top"
     aria-labelledby="method-context-heading"
     data-method-stage="context"
   >
-    <h2 id="method-context-heading">
+    <h2 id="method-context-heading" class="site-primitive-section-title">
       Contexto antes do processo
     </h2>
 
-    <p>
+    <p class="site-primitive-body site-primitive-supporting site-primitive-reading">
       A compreensão do método começa pelo contexto do projeto.
       As experiências Residencial e Corporativo / Institucional
       ajudam a organizar essa entrada antes do fluxo qualificado.
     </p>
 
-    <div class="method-links">
-      <a href="/servicos">
+    <div class="method-links site-primitive-actions">
+      <a class="site-primitive-action site-primitive-action--tertiary" href="/servicos">
         Explorar Residencial
       </a>
 
-      <a href="/corporativo">
+      <a class="site-primitive-action site-primitive-action--tertiary" href="/corporativo">
         Explorar Corporativo / Institucional
       </a>
     </div>
   </section>
 
   <section
-    class="method-section"
+    class="method-section site-primitive-section site-primitive-datum-top"
     aria-labelledby="method-controlled-heading"
     data-method-stage="controlled-method"
   >
-    <h2 id="method-controlled-heading">
+    <h2 id="method-controlled-heading" class="site-primitive-section-title">
       Método detalhado
     </h2>
 
-    <p>
+    <p class="site-primitive-body site-primitive-supporting site-primitive-reading">
       Etapas, responsabilidades, critérios e demais elementos
       específicos do Método Royal devem ser publicados somente
       a partir de uma fonte institucional controlada.
     </p>
 
-    <p>
+    <p class="site-primitive-body site-primitive-supporting site-primitive-reading">
       Enquanto esse conteúdo não estiver disponível para esta
       implementação, a experiência preserva o espaço funcional
       sem transformar hipótese de UX em verdade de marca.
@@ -90,42 +91,42 @@ import SiteLayout from "../layouts/SiteLayout.astro";
   </section>
 
   <section
-    class="method-section"
+    class="method-section site-primitive-section site-primitive-datum-top"
     aria-labelledby="method-proof-heading"
     data-method-stage="proof"
   >
-    <h2 id="method-proof-heading">
+    <h2 id="method-proof-heading" class="site-primitive-section-title">
       Método precisa de evidência
     </h2>
 
-    <p>
+    <p class="site-primitive-body site-primitive-supporting site-primitive-reading">
       A área de Projetos é o caminho destinado a conectar
       contexto, execução e evidências conforme casos e materiais
       verificáveis forem disponibilizados para publicação.
     </p>
 
-    <a href="/projetos">
+    <a class="site-primitive-action site-primitive-action--tertiary" href="/projetos">
       Explorar Projetos
     </a>
   </section>
 
   <section
-    class="method-section method-conversion"
+    class="method-section method-conversion site-primitive-section site-primitive-surface--dark"
     aria-labelledby="method-action-heading"
     data-method-stage="qualified-action"
   >
-    <h2 id="method-action-heading">
+    <h2 id="method-action-heading" class="site-primitive-section-title">
       Avance com o contexto do seu projeto
     </h2>
 
-    <p>
+    <p class="site-primitive-body site-primitive-reading">
       Quando houver contexto suficiente para iniciar a conversa
       estruturada, siga para o intake do projeto.
     </p>
 
-    <div class="method-actions">
+    <div class="method-actions site-primitive-actions">
       <a
-        class="method-primary-action"
+        class="method-primary-action site-primitive-action site-primitive-action--primary"
         href="/inicie-seu-projeto"
         data-analytics-cta
         data-analytics-component="royal_method"
@@ -135,77 +136,41 @@ import SiteLayout from "../layouts/SiteLayout.astro";
         Inicie seu projeto
       </a>
 
-      <a href="/contato">
+      <a class="site-primitive-action site-primitive-action--tertiary" href="/contato">
         Contato e canais auxiliares
       </a>
     </div>
   </section>
 </SiteLayout>
 
-<style is:global>
-  body.site-functional-method {
-    margin: 0;
-    background: Canvas;
-    color: CanvasText;
-    font-family: system-ui, sans-serif;
-    line-height: 1.5;
-  }
-
-  body.site-functional-method * {
-    box-sizing: border-box;
-  }
-
-  body.site-functional-method a {
-    color: inherit;
-  }
-
-  body.site-functional-method a:focus-visible {
-    outline: 3px solid currentColor;
-    outline-offset: 3px;
-  }
-</style>
-
 <style>
-  .method-section {
-    width: min(100% - 2rem, 64rem);
-    margin-inline: auto;
-    padding-block: 3rem;
-  }
-
-  .method-entry {
-    padding-block-start: 4rem;
-  }
-
-  .method-section + .method-section {
-    border-block-start: 1px solid currentColor;
-  }
-
   .method-eyebrow {
-    font-weight: 700;
+    margin-block: 0 var(--site-space-4);
+  }
+
+  .method-entry .site-primitive-page-title,
+  .method-section .site-primitive-section-title {
+    margin-block: 0 var(--site-space-5);
   }
 
   .method-section > p {
-    max-width: 65ch;
+    margin-block: 0;
   }
 
-  .method-actions,
-  .method-links {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 1rem;
-    align-items: center;
-    margin-block-start: 1.5rem;
+  .method-section > .site-primitive-action {
+    margin-block-start: var(--site-space-6);
   }
 
-  .method-actions a,
-  .method-links a,
-  .method-section > a {
-    display: inline-block;
-    padding: 0.75rem;
+  .method-conversion {
+    margin-block-end: var(--site-space-8);
+    padding: var(--site-space-7);
+    border-block-start: 3px solid var(--site-color-accent-on-dark);
   }
 
-  .method-primary-action {
-    border: 2px solid currentColor;
-    font-weight: 700;
+  @media (max-width: 30rem) {
+    .method-conversion {
+      margin-block-end: var(--site-space-6);
+      padding-inline: var(--site-space-5);
+    }
   }
 </style>

@@ -1,6 +1,10 @@
 import { expect, test, type Page } from "@playwright/test";
 
-const functionalRoutes = ["/", "/projetos", "/metodo-royal"];
+const functionalRoutes = ["/", "/projetos"];
+const brandRoutes = [
+  { route: "/sobre", heading: "A Royal", entryStage: "trust" },
+  { route: "/metodo-royal", heading: "Método Royal", entryStage: "method" },
+];
 
 async function expectNoHorizontalOverflow(page: Page): Promise<void> {
   expect(await page.evaluate(() => document.documentElement.scrollWidth <= document.documentElement.clientWidth)).toBe(true);
@@ -29,16 +33,18 @@ for (const route of functionalRoutes) {
   });
 }
 
-test("About retains its existing Brand mode and typography", async ({ page }) => {
-  await page.goto("/sobre");
-  await expect(page.locator("body")).toHaveAttribute("data-site-visual", "brand");
-  await expect(page.locator("[data-site-header]")).toHaveAttribute(
-    "data-site-header-visual", "brand",
-  );
-  await expect(page.getByRole("heading", { level: 1, name: "A Royal" })).toHaveCSS(
-    "font-family", /Cormorant Garamond/,
-  );
-  await expect(page.locator('[data-trust-stage="entry"] > p').last()).toHaveCSS(
-    "font-family", /Hanken Grotesk/,
-  );
-});
+for (const { route, heading, entryStage } of brandRoutes) {
+  test(`${route} is an authorized Brand consumer with Brand typography`, async ({ page }) => {
+    await page.goto(route);
+    await expect(page.locator("body")).toHaveAttribute("data-site-visual", "brand");
+    await expect(page.locator("[data-site-header]")).toHaveAttribute(
+      "data-site-header-visual", "brand",
+    );
+    await expect(page.getByRole("heading", { level: 1, name: heading })).toHaveCSS(
+      "font-family", /Cormorant Garamond/,
+    );
+    await expect(page.locator(`[data-${entryStage}-stage="entry"] > p`).last()).toHaveCSS(
+      "font-family", /Hanken Grotesk/,
+    );
+  });
+}

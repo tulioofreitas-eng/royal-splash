@@ -114,7 +114,7 @@ test("Brand rules are scoped and consume only Site semantic tokens", async () =>
   }
 });
 
-test("only the approved About page activates Brand mode", async () => {
+test("only approved pages activate Brand mode", async () => {
   const excluded = new Set([SITE_HEADER, SITE_LAYOUT]);
   const files = (
     await Promise.all(
@@ -131,5 +131,5 @@ test("only the approved About page activates Brand mode", async () => {
     }
   }
 
-  assert.deepEqual(optIns, ["src/pages/sobre.astro"]);
+  assert.deepEqual(optIns, ["src/pages/metodo-royal.astro", "src/pages/sobre.astro"]);
 });
