@@ -106,7 +106,7 @@ test("About consumes shared Site primitives without legacy or Brand primitive de
   }
 });
 
-test("About is the only Site page activating Brand", async () => {
+test("Home, Method, and About are the approved Site pages activating Brand", async () => {
   const pages = await astroPages(path.join(ROOT, "src/pages"));
   const optIns = [];
 
@@ -118,5 +118,9 @@ test("About is the only Site page activating Brand", async () => {
     }
   }
 
-  assert.deepEqual(optIns, ["src/pages/metodo-royal.astro", "src/pages/sobre.astro"]);
+  assert.deepEqual(optIns.sort(), [
+    "src/pages/index.astro",
+    "src/pages/metodo-royal.astro",
+    "src/pages/sobre.astro",
+  ].sort());
 });

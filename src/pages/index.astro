@@ -7,31 +7,32 @@ import SiteLayout from "../layouts/SiteLayout.astro";
 <SiteLayout
   title="Royal Splash"
   robots="noindex, nofollow"
-  bodyClass="site-functional-home"
+  bodyClass="site-brand-home site-primitive-page"
+  visualMode="brand"
 >
-  <SiteHeader slot="header" />
+  <SiteHeader slot="header" visualMode="brand" />
 
   <section
-    class="home-section home-entry"
+    class="home-section home-entry site-primitive-section site-primitive-section--entry"
     aria-labelledby="home-heading"
     data-home-stage="entry"
   >
-    <p class="home-eyebrow">
+    <p class="home-eyebrow site-primitive-eyebrow site-primitive-supporting">
       Royal Splash
     </p>
 
-    <h1 id="home-heading">
+    <h1 id="home-heading" class="site-primitive-page-title site-primitive-reading">
       Encontre o contexto certo para avançar.
     </h1>
 
-    <p>
+    <p class="site-primitive-body site-primitive-supporting site-primitive-reading">
       Explore o contexto relevante, consulte projetos e evidências
       disponíveis e avance quando estiver pronto para iniciar seu projeto.
     </p>
 
-    <div class="home-actions">
+    <div class="home-actions site-primitive-actions">
       <a
-        class="home-primary-action"
+        class="home-primary-action site-primitive-action site-primitive-action--primary"
         href="/inicie-seu-projeto"
         data-analytics-cta
         data-analytics-component="home_entry"
@@ -41,7 +42,7 @@ import SiteLayout from "../layouts/SiteLayout.astro";
         Inicie seu projeto
       </a>
 
-      <a href="/projetos">
+      <a class="site-primitive-action site-primitive-action--tertiary" href="/projetos">
         Ver Projetos
       </a>
     </div>
@@ -50,52 +51,52 @@ import SiteLayout from "../layouts/SiteLayout.astro";
   <SegmentRouter />
 
   <section
-    class="home-section"
+    class="home-section site-primitive-section site-primitive-datum-top"
     aria-labelledby="proof-heading"
     data-home-stage="proof"
   >
-    <h2 id="proof-heading">
+    <h2 id="proof-heading" class="site-primitive-section-title">
       Projetos e evidências
     </h2>
 
-    <p>
+    <p class="site-primitive-body site-primitive-supporting site-primitive-reading">
       Consulte a área de Projetos para acessar conteúdo de prova
       estruturado conforme evidências verificadas estiverem disponíveis.
     </p>
 
-    <a href="/projetos">
+    <a class="site-primitive-action site-primitive-action--tertiary" href="/projetos">
       Explorar Projetos
     </a>
   </section>
 
   <section
-    class="home-section"
+    class="home-section site-primitive-section site-primitive-datum-top"
     aria-labelledby="method-trust-heading"
     data-home-stage="method-trust"
   >
-    <h2 id="method-trust-heading">
+    <h2 id="method-trust-heading" class="site-primitive-section-title">
       Método e confiança
     </h2>
 
     <div class="home-bridge-grid">
-      <article>
-        <h3>Método Royal</h3>
-        <p>
+      <article class="site-primitive-datum-top">
+        <h3 class="site-primitive-subtitle">Método Royal</h3>
+        <p class="site-primitive-body site-primitive-supporting">
           Entenda a estrutura de método e processo sustentada
           pelas evidências disponíveis.
         </p>
-        <a href="/metodo-royal">
+        <a class="site-primitive-action site-primitive-action--tertiary" href="/metodo-royal">
           Conhecer Método Royal
         </a>
       </article>
 
-      <article>
-        <h3>A Royal</h3>
-        <p>
+      <article class="site-primitive-datum-top">
+        <h3 class="site-primitive-subtitle">A Royal</h3>
+        <p class="site-primitive-body site-primitive-supporting">
           Acesse a superfície institucional destinada à compreensão
           e confiança sobre a Royal.
         </p>
-        <a href="/sobre">
+        <a class="site-primitive-action site-primitive-action--tertiary" href="/sobre">
           Conhecer A Royal
         </a>
       </article>
@@ -103,22 +104,22 @@ import SiteLayout from "../layouts/SiteLayout.astro";
   </section>
 
   <section
-    class="home-section home-conversion"
+    class="home-section home-conversion site-primitive-section site-primitive-surface--dark"
     aria-labelledby="conversion-heading"
     data-home-stage="qualified-action"
   >
-    <h2 id="conversion-heading">
+    <h2 id="conversion-heading" class="site-primitive-section-title">
       Próximo passo
     </h2>
 
-    <p>
+    <p class="site-primitive-body site-primitive-reading">
       Quando fizer sentido avançar, compartilhe o contexto
       do seu projeto pelo fluxo estruturado.
     </p>
 
-    <div class="home-actions">
+    <div class="home-actions site-primitive-actions">
       <a
-        class="home-primary-action"
+        class="home-primary-action site-primitive-action site-primitive-action--primary"
         href="/inicie-seu-projeto"
         data-analytics-cta
         data-analytics-component="home_qualified_action"
@@ -128,97 +129,65 @@ import SiteLayout from "../layouts/SiteLayout.astro";
         Inicie seu projeto
       </a>
 
-      <a href="/contato">
+      <a class="site-primitive-action site-primitive-action--tertiary" href="/contato">
         Contato e canais auxiliares
       </a>
     </div>
   </section>
 </SiteLayout>
 
-<style is:global>
-  body.site-functional-home {
-    margin: 0;
-    background: Canvas;
-    color: CanvasText;
-    font-family: system-ui, sans-serif;
-    line-height: 1.5;
-  }
-
-  body.site-functional-home * {
-    box-sizing: border-box;
-  }
-
-  body.site-functional-home a {
-    color: inherit;
-  }
-
-  body.site-functional-home a:focus-visible {
-    outline: 3px solid currentColor;
-    outline-offset: 3px;
-  }
-</style>
-
 <style>
-  .home-section {
-    width: min(100% - 2rem, 72rem);
-    margin-inline: auto;
-    padding-block: 3rem;
-  }
-
-  .home-entry {
-    padding-block-start: 4rem;
-  }
-
   .home-eyebrow {
-    font-weight: 700;
+    margin-block: 0 var(--site-space-4);
   }
 
-  .home-entry h1 {
-    max-width: 20ch;
+  .home-entry .site-primitive-page-title,
+  .home-section .site-primitive-section-title {
+    margin-block: 0 var(--site-space-5);
   }
 
-  .home-entry > p:not(.home-eyebrow),
   .home-section > p {
-    max-width: 65ch;
-  }
-
-  .home-actions {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 1rem;
-    align-items: center;
-    margin-block-start: 1.5rem;
-  }
-
-  .home-actions a,
-  .home-section > a,
-  .home-bridge-grid a {
-    display: inline-block;
-    padding: 0.75rem;
-  }
-
-  .home-primary-action {
-    border: 2px solid currentColor;
-    font-weight: 700;
+    margin-block: 0;
   }
 
   .home-bridge-grid {
     display: grid;
-    gap: 1rem;
+    gap: var(--site-space-6);
+    margin-block-start: var(--site-space-6);
   }
 
   .home-bridge-grid article {
-    padding: 1.25rem;
-    border: 1px solid currentColor;
+    padding-block-start: var(--site-space-5);
+  }
+
+  .home-bridge-grid .site-primitive-subtitle {
+    margin-block: 0 var(--site-space-3);
+  }
+
+  .home-bridge-grid article p {
+    margin-block: 0 var(--site-space-4);
+  }
+
+  .home-section > .site-primitive-action {
+    margin-block-start: var(--site-space-6);
   }
 
   .home-conversion {
-    border-block-start: 1px solid currentColor;
+    margin-block-end: var(--site-space-8);
+    padding: var(--site-space-7);
+    border-block-start: 3px solid var(--site-color-accent-on-dark);
   }
 
   @media (min-width: 48rem) {
     .home-bridge-grid {
       grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  }
+
+  @media (max-width: 30rem) {
+    .home-conversion {
+      margin-block-end: var(--site-space-6);
+      padding-inline: var(--site-space-5);
     }
   }
 </style>

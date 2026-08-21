@@ -94,13 +94,18 @@ test("trust composition remains route-local and consumer allowlists stay isolate
     if (/visualMode\s*=\s*["']brand["']/.test(source)) brandConsumers.push(relative);
     if (source.includes("site-primitive-")) primitiveConsumers.push(relative);
   }
-  const authorizedConsumers = [
+  const authorizedBrandConsumers = [
+    "src/pages/index.astro",
     "src/pages/metodo-royal.astro",
     "src/pages/sobre.astro",
     "src/components/site/SegmentContextPage.astro",
   ];
-  assert.deepEqual(brandConsumers, authorizedConsumers);
-  assert.deepEqual(primitiveConsumers, authorizedConsumers);
+  const authorizedPrimitiveConsumers = [
+    ...authorizedBrandConsumers,
+    "src/components/site/SegmentRouter.astro",
+  ];
+  assert.deepEqual(brandConsumers.sort(), authorizedBrandConsumers.sort());
+  assert.deepEqual(primitiveConsumers.sort(), authorizedPrimitiveConsumers.sort());
 });
 
 test("About preserves controlled content and implementation boundaries", async () => {
