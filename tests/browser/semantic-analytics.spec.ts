@@ -225,6 +225,12 @@ test.describe(
         "analytics@example.com",
       );
 
+      await page.getByLabel(
+        "Telefone",
+      ).fill(
+        "11987654321",
+      );
+
       await page
         .getByLabel(
           /Concordo com o envio destas informações/,
@@ -283,6 +289,10 @@ test.describe(
 
       expect(serialized).not.toContain(
         "analytics@example.com",
+      );
+
+      expect(serialized).not.toContain(
+        "11987654321",
       );
 
       expect(serialized).not.toContain(

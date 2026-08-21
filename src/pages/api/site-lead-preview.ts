@@ -35,6 +35,19 @@ function normalizedText(
   return result || undefined;
 }
 
+function isClearlyValidEmail(
+  value: string,
+): boolean {
+  const separatorIndex = value.indexOf("@");
+
+  return (
+    !/\s/.test(value) &&
+    separatorIndex > 0 &&
+    separatorIndex === value.lastIndexOf("@") &&
+    separatorIndex < value.length - 1
+  );
+}
+
 function contextLabel(
   value: string,
 ): string | undefined {
@@ -120,6 +133,7 @@ export const POST: APIRoute = async ({
       !projectNeed ||
       !name ||
       (!email && !phone) ||
+      (email && !isClearlyValidEmail(email)) ||
       body.consent !== true
     ) {
       return new Response(
