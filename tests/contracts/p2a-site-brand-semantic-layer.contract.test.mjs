@@ -5,6 +5,7 @@ import test from "node:test";
 
 const ROOT = process.cwd();
 const SITE_LAYOUT = path.join(ROOT, "src/layouts/SiteLayout.astro");
+const SITE_SYSTEM_CSS = path.join(ROOT, "src/styles/site-system.css");
 const SITE_BRAND_CSS = path.join(ROOT, "src/styles/site-brand.css");
 const CONSUMER_ROOTS = ["src/pages", "src/layouts", "src/components"];
 const BRAND_SELECTOR =
@@ -53,11 +54,24 @@ async function sourceFiles(directory) {
   return files;
 }
 
-test("SiteLayout imports the inert Site Brand semantic layer", async () => {
-  const source = await readFile(SITE_LAYOUT, "utf8");
+test("SiteLayout reaches the inert Site Brand semantic layer through the Site entrypoint", async () => {
+  const [layoutSource, systemCss, brandCss] = await Promise.all([
+    readFile(SITE_LAYOUT, "utf8"),
+    readFile(SITE_SYSTEM_CSS, "utf8"),
+    readFile(SITE_BRAND_CSS, "utf8"),
+  ]);
 
-  assert.match(source, /import\s+["']\.\.\/styles\/site-brand\.css["'];/);
-  assert.match(source, /visualMode\s*=\s*["']functional["']/);
+  assert.match(
+    layoutSource,
+    /import\s+["']\.\.\/styles\/site-system\.css["'];/,
+  );
+  assert.doesNotMatch(
+    layoutSource,
+    /import\s+["']\.\.\/styles\/site-brand\.css["'];/,
+  );
+  assert.match(systemCss, /@import\s+["']\.\/site-brand\.css["']\s*;/);
+  assert.match(brandCss, new RegExp(escapeRegex(BRAND_SELECTOR)));
+  assert.match(layoutSource, /visualMode\s*=\s*["']functional["']/);
 });
 
 test("Site Brand tokens are confined to the explicit Brand selector", async () => {
