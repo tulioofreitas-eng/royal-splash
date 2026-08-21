@@ -1,4 +1,12 @@
 ---
+type SiteHeaderVisualMode = "functional" | "brand";
+
+interface Props {
+  visualMode?: SiteHeaderVisualMode;
+}
+
+const { visualMode = "functional" } = Astro.props;
+
 const currentPath = Astro.url.pathname;
 
 const navigationItems = [
@@ -41,7 +49,11 @@ const projectStartIsCurrent =
   currentPath.startsWith("/inicie-seu-projeto/");
 ---
 
-<header class="site-header" data-site-header>
+<header
+  class="site-header"
+  data-site-header
+  data-site-header-visual={visualMode}
+>
   <nav
     class="site-header__bar"
     aria-label="Navegação principal"
@@ -52,7 +64,18 @@ const projectStartIsCurrent =
       aria-label="Royal Splash — Início"
       aria-current={currentPath === "/" ? "page" : undefined}
     >
-      Royal Splash
+      {
+        visualMode === "brand" ? (
+          <img
+            class="site-header__brand-signature"
+            src="/brand/identity/signatures/royal-splash-signature-h1-gold.svg"
+            alt=""
+            aria-hidden="true"
+          />
+        ) : (
+          "Royal Splash"
+        )
+      }
     </a>
 
     <div class="site-header__desktop">
@@ -320,6 +343,90 @@ const projectStartIsCurrent =
 
     .site-header__trigger,
     .site-header__mobile {
+      display: none;
+    }
+  }
+
+  .site-header[data-site-header-visual="brand"] {
+    background: var(--site-color-surface-dark);
+    color: var(--site-color-text-on-dark);
+    font-family: var(--site-font-ui);
+  }
+
+  .site-header[data-site-header-visual="brand"] .site-header__bar {
+    gap: var(--site-space-3);
+    max-width: var(--site-layout-content-max);
+    min-height: 5rem;
+    padding-inline: var(--site-layout-gutter);
+  }
+
+  .site-header[data-site-header-visual="brand"] .site-header__identity {
+    min-width: 0;
+  }
+
+  .site-header[data-site-header-visual="brand"]
+    .site-header__brand-signature {
+    display: block;
+    width: clamp(8.5rem, 38vw, 13rem);
+    max-width: 100%;
+    height: auto;
+  }
+
+  .site-header[data-site-header-visual="brand"]
+    a[aria-current="page"] {
+    text-decoration-color: var(--site-color-accent-on-dark);
+  }
+
+  .site-header[data-site-header-visual="brand"]
+    .site-header__primary-action {
+    border-color: var(--site-color-accent-on-dark);
+    color: var(--site-color-text-on-dark);
+  }
+
+  .site-header[data-site-header-visual="brand"]
+    .site-header__trigger {
+    display: block;
+    border-color: var(--site-color-text-on-dark);
+    color: var(--site-color-text-on-dark);
+  }
+
+  .site-header[data-site-header-visual="brand"]
+    .site-header__mobile:not([hidden]) {
+    display: block;
+  }
+
+  .site-header[data-site-header-visual="brand"]
+    .site-header__mobile {
+    border-block-start-color: var(--site-color-divider);
+    padding: var(--site-space-4) var(--site-layout-gutter);
+  }
+
+  .site-header[data-site-header-visual="brand"]
+    .site-header__mobile nav {
+    gap: var(--site-space-2);
+    max-width: var(--site-layout-content-max);
+  }
+
+  .site-header[data-site-header-visual="brand"]
+    .site-header__auxiliary {
+    border-block-start-color: var(--site-color-divider);
+  }
+
+  .site-header[data-site-header-visual="brand"] a:focus-visible,
+  .site-header[data-site-header-visual="brand"] button:focus-visible {
+    outline-color: var(--site-color-accent-on-dark);
+  }
+
+  @media (min-width: 80rem) {
+    .site-header[data-site-header-visual="brand"]
+      .site-header__desktop {
+      display: flex;
+    }
+
+    .site-header[data-site-header-visual="brand"]
+      .site-header__trigger,
+    .site-header[data-site-header-visual="brand"]
+      .site-header__mobile {
       display: none;
     }
   }
