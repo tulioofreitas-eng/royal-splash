@@ -124,6 +124,7 @@ test("primitive consumers remain limited to explicitly authorized production con
   }
   const authorizedBrandConsumers = [
     "src/pages/index.astro",
+    "src/pages/inicie-seu-projeto.astro",
     "src/pages/metodo-royal.astro",
     "src/pages/projetos.astro",
     "src/pages/projetos/[slug].astro",
@@ -134,6 +135,7 @@ test("primitive consumers remain limited to explicitly authorized production con
     ...authorizedBrandConsumers,
     "src/components/site/RoyalCaseDetail.astro",
     "src/components/site/SegmentRouter.astro",
+    "src/components/site/StructuredIntake.astro",
   ];
   assert.deepEqual(brandConsumers.sort(), authorizedBrandConsumers.sort());
   assert.deepEqual(primitiveConsumers.sort(), authorizedPrimitiveConsumers.sort());

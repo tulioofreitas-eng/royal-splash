@@ -1,8 +1,9 @@
 import { expect, test, type Page } from "@playwright/test";
 
-const functionalRoutes = ["/inicie-seu-projeto"];
+const functionalRoutes: string[] = [];
 const brandRoutes = [
   { route: "/", heading: "Encontre o contexto certo para avançar.", bodySelector: '[data-home-stage="entry"] > p' },
+  { route: "/inicie-seu-projeto", heading: "Inicie seu projeto", bodySelector: ".structured-intake label" },
   { route: "/sobre", heading: "A Royal", bodySelector: '[data-trust-stage="entry"] > p' },
   { route: "/metodo-royal", heading: "Método Royal", bodySelector: '[data-method-stage="entry"] > p' },
   { route: "/projetos", heading: "Projetos", bodySelector: '[data-projects-stage="entry"] > .site-primitive-body' },

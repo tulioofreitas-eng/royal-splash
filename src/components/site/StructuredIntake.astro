@@ -3,11 +3,14 @@
   aria-labelledby="structured-intake-heading"
   data-structured-intake
 >
-  <header class="structured-intake__header">
-    <h2 id="structured-intake-heading">
+  <header class="structured-intake__header site-primitive-reading">
+    <h2
+      id="structured-intake-heading"
+      class="site-primitive-section-title"
+    >
       Contexto do seu projeto
     </h2>
-    <p>
+    <p class="site-primitive-body site-primitive-supporting">
       Este fluxo funcional coleta apenas os dados necessários
       para verificar a estrutura de envio durante a Tranche 2B.
     </p>
@@ -646,50 +649,87 @@
 
 <style>
   .structured-intake {
-    width: min(100% - 2rem, 48rem);
+    width: calc(100% - (2 * var(--site-layout-gutter)));
+    max-width: var(--site-layout-reading-max);
     margin-inline: auto;
-    padding-block: 3rem;
+    padding-block: var(--site-space-7);
+    color: var(--site-color-text-primary);
+  }
+
+  .structured-intake__header h2 {
+    margin-block: 0 var(--site-space-4);
+  }
+
+  .structured-intake__header p {
+    margin-block: 0;
   }
 
   .structured-intake__progress {
     display: grid;
-    gap: 0.5rem;
-    margin-block: 2rem;
-    padding-inline-start: 1.5rem;
+    gap: var(--site-space-3);
+    margin-block: var(--site-space-7);
+    padding-inline-start: var(--site-space-5);
+    color: var(--site-color-text-secondary);
+    font-family: var(--site-font-ui);
+    font-size: var(--site-type-ui);
+    font-weight: var(--site-font-weight-ui);
+    line-height: var(--site-leading-ui);
   }
 
   .structured-intake__progress
     [aria-current="step"] {
-    font-weight: 700;
-    text-decoration: underline;
+    color: var(--site-color-text-primary);
+    font-weight: var(--site-font-weight-ui-strong);
+    text-decoration-line: underline;
+    text-decoration-thickness: 0.12em;
+    text-underline-offset: 0.3em;
   }
 
   .structured-intake fieldset {
     display: grid;
-    gap: 0.75rem;
-    border: 1px solid currentColor;
-    padding: 1.25rem;
+    gap: var(--site-space-3);
+    margin: 0;
+    border: 1px solid var(--site-color-divider);
+    padding: var(--site-space-5);
   }
 
   .structured-intake fieldset[hidden] {
     display: none;
   }
 
+  .structured-intake label,
+  .structured-intake legend,
   .structured-intake input,
   .structured-intake select,
   .structured-intake textarea,
-  .structured-intake button {
-    font: inherit;
+  .structured-intake button,
+  .structured-intake__field-error,
+  .structured-intake__submission-error {
+    font-family: var(--site-font-ui);
+    font-size: var(--site-type-ui);
+    line-height: var(--site-leading-ui);
+  }
+
+  .structured-intake label,
+  .structured-intake legend {
+    font-weight: var(--site-font-weight-ui-strong);
+  }
+
+  .structured-intake legend {
+    padding-inline: var(--site-space-2);
   }
 
   .structured-intake input,
   .structured-intake select,
   .structured-intake textarea {
     width: 100%;
-    padding: 0.75rem;
-    border: 1px solid currentColor;
-    background: Canvas;
-    color: CanvasText;
+    min-height: 2.75rem;
+    padding: var(--site-space-3);
+    border: 1px solid var(--site-color-required-boundary);
+    border-radius: 0;
+    background: var(--site-color-surface);
+    color: var(--site-color-text-primary);
+    font-weight: var(--site-font-weight-ui);
   }
 
   .structured-intake input:focus-visible,
@@ -697,46 +737,74 @@
   .structured-intake textarea:focus-visible,
   .structured-intake button:focus-visible,
   .structured-intake a:focus-visible {
-    outline: 3px solid currentColor;
+    outline: 3px solid var(--site-color-required-boundary);
     outline-offset: 3px;
   }
 
   .structured-intake__controls {
     display: flex;
     flex-wrap: wrap;
-    gap: 0.75rem;
-    margin-block-start: 1rem;
+    gap: var(--site-space-3);
+    margin-block-start: var(--site-space-4);
   }
 
   .structured-intake button {
-    border: 2px solid currentColor;
-    background: transparent;
-    color: inherit;
-    padding: 0.75rem 1rem;
+    min-height: 2.75rem;
+    border: 2px solid var(--site-color-required-boundary);
+    border-radius: 0;
+    background: var(--site-color-surface-dark);
+    color: var(--site-color-text-on-dark);
+    padding: var(--site-space-3) var(--site-space-4);
+    font-weight: var(--site-font-weight-ui-strong);
     cursor: pointer;
+  }
+
+  .structured-intake [data-previous-step] {
+    background: transparent;
+    color: var(--site-color-text-primary);
   }
 
   .structured-intake__field-error,
   .structured-intake__submission-error {
-    font-weight: 700;
+    margin-block: 0;
+    font-weight: var(--site-font-weight-ui-strong);
+    text-decoration-line: underline;
+    text-decoration-thickness: 0.1em;
+    text-underline-offset: 0.2em;
   }
 
   .structured-intake__consent {
     display: grid;
     grid-template-columns: auto 1fr;
-    gap: 0.75rem;
+    gap: var(--site-space-3);
     align-items: start;
-    margin-block-start: 0.75rem;
+    margin-block-start: var(--site-space-3);
   }
 
   .structured-intake__consent input {
     width: auto;
-    margin-block-start: 0.25rem;
+    min-height: 1.5rem;
+    margin-block-start: var(--site-space-1);
   }
 
   .structured-intake__success {
-    border: 2px solid currentColor;
-    padding: 1.25rem;
+    border-block: 1px solid var(--site-color-divider);
+    padding-block: var(--site-space-6);
+  }
+
+  .structured-intake__success h3 {
+    margin-block: 0 var(--site-space-3);
+    font-family: var(--site-font-display);
+    font-size: var(--site-type-heading);
+    font-weight: var(--site-font-weight-display);
+    line-height: var(--site-leading-heading);
+  }
+
+  .structured-intake__success p {
+    margin-block: 0;
+    font-family: var(--site-font-text);
+    font-size: var(--site-type-body);
+    line-height: var(--site-leading-body);
   }
 
   @media (min-width: 40rem) {
@@ -745,6 +813,20 @@
         repeat(4, minmax(0, 1fr));
       list-style-position: inside;
       padding-inline-start: 0;
+    }
+  }
+
+  @media (max-width: 30rem) {
+    .structured-intake {
+      padding-block: var(--site-space-6);
+    }
+
+    .structured-intake fieldset {
+      padding: var(--site-space-4);
+    }
+
+    .structured-intake__controls button {
+      width: 100%;
     }
   }
 </style>

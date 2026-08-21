@@ -7,19 +7,23 @@ import SiteLayout from "../layouts/SiteLayout.astro";
 <SiteLayout
   title="Inicie seu projeto — Royal Splash"
   robots="noindex, nofollow"
-  bodyClass="site-functional-intake"
+  bodyClass="site-brand-intake site-primitive-page"
+  visualMode="brand"
 >
-  <SiteHeader slot="header" />
+  <SiteHeader slot="header" visualMode="brand" />
 
   <section
-    class="project-start"
+    class="project-start project-start--entry site-primitive-section site-primitive-section--entry"
     aria-labelledby="project-start-heading"
   >
-    <h1 id="project-start-heading">
+    <h1
+      id="project-start-heading"
+      class="site-primitive-page-title site-primitive-reading"
+    >
       Inicie seu projeto
     </h1>
 
-    <p>
+    <p class="site-primitive-body site-primitive-supporting site-primitive-reading">
       Compartilhe o contexto necessário para iniciar
       um envio estruturado pelo Site.
     </p>
@@ -28,50 +32,40 @@ import SiteLayout from "../layouts/SiteLayout.astro";
   <StructuredIntake />
 
   <section
-    class="project-start project-start--auxiliary"
+    class="project-start project-start--auxiliary site-primitive-section site-primitive-datum-top"
     aria-labelledby="auxiliary-contact-heading"
   >
-    <h2 id="auxiliary-contact-heading">
+    <h2
+      id="auxiliary-contact-heading"
+      class="site-primitive-section-title"
+    >
       Precisa de outro canal?
     </h2>
 
-    <p>
+    <p class="site-primitive-body site-primitive-supporting site-primitive-reading">
       Contato direto permanece disponível como caminho auxiliar.
     </p>
 
-    <a href="/contato">
+    <a
+      class="site-primitive-action site-primitive-action--tertiary"
+      href="/contato"
+    >
       Ver canais de contato
     </a>
   </section>
 </SiteLayout>
 
-<style is:global>
-  body.site-functional-intake {
-    margin: 0;
-    background: Canvas;
-    color: CanvasText;
-    font-family: system-ui, sans-serif;
-    line-height: 1.5;
-  }
-
-  body.site-functional-intake * {
-    box-sizing: border-box;
-  }
-
-  body.site-functional-intake a {
-    color: inherit;
-  }
-</style>
-
 <style>
-  .project-start {
-    width: min(100% - 2rem, 48rem);
-    margin-inline: auto;
-    padding-block: 3rem 1rem;
+  .project-start--entry .site-primitive-page-title,
+  .project-start--auxiliary .site-primitive-section-title {
+    margin-block: 0 var(--site-space-5);
   }
 
-  .project-start--auxiliary {
-    border-block-start: 1px solid currentColor;
-    padding-block: 2rem 3rem;
+  .project-start p {
+    margin-block: 0;
+  }
+
+  .project-start--auxiliary > .site-primitive-action {
+    margin-block-start: var(--site-space-5);
   }
 </style>
