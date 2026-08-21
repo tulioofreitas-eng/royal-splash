@@ -1,56 +1,67 @@
 ---
 import SiteHeader from "../components/site/SiteHeader.astro";
 import SiteLayout from "../layouts/SiteLayout.astro";
-import "../styles/brand-foundation.css";
 ---
 
 <SiteLayout
   title="A Royal — Royal Splash"
   robots="noindex, nofollow"
-  bodyClass="site-brand-about"
+  bodyClass="site-brand-about site-primitive-page"
   visualMode="brand"
 >
   <SiteHeader slot="header" visualMode="brand" />
 
   <section
-    class="trust-section trust-entry"
+    class="trust-section trust-entry site-primitive-section site-primitive-section--entry"
     aria-labelledby="trust-heading"
     data-trust-stage="entry"
   >
-    <p class="trust-eyebrow">
+    <p class="trust-eyebrow site-primitive-eyebrow site-primitive-supporting">
       A Royal
     </p>
 
-    <h1 id="trust-heading">
+    <h1
+      id="trust-heading"
+      class="site-primitive-page-title site-primitive-reading"
+    >
       A Royal
     </h1>
 
-    <p>
+    <p class="site-primitive-body site-primitive-supporting site-primitive-reading">
       Encontre o contexto institucional disponível e siga
       para projetos, método e os próximos passos da experiência.
     </p>
 
-    <div class="trust-actions">
-      <a href="/projetos">
+    <div class="trust-actions site-primitive-actions">
+      <a
+        class="site-primitive-action site-primitive-action--tertiary"
+        href="/projetos"
+      >
         Ver Projetos
       </a>
 
-      <a href="/metodo-royal">
+      <a
+        class="site-primitive-action site-primitive-action--tertiary"
+        href="/metodo-royal"
+      >
         Conhecer Método Royal
       </a>
     </div>
   </section>
 
   <section
-    class="trust-section"
+    class="trust-section site-primitive-section site-primitive-datum-top"
     aria-labelledby="institutional-context-heading"
     data-trust-stage="institutional-context"
   >
-    <h2 id="institutional-context-heading">
+    <h2
+      id="institutional-context-heading"
+      class="site-primitive-section-title"
+    >
       Contexto institucional
     </h2>
 
-    <p>
+    <p class="site-primitive-body site-primitive-supporting site-primitive-reading">
       Informações institucionais devem ser publicadas a partir
       de fontes controladas. Nesta implementação funcional,
       métricas, histórico e demais afirmações que ainda dependam
@@ -59,51 +70,60 @@ import "../styles/brand-foundation.css";
   </section>
 
   <section
-    class="trust-section"
+    class="trust-section site-primitive-section site-primitive-datum-top"
     aria-labelledby="trust-references-heading"
     data-trust-stage="references"
   >
-    <h2 id="trust-references-heading">
+    <h2
+      id="trust-references-heading"
+      class="site-primitive-section-title"
+    >
       Referências para sua avaliação
     </h2>
 
     <div class="trust-grid">
-      <article>
-        <h3>
+      <article class="site-primitive-datum-top">
+        <h3 class="site-primitive-subtitle">
           Projetos e evidências
         </h3>
 
-        <p>
+        <p class="site-primitive-body site-primitive-supporting">
           Consulte a área de Projetos para acessar referências
           verificadas conforme estiverem disponíveis para publicação.
         </p>
 
-        <a href="/projetos">
+        <a
+          class="site-primitive-action site-primitive-action--tertiary"
+          href="/projetos"
+        >
           Explorar Projetos
         </a>
       </article>
 
-      <article>
-        <h3>
+      <article class="site-primitive-datum-top">
+        <h3 class="site-primitive-subtitle">
           Método Royal
         </h3>
 
-        <p>
+        <p class="site-primitive-body site-primitive-supporting">
           Consulte a estrutura de método disponível para compreender
           como o processo é apresentado na experiência digital.
         </p>
 
-        <a href="/metodo-royal">
+        <a
+          class="site-primitive-action site-primitive-action--tertiary"
+          href="/metodo-royal"
+        >
           Conhecer Método Royal
         </a>
       </article>
 
-      <article>
-        <h3>
+      <article class="site-primitive-datum-top">
+        <h3 class="site-primitive-subtitle">
           Conteúdo institucional controlado
         </h3>
 
-        <p>
+        <p class="site-primitive-body site-primitive-supporting">
           História, métricas, abrangência, equipe e demais afirmações
           institucionais dependem de fonte controlada antes de sua
           publicação nesta superfície.
@@ -113,22 +133,22 @@ import "../styles/brand-foundation.css";
   </section>
 
   <section
-    class="trust-section trust-conversion"
+    class="trust-section trust-conversion site-primitive-section site-primitive-surface--dark"
     aria-labelledby="trust-action-heading"
     data-trust-stage="qualified-action"
   >
-    <h2 id="trust-action-heading">
+    <h2 id="trust-action-heading" class="site-primitive-section-title">
       Próximo passo
     </h2>
 
-    <p>
+    <p class="site-primitive-body site-primitive-reading">
       Se já houver contexto suficiente para avançar,
       use o fluxo estruturado do projeto.
     </p>
 
-    <div class="trust-actions">
+    <div class="trust-actions site-primitive-actions">
       <a
-        class="trust-primary-action"
+        class="trust-primary-action site-primitive-action site-primitive-action--primary"
         href="/inicie-seu-projeto"
         data-analytics-cta
         data-analytics-component="royal_trust"
@@ -138,95 +158,35 @@ import "../styles/brand-foundation.css";
         Inicie seu projeto
       </a>
 
-      <a href="/contato">
+      <a
+        class="site-primitive-action site-primitive-action--tertiary"
+        href="/contato"
+      >
         Contato e canais auxiliares
       </a>
     </div>
   </section>
 </SiteLayout>
 
-<style is:global>
-  body.site-brand-about {
-    margin: 0;
-    background: var(--site-color-page-background);
-    color: var(--site-color-text-primary);
-    font-family: var(--site-font-text);
-    font-size: var(--site-type-body);
-    font-weight: var(--site-font-weight-text);
-    line-height: var(--site-leading-body);
-  }
-
-  body.site-brand-about * {
-    box-sizing: border-box;
-  }
-
-  body.site-brand-about a {
-    color: inherit;
-  }
-
-  body.site-brand-about a:focus-visible {
-    outline: 3px solid var(--site-color-required-boundary);
-    outline-offset: 3px;
-  }
-</style>
-
 <style>
-  .trust-section {
-    width: calc(100% - (2 * var(--site-layout-gutter)));
-    max-width: var(--site-layout-content-max);
-    margin-inline: auto;
-    padding-block: var(--site-space-7);
-  }
-
-  .trust-entry {
-    padding-block-start: var(--site-space-8);
-    padding-block-end: var(--site-space-8);
-  }
-
-  .trust-section + .trust-section {
-    border-block-start: 1px solid var(--site-color-divider);
-  }
-
   .trust-eyebrow {
     margin-block: 0 var(--site-space-4);
-    color: var(--site-color-text-secondary);
-    font-family: var(--site-font-ui);
-    font-size: var(--site-type-ui);
-    font-weight: var(--site-font-weight-ui-strong);
-    line-height: var(--site-leading-ui);
-    letter-spacing: 0.08em;
-    text-transform: uppercase;
   }
 
-  h1 {
-    max-width: var(--site-layout-reading-max);
+  .trust-entry .site-primitive-page-title {
     margin-block: 0 var(--site-space-5);
-    font-family: var(--site-font-display);
-    font-size: var(--site-type-display-xl);
-    font-weight: var(--site-font-weight-display);
-    line-height: var(--site-leading-display);
   }
 
-  h2 {
+  .trust-section .site-primitive-section-title {
     margin-block: 0 var(--site-space-5);
-    font-family: var(--site-font-text);
-    font-size: var(--site-type-heading);
-    font-weight: var(--site-font-weight-ui-strong);
-    line-height: var(--site-leading-heading);
   }
 
-  h3 {
+  .trust-grid .site-primitive-subtitle {
     margin-block: 0 var(--site-space-3);
-    font-family: var(--site-font-text);
-    font-size: var(--site-type-body-lg);
-    font-weight: var(--site-font-weight-ui-strong);
-    line-height: var(--site-leading-heading);
   }
 
   .trust-section > p {
-    max-width: var(--site-layout-reading-max);
     margin-block: 0;
-    color: var(--site-color-text-secondary);
   }
 
   .trust-grid {
@@ -237,54 +197,16 @@ import "../styles/brand-foundation.css";
 
   .trust-grid article {
     padding-block-start: var(--site-space-5);
-    border-block-start: 1px solid var(--site-color-divider);
   }
 
   .trust-grid article p {
     margin-block: 0 var(--site-space-4);
-    color: var(--site-color-text-secondary);
-  }
-
-  .trust-actions {
-    display: flex;
-    flex-wrap: wrap;
-    gap: var(--site-space-4) var(--site-space-5);
-    align-items: center;
-    margin-block-start: var(--site-space-6);
-  }
-
-  .trust-actions a,
-  .trust-grid a {
-    display: inline-block;
-    font-family: var(--site-font-ui);
-    font-size: var(--site-type-ui);
-    font-weight: var(--site-font-weight-ui-strong);
-    line-height: var(--site-leading-ui);
-    text-decoration-thickness: 0.1em;
-    text-underline-offset: 0.25em;
   }
 
   .trust-conversion {
     margin-block-end: var(--site-space-8);
     padding: var(--site-space-7);
     border-block-start: 3px solid var(--site-color-accent-on-dark);
-    background: var(--site-color-surface-dark);
-    color: var(--site-color-text-on-dark);
-  }
-
-  .trust-conversion > p {
-    color: var(--site-color-text-on-dark);
-  }
-
-  .trust-conversion a:focus-visible {
-    outline-color: var(--site-color-accent-on-dark);
-  }
-
-  .trust-primary-action {
-    padding: var(--site-space-3) var(--site-space-4);
-    border: 2px solid var(--site-color-accent-on-dark);
-    color: var(--site-color-text-on-dark);
-    text-decoration: none;
   }
 
   @media (min-width: 48rem) {
@@ -295,15 +217,6 @@ import "../styles/brand-foundation.css";
   }
 
   @media (max-width: 30rem) {
-    .trust-section {
-      padding-block: var(--site-space-6);
-    }
-
-    .trust-entry {
-      padding-block-start: var(--site-space-7);
-      padding-block-end: var(--site-space-7);
-    }
-
     .trust-conversion {
       margin-block-end: var(--site-space-6);
       padding-inline: var(--site-space-5);

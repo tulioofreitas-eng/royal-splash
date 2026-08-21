@@ -26,7 +26,10 @@ async function astroPages(directory) {
 test("About explicitly activates Brand at layout and header boundaries", async () => {
   const source = await readFile(ABOUT_PAGE, "utf8");
 
-  assert.match(source, /import\s+["']\.\.\/styles\/brand-foundation\.css["'];/);
+  assert.doesNotMatch(
+    source,
+    /import\s+["']\.\.\/styles\/(?:brand-foundation|site-brand|site-primitives|site-system)\.css["'];/,
+  );
   assert.match(source, /<SiteLayout[\s\S]*?visualMode=["']brand["']/);
   assert.match(source, /<SiteHeader[\s\S]*?visualMode=["']brand["']/);
   assert.match(source, /<h1[^>]*>[\s\S]*?A Royal[\s\S]*?<\/h1>/);
@@ -69,19 +72,20 @@ test("About remains inside controlled institutional content boundaries", async (
   }
 });
 
-test("About consumes Site semantics without legacy or Brand primitive dependencies", async () => {
+test("About consumes shared Site primitives without legacy or Brand primitive dependencies", async () => {
   const source = await readFile(ABOUT_PAGE, "utf8");
 
-  for (const token of [
-    "--site-color-page-background",
-    "--site-color-text-primary",
-    "--site-font-text",
-    "--site-font-display",
-    "--site-type-display-xl",
-    "--site-layout-content-max",
-    "--site-layout-reading-max",
+  for (const primitive of [
+    "site-primitive-page",
+    "site-primitive-page-title",
+    "site-primitive-section-title",
+    "site-primitive-body",
+    "site-primitive-section",
+    "site-primitive-actions",
+    "site-primitive-surface--dark",
+    "site-primitive-action--primary",
   ]) {
-    assert.ok(source.includes(token), `missing Site semantic token: ${token}`);
+    assert.ok(source.includes(primitive), `missing shared primitive: ${primitive}`);
   }
 
   assert.doesNotMatch(source, /#[0-9a-f]{3,8}\b/i);

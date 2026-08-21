@@ -123,7 +123,7 @@ test("primitive availability does not migrate production consumers", async () =>
     if (source.includes("site-primitive-")) primitiveConsumers.push(relative);
   }
   assert.deepEqual(brandConsumers, ["src/pages/sobre.astro"]);
-  assert.deepEqual(primitiveConsumers, []);
+  assert.deepEqual(primitiveConsumers, ["src/pages/sobre.astro"]);
   for (const component of ["Button", "Card", "Section", "Surface", "Typography"]) {
     assert.ok(!files.some((file) => file.endsWith(`/${component}.astro`)), `${component}.astro must not exist`);
   }
