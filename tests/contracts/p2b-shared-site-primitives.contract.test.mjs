@@ -126,11 +126,13 @@ test("primitive consumers remain limited to explicitly authorized production con
     "src/pages/index.astro",
     "src/pages/metodo-royal.astro",
     "src/pages/projetos.astro",
+    "src/pages/projetos/[slug].astro",
     "src/pages/sobre.astro",
     "src/components/site/SegmentContextPage.astro",
   ];
   const authorizedPrimitiveConsumers = [
     ...authorizedBrandConsumers,
+    "src/components/site/RoyalCaseDetail.astro",
     "src/components/site/SegmentRouter.astro",
   ];
   assert.deepEqual(brandConsumers.sort(), authorizedBrandConsumers.sort());

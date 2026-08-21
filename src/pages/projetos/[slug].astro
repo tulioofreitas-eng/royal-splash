@@ -49,9 +49,13 @@ const {
 <SiteLayout
   title={`${record.siteCase.title} — Projetos — Royal Splash`}
   robots="noindex, nofollow"
-  bodyClass="site-functional-case-detail"
+  bodyClass="site-brand-case-detail site-primitive-page"
+  visualMode="brand"
 >
-  <SiteHeader slot="header" />
+  <SiteHeader
+    slot="header"
+    visualMode="brand"
+  />
 
   <RoyalCaseDetail
     record={record}

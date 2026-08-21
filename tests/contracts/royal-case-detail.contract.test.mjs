@@ -464,7 +464,7 @@ test(
 );
 
 test(
-  "Case Detail renderer and route remain Brand/provider neutral and fail-closed",
+  "Case Detail renderer and route preserve provider neutrality and fail-closed publication",
   async () => {
     const component =
       await readFile(
@@ -511,5 +511,203 @@ test(
       executable,
       /global\.css|GTMHead|GTMBody|BotaoWhatsapp|GoogleReviews|wa\.me|astro:assets|bg-marca|text-piscina|obra-[0-9]/i,
     );
+  },
+);
+
+test(
+  "WP2 Case Detail is Brand-capable, non-public, and content-dormant",
+  async () => {
+    const [
+      component,
+      route,
+      primitives,
+      casesSource,
+      detailsSource,
+    ] =
+      await Promise.all([
+        readFile(
+          new URL(
+            "../../src/components/site/RoyalCaseDetail.astro",
+            import.meta.url,
+          ),
+          "utf8",
+        ),
+        readFile(
+          new URL(
+            "../../src/pages/projetos/[slug].astro",
+            import.meta.url,
+          ),
+          "utf8",
+        ),
+        readFile(
+          new URL(
+            "../../src/styles/site-primitives.css",
+            import.meta.url,
+          ),
+          "utf8",
+        ),
+        readFile(
+          new URL(
+            "../../src/content/royal/cases.ts",
+            import.meta.url,
+          ),
+          "utf8",
+        ),
+        readFile(
+          new URL(
+            "../../src/content/royal/case-details.ts",
+            import.meta.url,
+          ),
+          "utf8",
+        ),
+      ]);
+
+    assert.match(
+      route,
+      /bodyClass=["'][^"']*site-brand-case-detail[^"']*site-primitive-page[^"']*["']/,
+    );
+    assert.match(
+      route,
+      /<SiteLayout[\s\S]*?visualMode=["']brand["']/,
+    );
+    assert.match(
+      route,
+      /<SiteHeader[\s\S]*?visualMode=["']brand["']/,
+    );
+
+    assert.match(
+      route,
+      /getStaticPaths/,
+    );
+    assert.match(
+      route,
+      /selectRoyalPublicCaseDetails/,
+    );
+
+    assert.match(
+      casesSource,
+      /royalCases:\s*readonly SiteCase\[\]\s*=\s*\[\];/,
+    );
+    assert.match(
+      casesSource,
+      /royalEvidence:\s*readonly Evidence\[\]\s*=\s*\[\];/,
+    );
+    assert.match(
+      detailsSource,
+      /readonly RoyalCaseDetailRecord\[\]\s*=\s*\[\];/,
+    );
+
+    for (const primitive of [
+      "site-primitive-section",
+      "site-primitive-section--entry",
+      "site-primitive-page-title",
+      "site-primitive-section-title",
+      "site-primitive-subtitle",
+      "site-primitive-body",
+      "site-primitive-supporting",
+      "site-primitive-eyebrow",
+      "site-primitive-reading",
+      "site-primitive-actions",
+      "site-primitive-datum-top",
+      "site-primitive-surface--dark",
+      "site-primitive-action",
+      "site-primitive-action--primary",
+      "site-primitive-action--tertiary",
+    ]) {
+      assert.ok(
+        component.includes(primitive),
+        `missing approved primitive: ${primitive}`,
+      );
+      assert.ok(
+        primitives.includes(`.${primitive}`),
+        `primitive is not defined by P2B: ${primitive}`,
+      );
+    }
+
+    assert.match(
+      component,
+      /detail\.blocks\.map/,
+    );
+    assert.match(
+      component,
+      /supportingEvidence\.length\s*>\s*0\s*&&/,
+    );
+    assert.match(
+      component,
+      /testimonials\.length\s*>\s*0\s*&&/,
+    );
+    assert.match(
+      component,
+      /metrics\.length\s*>\s*0\s*&&/,
+    );
+
+    assert.doesNotMatch(
+      component,
+      /não possuem apresentação textual adicional/i,
+    );
+
+    for (const href of [
+      "/projetos",
+      "/inicie-seu-projeto",
+      "/contato",
+    ]) {
+      assert.match(
+        component,
+        new RegExp(`href=["']${href}["']`),
+      );
+    }
+
+    for (const analytics of [
+      'data-analytics-cta',
+      'data-analytics-component="royal_case_detail"',
+      'data-analytics-subject="project_start"',
+      'data-analytics-channel="site_form"',
+    ]) {
+      assert.ok(
+        component.includes(analytics),
+        `missing controlled analytics: ${analytics}`,
+      );
+    }
+
+    assert.doesNotMatch(
+      component,
+      /<style\s+is:global/,
+    );
+    assert.doesNotMatch(
+      component,
+      /import\s+["'][^"']*(?:global|brand-foundation|site-brand|site-primitives|site-system)\.css["']/,
+    );
+    assert.doesNotMatch(
+      component,
+      /<img\b|astro:assets|Image\s+from/i,
+    );
+    assert.doesNotMatch(
+      component,
+      /#[0-9a-f]{3,8}\b/i,
+    );
+    assert.doesNotMatch(
+      component,
+      /--brand-(?:color|font)-/,
+    );
+
+    for (const forbidden of [
+      "Poppins",
+      "--color-marca",
+      "--color-marca-suave",
+      "--color-piscina",
+      "--color-ouro",
+      "--font-sans",
+      "system-ui",
+      "Canvas",
+      "CanvasText",
+      "Controlled Case Fixture",
+      "Fixture used only by tests.",
+      "Controlled fixture narrative.",
+    ]) {
+      assert.ok(
+        !`${component}\n${route}`.includes(forbidden),
+        `forbidden production Case Detail content/dependency: ${forbidden}`,
+      );
+    }
   },
 );

@@ -98,11 +98,13 @@ test("trust composition remains route-local and consumer allowlists stay isolate
     "src/pages/index.astro",
     "src/pages/metodo-royal.astro",
     "src/pages/projetos.astro",
+    "src/pages/projetos/[slug].astro",
     "src/pages/sobre.astro",
     "src/components/site/SegmentContextPage.astro",
   ];
   const authorizedPrimitiveConsumers = [
     ...authorizedBrandConsumers,
+    "src/components/site/RoyalCaseDetail.astro",
     "src/components/site/SegmentRouter.astro",
   ];
   assert.deepEqual(brandConsumers.sort(), authorizedBrandConsumers.sort());

@@ -154,6 +154,7 @@ test("only approved pages opt into Site Brand mode", async () => {
     "src/pages/index.astro",
     "src/pages/metodo-royal.astro",
     "src/pages/projetos.astro",
+    "src/pages/projetos/[slug].astro",
     "src/pages/sobre.astro",
     "src/components/site/SegmentContextPage.astro",
   ].sort());

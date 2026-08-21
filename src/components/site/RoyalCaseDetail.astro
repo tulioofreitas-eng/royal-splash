@@ -85,41 +85,57 @@ const metrics =
   data-case-id={siteCase.id}
 >
   <header
-    class="case-detail-section case-detail-entry"
+    class="case-detail-section case-detail-entry site-primitive-section site-primitive-section--entry"
     data-case-detail-stage="entry"
   >
-    <p class="case-detail-eyebrow">
+    <p
+      class="case-detail-eyebrow site-primitive-eyebrow site-primitive-supporting"
+    >
       Projeto
     </p>
 
-    <h1>
+    <h1
+      class="site-primitive-page-title site-primitive-reading"
+    >
       {siteCase.title}
     </h1>
 
-    <p>
+    <p
+      class="site-primitive-body site-primitive-supporting site-primitive-reading"
+    >
       {siteCase.summary}
     </p>
 
-    <a href="/projetos">
-      Voltar para Projetos
-    </a>
+    <div
+      class="case-detail-actions site-primitive-actions"
+    >
+      <a
+        class="site-primitive-action site-primitive-action--tertiary"
+        href="/projetos"
+      >
+        Voltar para Projetos
+      </a>
+    </div>
   </header>
 
   {
     detail.blocks.map(
       (block) => (
         <section
-          class="case-detail-section"
+          class="case-detail-section site-primitive-section site-primitive-datum-top"
           aria-labelledby={`case-${block.id}-heading`}
           data-case-detail-stage={block.kind}
         >
           <h2
             id={`case-${block.id}-heading`}
+            class="site-primitive-section-title"
           >
             {blockHeadings[block.kind]}
           </h2>
 
-          <p>
+          <p
+            class="site-primitive-body site-primitive-reading"
+          >
             {block.body}
           </p>
         </section>
@@ -127,33 +143,36 @@ const metrics =
     )
   }
 
-  <section
-    class="case-detail-section"
-    aria-labelledby="case-evidence-heading"
-    data-case-detail-stage="evidence"
-  >
-    <h2 id="case-evidence-heading">
-      Evidências verificadas
-    </h2>
+  {
+    supportingEvidence.length > 0 && (
+      <section
+        class="case-detail-section site-primitive-section site-primitive-datum-top"
+        aria-labelledby="case-evidence-heading"
+        data-case-detail-stage="evidence"
+      >
+        <h2
+          id="case-evidence-heading"
+          class="site-primitive-section-title"
+        >
+          Evidências verificadas
+        </h2>
 
-    {
-      supportingEvidence.length === 0 ? (
-        <p>
-          As evidências verificadas deste Case
-          não possuem apresentação textual
-          adicional nesta superfície.
-        </p>
-      ) : (
-        <ul>
+        <ul class="case-detail-list">
           {supportingEvidence.map((item) => (
-            <li>
-              <strong>
+            <li
+              class="case-detail-item site-primitive-datum-top"
+            >
+              <strong
+                class="site-primitive-subtitle"
+              >
                 {item.title ?? "Evidência verificada"}
               </strong>
 
               {
                 item.summary && (
-                  <p>
+                  <p
+                    class="site-primitive-body site-primitive-supporting site-primitive-reading"
+                  >
                     {item.summary}
                   </p>
                 )
@@ -161,31 +180,40 @@ const metrics =
             </li>
           ))}
         </ul>
-      )
-    }
-  </section>
+      </section>
+    )
+  }
 
   {
     testimonials.length > 0 && (
       <section
-        class="case-detail-section"
+        class="case-detail-section site-primitive-section site-primitive-datum-top"
         aria-labelledby="case-testimonials-heading"
         data-case-detail-stage="testimonial"
       >
-        <h2 id="case-testimonials-heading">
+        <h2
+          id="case-testimonials-heading"
+          class="site-primitive-section-title"
+        >
           Depoimentos verificados
         </h2>
 
-        <ul>
+        <ul class="case-detail-list">
           {testimonials.map((item) => (
-            <li>
-              <strong>
+            <li
+              class="case-detail-item site-primitive-datum-top"
+            >
+              <strong
+                class="site-primitive-subtitle"
+              >
                 {item.title ?? "Depoimento verificado"}
               </strong>
 
               {
                 item.summary && (
-                  <p>
+                  <p
+                    class="site-primitive-body site-primitive-supporting site-primitive-reading"
+                  >
                     {item.summary}
                   </p>
                 )
@@ -200,24 +228,33 @@ const metrics =
   {
     metrics.length > 0 && (
       <section
-        class="case-detail-section"
+        class="case-detail-section site-primitive-section site-primitive-datum-top"
         aria-labelledby="case-metrics-heading"
         data-case-detail-stage="metric"
       >
-        <h2 id="case-metrics-heading">
+        <h2
+          id="case-metrics-heading"
+          class="site-primitive-section-title"
+        >
           Métricas verificadas
         </h2>
 
-        <ul>
+        <ul class="case-detail-list">
           {metrics.map((item) => (
-            <li>
-              <strong>
+            <li
+              class="case-detail-item site-primitive-datum-top"
+            >
+              <strong
+                class="site-primitive-subtitle"
+              >
                 {item.title ?? "Métrica verificada"}
               </strong>
 
               {
                 item.summary && (
-                  <p>
+                  <p
+                    class="site-primitive-body site-primitive-supporting site-primitive-reading"
+                  >
                     {item.summary}
                   </p>
                 )
@@ -230,22 +267,29 @@ const metrics =
   }
 
   <section
-    class="case-detail-section case-detail-conversion"
+    class="case-detail-section case-detail-conversion site-primitive-section site-primitive-surface--dark"
     aria-labelledby="case-action-heading"
     data-case-detail-stage="qualified-action"
   >
-    <h2 id="case-action-heading">
+    <h2
+      id="case-action-heading"
+      class="site-primitive-section-title"
+    >
       Avance com o contexto do seu projeto
     </h2>
 
-    <p>
+    <p
+      class="site-primitive-body site-primitive-reading"
+    >
       Use o fluxo estruturado quando houver
       contexto suficiente para iniciar a conversa.
     </p>
 
-    <div class="case-detail-actions">
+    <div
+      class="case-detail-actions site-primitive-actions"
+    >
       <a
-        class="case-detail-primary-action"
+        class="case-detail-primary-action site-primitive-action site-primitive-action--primary"
         href="/inicie-seu-projeto"
         data-analytics-cta
         data-analytics-component="royal_case_detail"
@@ -255,76 +299,74 @@ const metrics =
         Inicie seu projeto
       </a>
 
-      <a href="/contato">
+      <a
+        class="site-primitive-action site-primitive-action--tertiary"
+        href="/contato"
+      >
         Contato e canais auxiliares
       </a>
     </div>
   </section>
 </article>
 
-<style is:global>
-  body.site-functional-case-detail {
-    margin: 0;
-    background: Canvas;
-    color: CanvasText;
-    font-family: system-ui, sans-serif;
-    line-height: 1.5;
-  }
-
-  body.site-functional-case-detail * {
-    box-sizing: border-box;
-  }
-
-  body.site-functional-case-detail a {
-    color: inherit;
-  }
-
-  body.site-functional-case-detail a:focus-visible {
-    outline: 3px solid currentColor;
-    outline-offset: 3px;
-  }
-</style>
-
 <style>
-  .case-detail-section {
-    width: min(100% - 2rem, 64rem);
-    margin-inline: auto;
-    padding-block: 3rem;
-  }
-
-  .case-detail-entry {
-    padding-block-start: 4rem;
-  }
-
-  .case-detail-section + .case-detail-section {
-    border-block-start: 1px solid currentColor;
-  }
-
   .case-detail-eyebrow {
-    font-weight: 700;
+    margin-block:
+      0
+      var(--site-space-4);
   }
 
-  .case-detail-section > p,
-  .case-detail-section li p {
-    max-width: 65ch;
+  .case-detail-entry .site-primitive-page-title,
+  .case-detail-section .site-primitive-section-title {
+    margin-block:
+      0
+      var(--site-space-5);
   }
 
-  .case-detail-actions {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 1rem;
-    align-items: center;
-    margin-block-start: 1.5rem;
+  .case-detail-section > .site-primitive-body {
+    margin-block: 0;
   }
 
-  .case-detail-actions a,
-  .case-detail-entry > a {
-    display: inline-block;
-    padding: 0.75rem;
+  .case-detail-list {
+    margin:
+      var(--site-space-6)
+      0
+      0;
+    padding: 0;
+    list-style: none;
   }
 
-  .case-detail-primary-action {
-    border: 2px solid currentColor;
-    font-weight: 700;
+  .case-detail-item {
+    padding-block:
+      var(--site-space-5);
+  }
+
+  .case-detail-item > .site-primitive-subtitle {
+    display: block;
+  }
+
+  .case-detail-item > p {
+    margin-block:
+      var(--site-space-3)
+      0;
+  }
+
+  .case-detail-conversion {
+    margin-block-end:
+      var(--site-space-8);
+    padding:
+      var(--site-space-7);
+    border-block-start:
+      3px solid
+      var(--site-color-accent-on-dark);
+  }
+
+  @media (max-width: 30rem) {
+    .case-detail-conversion {
+      margin-block-end:
+        var(--site-space-6);
+      padding-inline:
+        var(--site-space-5);
+    }
   }
 </style>

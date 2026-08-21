@@ -4,7 +4,7 @@ import {
 } from "@playwright/test";
 
 test(
-  "unpublished or nonexistent Case slug has no public detail route",
+  "unpublished or nonexistent Case slug has no public detail route or fixture leakage",
   async ({
     request,
   }) => {
@@ -23,10 +23,16 @@ test(
     const body =
       await response.text();
 
-    expect(
-      body,
-    ).not.toContain(
+    for (const fixtureContent of [
       "Controlled Case Fixture",
-    );
+      "Fixture used only by tests.",
+      "Controlled fixture narrative.",
+    ]) {
+      expect(
+        body,
+      ).not.toContain(
+        fixtureContent,
+      );
+    }
   },
 );
