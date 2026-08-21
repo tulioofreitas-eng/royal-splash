@@ -114,7 +114,7 @@ test("Brand rules are scoped and consume only Site semantic tokens", async () =>
   }
 });
 
-test("no repository consumer activates Brand mode", async () => {
+test("only the approved About page activates Brand mode", async () => {
   const excluded = new Set([SITE_HEADER, SITE_LAYOUT]);
   const files = (
     await Promise.all(
@@ -131,5 +131,5 @@ test("no repository consumer activates Brand mode", async () => {
     }
   }
 
-  assert.deepEqual(optIns, []);
+  assert.deepEqual(optIns, ["src/pages/sobre.astro"]);
 });

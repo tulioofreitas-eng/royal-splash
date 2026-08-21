@@ -119,7 +119,7 @@ test("Royal Gold remains restricted to the approved dark-surface accent", async 
   );
 });
 
-test("no repository consumer opts into Site Brand mode", async () => {
+test("only the approved About page opts into Site Brand mode", async () => {
   const files = (
     await Promise.all(
       CONSUMER_ROOTS.map((directory) => sourceFiles(path.join(ROOT, directory))),
@@ -136,5 +136,5 @@ test("no repository consumer opts into Site Brand mode", async () => {
     }
   }
 
-  assert.deepEqual(optIns, []);
+  assert.deepEqual(optIns, ["src/pages/sobre.astro"]);
 });
