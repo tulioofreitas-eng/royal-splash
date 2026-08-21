@@ -111,7 +111,7 @@ test("primitive layer respects Brand, legacy, color, and motion boundaries", asy
   assert.doesNotMatch(css, /(^|[;{])\s*transform\s*:/m);
 });
 
-test("primitive availability does not migrate production consumers", async () => {
+test("primitive consumers remain limited to explicitly authorized production consumers", async () => {
   const roots = ["src/pages", "src/layouts", "src/components"];
   const files = (await Promise.all(roots.map((root) => sourceFiles(path.join(ROOT, root))))).flat();
   const brandConsumers = [];
@@ -125,6 +125,7 @@ test("primitive availability does not migrate production consumers", async () =>
   const authorizedBrandConsumers = [
     "src/pages/index.astro",
     "src/pages/metodo-royal.astro",
+    "src/pages/projetos.astro",
     "src/pages/sobre.astro",
     "src/components/site/SegmentContextPage.astro",
   ];

@@ -153,6 +153,7 @@ test("only approved pages opt into Site Brand mode", async () => {
   assert.deepEqual(optIns.sort(), [
     "src/pages/index.astro",
     "src/pages/metodo-royal.astro",
+    "src/pages/projetos.astro",
     "src/pages/sobre.astro",
     "src/components/site/SegmentContextPage.astro",
   ].sort());

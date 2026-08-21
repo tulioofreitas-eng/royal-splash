@@ -29,62 +29,75 @@ const publicCases =
 <SiteLayout
   title="Projetos — Royal Splash"
   robots="noindex, nofollow"
-  bodyClass="site-functional-projects"
+  bodyClass="site-brand-projects site-primitive-page"
+  visualMode="brand"
 >
-  <SiteHeader slot="header" />
+  <SiteHeader slot="header" visualMode="brand" />
 
   <section
-    class="projects-section projects-entry"
+    class="projects-section projects-entry site-primitive-section site-primitive-section--entry"
     aria-labelledby="projects-heading"
     data-projects-stage="entry"
   >
-    <p class="projects-eyebrow">
+    <p class="projects-eyebrow site-primitive-eyebrow site-primitive-supporting">
       Projetos
     </p>
 
-    <h1 id="projects-heading">
+    <h1
+      id="projects-heading"
+      class="site-primitive-page-title site-primitive-reading"
+    >
       Projetos
     </h1>
 
-    <p>
+    <p class="site-primitive-body site-primitive-supporting site-primitive-reading">
       Esta área reúne somente Cases e evidências
       que estejam aptos à publicação dentro do
       fluxo controlado da Royal Splash.
     </p>
 
-    <div class="projects-actions">
-      <a href="/metodo-royal">
+    <div class="projects-actions site-primitive-actions">
+      <a
+        class="site-primitive-action site-primitive-action--tertiary"
+        href="/metodo-royal"
+      >
         Conhecer Método Royal
       </a>
 
-      <a href="/sobre">
+      <a
+        class="site-primitive-action site-primitive-action--tertiary"
+        href="/sobre"
+      >
         Conhecer A Royal
       </a>
     </div>
   </section>
 
   <section
-    class="projects-section"
+    class="projects-section site-primitive-section site-primitive-datum-top"
     aria-labelledby="projects-library-heading"
     data-projects-stage="library"
     data-projects-count={publicCases.length}
   >
-    <h2 id="projects-library-heading">
+    <h2
+      id="projects-library-heading"
+      class="site-primitive-section-title"
+    >
       Projetos disponíveis
     </h2>
 
     {
       publicCases.length === 0 ? (
         <div
-          class="projects-empty"
+          class="projects-empty site-primitive-surface--muted site-primitive-datum-top"
           data-projects-state="empty"
         >
-          <h3>
+          <h3 class="site-primitive-subtitle">
             Nenhum projeto verificado disponível
             nesta superfície
           </h3>
 
-          <p>
+          <p class="site-primitive-body site-primitive-reading">
             Materiais sem verificação ou sem
             autorização explícita de publicação
             não são apresentados como Cases.
@@ -96,16 +109,20 @@ const publicCases =
           data-projects-state="available"
         >
           {publicCases.map((siteCase) => (
-            <article data-case-id={siteCase.id}>
-              <h3>
+            <article
+              class="projects-case site-primitive-datum-top"
+              data-case-id={siteCase.id}
+            >
+              <h3 class="site-primitive-subtitle">
                 <a
+                  class="projects-case-link"
                   href={`/projetos/${siteCase.slug}`}
                 >
                   {siteCase.title}
                 </a>
               </h3>
 
-              <p>
+              <p class="site-primitive-body site-primitive-supporting site-primitive-reading">
                 {siteCase.summary}
               </p>
             </article>
@@ -116,22 +133,25 @@ const publicCases =
   </section>
 
   <section
-    class="projects-section projects-conversion"
+    class="projects-section projects-conversion site-primitive-section site-primitive-surface--dark"
     aria-labelledby="projects-action-heading"
     data-projects-stage="qualified-action"
   >
-    <h2 id="projects-action-heading">
+    <h2
+      id="projects-action-heading"
+      class="site-primitive-section-title"
+    >
       Avance com o contexto do seu projeto
     </h2>
 
-    <p>
+    <p class="site-primitive-body site-primitive-reading">
       Use o fluxo estruturado quando houver
       contexto suficiente para iniciar a conversa.
     </p>
 
-    <div class="projects-actions">
+    <div class="projects-actions site-primitive-actions">
       <a
-        class="projects-primary-action"
+        class="projects-primary-action site-primitive-action site-primitive-action--primary"
         href="/inicie-seu-projeto"
         data-analytics-cta
         data-analytics-component="royal_projects"
@@ -141,101 +161,82 @@ const publicCases =
         Inicie seu projeto
       </a>
 
-      <a href="/contato">
+      <a
+        class="site-primitive-action site-primitive-action--tertiary"
+        href="/contato"
+      >
         Contato e canais auxiliares
       </a>
     </div>
   </section>
 </SiteLayout>
 
-<style is:global>
-  body.site-functional-projects {
-    margin: 0;
-    background: Canvas;
-    color: CanvasText;
-    font-family: system-ui, sans-serif;
-    line-height: 1.5;
-  }
-
-  body.site-functional-projects * {
-    box-sizing: border-box;
-  }
-
-  body.site-functional-projects a {
-    color: inherit;
-  }
-
-  body.site-functional-projects a:focus-visible {
-    outline: 3px solid currentColor;
-    outline-offset: 3px;
-  }
-</style>
-
 <style>
-  .projects-section {
-    width: min(100% - 2rem, 64rem);
-    margin-inline: auto;
-    padding-block: 3rem;
-  }
-
-  .projects-entry {
-    padding-block-start: 4rem;
-  }
-
-  .projects-section + .projects-section {
-    border-block-start: 1px solid currentColor;
-  }
-
   .projects-eyebrow {
-    font-weight: 700;
+    margin-block: 0 var(--site-space-4);
+  }
+
+  .projects-entry .site-primitive-page-title,
+  .projects-section .site-primitive-section-title {
+    margin-block: 0 var(--site-space-5);
   }
 
   .projects-section > p,
-  .projects-empty > p,
-  .projects-list p {
-    max-width: 65ch;
-  }
-
-  .projects-actions {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 1rem;
-    align-items: center;
-    margin-block-start: 1.5rem;
-  }
-
-  .projects-actions a {
-    display: inline-block;
-    padding: 0.75rem;
-  }
-
-  .projects-primary-action {
-    border: 2px solid currentColor;
-    font-weight: 700;
+  .projects-empty p,
+  .projects-case p {
+    margin-block: 0;
   }
 
   .projects-empty {
-    margin-block-start: 1.5rem;
-    padding: 1rem;
-    border: 1px solid currentColor;
+    margin-block-start: var(--site-space-6);
+    padding: var(--site-space-6);
   }
 
-  .projects-empty > :first-child {
-    margin-block-start: 0;
-  }
-
-  .projects-empty > :last-child {
-    margin-block-end: 0;
+  .projects-empty .site-primitive-subtitle,
+  .projects-case .site-primitive-subtitle {
+    margin-block: 0 var(--site-space-3);
   }
 
   .projects-list {
     display: grid;
-    gap: 1rem;
-    margin-block-start: 1.5rem;
+    gap: var(--site-space-6);
+    margin-block-start: var(--site-space-6);
   }
 
-  .projects-list article {
-    padding: 1rem;
-    border: 1px solid currentColor;
+  .projects-case {
+    padding-block-start: var(--site-space-5);
+  }
+
+  .projects-case-link {
+    color: inherit;
+    text-decoration-line: underline;
+    text-decoration-thickness: 0.08em;
+    text-underline-offset: 0.2em;
+  }
+
+  .projects-case-link:hover {
+    text-decoration-thickness: 0.14em;
+  }
+
+  .projects-case-link:focus-visible {
+    outline: 3px solid var(--site-color-required-boundary);
+    outline-offset: 3px;
+  }
+
+  .projects-conversion {
+    margin-block-end: var(--site-space-8);
+    padding: var(--site-space-7);
+    border-block-start: 3px solid var(--site-color-accent-on-dark);
+  }
+
+  @media (max-width: 30rem) {
+    .projects-empty,
+    .projects-conversion {
+      padding-inline: var(--site-space-5);
+    }
+
+    .projects-conversion {
+      margin-block-end: var(--site-space-6);
+    }
   }
 </style>

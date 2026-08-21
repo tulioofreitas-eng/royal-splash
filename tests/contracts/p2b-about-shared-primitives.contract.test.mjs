@@ -97,6 +97,7 @@ test("trust composition remains route-local and consumer allowlists stay isolate
   const authorizedBrandConsumers = [
     "src/pages/index.astro",
     "src/pages/metodo-royal.astro",
+    "src/pages/projetos.astro",
     "src/pages/sobre.astro",
     "src/components/site/SegmentContextPage.astro",
   ];
