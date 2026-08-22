@@ -46,16 +46,18 @@ test("controlled route copy and auxiliary contact destination remain exact", asy
   assert.match(page, /href=["']\/contato["']/);
 });
 
-test("StructuredIntake preserves four-stage fields, endpoint, hooks, and success contract", async () => {
+test("StructuredIntake preserves approved three-stage fields, endpoint, hooks, and success contract", async () => {
   const [, intake] = await readSources();
 
-  assert.equal((intake.match(/data-intake-step=["'][1-4]["']/g) ?? []).length, 4);
-  for (const step of ["Contexto", "Necessidade", "Condições", "Contato"]) {
-    assert.match(intake, new RegExp(`data-progress-step=["'][1-4]["']>[\\s\\S]*?${step}`));
+  assert.equal((intake.match(/data-intake-step=["'][1-3]["']/g) ?? []).length, 3);
+  assert.equal((intake.match(/data-progress-step=["'][1-3]["']/g) ?? []).length, 3);
+  for (const step of ["SOBRE O PROJETO", "O QUE VOCÊ PRECISA", "SEUS DADOS"]) {
+    assert.match(intake, new RegExp(`data-progress-step=["'][1-3]["']>[\\s\\S]*?${step}`));
   }
   for (const name of [
     "projectContext", "projectNeed", "city", "name", "email", "phone", "consent",
   ]) assert.match(intake, new RegExp(`name=["']${name}["']`));
+  assert.match(intake, /<input(?=[^>]*name=["']city["'])(?=[^>]*\brequired\b)[^>]*>/);
 
   assert.match(intake, /action=["']\/api\/site-lead-preview["']/);
   assert.match(intake, /fetch\(\s*["']\/api\/site-lead-preview["']/);

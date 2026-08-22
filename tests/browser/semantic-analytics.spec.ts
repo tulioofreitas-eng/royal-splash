@@ -180,6 +180,10 @@ test.describe(
         "/inicie-seu-projeto?context=residencial",
       );
 
+      await page.getByLabel("Cidade", { exact: true }).fill(
+        "Cidade Analytics",
+      );
+
       await page.getByRole(
         "button",
         {
@@ -191,19 +195,6 @@ test.describe(
         "Descreva brevemente o que você precisa",
       ).fill(
         "Conteúdo sensível de teste que não pode entrar em analytics.",
-      );
-
-      await page.getByRole(
-        "button",
-        {
-          name: "Continuar",
-        },
-      ).click();
-
-      await page.getByLabel(
-        /Cidade/,
-      ).fill(
-        "Cidade Analytics",
       );
 
       await page.getByRole(

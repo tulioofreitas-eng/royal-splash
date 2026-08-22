@@ -130,6 +130,7 @@ export const POST: APIRoute = async ({
 
     if (
       !context ||
+      !city ||
       !projectNeed ||
       !name ||
       (!email && !phone) ||

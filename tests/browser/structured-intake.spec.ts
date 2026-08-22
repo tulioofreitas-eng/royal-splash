@@ -8,7 +8,7 @@ import {
 const validServerPayload = {
   projectContext: "residencial",
   projectNeed: "Verificar invariantes atuais.",
-  city: "Cidade opcional",
+  city: "Cidade obrigatória",
   name: "Pessoa de Teste",
   email: "teste@example.com",
   phone: "11999999999",
@@ -22,18 +22,15 @@ async function reachContactStep(
   await page.getByLabel("Contexto", {
     exact: true,
   }).selectOption("residencial");
+  await page.getByLabel("Cidade", { exact: true }).fill(
+    "Cidade preservada",
+  );
   await page.getByRole("button", {
     name: "Continuar",
   }).click();
   await page.getByLabel(
     "Descreva brevemente o que você precisa",
   ).fill("Necessidade preservada.");
-  await page.getByRole("button", {
-    name: "Continuar",
-  }).click();
-  await page.getByLabel(/Cidade/).fill(
-    "Cidade preservada",
-  );
   await page.getByRole("button", {
     name: "Continuar",
   }).click();
@@ -80,6 +77,8 @@ test.describe("Preview intake endpoint current contract", () => {
     ["multiple email separators", { email: "teste@@example.com" }],
     ["unknown project context", { projectContext: "unknown" }],
     ["missing project context", { projectContext: "" }],
+    ["missing city", { city: "" }],
+    ["whitespace-only city", { city: "   " }],
     ["missing project need", { projectNeed: "" }],
     ["missing name", { name: "" }],
   ] as const) {
@@ -139,6 +138,9 @@ test.describe("structured project intake", () => {
       "residencial",
     );
 
+    const city = page.getByLabel("Cidade", { exact: true });
+    await city.fill("Cidade de teste");
+
     await page.getByRole("button", {
       name: "Continuar",
     }).click();
@@ -157,50 +159,17 @@ test.describe("structured project intake", () => {
       name: "Continuar",
     }).click();
 
-    const city = page.getByLabel(
-      /Cidade/,
-    );
-
-    await city.fill("Cidade de teste");
-
-    await page.getByRole("button", {
-      name: "Voltar",
-    }).click();
-
-    await expect(need).toHaveValue(
-      "Fixture funcional para verificar o boundary de lead.",
-    );
-
-    await page.getByRole("button", {
-      name: "Continuar",
-    }).click();
-
-    await expect(city).toHaveValue(
-      "Cidade de teste",
-    );
-
-    await page.getByRole("button", {
-      name: "Voltar",
-    }).click();
     await page.getByRole("button", {
       name: "Voltar",
     }).click();
     await expect(context).toHaveValue("residencial");
+    await expect(city).toHaveValue("Cidade de teste");
     await page.getByRole("button", {
       name: "Continuar",
     }).click();
     await expect(need).toHaveValue(
       "Fixture funcional para verificar o boundary de lead.",
     );
-    await page.getByRole("button", {
-      name: "Continuar",
-    }).click();
-    await expect(city).toHaveValue("Cidade de teste");
-
-    await page.getByRole("button", {
-      name: "Continuar",
-    }).click();
-
     await page.getByLabel("Nome").fill(
       "Pessoa de Teste",
     );
@@ -345,8 +314,10 @@ test.describe("structured project intake", () => {
     await page.getByLabel("E-mail").fill("preserved@example.com");
     await page.getByLabel("Telefone").fill("11999999999");
     await page.getByRole("button", { name: "Voltar" }).click();
-    await expect(page.getByLabel(/Cidade/)).toHaveValue(
-      "Cidade preservada",
+    await expect(page.getByLabel(
+      "Descreva brevemente o que você precisa",
+    )).toHaveValue(
+      "Necessidade preservada.",
     );
     await page.getByRole("button", { name: "Continuar" }).click();
     await expect(page.getByLabel("E-mail")).toHaveValue(
@@ -443,6 +414,22 @@ test.describe("structured project intake", () => {
       "corporativo_institucional",
     );
 
+    const city = page.getByLabel("Cidade", { exact: true });
+
+    await page.getByRole("button", {
+      name: "Continuar",
+    }).click();
+
+    await expect(city).toBeFocused();
+    await expect(city).toHaveAttribute("aria-invalid", "true");
+    await expect(city).toHaveAttribute(
+      "aria-describedby",
+      "project-city-error",
+    );
+    await expect(page.getByText("Informe a cidade.")).toBeVisible();
+
+    await city.fill("Cidade preservada");
+
     await page.getByRole("button", {
       name: "Continuar",
     }).click();
@@ -468,6 +455,22 @@ test.describe("structured project intake", () => {
     );
   });
 
+  test("materializes exactly three approved steps with required City", async ({ page }) => {
+    await page.goto("/inicie-seu-projeto");
+
+    await expect(page.locator("[data-progress-step]")).toHaveCount(3);
+    await expect(page.locator("[data-intake-step]")).toHaveCount(3);
+    await expect(page.locator("[data-progress-step]")).toHaveText([
+      "SOBRE O PROJETO",
+      "O QUE VOCÊ PRECISA",
+      "SEUS DADOS",
+    ]);
+
+    const city = page.getByLabel("Cidade", { exact: true });
+    await expect(city).toHaveAttribute("required", "");
+    await expect(city).toHaveAttribute("autocomplete", "address-level2");
+  });
+
   test("new intake surface has no automated axe violations", async ({
     page,
   }) => {
@@ -487,4 +490,23 @@ test.describe("structured project intake", () => {
       accessibilityScanResults.violations,
     ).toEqual([]);
   });
+
+  test("final intake step has no automated axe violations", async ({ page }) => {
+    await reachContactStep(page);
+    const results = await new AxeBuilder({ page }).analyze();
+    expect(results.violations).toEqual([]);
+  });
+
+  for (const width of [390, 768, 1440]) {
+    test(`has no horizontal overflow at ${width}px`, async ({ page }) => {
+      await page.setViewportSize({ width, height: 900 });
+      await page.goto("/inicie-seu-projeto");
+      const dimensions = await page.evaluate(() => ({
+        scrollWidth: document.documentElement.scrollWidth,
+        clientWidth: document.documentElement.clientWidth,
+      }));
+      expect(dimensions.scrollWidth).toBeLessThanOrEqual(dimensions.clientWidth);
+      await expect(page.getByLabel("Cidade", { exact: true })).toBeVisible();
+    });
+  }
 });

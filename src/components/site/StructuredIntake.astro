@@ -21,16 +21,13 @@
     aria-label="Progresso do formulário"
   >
     <li aria-current="step" data-progress-step="1">
-      Contexto
+      SOBRE O PROJETO
     </li>
     <li data-progress-step="2">
-      Necessidade
+      O QUE VOCÊ PRECISA
     </li>
     <li data-progress-step="3">
-      Condições
-    </li>
-    <li data-progress-step="4">
-      Contato
+      SEUS DADOS
     </li>
   </ol>
 
@@ -68,6 +65,26 @@
         id="project-context-error"
         class="structured-intake__field-error"
         data-error-for="project-context"
+        hidden
+      ></p>
+
+      <label for="project-city">
+        Cidade
+      </label>
+
+      <input
+        id="project-city"
+        name="city"
+        type="text"
+        autocomplete="address-level2"
+        required
+        aria-describedby="project-city-error"
+      />
+
+      <p
+        id="project-city-error"
+        class="structured-intake__field-error"
+        data-error-for="project-city"
         hidden
       ></p>
 
@@ -111,32 +128,7 @@
     </fieldset>
 
     <fieldset data-intake-step="3" hidden>
-      <legend>3. Condições relevantes</legend>
-
-      <label for="project-city">
-        Cidade
-        <span>(opcional neste fixture)</span>
-      </label>
-
-      <input
-        id="project-city"
-        name="city"
-        type="text"
-        autocomplete="address-level2"
-      />
-
-      <div class="structured-intake__controls">
-        <button type="button" data-previous-step>
-          Voltar
-        </button>
-        <button type="button" data-next-step>
-          Continuar
-        </button>
-      </div>
-    </fieldset>
-
-    <fieldset data-intake-step="4" hidden>
-      <legend>4. Contato e consentimento</legend>
+      <legend>3. Seus dados</legend>
 
       <label for="contact-name">
         Nome
@@ -421,6 +413,20 @@
               return false;
             }
           }
+
+          const city = form.elements.namedItem("city");
+
+          if (city instanceof HTMLInputElement) {
+            clearFieldError(city);
+
+            if (!city.value.trim()) {
+              setFieldError(
+                city,
+                "Informe a cidade.",
+              );
+              return false;
+            }
+          }
         }
 
         if (index === 1) {
@@ -443,7 +449,7 @@
           }
         }
 
-        if (index === 3) {
+        if (index === 2) {
           const name = form.elements.namedItem("name");
           const email = form.elements.namedItem("email");
           const phone = form.elements.namedItem("phone");
@@ -557,7 +563,7 @@
         async (event) => {
           event.preventDefault();
 
-          if (!validateStep(3)) {
+          if (!validateStep(2)) {
             return;
           }
 

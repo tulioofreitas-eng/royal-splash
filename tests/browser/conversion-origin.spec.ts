@@ -21,6 +21,10 @@ async function completeMinimalIntake(
     );
   }
 
+  await page.getByLabel("Cidade", { exact: true }).fill(
+    "Cidade Origem",
+  );
+
   await page.getByRole(
     "button",
     {
@@ -33,13 +37,6 @@ async function completeMinimalIntake(
   ).fill(
     "Fixture de atribuição de origem.",
   );
-
-  await page.getByRole(
-    "button",
-    {
-      name: "Continuar",
-    },
-  ).click();
 
   await page.getByRole(
     "button",

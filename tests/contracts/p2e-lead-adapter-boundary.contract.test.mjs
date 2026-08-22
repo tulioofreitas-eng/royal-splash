@@ -144,16 +144,16 @@ test("target flow has no dependency on the legacy /api/lead route", () => {
   }
 });
 
-test("WP3 frozen production sources match the accepted base byte-for-byte", () => {
-  const acceptedBaseSha256 = {
+test("WP3 boundary sources match the controlled WP2B materialization fingerprints", () => {
+  const controlledWp2bSha256 = {
     contracts: "9cda2711c997689f6b73a2eb26e4b8ad872f711d0a24acf7b4e6d1b729a0eaec",
-    intake: "c4d636935806423318e55b30263376d23a4a3a2ca532113e8fd14a0144f014c6",
-    preview: "25da97980354bbb4ef2136aafaa031c572a8d4b96af8c2396c42112ae2619f16",
+    intake: "240959ce17eee75f4086d4f8156a3c45ed75616282036179257fc98e920e93fa",
+    preview: "08133ca784eaf7a0f230ba7bea4aa8d8555eea7110afd45c21961f124e1d2dd4",
     legacy: "e319eb440bf41ff668e3836a321d0535844ce8cbb20cf0df8db1d18137852230",
   };
 
-  for (const [name, expected] of Object.entries(acceptedBaseSha256)) {
+  for (const [name, expected] of Object.entries(controlledWp2bSha256)) {
     const actual = createHash("sha256").update(sources[name]).digest("hex");
-    assert.equal(actual, expected, `${name} drifted from e7d5987a WP3 base`);
+    assert.equal(actual, expected, `${name} drifted from the controlled WP2B state`);
   }
 });

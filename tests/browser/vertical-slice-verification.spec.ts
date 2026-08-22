@@ -105,6 +105,12 @@ test.describe(
       );
 
       await page
+        .getByLabel("Cidade", { exact: true })
+        .fill(
+          "Cidade WP1G",
+        );
+
+      await page
         .getByRole("button", {
           name: "Continuar",
         })
@@ -122,18 +128,6 @@ test.describe(
       await need.fill(
         "Fixture WP1G que não pode entrar em analytics.",
       );
-
-      await page
-        .getByRole("button", {
-          name: "Continuar",
-        })
-        .click();
-
-      await page
-        .getByLabel(/Cidade/)
-        .fill(
-          "Cidade WP1G",
-        );
 
       await page
         .getByRole("button", {
@@ -325,6 +319,10 @@ test.describe(
       ).toHaveValue(
         "corporativo_institucional",
       );
+
+      await page
+        .getByLabel("Cidade", { exact: true })
+        .fill("Cidade corporativa");
 
       await page
         .getByRole("button", {
