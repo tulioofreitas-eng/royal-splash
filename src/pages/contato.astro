@@ -3,7 +3,6 @@ import '../styles/global.css';
 import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
 import BotaoWhatsapp from '../components/BotaoWhatsapp.astro';
-import Formulario from '../components/Formulario.astro';
 import GTMHead from '../components/GTMHead.astro';
 import GTMBody from '../components/GTMBody.astro';
 import { getCurrentSeoRobots } from '../seo/runtime.ts';
@@ -17,7 +16,7 @@ const robots = getCurrentSeoRobots();
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>Contato — Royal Splash</title>
-    <meta name="description" content="Fale com a Royal Splash e receba um orçamento sem compromisso para sua piscina ou área de lazer de alto padrão." />
+    <meta name="description" content="Fale com a Royal Splash pelos canais de contato ou acesse o formulário estruturado para iniciar um projeto." />
     {robots && <meta name="robots" content={robots} />}
   <link rel="icon" type="image/x-icon" href="/favicon.ico" />
 <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
@@ -32,24 +31,27 @@ const robots = getCurrentSeoRobots();
     <main id="main-content" tabindex="-1">
 
     <section class="pt-16 pb-16 px-6 text-center">
-      <span class="text-sm uppercase tracking-widest text-piscina">Fale conosco</span>
-      <h1 class="text-4xl md:text-6xl font-semibold mt-3 mb-4">Vamos conversar</h1>
+      <span class="text-sm uppercase tracking-widest text-piscina">Fale com a Royal Splash</span>
+      <h1 class="text-4xl md:text-6xl font-semibold mt-3 mb-4">Contato</h1>
       <p class="text-lg text-slate-400 max-w-2xl mx-auto">
-        Conte sobre o seu projeto e nossa equipe entra em contato para um orçamento sem compromisso.
+        Para iniciar um projeto, use o formulário estruturado.
       </p>
+      <a href="/inicie-seu-projeto" class="inline-block bg-piscina hover:opacity-90 text-marca font-medium px-8 py-4 rounded-full transition-opacity mt-8 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-white">
+        Iniciar um projeto
+      </a>
     </section>
 
-    <section class="pb-16 px-6">
-      <Formulario />
-    </section>
-
-    <section class="pb-24 px-6 text-center">
-      <p class="text-slate-400 mb-6">Prefere falar direto com a gente?</p>
+    <section class="pb-24 px-6 text-center" aria-labelledby="contact-channels-heading">
+      <h2 id="contact-channels-heading" class="text-2xl font-semibold mb-6">Outros canais de contato</h2>
       <div class="flex flex-col sm:flex-row gap-4 justify-center max-w-xl mx-auto">
-        <a href="https://instagram.com/royalsplashoficial" target="_blank" class="border border-white/30 hover:border-white/60 text-white font-medium px-8 py-4 rounded-full transition-colors">Instagram</a>
-        <a href="https://wa.me/5521982590643" target="_blank" class="bg-piscina hover:opacity-90 text-white font-medium px-8 py-4 rounded-full transition-opacity">Falar no WhatsApp</a>
+        <a href="https://instagram.com/royalsplashoficial" target="_blank" class="border border-white/30 hover:border-white/60 text-white font-medium px-8 py-4 rounded-full transition-colors focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-white">Instagram</a>
+        <a href="https://wa.me/5521982590643" target="_blank" class="bg-piscina hover:opacity-90 text-marca font-medium px-8 py-4 rounded-full transition-opacity focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-white">WhatsApp</a>
       </div>
-      <p class="text-slate-500 mt-8 text-sm">(21) 98259-0643 · contato@royalsplash.com.br</p>
+      <p class="text-slate-400 mt-8 text-sm">
+        <a href="tel:+5521982590643" class="hover:text-white focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-white">(21) 98259-0643</a>
+        <span aria-hidden="true"> · </span>
+        <a href="mailto:contato@royalsplash.com.br" class="hover:text-white focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-white">contato@royalsplash.com.br</a>
+      </p>
     </section>
 
     </main>

@@ -124,6 +124,13 @@ test.describe("structured project intake", () => {
   test("preserves progressive values and submits site-lead.v1 to Preview mock ingress", async ({
     page,
   }) => {
+    const legacyLeadRequests: string[] = [];
+    page.on("request", (request) => {
+      if (new URL(request.url()).pathname === "/api/lead") {
+        legacyLeadRequests.push(request.url());
+      }
+    });
+
     await page.goto("/inicie-seu-projeto");
 
     const form = page.locator(
@@ -227,6 +234,7 @@ test.describe("structured project intake", () => {
     await expect(page).toHaveURL(
       /\/inicie-seu-projeto$/,
     );
+    expect(legacyLeadRequests).toEqual([]);
   });
 
   for (const [label, email, phone] of [
