@@ -24,7 +24,6 @@ function normalizedControlledRouteText(source) {
 }
 
 const parity = {
-  "src/pages/lp/corporativo.astro": "277f2367c8df7b50281159c643fd606e9e63bdb54efc86046d8662259f1d7bb4",
   "src/pages/lp/lazer.astro": "5a0cb846d6e5acb47d2f00b1c6d6cbd2041bb8a27c32fd1248f25ce1dc47838a",
   "src/pages/lp/piscinas.astro": "cdb98174ac9cdcdbbcbf964d4eaf99cef028f9eea599c17ccd5dbcce0df8dbaa",
   "src/pages/lp/sauna.astro": "deb686c72b2abc27295f546bde522210bce2586fb103b102fde1d072ae7f47b8",

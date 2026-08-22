@@ -1,5 +1,6 @@
 ---
 import '../../styles/global.css';
+import LandingLayout from '../../layouts/LandingLayout.astro';
 import GTMHead from '../../components/GTMHead.astro';
 import GTMBody from '../../components/GTMBody.astro';
 import LPHeader from '../../components/LPHeader.astro';
@@ -11,121 +12,110 @@ import { Image } from 'astro:assets';
 import corpOlimpica from '../../assets/corp-olimpica.jpg';
 import corpHotel from '../../assets/corp-hotel.jpg';
 import corpManutencao from '../../assets/corp-manutencao.jpg';
-
 ---
 
-<html lang="pt-BR">
-  <head>
-    <GTMHead />
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>Soluções Corporativas em Piscinas — Royal Splash</title>
-    <meta name="description" content="Piscinas olímpicas, áreas de lazer para hotéis e manutenção expressa. Soluções para hotéis, resorts, clubes e academias." />
-    <meta name="robots" content="noindex, nofollow" />
-    <link rel="icon" type="image/x-icon" href="/favicon.ico" />
-  </head>
-  <body class="bg-marca text-white">
-    <GTMBody />
+<LandingLayout title="Soluções Corporativas em Piscinas — Royal Splash" description="Piscinas olímpicas, áreas de lazer para hotéis e manutenção expressa. Soluções para hotéis, resorts, clubes e academias." robots="noindex, nofollow" visualMode="brand" bodyClass="site-brand-lp-corporativo site-primitive-page">
+  <GTMHead slot="head" />
+  <link slot="head" rel="icon" type="image/x-icon" href="/favicon.ico" />
+  <GTMBody slot="body-start" />
+  <LPHeader slot="header" visualMode="brand" />
 
-    <LPHeader />
-    <main id="main-content" tabindex="-1">
+  <section class="corporativo-hero site-primitive-surface--dark">
+    <Image src={corpHotel} alt="Áreas de lazer corporativas" widths={[390, 640, 768, 1024, 1280, 1536, 1792, 2400]} sizes="100vw" priority class="corporativo-hero__image" />
+    <div class="corporativo-hero__veil"></div>
+    <div class="corporativo-hero__content">
+      <h1 class="site-primitive-page-title">Piscinas e áreas de lazer para elevar o padrão do seu negócio</h1>
+      <p class="site-primitive-body">Soluções completas para hotéis, resorts, clubes e academias, do projeto à manutenção.</p>
+      <div class="site-primitive-actions"><a href="#orcamento" class="site-primitive-action site-primitive-action--primary">Solicitar proposta sob medida</a></div>
+    </div>
+  </section>
 
-    <section class="relative">
-      <div class="absolute inset-0">
-        <Image src={corpHotel} alt="Áreas de lazer corporativas" widths={[390, 640, 768, 1024, 1280, 1536, 1792, 2400]} sizes="100vw" priority class="w-full h-full object-cover" />
-        <div class="absolute inset-0 bg-marca/80"></div>
+  <section class="corporativo-capabilities site-primitive-surface--light site-primitive-datum-bottom">
+    <div class="site-primitive-section site-primitive-section--entry">
+      <div class="corporativo-capabilities__heading">
+        <h2 class="site-primitive-display">Soluções para o seu negócio</h2>
+        <p class="site-primitive-body site-primitive-supporting">Infraestrutura profissional, acabamento de padrão internacional e operação sem interrupções.</p>
       </div>
-      <div class="relative max-w-3xl mx-auto text-center px-6 py-14 md:py-20">
-        <h1 class="text-3xl md:text-5xl font-semibold mb-4 leading-tight">
-          Piscinas e áreas de lazer para elevar o padrão do seu negócio
-        </h1>
-        <p class="text-base md:text-lg text-slate-300 mb-6 max-w-xl mx-auto [text-wrap:balance]">
-  Soluções completas para hotéis, resorts, clubes e academias, do projeto à manutenção.
-</p>
-        <a href="#orcamento" class="inline-block bg-ouro hover:opacity-90 text-marca font-semibold px-8 py-4 rounded-full transition-opacity">
-          Solicitar proposta sob medida
-        </a>
+      <div class="corporativo-capabilities__list">
+        <article class="corporativo-capability">
+          <div class="corporativo-capability__media"><Image src={corpOlimpica} alt="Piscinas olímpicas e complexos aquáticos" widths={[340, 480, 640, 768, 960]} sizes="(min-width: 1072px) 480px, (min-width: 768px) calc(50vw - 3.5rem), calc(100vw - 3rem)" class="corporativo-capability__image" /></div>
+          <div class="corporativo-capability__content"><h3 class="site-primitive-subtitle">Piscinas Olímpicas e Complexos Aquáticos</h3><p class="site-primitive-body site-primitive-supporting">Projetamos e executamos piscinas semiolímpicas, olímpicas e recreativas, para clubes, escolas, academias e centros esportivos.</p></div>
+        </article>
+        <article class="corporativo-capability corporativo-capability--reverse">
+          <div class="corporativo-capability__media"><Image src={corpHotel} alt="Áreas de lazer para hotéis e resorts" widths={[340, 480, 640, 768, 960]} sizes="(min-width: 1072px) 480px, (min-width: 768px) calc(50vw - 3.5rem), calc(100vw - 3rem)" class="corporativo-capability__image" /></div>
+          <div class="corporativo-capability__content"><h3 class="site-primitive-subtitle">Áreas de Lazer para Hotéis e Resorts</h3><p class="site-primitive-body site-primitive-supporting">Transformamos ambientes externos em diferenciais de experiência para os hóspedes: piscinas sofisticadas, spas, saunas, decks e áreas molhadas.</p><p class="site-primitive-body site-primitive-supporting">Paisagismo integrado, com padrão internacional de acabamento.</p></div>
+        </article>
+        <article class="corporativo-capability">
+          <div class="corporativo-capability__media"><Image src={corpManutencao} alt="Manutenção expressa de piscinas" widths={[340, 480, 640, 768, 960]} sizes="(min-width: 1072px) 480px, (min-width: 768px) calc(50vw - 3.5rem), calc(100vw - 3rem)" class="corporativo-capability__image" /></div>
+          <div class="corporativo-capability__content"><h3 class="site-primitive-subtitle">Manutenção Expressa</h3><p class="site-primitive-body site-primitive-supporting">Recuperação emergencial da qualidade da água para estabelecimentos que não podem parar. Técnicas avançadas e produtos específicos.</p></div>
+        </article>
       </div>
-    </section>
+    </div>
+  </section>
 
-
-    <section class="py-16 px-6">
-      <div class="max-w-5xl mx-auto">
-        <h2 class="text-3xl font-semibold text-center mb-4">Soluções para o seu negócio</h2>
-        <p class="text-slate-400 text-center max-w-2xl mx-auto mb-12">
-          Infraestrutura profissional, acabamento de padrão internacional e operação sem interrupções.
-        </p>
-
-        <div class="grid md:grid-cols-2 gap-16 items-center mb-16">
-          <div class="aspect-[4/3] rounded-2xl overflow-hidden border border-white/10">
-            <Image src={corpOlimpica} alt="Piscinas olímpicas e complexos aquáticos" widths={[340, 480, 640, 768, 960]} sizes="(min-width: 1072px) 480px, (min-width: 768px) calc(50vw - 3.5rem), calc(100vw - 3rem)" class="w-full h-full object-cover" />
-          </div>
-          <div>
-            <h3 class="text-2xl font-semibold mb-4">Piscinas Olímpicas e Complexos Aquáticos</h3>
-            <p class="text-slate-400 mb-4">Projetamos e executamos piscinas semiolímpicas, olímpicas e recreativas, para clubes, escolas, academias e centros esportivos.</p>
-          </div>
-        </div>
-
-        <div class="grid md:grid-cols-2 gap-16 items-center mb-16">
-          <div class="aspect-[4/3] rounded-2xl overflow-hidden border border-white/10 md:order-2">
-            <Image src={corpHotel} alt="Áreas de lazer para hotéis e resorts" widths={[340, 480, 640, 768, 960]} sizes="(min-width: 1072px) 480px, (min-width: 768px) calc(50vw - 3.5rem), calc(100vw - 3rem)" class="w-full h-full object-cover" />
-          </div>
-          <div class="md:order-1">
-            <h3 class="text-2xl font-semibold mb-4">Áreas de Lazer para Hotéis e Resorts</h3>
-            <p class="text-slate-400 mb-4">Transformamos ambientes externos em diferenciais de experiência para os hóspedes: piscinas sofisticadas, spas, saunas, decks e áreas molhadas.</p>
-            <p class="text-slate-400">Paisagismo integrado, com padrão internacional de acabamento.</p>
-          </div>
-        </div>
-
-        <div class="grid md:grid-cols-2 gap-16 items-center">
-          <div class="aspect-[4/3] rounded-2xl overflow-hidden border border-white/10">
-            <Image src={corpManutencao} alt="Manutenção expressa de piscinas" widths={[340, 480, 640, 768, 960]} sizes="(min-width: 1072px) 480px, (min-width: 768px) calc(50vw - 3.5rem), calc(100vw - 3rem)" class="w-full h-full object-cover" />
-          </div>
-          <div>
-            <h3 class="text-2xl font-semibold mb-4">Manutenção Expressa</h3>
-            <p class="text-slate-400 mb-4">Recuperação emergencial da qualidade da água para estabelecimentos que não podem parar. Técnicas avançadas e produtos específicos.</p>
-          </div>
-        </div>
+  <section class="corporativo-trust site-primitive-surface--muted site-primitive-datum-bottom">
+    <div class="site-primitive-section">
+      <h2 class="site-primitive-section-title">Por que empresas confiam na Royal Splash?</h2>
+      <div class="corporativo-trust__list">
+        <article class="corporativo-trust__entry"><Icon name="users" class="corporativo-trust__icon" /><div><h3 class="site-primitive-subtitle font-semibold mb-1">Atendimento Dedicado</h3><p class="site-primitive-body site-primitive-supporting">Consultoria exclusiva do projeto à entrega.</p></div></article>
+        <article class="corporativo-trust__entry"><Icon name="cpu" class="corporativo-trust__icon" /><div><h3 class="site-primitive-subtitle font-semibold mb-1">Padrão Internacional</h3><p class="site-primitive-body site-primitive-supporting">Acabamento e tecnologia à altura da sua marca.</p></div></article>
       </div>
-    </section>
+    </div>
+  </section>
 
-    <section class="py-16 px-6 bg-marca-suave">
-      <div class="max-w-5xl mx-auto text-center">
-        <h2 class="text-3xl font-semibold mb-12">Por que empresas confiam na Royal Splash?</h2>
-        <div class="grid grid-cols-2 md:grid-cols-4 gap-8">
-          <div>
-            <div class="w-14 h-14 rounded-full bg-ouro/10 flex items-center justify-center mb-3 mx-auto text-ouro"><Icon name="users" /></div>
-            <h3 class="font-semibold mb-1">Atendimento Dedicado</h3>
-            <p class="text-sm text-slate-400">Consultoria exclusiva do projeto à entrega.</p>
-          </div>
-          <div>
-            <div class="w-14 h-14 rounded-full bg-ouro/10 flex items-center justify-center mb-3 mx-auto text-ouro"><Icon name="cpu" /></div>
-            <h3 class="font-semibold mb-1">Padrão Internacional</h3>
-            <p class="text-sm text-slate-400">Acabamento e tecnologia à altura da sua marca.</p>
-          </div>
-        </div>
-      </div>
-    </section>
+  <section class="corporativo-cta site-primitive-surface--dark"><div class="site-primitive-section"><h2 class="site-primitive-display">Vamos elevar o padrão do seu negócio?</h2><div class="site-primitive-actions"><a href="#orcamento" class="site-primitive-action site-primitive-action--primary">Falar com nossa equipe</a></div></div></section>
 
-    <section class="py-16 px-6 text-center border-y border-ouro/20">
-      <h2 class="text-3xl md:text-4xl font-semibold mb-6 max-w-2xl mx-auto">
-        Vamos elevar o padrão do seu negócio?
-      </h2>
-      <a href="#orcamento" class="inline-block bg-ouro hover:opacity-90 text-marca font-semibold px-8 py-4 rounded-full transition-opacity">
-        Falar com nossa equipe
-      </a>
-    </section>
+  <section id="orcamento" class="site-primitive-section corporativo-form">
+    <div class="site-primitive-reading corporativo-form__heading"><h2 class="site-primitive-section-title">Solicite uma Proposta</h2><p class="site-primitive-body site-primitive-supporting">Preencha os dados abaixo e nossa equipe entrará em contato para entender seu projeto em detalhes.</p></div>
+    <FormularioGHL />
+  </section>
 
-    <section id="orcamento" class="py-16 px-6">
-      <div class="max-w-xl mx-auto text-center mb-10">
-        <h2 class="text-3xl font-semibold mb-3">Solicite uma Proposta</h2>
-        <p class="text-slate-400">Preencha os dados abaixo e nossa equipe entrará em contato para entender seu projeto em detalhes.</p>
-      </div>
-      <FormularioGHL />
-    </section>
+  <LPFooter slot="footer" visualMode="brand" />
+  <BotaoWhatsapp slot="body-end" />
+</LandingLayout>
 
-    </main>
-    <LPFooter />
-    <BotaoWhatsapp />
-  </body>
-</html>
+<style>
+  .corporativo-hero { position: relative; display: grid; min-height: max(42rem, 100svh); isolation: isolate; }
+  .corporativo-hero__image, .corporativo-hero__veil { position: absolute; inset: 0; width: 100%; height: 100%; }
+  .corporativo-hero__image { z-index: -2; object-fit: cover; object-position: center; }
+  .corporativo-hero__veil { z-index: -1; background: color-mix(in srgb, var(--site-color-surface-dark) 76%, transparent); }
+  .corporativo-hero__content { align-self: end; width: min(calc(100% - (2 * var(--site-layout-gutter))), var(--site-layout-content-max)); margin-inline: auto; padding-block: var(--site-space-8); }
+  .corporativo-hero h1 { max-width: 16ch; margin: 0; }
+  .corporativo-hero p { max-width: 39rem; margin: var(--site-space-5) 0 0; color: var(--site-color-text-on-dark); }
+  .corporativo-hero .site-primitive-actions { margin-block-start: var(--site-space-6); }
+  .corporativo-capabilities__heading { display: grid; grid-template-columns: minmax(0, 1.15fr) minmax(18rem, 0.85fr); gap: var(--site-space-7); align-items: end; margin-block-end: var(--site-space-8); }
+  .corporativo-capabilities__heading h2, .corporativo-capabilities__heading p { margin: 0; }
+  .corporativo-capabilities__list { border-block-start: 1px solid var(--site-color-divider); }
+  .corporativo-capability { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--site-space-8); align-items: center; padding-block: var(--site-space-7); border-block-end: 1px solid var(--site-color-divider); }
+  .corporativo-capability--reverse .corporativo-capability__media { order: 2; }
+  .corporativo-capability__media { aspect-ratio: 4 / 3; overflow: hidden; }
+  .corporativo-capability__image { width: 100%; height: 100%; object-fit: cover; }
+  .corporativo-capability__content { max-width: 35rem; }
+  .corporativo-capability h3, .corporativo-capability p, .corporativo-trust h2, .corporativo-trust h3, .corporativo-trust p, .corporativo-form h2, .corporativo-form p { margin-block-start: 0; }
+  .corporativo-capability p:last-child, .corporativo-trust p, .corporativo-form p { margin-block-end: 0; }
+  .corporativo-trust .site-primitive-section { display: grid; grid-template-columns: minmax(15rem, 0.7fr) minmax(0, 1.3fr); gap: var(--site-space-8); }
+  .corporativo-trust__list { border-block-start: 1px solid var(--site-color-divider); }
+  .corporativo-trust__entry { display: grid; grid-template-columns: auto minmax(0, 1fr); gap: var(--site-space-4); padding-block: var(--site-space-5); border-block-end: 1px solid var(--site-color-divider); }
+  .corporativo-trust .site-primitive-supporting { color: var(--site-color-text-primary); }
+  :global(.corporativo-trust__icon) { width: 1.5rem; height: 1.5rem; color: var(--site-color-text-primary); }
+  .corporativo-cta .site-primitive-section { display: flex; gap: var(--site-space-7); align-items: end; justify-content: space-between; }
+  .corporativo-cta h2 { max-width: 18ch; margin: 0; }
+  .corporativo-cta .site-primitive-actions { flex: none; margin: 0; }
+  .corporativo-form { padding-block-end: calc(var(--site-space-8) + 4.5rem); }
+  .corporativo-form__heading { margin: 0 auto var(--site-space-7); text-align: center; }
+  @media (max-width: 52rem) {
+    .corporativo-hero { min-height: max(42rem, 100svh); }
+    .corporativo-capabilities__heading, .corporativo-trust .site-primitive-section { grid-template-columns: 1fr; gap: var(--site-space-5); }
+    .corporativo-capability { gap: var(--site-space-6); }
+    .corporativo-cta .site-primitive-section { display: block; }
+    .corporativo-cta .site-primitive-actions { margin-block-start: var(--site-space-6); }
+  }
+  @media (max-width: 42rem) {
+    .corporativo-hero { min-height: calc(100svh + 8rem); }
+    .corporativo-hero__content { align-self: center; padding-block: var(--site-space-7); }
+    .corporativo-capability { grid-template-columns: 1fr; gap: var(--site-space-5); }
+    .corporativo-capability--reverse .corporativo-capability__media { order: initial; }
+    .corporativo-capability__media { width: calc(100% - 1rem); max-width: 21.875rem; margin-inline: auto; }
+    .corporativo-form { padding-block-end: calc(var(--site-space-7) + 5rem); }
+  }
+</style>

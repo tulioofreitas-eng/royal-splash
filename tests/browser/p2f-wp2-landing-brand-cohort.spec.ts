@@ -8,8 +8,9 @@ const viewports = [
 ];
 
 const routes = [
-  { slug: "vazamento", displayHeading: "Detecção de Vazamentos" },
-  { slug: "reforma", displayHeading: "Revitalização em cada detalhe" },
+  { slug: "vazamento", displayHeading: "Detecção de Vazamentos", ctaName: "Falar com um especialista" },
+  { slug: "reforma", displayHeading: "Revitalização em cada detalhe", ctaName: "Falar com um especialista" },
+  { slug: "corporativo", displayHeading: "Soluções para o seu negócio", ctaName: "Solicitar proposta sob medida" },
 ];
 
 function overlaps(a: { x: number; y: number; width: number; height: number }, b: { x: number; y: number; width: number; height: number }) {
@@ -35,7 +36,7 @@ for (const route of routes) {
     expect(headings[0]).toBe(1);
     for (let index = 1; index < headings.length; index += 1) expect(headings[index] - headings[index - 1]).toBeLessThanOrEqual(1);
 
-    const cta = page.getByRole("link", { name: "Falar com um especialista" });
+    const cta = page.getByRole("link", { name: route.ctaName });
     await expect(cta).toBeVisible();
     await expect(cta).toHaveAttribute("href", "#orcamento");
     await cta.focus();
@@ -64,11 +65,20 @@ for (const route of routes) {
     const ctaBox = await cta.boundingBox();
     if (ctaBox && whatsappBox) expect(overlaps(ctaBox, whatsappBox)).toBe(false);
 
+    if (route.slug === "corporativo") {
+      const closingCta = page.getByRole("link", { name: "Falar com nossa equipe" });
+      await expect(closingCta).toHaveAttribute("href", "#orcamento");
+      const closingBox = await closingCta.boundingBox();
+      if (closingBox && whatsappBox) expect(overlaps(closingBox, whatsappBox)).toBe(false);
+    }
+
     const scan = await new AxeBuilder({ page }).exclude("#btn-abrir-whatsapp").analyze();
     expect(scan.violations).toEqual([]);
     await page.locator("astro-dev-toolbar").evaluateAll((nodes) => nodes.forEach((node) => node.remove()));
     await page.evaluate(() => { if (document.activeElement instanceof HTMLElement) document.activeElement.blur(); window.scrollTo(0, 0); });
-    const screenshotPath = route.slug === "reforma"
+    const screenshotPath = route.slug === "corporativo"
+      ? `/tmp/royal-p2f-wp2c/corporativo-${viewport.width}.png`
+      : route.slug === "reforma"
       ? `/tmp/royal-p2f-wp2b/reforma-${viewport.width}.png`
       : `/tmp/royal-p2f-wp2a/vazamento-${viewport.width}.png`;
     await page.screenshot({ path: screenshotPath, fullPage: true });

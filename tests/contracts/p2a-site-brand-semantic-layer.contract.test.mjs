@@ -153,6 +153,7 @@ test("only approved pages opt into Site Brand mode", async () => {
   assert.deepEqual(optIns.sort(), [
     "src/pages/index.astro",
     "src/pages/lp/fibra.astro",
+    "src/pages/lp/corporativo.astro",
     "src/pages/lp/reforma.astro",
     "src/pages/lp/vazamento.astro",
     "src/pages/inicie-seu-projeto.astro",

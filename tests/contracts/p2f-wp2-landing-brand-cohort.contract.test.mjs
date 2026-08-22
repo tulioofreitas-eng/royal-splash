@@ -11,6 +11,8 @@ const EXPECTED_VISIBLE_TEXT_SHA = "b1f049bbe9c9bf24c926bd84753b4dbc6ab2474bd1112
 const EXPECTED_VISIBLE_TEXT = "Detecção de Vazamento em Piscinas — Royal Splash Sua piscina está perdendo água? Detecção de Vazamentos Piscina perdendo nível de água constantemente? Pode ser vazamento estrutural, em tubulação ou no revestimento. Como Trabalhamos Reparo Correção estrutural, de tubulação ou revestimento, sem gambiarra. Por que a Royal Splash? Tecnologia de Ponta Atendimento Premium Consultoria clara do diagnóstico à entrega. Não deixe o vazamento aumentar sua conta de água Falar com um especialista Solicite seu Orçamento Preencha os dados abaixo e nossa equipe entrará em contato para entender seu caso em detalhes.";
 const EXPECTED_REFORMA_VISIBLE_TEXT_SHA = "ea6fae1a2588affd341c08c308ee0c9b6b24b0a0662c11ddb9c05c4ca9d90422";
 const EXPECTED_REFORMA_VISIBLE_TEXT = "Reforma de Piscinas — Royal Splash Sua piscina perdeu o brilho? Nós devolvemos Reforma completa com novos revestimentos, iluminação e automação. Transforme sua piscina antiga em um espaço premium. Revitalização em cada detalhe Piscina antiga, revestimento desgastado ou sistema ultrapassado? Fazemos a reforma completa: novo acabamento, iluminação LED, automação e modernização estrutural. Novos revestimentos e acabamentos Modernização de iluminação e automação Cuidamos de cada detalhe da reforma. Modernize, não só reforme Trocar o revestimento resolve a aparência. Modernizar transforma a experiência. Na mesma obra, sua piscina pode ganhar: Iluminação LED subaquática — a piscina vira o centro da casa à noite Nossos Serviços Revestimento Novo Troca completa de acabamento, com materiais de alto padrão. Automação e Iluminação Sistemas modernos de controle, aquecimento e iluminação LED. Por que a Royal Splash? Atendimento Premium Consultoria exclusiva do primeiro contato à entrega. Tecnologia de Ponta Automação, aquecimento e tratamento de última geração. Dê nova vida à sua piscina antes do verão Falar com um especialista Solicite seu Orçamento Preencha os dados abaixo e nossa equipe entrará em contato para entender seu projeto em detalhes.";
+const EXPECTED_CORPORATIVO_VISIBLE_TEXT_SHA = "9e6847cd3b81af7035f28d14506daf74bcf5d9092ece88255564d2548f1448a9";
+const EXPECTED_CORPORATIVO_VISIBLE_TEXT = "Soluções Corporativas em Piscinas — Royal Splash Piscinas e áreas de lazer para elevar o padrão do seu negócio Soluções completas para hotéis, resorts, clubes e academias, do projeto à manutenção. Solicitar proposta sob medida Soluções para o seu negócio Infraestrutura profissional, acabamento de padrão internacional e operação sem interrupções. Piscinas Olímpicas e Complexos Aquáticos Projetamos e executamos piscinas semiolímpicas, olímpicas e recreativas, para clubes, escolas, academias e centros esportivos. Áreas de Lazer para Hotéis e Resorts Transformamos ambientes externos em diferenciais de experiência para os hóspedes: piscinas sofisticadas, spas, saunas, decks e áreas molhadas. Paisagismo integrado, com padrão internacional de acabamento. Manutenção Expressa Recuperação emergencial da qualidade da água para estabelecimentos que não podem parar. Técnicas avançadas e produtos específicos. Por que empresas confiam na Royal Splash? Atendimento Dedicado Consultoria exclusiva do projeto à entrega. Padrão Internacional Acabamento e tecnologia à altura da sua marca. Vamos elevar o padrão do seu negócio? Falar com nossa equipe Solicite uma Proposta Preencha os dados abaixo e nossa equipe entrará em contato para entender seu projeto em detalhes.";
 
 function normalizedControlledRouteText(source) {
   const template = source
@@ -30,7 +32,6 @@ function normalizedControlledRouteText(source) {
 }
 
 const protectedFingerprints = {
-  "src/pages/lp/corporativo.astro": "277f2367c8df7b50281159c643fd606e9e63bdb54efc86046d8662259f1d7bb4",
   "src/pages/lp/lazer.astro": "5a0cb846d6e5acb47d2f00b1c6d6cbd2041bb8a27c32fd1248f25ce1dc47838a",
   "src/pages/lp/piscinas.astro": "cdb98174ac9cdcdbbcbf964d4eaf99cef028f9eea599c17ccd5dbcce0df8dbaa",
   "src/pages/lp/sauna.astro": "deb686c72b2abc27295f546bde522210bce2586fb103b102fde1d072ae7f47b8",
@@ -56,11 +57,12 @@ test("WP2 landing cohort has exactly the authorized migration state", async () =
   const vazamento = await read("src/pages/lp/vazamento.astro");
   const fibra = await read("src/pages/lp/fibra.astro");
   const reforma = await read("src/pages/lp/reforma.astro");
-  for (const source of [vazamento, fibra, reforma]) {
+  const corporativo = await read("src/pages/lp/corporativo.astro");
+  for (const source of [vazamento, fibra, reforma, corporativo]) {
     assert.match(source, /import LandingLayout/);
     assert.match(source, /visualMode="brand"/);
   }
-  for (const file of ["corporativo", "lazer", "piscinas", "sauna"]) {
+  for (const file of ["lazer", "piscinas", "sauna"]) {
     const source = await read(`src/pages/lp/${file}.astro`);
     assert.doesNotMatch(source, /import LandingLayout|visualMode="brand"/);
   }
@@ -120,6 +122,45 @@ test("reforma preserves metadata, conversion, tracking, providers, and image del
     /<LPFooter slot="footer" visualMode="brand"/,
   ]) assert.match(source, pattern);
   assert.doesNotMatch(source, /<main\b|\bbg-marca\b|\bbg-marca-suave\b/);
+});
+
+test("corporativo preserves actual controlled copy without amplifying proof", async () => {
+  const source = await read("src/pages/lp/corporativo.astro");
+  const visibleText = normalizedControlledRouteText(source);
+  assert.equal(visibleText, EXPECTED_CORPORATIVO_VISIBLE_TEXT);
+  assert.equal(sha(visibleText), EXPECTED_CORPORATIVO_VISIBLE_TEXT_SHA);
+  assert.doesNotMatch(source, /cliente|case study|estudo de caso|portfolio|portfólio|certificad|garantia|SLA|before|after|antes\/depois/i);
+  assert.doesNotMatch(source, /text-piscina|color-piscina|bg-piscina|bg-marca|bg-marca-suave/);
+});
+
+test("corporativo preserves metadata, conversion, integrations, and responsive editorial media", async () => {
+  const source = await read("src/pages/lp/corporativo.astro");
+  for (const pattern of [
+    /import LandingLayout from '\.\.\/\.\.\/layouts\/LandingLayout\.astro'/,
+    /title="Soluções Corporativas em Piscinas — Royal Splash"/,
+    /description="Piscinas olímpicas, áreas de lazer para hotéis e manutenção expressa\. Soluções para hotéis, resorts, clubes e academias\."/,
+    /robots="noindex, nofollow"/,
+    /visualMode="brand"/,
+    /<GTMHead slot="head"/,
+    /<GTMBody slot="body-start"/,
+    /<LPHeader slot="header" visualMode="brand"/,
+    /<LPFooter slot="footer" visualMode="brand"/,
+    /<FormularioGHL \/>/,
+    /<BotaoWhatsapp slot="body-end"/,
+    /href="#orcamento"[^>]*>Solicitar proposta sob medida<\/a>/,
+    /href="#orcamento"[^>]*>Falar com nossa equipe<\/a>/,
+    /<link slot="head" rel="icon" type="image\/x-icon" href="\/favicon\.ico"/,
+    /import corpOlimpica from '\.\.\/\.\.\/assets\/corp-olimpica\.jpg'/,
+    /import corpHotel from '\.\.\/\.\.\/assets\/corp-hotel\.jpg'/,
+    /import corpManutencao from '\.\.\/\.\.\/assets\/corp-manutencao\.jpg'/,
+    /src=\{corpHotel\} alt="Áreas de lazer corporativas" widths=\{\[390, 640, 768, 1024, 1280, 1536, 1792, 2400\]\} sizes="100vw" priority/,
+  ]) assert.match(source, pattern);
+  for (const pattern of [
+    /src=\{corpOlimpica\} alt="Piscinas olímpicas e complexos aquáticos" widths=\{\[340, 480, 640, 768, 960\]\} sizes="\(min-width: 1072px\) 480px, \(min-width: 768px\) calc\(50vw - 3\.5rem\), calc\(100vw - 3rem\)"/,
+    /src=\{corpHotel\} alt="Áreas de lazer para hotéis e resorts" widths=\{\[340, 480, 640, 768, 960\]\} sizes="\(min-width: 1072px\) 480px, \(min-width: 768px\) calc\(50vw - 3\.5rem\), calc\(100vw - 3rem\)"/,
+    /src=\{corpManutencao\} alt="Manutenção expressa de piscinas" widths=\{\[340, 480, 640, 768, 960\]\} sizes="\(min-width: 1072px\) 480px, \(min-width: 768px\) calc\(50vw - 3\.5rem\), calc\(100vw - 3rem\)"/,
+  ]) assert.match(source, pattern);
+  assert.doesNotMatch(source, /<main\b/);
 });
 
 test("shared production, protected routes, and P2E surfaces retain frozen fingerprints", async () => {
