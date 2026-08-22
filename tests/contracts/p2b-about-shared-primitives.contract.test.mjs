@@ -97,6 +97,7 @@ test("trust composition remains route-local and consumer allowlists stay isolate
   const authorizedBrandConsumers = [
     "src/pages/index.astro",
     "src/pages/lp/fibra.astro",
+    "src/pages/lp/reforma.astro",
     "src/pages/lp/vazamento.astro",
     "src/pages/inicie-seu-projeto.astro",
     "src/pages/metodo-royal.astro",

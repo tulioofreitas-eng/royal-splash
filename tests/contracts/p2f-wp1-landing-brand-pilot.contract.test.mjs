@@ -27,7 +27,6 @@ const parity = {
   "src/pages/lp/corporativo.astro": "277f2367c8df7b50281159c643fd606e9e63bdb54efc86046d8662259f1d7bb4",
   "src/pages/lp/lazer.astro": "5a0cb846d6e5acb47d2f00b1c6d6cbd2041bb8a27c32fd1248f25ce1dc47838a",
   "src/pages/lp/piscinas.astro": "cdb98174ac9cdcdbbcbf964d4eaf99cef028f9eea599c17ccd5dbcce0df8dbaa",
-  "src/pages/lp/reforma.astro": "f4153264a49b67a269b09b93a3f3a5f318900edafc8a1e9b4e4d5d1d41910ec5",
   "src/pages/lp/sauna.astro": "deb686c72b2abc27295f546bde522210bce2586fb103b102fde1d072ae7f47b8",
   "src/components/FormularioGHL.astro": "2fb923c34600558a8d03bad47a446b18ea7b274919630fc1924ef2c116933e17",
   "src/components/BotaoWhatsapp.astro": "b17f5fadb21f5c3bdc6665fb34b9db7fb67693e01784189d1a34d1f80ecc7d2b",

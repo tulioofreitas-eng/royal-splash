@@ -7,14 +7,20 @@ const viewports = [
   { width: 1440, height: 1000 },
 ];
 
+const routes = [
+  { slug: "vazamento", displayHeading: "Detecção de Vazamentos" },
+  { slug: "reforma", displayHeading: "Revitalização em cada detalhe" },
+];
+
 function overlaps(a: { x: number; y: number; width: number; height: number }, b: { x: number; y: number; width: number; height: number }) {
   return !(a.x + a.width <= b.x || b.x + b.width <= a.x || a.y + a.height <= b.y || b.y + b.height <= a.y);
 }
 
-for (const viewport of viewports) {
-  test(`vazamento Brand cohort at ${viewport.width}px`, async ({ page }) => {
+for (const route of routes) {
+  for (const viewport of viewports) {
+  test(`${route.slug} Brand cohort at ${viewport.width}px`, async ({ page }) => {
     await page.setViewportSize(viewport);
-    const response = await page.goto("/lp/vazamento");
+    const response = await page.goto(`/lp/${route.slug}`);
     expect(response?.ok()).toBe(true);
 
     const body = page.locator("body");
@@ -23,7 +29,7 @@ for (const viewport of viewports) {
     await expect(body).toHaveCSS("font-family", /Hanken Grotesk/);
     await expect(page.locator("main#main-content")).toHaveCount(1);
     await expect(page.getByRole("heading", { level: 1 })).toHaveCSS("font-family", /Cormorant Garamond/);
-    await expect(page.getByRole("heading", { level: 2, name: "Detecção de Vazamentos" })).toHaveCSS("font-family", /Cormorant Garamond/);
+    await expect(page.getByRole("heading", { level: 2, name: route.displayHeading })).toHaveCSS("font-family", /Cormorant Garamond/);
 
     const headings = await page.locator("main :is(h1, h2, h3)").evaluateAll((nodes) => nodes.map((node) => Number(node.tagName.slice(1))));
     expect(headings[0]).toBe(1);
@@ -62,6 +68,10 @@ for (const viewport of viewports) {
     expect(scan.violations).toEqual([]);
     await page.locator("astro-dev-toolbar").evaluateAll((nodes) => nodes.forEach((node) => node.remove()));
     await page.evaluate(() => { if (document.activeElement instanceof HTMLElement) document.activeElement.blur(); window.scrollTo(0, 0); });
-    await page.screenshot({ path: `/tmp/royal-p2f-wp2a/vazamento-${viewport.width}.png`, fullPage: true });
+    const screenshotPath = route.slug === "reforma"
+      ? `/tmp/royal-p2f-wp2b/reforma-${viewport.width}.png`
+      : `/tmp/royal-p2f-wp2a/vazamento-${viewport.width}.png`;
+    await page.screenshot({ path: screenshotPath, fullPage: true });
   });
+  }
 }
