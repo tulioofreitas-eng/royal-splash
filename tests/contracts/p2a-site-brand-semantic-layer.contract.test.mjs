@@ -9,7 +9,7 @@ const SITE_SYSTEM_CSS = path.join(ROOT, "src/styles/site-system.css");
 const SITE_BRAND_CSS = path.join(ROOT, "src/styles/site-brand.css");
 const CONSUMER_ROOTS = ["src/pages", "src/layouts", "src/components"];
 const BRAND_SELECTOR =
-  'body[data-template-family="site"][data-site-visual="brand"]';
+  'body:is([data-template-family="site"], [data-template-family="landing"])[data-site-visual="brand"]';
 
 const semanticMappings = {
   "--site-color-page-background": "--brand-color-soft-background",
@@ -152,6 +152,7 @@ test("only approved pages opt into Site Brand mode", async () => {
 
   assert.deepEqual(optIns.sort(), [
     "src/pages/index.astro",
+    "src/pages/lp/fibra.astro",
     "src/pages/inicie-seu-projeto.astro",
     "src/pages/metodo-royal.astro",
     "src/pages/projetos.astro",

@@ -9,7 +9,7 @@ const SITE_SYSTEM = path.join(ROOT, "src/styles/site-system.css");
 const SITE_BRAND = path.join(ROOT, "src/styles/site-brand.css");
 const SITE_PRIMITIVES = path.join(ROOT, "src/styles/site-primitives.css");
 const BRAND_SCOPE =
-  'body[data-template-family="site"][data-site-visual="brand"]';
+  'body:is([data-template-family="site"], [data-template-family="landing"])[data-site-visual="brand"]';
 
 const requiredPrimitives = [
   "page", "display", "page-title", "section-title", "subtitle", "body",
@@ -34,6 +34,33 @@ async function sourceFiles(directory) {
 function withoutComments(source) {
   return source.replace(/\/\*[\s\S]*?\*\//g, "");
 }
+
+function splitTopLevelSelectorList(selectorList) {
+  const branches = [];
+  let branchStart = 0;
+  let parenthesisDepth = 0;
+
+  for (let index = 0; index < selectorList.length; index += 1) {
+    const character = selectorList[index];
+    if (character === "(") parenthesisDepth += 1;
+    else if (character === ")") parenthesisDepth = Math.max(0, parenthesisDepth - 1);
+    else if (character === "," && parenthesisDepth === 0) {
+      branches.push(selectorList.slice(branchStart, index).trim());
+      branchStart = index + 1;
+    }
+  }
+
+  branches.push(selectorList.slice(branchStart).trim());
+  return branches.filter(Boolean);
+}
+
+test("selector lists split only on top-level commas", () => {
+  assert.deepEqual(splitTopLevelSelectorList(BRAND_SCOPE), [BRAND_SCOPE]);
+  assert.deepEqual(splitTopLevelSelectorList(`${BRAND_SCOPE} .safe, .unsafe`), [
+    `${BRAND_SCOPE} .safe`,
+    ".unsafe",
+  ]);
+});
 
 test("SiteLayout owns the shared Site style entrypoint", async () => {
   const source = await readFile(SITE_LAYOUT, "utf8");
@@ -85,10 +112,9 @@ test("shared primitive API is complete, explicitly scoped, and semantic", async 
 
   const selectors = [...css.matchAll(/(?:^|\})\s*([^@{}][^{}]*)\{/gm)]
     .map((match) => match[1].trim())
-    .filter((selector) => !selector.startsWith("@media"))
-    .flatMap((selector) => selector.split(",").map((part) => part.trim()));
+    .filter((selector) => !selector.startsWith("@media"));
   assert.ok(selectors.length > 0);
-  for (const selector of selectors) {
+  for (const selector of selectors.flatMap(splitTopLevelSelectorList)) {
     assert.ok(
       selector.startsWith(`${BRAND_SCOPE} .site-primitive-`) ||
         selector.startsWith(pageHost),
@@ -124,6 +150,7 @@ test("primitive consumers remain limited to explicitly authorized production con
   }
   const authorizedBrandConsumers = [
     "src/pages/index.astro",
+    "src/pages/lp/fibra.astro",
     "src/pages/inicie-seu-projeto.astro",
     "src/pages/metodo-royal.astro",
     "src/pages/projetos.astro",

@@ -2,6 +2,9 @@
 import MainContent from "../components/runtime/MainContent.astro";
 import SkipLink from "../components/runtime/SkipLink.astro";
 import { getCurrentSeoRobots } from "../seo/runtime.ts";
+import "../styles/site-system.css";
+
+type LandingVisualMode = "functional" | "brand";
 
 interface Props {
   title: string;
@@ -9,6 +12,7 @@ interface Props {
   lang?: string;
   robots?: string;
   bodyClass?: string;
+  visualMode?: LandingVisualMode;
 }
 
 const {
@@ -17,6 +21,7 @@ const {
   lang = "pt-BR",
   robots,
   bodyClass,
+  visualMode = "functional",
 } = Astro.props;
 
 const effectiveRobots =
@@ -33,7 +38,11 @@ const effectiveRobots =
     {effectiveRobots && <meta name="robots" content={effectiveRobots} />}
     <slot name="head" />
   </head>
-  <body class={bodyClass} data-template-family="landing">
+  <body
+    class={bodyClass}
+    data-template-family="landing"
+    data-site-visual={visualMode}
+  >
     <slot name="body-start" />
     <SkipLink />
     <slot name="header" />

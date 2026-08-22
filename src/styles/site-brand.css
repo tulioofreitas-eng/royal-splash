@@ -11,10 +11,10 @@
  * - translation from Brand primitives to Site semantic tokens
  *
  * This Site Engine implementation is not a Brand source of truth.
- * It remains inert until a SiteLayout consumer explicitly opts into Brand mode.
+ * It remains inert until a supported layout consumer explicitly opts into Brand mode.
  */
 
-body[data-template-family="site"][data-site-visual="brand"] {
+body:is([data-template-family="site"], [data-template-family="landing"])[data-site-visual="brand"] {
   --site-color-page-background: var(--brand-color-soft-background);
   --site-color-surface: var(--brand-color-white);
   --site-color-surface-muted: var(--brand-color-surface);
