@@ -8,6 +8,7 @@ const ROOT = process.cwd();
 const read = (file) => readFile(path.join(ROOT, file), "utf8");
 const sha = (value) => createHash("sha256").update(value).digest("hex");
 const EXPECTED_VISIBLE_TEXT_SHA = "8ee867a6afa0622b5eaaa8a1fae6c764fdf80f7e7e2c5d591114b35237552adc";
+const EXPECTED_FIBRA_SOURCE_SHA = "c53ec1dbf7afcbd3dd35deaa1368db3d9104ba2d7bdde050d1ad4e18b9368e03";
 
 function normalizedControlledRouteText(source) {
   const template = source
@@ -28,7 +29,6 @@ const parity = {
   "src/pages/lp/piscinas.astro": "cdb98174ac9cdcdbbcbf964d4eaf99cef028f9eea599c17ccd5dbcce0df8dbaa",
   "src/pages/lp/reforma.astro": "f4153264a49b67a269b09b93a3f3a5f318900edafc8a1e9b4e4d5d1d41910ec5",
   "src/pages/lp/sauna.astro": "deb686c72b2abc27295f546bde522210bce2586fb103b102fde1d072ae7f47b8",
-  "src/pages/lp/vazamento.astro": "64f3ca4fac874ad77bf5783ec2cfa17236d3d4c54d88bdd657d80ece81475508",
   "src/components/FormularioGHL.astro": "2fb923c34600558a8d03bad47a446b18ea7b274919630fc1924ef2c116933e17",
   "src/components/BotaoWhatsapp.astro": "b17f5fadb21f5c3bdc6665fb34b9db7fb67693e01784189d1a34d1f80ecc7d2b",
   "src/styles/global.css": "25a3bef8e20689038a0881fe3946a124e5e71cd7eed113ac0a3832bae4b0f3b7",
@@ -49,8 +49,9 @@ test("LandingLayout exposes explicit, default-functional Brand capability", asyn
   assert.match(source, /import "\.\.\/styles\/site-system\.css"/);
 });
 
-test("fibra is the sole release LP migrated to explicit Landing Brand mode", async () => {
+test("fibra remains the accepted WP1 landing Brand pilot", async () => {
   const fibra = await read("src/pages/lp/fibra.astro");
+  assert.equal(sha(fibra), EXPECTED_FIBRA_SOURCE_SHA, "the accepted fibra pilot source drifted");
   assert.match(fibra, /import LandingLayout/);
   assert.match(fibra, /visualMode="brand"/);
   assert.doesNotMatch(fibra, /<main\b|text-piscina|color-piscina|bg-piscina/);

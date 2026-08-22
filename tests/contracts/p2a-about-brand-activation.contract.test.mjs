@@ -121,6 +121,7 @@ test("approved Site pages and future Case Detail source activate Brand explicitl
   assert.deepEqual(optIns.sort(), [
     "src/pages/index.astro",
     "src/pages/lp/fibra.astro",
+    "src/pages/lp/vazamento.astro",
     "src/pages/inicie-seu-projeto.astro",
     "src/pages/metodo-royal.astro",
     "src/pages/projetos.astro",
