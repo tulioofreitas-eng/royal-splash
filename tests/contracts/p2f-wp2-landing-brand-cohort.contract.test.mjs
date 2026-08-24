@@ -34,7 +34,6 @@ function normalizedControlledRouteText(source) {
 const protectedFingerprints = {
   "src/pages/lp/lazer.astro": "5a0cb846d6e5acb47d2f00b1c6d6cbd2041bb8a27c32fd1248f25ce1dc47838a",
   "src/pages/lp/piscinas.astro": "cdb98174ac9cdcdbbcbf964d4eaf99cef028f9eea599c17ccd5dbcce0df8dbaa",
-  "src/pages/lp/sauna.astro": "deb686c72b2abc27295f546bde522210bce2586fb103b102fde1d072ae7f47b8",
   "src/pages/lp/fibra.astro": "c53ec1dbf7afcbd3dd35deaa1368db3d9104ba2d7bdde050d1ad4e18b9368e03",
   "src/layouts/LandingLayout.astro": "d065e63e11aa8eb462ef1279170da87d3d9c8222dd77109b9a54eeffa4acd89c",
   "src/components/LPHeader.astro": "2c34178a5be4199471d5c8b071ce0368da1d7f075a8abc7a4736ce83cf152171",
@@ -58,11 +57,12 @@ test("WP2 landing cohort has exactly the authorized migration state", async () =
   const fibra = await read("src/pages/lp/fibra.astro");
   const reforma = await read("src/pages/lp/reforma.astro");
   const corporativo = await read("src/pages/lp/corporativo.astro");
-  for (const source of [vazamento, fibra, reforma, corporativo]) {
+  const sauna = await read("src/pages/lp/sauna.astro");
+  for (const source of [vazamento, fibra, reforma, corporativo, sauna]) {
     assert.match(source, /import LandingLayout/);
     assert.match(source, /visualMode="brand"/);
   }
-  for (const file of ["lazer", "piscinas", "sauna"]) {
+  for (const file of ["lazer", "piscinas"]) {
     const source = await read(`src/pages/lp/${file}.astro`);
     assert.doesNotMatch(source, /import LandingLayout|visualMode="brand"/);
   }

@@ -91,17 +91,28 @@ for (
           semanticHeading,
         ).toHaveCount(1);
 
-        await expect(
-          semanticHeading,
-        ).toHaveClass(
-          /font-semibold/,
-        );
+        if (
+          target.route
+          === "/lp/sauna"
+        ) {
+          await expect(
+            semanticHeading,
+          ).toHaveClass(
+            /site-primitive-subtitle/,
+          );
+        } else {
+          await expect(
+            semanticHeading,
+          ).toHaveClass(
+            /font-semibold/,
+          );
 
-        await expect(
-          semanticHeading,
-        ).toHaveClass(
-          /mb-1/,
-        );
+          await expect(
+            semanticHeading,
+          ).toHaveClass(
+            /mb-1/,
+          );
+        }
       }
 
       await expect(
