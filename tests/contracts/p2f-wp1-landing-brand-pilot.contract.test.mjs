@@ -24,7 +24,6 @@ function normalizedControlledRouteText(source) {
 }
 
 const parity = {
-  "src/pages/lp/lazer.astro": "5a0cb846d6e5acb47d2f00b1c6d6cbd2041bb8a27c32fd1248f25ce1dc47838a",
   "src/pages/lp/piscinas.astro": "cdb98174ac9cdcdbbcbf964d4eaf99cef028f9eea599c17ccd5dbcce0df8dbaa",
   "src/components/FormularioGHL.astro": "2fb923c34600558a8d03bad47a446b18ea7b274919630fc1924ef2c116933e17",
   "src/components/BotaoWhatsapp.astro": "b17f5fadb21f5c3bdc6665fb34b9db7fb67693e01784189d1a34d1f80ecc7d2b",
@@ -58,6 +57,9 @@ test("fibra remains the accepted WP1 landing Brand pilot", async () => {
   const sauna = await read("src/pages/lp/sauna.astro");
   assert.match(sauna, /import LandingLayout/);
   assert.match(sauna, /visualMode="brand"/);
+  const lazer = await read("src/pages/lp/lazer.astro");
+  assert.match(lazer, /import LandingLayout/);
+  assert.match(lazer, /visualMode="brand"/);
 });
 
 test("controlled integrations, metadata, CTA, image delivery, and copy remain present", async () => {

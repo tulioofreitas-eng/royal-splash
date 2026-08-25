@@ -94,6 +94,8 @@ for (
         if (
           target.route
           === "/lp/sauna"
+          || target.route
+          === "/lp/lazer"
         ) {
           await expect(
             semanticHeading,
