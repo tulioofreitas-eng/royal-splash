@@ -24,7 +24,7 @@ function normalizedControlledRouteText(source) {
 }
 
 const parity = {
-  "src/pages/lp/piscinas.astro": "cdb98174ac9cdcdbbcbf964d4eaf99cef028f9eea599c17ccd5dbcce0df8dbaa",
+  "src/pages/lp/piscinas.astro": "3fe875f437f8800cae798bb1ee874f1c957956aad780d6c8d546d9e24dfba832",
   "src/components/FormularioGHL.astro": "2fb923c34600558a8d03bad47a446b18ea7b274919630fc1924ef2c116933e17",
   "src/components/BotaoWhatsapp.astro": "b17f5fadb21f5c3bdc6665fb34b9db7fb67693e01784189d1a34d1f80ecc7d2b",
   "src/styles/global.css": "25a3bef8e20689038a0881fe3946a124e5e71cd7eed113ac0a3832bae4b0f3b7",
@@ -51,9 +51,9 @@ test("fibra remains the accepted WP1 landing Brand pilot", async () => {
   assert.match(fibra, /import LandingLayout/);
   assert.match(fibra, /visualMode="brand"/);
   assert.doesNotMatch(fibra, /<main\b|text-piscina|color-piscina|bg-piscina/);
-  for (const file of Object.keys(parity).filter((file) => file.startsWith("src/pages/lp/"))) {
-    assert.doesNotMatch(await read(file), /import LandingLayout|visualMode="brand"/);
-  }
+  const piscinas = await read("src/pages/lp/piscinas.astro");
+  assert.match(piscinas, /import LandingLayout/);
+  assert.match(piscinas, /visualMode="brand"/);
   const sauna = await read("src/pages/lp/sauna.astro");
   assert.match(sauna, /import LandingLayout/);
   assert.match(sauna, /visualMode="brand"/);

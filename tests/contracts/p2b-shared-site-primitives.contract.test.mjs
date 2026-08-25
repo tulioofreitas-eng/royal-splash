@@ -153,6 +153,7 @@ test("primitive consumers remain limited to explicitly authorized production con
     "src/pages/lp/fibra.astro",
     "src/pages/lp/corporativo.astro",
     "src/pages/lp/lazer.astro",
+    "src/pages/lp/piscinas.astro",
     "src/pages/lp/reforma.astro",
     "src/pages/lp/sauna.astro",
     "src/pages/lp/vazamento.astro",

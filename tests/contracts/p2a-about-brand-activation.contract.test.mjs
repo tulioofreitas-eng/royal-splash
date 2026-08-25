@@ -123,6 +123,7 @@ test("approved Site pages and future Case Detail source activate Brand explicitl
     "src/pages/lp/fibra.astro",
     "src/pages/lp/corporativo.astro",
     "src/pages/lp/lazer.astro",
+    "src/pages/lp/piscinas.astro",
     "src/pages/lp/reforma.astro",
     "src/pages/lp/sauna.astro",
     "src/pages/lp/vazamento.astro",

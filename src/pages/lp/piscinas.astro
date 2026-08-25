@@ -1,138 +1,161 @@
 ---
 import '../../styles/global.css';
+import LandingLayout from '../../layouts/LandingLayout.astro';
+import GTMHead from '../../components/GTMHead.astro';
+import GTMBody from '../../components/GTMBody.astro';
 import LPHeader from '../../components/LPHeader.astro';
 import LPFooter from '../../components/LPFooter.astro';
 import BotaoWhatsapp from '../../components/BotaoWhatsapp.astro';
-import FormularioGHL from '../../components/FormularioGHL.astro';import Icon from '../../components/Icon.astro';
-import obra2 from '../../assets/obra-2.jpg';
+import FormularioGHL from '../../components/FormularioGHL.astro';
+import Icon from '../../components/Icon.astro';
 import { Image } from 'astro:assets';
-import GTMHead from '../../components/GTMHead.astro';
-import GTMBody from '../../components/GTMBody.astro';
-
-
+import obra2 from '../../assets/obra-2.jpg';
 ---
 
-<html lang="pt-BR">
-  <head>
-    <GTMHead />
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>Construção de Piscinas de Alto Padrão — Royal Splash</title>
-    <meta name="description" content="Projeto e construção de piscinas personalizadas, borda infinita, iluminação LED e automação completa." />
-    <meta name="robots" content="noindex, nofollow" />
-    <link rel="icon" type="image/x-icon" href="/favicon.ico" />
-  </head>
-  <body class="bg-marca text-white">
-    <GTMBody />
+<LandingLayout title="Construção de Piscinas de Alto Padrão — Royal Splash" description="Projeto e construção de piscinas personalizadas, borda infinita, iluminação LED e automação completa." robots="noindex, nofollow" visualMode="brand" bodyClass="site-brand-lp-piscinas site-primitive-page">
+  <GTMHead slot="head" />
+  <link slot="head" rel="icon" type="image/x-icon" href="/favicon.ico" />
+  <GTMBody slot="body-start" />
+  <LPHeader slot="header" visualMode="brand" />
 
-    <LPHeader />
-    <main id="main-content" tabindex="-1">
-
-    <!-- Hero -->
-    <section class="relative">
-  <div class="absolute inset-0">
-    <Image src={obra2} alt="..." widths={[390, 640, 768, 1024, 1280, 1536, 1792, 2400]} sizes="100vw" priority class="w-full h-full object-cover" />
-    <div class="absolute inset-0 bg-marca/80"></div>
-  </div>
-  <div class="relative max-w-3xl mx-auto text-center px-6 py-14 md:py-20">
-  <h1 class="text-3xl md:text-5xl font-semibold mb-4 leading-tight">
-      Piscina de alto padrão com projeto
-    </h1>
-    <p class="text-base md:text-lg text-slate-300 mb-6 max-w-xl mx-auto">
-      Alvenaria sob medida, borda infinita, prainha, aquecimento e automação.
-    </p>
-    <div class="flex flex-col sm:flex-row items-center justify-center gap-4">
-      <a href="#orcamento" class="inline-block bg-ouro hover:opacity-90 text-marca font-semibold px-8 py-4 rounded-full transition-opacity">
-        Solicitar orçamento exclusivo
-      </a>
-      <a href="https://wa.me/5521982590643" class="abrir-whatsapp-modal inline-block border border-white/30 hover:bg-white/10 text-white font-semibold px-8 py-4 rounded-full transition-colors">
-        Falar no WhatsApp
-      </a>
+  <!-- Hero -->
+  <section class="piscinas-hero site-primitive-surface--dark">
+    <Image src={obra2} alt="..." widths={[390, 640, 768, 1024, 1280, 1536, 1792, 2400]} sizes="100vw" priority class="piscinas-hero__image" />
+    <div class="piscinas-hero__veil"></div>
+    <div class="piscinas-hero__content">
+      <h1 class="site-primitive-page-title">Piscina de alto padrão com projeto</h1>
+      <p class="site-primitive-body">Alvenaria sob medida, borda infinita, prainha, aquecimento e automação.</p>
+      <div class="site-primitive-actions">
+        <a href="#orcamento" class="site-primitive-action site-primitive-action--primary">Solicitar orçamento exclusivo</a>
+      </div>
     </div>
-  </div>
-</section>
+  </section>
 
-
-
-
-
-
-    <!-- Serviços -->
-    <section class="py-16 px-6 bg-marca-suave">
-      <div class="max-w-5xl mx-auto">
-        <h2 class="text-3xl font-semibold text-center mb-12">Nossos Serviços</h2>
-        <div class="grid md:grid-cols-3 gap-6">
-          <div class="bg-marca border border-ouro/30 rounded-2xl p-6">
-            <div class="w-14 h-14 rounded-full bg-ouro/10 flex items-center justify-center mb-4 text-ouro"><Icon name="box" /></div>
-            <h3 class="text-xl font-semibold mb-2">Projeto Personalizado</h3>
-            <p class="text-slate-400">Do conceito à planta executiva, desenhado sob medida pro seu terreno e estilo de vida.</p>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- Por que -->
-    <section class="py-16 px-6">
-      <div class="max-w-5xl mx-auto text-center">
-        <h2 class="text-3xl font-semibold mb-12">Por que a Royal Splash?</h2>
-        <div class="grid grid-cols-2 md:grid-cols-4 gap-8">
+  <!-- Serviços -->
+  <section class="piscinas-services site-primitive-surface--muted site-primitive-datum-bottom">
+    <div class="site-primitive-section">
+      <h2 class="site-primitive-section-title">Nossos Serviços</h2>
+      <div class="piscinas-services__list">
+        <article class="piscinas-service">
+          <Icon name="box" class="piscinas-service__icon" />
           <div>
-            <div class="w-14 h-14 rounded-full bg-ouro/10 flex items-center justify-center mb-3 mx-auto text-ouro"><Icon name="users" /></div>
-            <h3 class="font-semibold mb-1">Atendimento Premium</h3>
-            <p class="text-sm text-slate-400">Consultoria exclusiva do primeiro contato à entrega.</p>
+            <h3 class="site-primitive-subtitle">Projeto Personalizado</h3>
+            <p class="site-primitive-body site-primitive-supporting">Do conceito à planta executiva, desenhado sob medida pro seu terreno e estilo de vida.</p>
           </div>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <!-- Por que -->
+  <section class="piscinas-trust site-primitive-surface--light site-primitive-datum-bottom">
+    <div class="site-primitive-section">
+      <h2 class="site-primitive-section-title">Por que a Royal Splash?</h2>
+      <div class="piscinas-trust__list">
+        <article class="piscinas-trust__entry">
+          <Icon name="users" class="piscinas-trust__icon" />
           <div>
-            <div class="w-14 h-14 rounded-full bg-ouro/10 flex items-center justify-center mb-3 mx-auto text-ouro"><Icon name="cpu" /></div>
-            <h3 class="font-semibold mb-1">Tecnologia de Ponta</h3>
-            <p class="text-sm text-slate-400">Automação, aquecimento e tratamento de última geração.</p>
+            <h3 class="site-primitive-subtitle">Atendimento Premium</h3>
+            <p class="site-primitive-body site-primitive-supporting">Consultoria exclusiva do primeiro contato à entrega.</p>
           </div>
-        </div>
+        </article>
+        <article class="piscinas-trust__entry">
+          <Icon name="cpu" class="piscinas-trust__icon" />
+          <div>
+            <h3 class="site-primitive-subtitle">Tecnologia de Ponta</h3>
+            <p class="site-primitive-body site-primitive-supporting">Automação, aquecimento e tratamento de última geração.</p>
+          </div>
+        </article>
       </div>
-    </section>
+    </div>
+  </section>
 
-
-
-    <!-- FAQ -->
-    <section class="py-16 px-6">
-      <div class="max-w-3xl mx-auto">
-        <h2 class="text-3xl font-semibold text-center mb-10">Perguntas frequentes</h2>
-        <div class="space-y-4">
-          {[
-            { pergunta: 'Vocês fazem o projeto ou preciso contratar arquiteto?', resposta: 'Fazemos o projeto completo. Se você já tem arquiteto, trabalhamos em conjunto com ele.' },
-          ].map((item) => (
-            <details class="bg-marca-suave border border-white/10 rounded-2xl p-6 group">
-              <summary class="font-semibold cursor-pointer list-none flex items-center justify-between gap-4">
-                {item.pergunta}
-                <span class="text-ouro shrink-0 group-open:rotate-45 transition-transform">+</span>
-              </summary>
-              <p class="text-slate-400 mt-3">{item.resposta}</p>
-            </details>
-          ))}
-        </div>
+  <!-- FAQ -->
+  <section class="piscinas-faq site-primitive-surface--soft site-primitive-datum-bottom">
+    <div class="site-primitive-section piscinas-faq__layout">
+      <h2 class="site-primitive-display">Perguntas frequentes</h2>
+      <div class="piscinas-faq__list">
+        {[
+          { pergunta: 'Vocês fazem o projeto ou preciso contratar arquiteto?', resposta: 'Fazemos o projeto completo. Se você já tem arquiteto, trabalhamos em conjunto com ele.' },
+        ].map((item) => (
+          <details class="piscinas-faq__item">
+            <summary class="site-primitive-subtitle">
+              {item.pergunta}
+              <span aria-hidden="true">+</span>
+            </summary>
+            <p class="site-primitive-body site-primitive-supporting">{item.resposta}</p>
+          </details>
+        ))}
       </div>
-    </section>
+    </div>
+  </section>
 
-    <!-- CTA banner -->
-    <section class="py-16 px-6 bg-marca-suave text-center border-y border-ouro/20">
-      <h2 class="text-3xl md:text-4xl font-semibold mb-6 max-w-2xl mx-auto">
-        Pronto para transformar seu espaço em um refúgio de exclusividade?
-      </h2>
-      <a href="#orcamento" class="inline-block bg-ouro hover:opacity-90 text-marca font-semibold px-8 py-4 rounded-full transition-opacity">
-        Falar com um especialista
-      </a>
-    </section>
-
-    <!-- Formulário -->
-    <section id="orcamento" class="py-16 px-6">
-      <div class="max-w-xl mx-auto text-center mb-10">
-        <h2 class="text-3xl font-semibold mb-3">Solicite seu Orçamento</h2>
-        <p class="text-slate-400">Preencha os dados abaixo e nossa equipe entrará em contato para entender seu projeto em detalhes.</p>
+  <!-- CTA banner -->
+  <section class="piscinas-cta site-primitive-surface--dark">
+    <div class="site-primitive-section">
+      <h2 class="site-primitive-display">Pronto para transformar seu espaço em um refúgio de exclusividade?</h2>
+      <div class="site-primitive-actions">
+        <a href="#orcamento" class="site-primitive-action site-primitive-action--primary">Falar com um especialista</a>
       </div>
-<FormularioGHL />
-</section>
+    </div>
+  </section>
 
-    </main>
-    <LPFooter />
-    <BotaoWhatsapp />
-  </body>
-</html>
+  <!-- Formulário -->
+  <section id="orcamento" class="site-primitive-section piscinas-form">
+    <div class="site-primitive-reading piscinas-form__heading">
+      <h2 class="site-primitive-section-title">Solicite seu Orçamento</h2>
+      <p class="site-primitive-body site-primitive-supporting">Preencha os dados abaixo e nossa equipe entrará em contato para entender seu projeto em detalhes.</p>
+    </div>
+    <FormularioGHL />
+  </section>
+
+  <LPFooter slot="footer" visualMode="brand" />
+  <BotaoWhatsapp slot="body-end" />
+</LandingLayout>
+
+<style>
+  .piscinas-hero { position: relative; display: grid; min-height: clamp(28rem, 68vh, 46rem); isolation: isolate; }
+  .piscinas-hero__image, .piscinas-hero__veil { position: absolute; inset: 0; width: 100%; height: 100%; }
+  .piscinas-hero__image { z-index: -2; object-fit: cover; }
+  .piscinas-hero__veil { z-index: -1; background: color-mix(in srgb, var(--site-color-surface-dark) 80%, transparent); }
+  .piscinas-hero__content { align-self: end; width: min(calc(100% - (2 * var(--site-layout-gutter))), var(--site-layout-content-max)); margin-inline: auto; padding-block: var(--site-space-8); }
+  .piscinas-hero h1 { max-width: 15ch; margin: 0; }
+  .piscinas-hero p { max-width: 38rem; margin: var(--site-space-5) 0 0; color: var(--site-color-text-on-dark); }
+  .piscinas-services h2, .piscinas-services h3, .piscinas-trust h2, .piscinas-trust h3, .piscinas-faq h2, .piscinas-form h2 { margin-block-start: 0; }
+  .piscinas-services h2, .piscinas-trust h2 { margin-block-end: var(--site-space-6); }
+  .piscinas-services .site-primitive-supporting { color: var(--site-color-text-primary); }
+  .piscinas-services__list { max-width: var(--site-layout-reading-max); border-block: 1px solid var(--site-color-divider); }
+  .piscinas-service { display: grid; grid-template-columns: auto minmax(0, 1fr); gap: var(--site-space-4); padding-block: var(--site-space-6); }
+  :global(.piscinas-service__icon), :global(.piscinas-trust__icon) { width: 1.5rem; height: 1.5rem; flex: none; color: var(--site-color-text-primary); }
+  .piscinas-service p, .piscinas-trust p, .piscinas-form p { margin-block-end: 0; }
+  .piscinas-trust__list { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); max-width: 60rem; }
+  .piscinas-trust__entry { display: grid; grid-template-columns: auto minmax(0, 1fr); gap: var(--site-space-4); padding-block: var(--site-space-5); border-block-start: 1px solid var(--site-color-divider); }
+  .piscinas-trust__entry + .piscinas-trust__entry { margin-inline-start: var(--site-space-7); }
+  .piscinas-faq__layout { display: grid; grid-template-columns: minmax(14rem, 0.7fr) minmax(0, 1.3fr); gap: var(--site-space-8); }
+  .piscinas-faq h2 { max-width: 12ch; margin-block-end: 0; }
+  .piscinas-faq__list { border-block-start: 1px solid var(--site-color-divider); }
+  .piscinas-faq__item { border-block-end: 1px solid var(--site-color-divider); }
+  .piscinas-faq__item summary { display: flex; justify-content: space-between; gap: var(--site-space-4); padding-block: var(--site-space-5); cursor: pointer; list-style: none; }
+  .piscinas-faq__item summary::-webkit-details-marker { display: none; }
+  .piscinas-faq__item summary span { color: var(--site-color-text-primary); transition: transform 160ms ease; }
+  .piscinas-faq__item[open] summary span { transform: rotate(45deg); }
+  .piscinas-faq__item p { margin: 0; padding: 0 0 var(--site-space-5); }
+  .piscinas-cta .site-primitive-section { display: flex; gap: var(--site-space-7); align-items: end; justify-content: space-between; }
+  .piscinas-cta h2 { max-width: 28ch; margin: 0; }
+  .piscinas-cta .site-primitive-actions { flex: none; margin: 0; }
+  .piscinas-form { padding-block-end: calc(var(--site-space-8) + 4.5rem); }
+  .piscinas-form__heading { margin: 0 auto var(--site-space-7); text-align: center; }
+  @media (max-width: 52rem) {
+    .piscinas-trust__list, .piscinas-faq__layout { grid-template-columns: 1fr; }
+    .piscinas-faq__layout { gap: var(--site-space-5); }
+    .piscinas-faq h2 { max-width: none; }
+    .piscinas-trust__entry + .piscinas-trust__entry { margin-inline-start: 0; }
+    .piscinas-cta .site-primitive-section { display: block; }
+    .piscinas-cta .site-primitive-actions { margin-block-start: var(--site-space-6); }
+  }
+  @media (max-width: 30rem) {
+    .piscinas-hero { min-height: calc(100svh - 4.5rem); }
+    .piscinas-hero__content { align-self: center; padding-block: var(--site-space-7); }
+    .piscinas-form { padding-block-end: calc(var(--site-space-7) + 5rem); }
+  }
+</style>
