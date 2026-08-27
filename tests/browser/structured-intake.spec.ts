@@ -121,6 +121,27 @@ test.describe("Preview intake endpoint current contract", () => {
 });
 
 test.describe("structured project intake", () => {
+  test("presents claim-free public copy within the canonical Site shell", async ({
+    page,
+  }) => {
+    await page.goto("/inicie-seu-projeto");
+
+    await expect(page.locator("[data-site-header]")).toHaveCount(1);
+    await expect(page.getByRole("main")).toHaveCount(1);
+    await expect(page.getByRole("contentinfo")).toHaveCount(1);
+    await expect(page.getByRole("heading", { level: 1 })).toHaveCount(1);
+
+    await expect(page.getByRole("main")).toContainText(
+      "Compartilhe informações sobre o projeto e seus dados de contato para iniciar o preenchimento.",
+    );
+    await expect(page.locator("[data-structured-intake]")).toContainText(
+      "Preencha as etapas abaixo com o contexto do projeto e seus dados de contato.",
+    );
+    await expect(page.getByRole("main")).not.toContainText(
+      /Tranche|fluxo funcional|ambiente de verificação|experiência do Site|verificar a estrutura de envio|envio estruturado pelo Site/i,
+    );
+  });
+
   test("preserves progressive values and submits site-lead.v1 to Preview mock ingress", async ({
     page,
   }) => {
@@ -229,6 +250,10 @@ test.describe("structured project intake", () => {
         name: "Informações recebidas",
       }),
     ).toBeVisible();
+
+    await expect(success).toContainText(
+      "Recebemos as informações enviadas pelo formulário.",
+    );
 
     await expect(success).toBeFocused();
     await expect(page).toHaveURL(

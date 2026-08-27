@@ -37,13 +37,29 @@ test("controlled route copy and auxiliary contact destination remain exact", asy
 
   for (const copy of [
     "Inicie seu projeto",
-    "Compartilhe o contexto necessário para iniciar um envio estruturado pelo Site.",
+    "Compartilhe informações sobre o projeto e seus dados de contato para iniciar o preenchimento.",
     "Precisa de outro canal?",
     "Contato direto permanece disponível como caminho auxiliar.",
     "Ver canais de contato",
   ]) assert.ok(source.includes(copy), `controlled copy changed: ${copy}`);
 
   assert.match(page, /href=["']\/contato["']/);
+});
+
+test("public intake copy is task-oriented and excludes implementation terminology", async () => {
+  const [page, intake] = await readSources();
+  const publicCopy = compact(`${page}\n${intake}`);
+
+  for (const copy of [
+    "Preencha as etapas abaixo com o contexto do projeto e seus dados de contato.",
+    "Informações recebidas",
+    "Recebemos as informações enviadas pelo formulário.",
+  ]) assert.ok(publicCopy.includes(copy), `missing public intake copy: ${copy}`);
+
+  assert.doesNotMatch(
+    publicCopy,
+    /Tranche|fluxo funcional|ambiente de verificação|experiência do Site|verificar a estrutura de envio|envio estruturado pelo Site/i,
+  );
 });
 
 test("StructuredIntake preserves approved three-stage fields, endpoint, hooks, and success contract", async () => {

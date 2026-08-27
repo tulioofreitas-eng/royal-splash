@@ -147,7 +147,7 @@ test("target flow has no dependency on the legacy /api/lead route", () => {
 test("WP3 boundary sources match the controlled WP2B materialization fingerprints", () => {
   const controlledWp2bSha256 = {
     contracts: "9cda2711c997689f6b73a2eb26e4b8ad872f711d0a24acf7b4e6d1b729a0eaec",
-    intake: "240959ce17eee75f4086d4f8156a3c45ed75616282036179257fc98e920e93fa",
+    intake: "3c12380ac929167bf4c81442d63f1f380e8ba35e9aeacfc7d58d629c8610c52b",
     preview: "08133ca784eaf7a0f230ba7bea4aa8d8555eea7110afd45c21961f124e1d2dd4",
     legacy: "e319eb440bf41ff668e3836a321d0535844ce8cbb20cf0df8db1d18137852230",
   };
