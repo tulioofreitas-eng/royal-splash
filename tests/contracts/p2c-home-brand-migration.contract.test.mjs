@@ -59,15 +59,15 @@ test("Home and SegmentRouter preserve exact controlled copy, routes, stages, and
   for (const copy of [
     "Royal Splash",
     "Encontre o contexto certo para avançar.",
-    "Explore o contexto relevante, consulte projetos e evidências disponíveis e avance quando estiver pronto para iniciar seu projeto.",
-    "Projetos e evidências",
-    "Consulte a área de Projetos para acessar conteúdo de prova estruturado conforme evidências verificadas estiverem disponíveis.",
+    "Escolha entre os contextos Residencial e Corporativo / Institucional, consulte Projetos e avance quando estiver pronto para iniciar seu projeto.",
+    "Projetos",
+    "Acesse a área de Projetos para consultar os projetos atualmente disponíveis.",
     "Método e confiança", "Método Royal",
-    "Entenda a estrutura de método e processo sustentada pelas evidências disponíveis.",
+    "Acesse a seção Método Royal e continue explorando os contextos de projeto.",
     "A Royal",
-    "Acesse a superfície institucional destinada à compreensão e confiança sobre a Royal.",
+    "Acesse a seção A Royal e encontre caminhos para Projetos, Método Royal e contato.",
     "Próximo passo",
-    "Quando fizer sentido avançar, compartilhe o contexto do seu projeto pelo fluxo estruturado.",
+    "Quando fizer sentido avançar, compartilhe informações sobre seu projeto e seus dados de contato.",
     "Contato e canais auxiliares",
   ]) assert.ok(homeCopy.includes(copy), `Home copy changed: ${copy}`);
 

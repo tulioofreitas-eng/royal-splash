@@ -17,7 +17,7 @@ test.describe("Home Brand orchestration", () => {
 
     await expect(entry.getByText("Royal Splash", { exact: true })).toBeVisible();
     await expect(entry.getByText(
-      "Explore o contexto relevante, consulte projetos e evidências disponíveis e avance quando estiver pronto para iniciar seu projeto.",
+      "Escolha entre os contextos Residencial e Corporativo / Institucional, consulte Projetos e avance quando estiver pronto para iniciar seu projeto.",
       { exact: true },
     )).toBeVisible();
     await expect(entry.getByRole("link", { name: "Inicie seu projeto", exact: true }))
@@ -67,7 +67,7 @@ test.describe("Home Brand orchestration", () => {
       }),
     ).toHaveAttribute("href", "/projetos");
     await expect(main.getByText(
-      "Consulte a área de Projetos para acessar conteúdo de prova estruturado conforme evidências verificadas estiverem disponíveis.",
+      "Acesse a área de Projetos para consultar os projetos atualmente disponíveis.",
       { exact: true },
     )).toBeVisible();
 
@@ -77,7 +77,7 @@ test.describe("Home Brand orchestration", () => {
       }),
     ).toHaveAttribute("href", "/metodo-royal");
     await expect(main.getByText(
-      "Entenda a estrutura de método e processo sustentada pelas evidências disponíveis.",
+      "Acesse a seção Método Royal e continue explorando os contextos de projeto.",
       { exact: true },
     )).toBeVisible();
 
@@ -87,7 +87,7 @@ test.describe("Home Brand orchestration", () => {
       }),
     ).toHaveAttribute("href", "/sobre");
     await expect(main.getByText(
-      "Acesse a superfície institucional destinada à compreensão e confiança sobre a Royal.",
+      "Acesse a seção A Royal e encontre caminhos para Projetos, Método Royal e contato.",
       { exact: true },
     )).toBeVisible();
 
@@ -117,7 +117,7 @@ test.describe("Home Brand orchestration", () => {
     const finalStage = main.locator('[data-home-stage="qualified-action"]');
     const finalAction = finalStage.getByRole("link", { name: "Inicie seu projeto", exact: true });
     await expect(finalStage.getByText(
-      "Quando fizer sentido avançar, compartilhe o contexto do seu projeto pelo fluxo estruturado.",
+      "Quando fizer sentido avançar, compartilhe informações sobre seu projeto e seus dados de contato.",
       { exact: true },
     )).toBeVisible();
     await expect(entryAction).toHaveAttribute("data-analytics-component", "home_entry");

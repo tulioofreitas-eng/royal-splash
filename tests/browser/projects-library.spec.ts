@@ -121,7 +121,7 @@ test.describe(
         page.getByRole("heading", {
           level: 3,
           name:
-            "Nenhum projeto verificado disponível nesta superfície",
+            "Nenhum projeto disponível no momento",
         }),
       ).toBeVisible();
 

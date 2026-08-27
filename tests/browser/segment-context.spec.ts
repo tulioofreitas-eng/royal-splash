@@ -16,7 +16,7 @@ const segments = [
     route: "/servicos",
     context: "residencial",
     heading: "Residencial",
-    intro: "Explore o contexto residencial, consulte as evidências disponíveis e avance para o fluxo estruturado quando fizer sentido.",
+    intro: "Explore o contexto residencial, consulte Projetos e inicie seu projeto quando estiver pronto.",
     cta: "Inicie seu projeto residencial",
   },
   {
@@ -25,7 +25,7 @@ const segments = [
     route: "/corporativo",
     context: "corporativo_institucional",
     heading: "Corporativo / Institucional",
-    intro: "Explore o contexto corporativo ou institucional, consulte as evidências disponíveis e avance para o fluxo estruturado quando fizer sentido.",
+    intro: "Explore o contexto corporativo ou institucional, consulte Projetos e inicie seu projeto quando estiver pronto.",
     cta:
       "Inicie seu projeto corporativo / institucional",
   },

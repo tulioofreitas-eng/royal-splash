@@ -53,12 +53,12 @@ test("Projects preserves controlled selector architecture, copy, routes, states,
   assert.match(projects, /href=\{`\/projetos\/\$\{siteCase\.slug\}`\}/);
 
   for (const copy of [
-    "Esta área reúne somente Cases e evidências que estejam aptos à publicação dentro do fluxo controlado da Royal Splash.",
+    "Consulte os projetos atualmente disponíveis e escolha o próximo passo para seu projeto.",
     "Projetos disponíveis",
-    "Nenhum projeto verificado disponível nesta superfície",
-    "Materiais sem verificação ou sem autorização explícita de publicação não são apresentados como Cases.",
+    "Nenhum projeto disponível no momento",
+    "Você ainda pode conhecer o Método Royal ou iniciar seu projeto.",
     "Avance com o contexto do seu projeto",
-    "Use o fluxo estruturado quando houver contexto suficiente para iniciar a conversa.",
+    "Compartilhe informações sobre seu projeto quando estiver pronto para iniciar o preenchimento.",
   ]) {
     assert.ok(source.includes(copy), `Projects controlled copy changed: ${copy}`);
   }

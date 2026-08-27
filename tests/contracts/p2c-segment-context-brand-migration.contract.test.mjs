@@ -19,8 +19,8 @@ test("SegmentContextPage is the sole Brand activation point for both declarative
   assert.match(source, /<SiteHeader[\s\S]*?visualMode=["']brand["']/);
   assert.match(source, /bodyClass=["'][^"']*site-primitive-page[^"']*["']/);
 
-  assert.match(servicos, /<SegmentContextPage\s+[\s\S]*?context=["']residencial["'][\s\S]*?title=["']Residencial["'][\s\S]*?intro=["']Explore o contexto residencial, consulte as evidências disponíveis e avance para o fluxo estruturado quando fizer sentido\.["']\s*\/>/);
-  assert.match(corporativo, /<SegmentContextPage\s+[\s\S]*?context=["']corporativo_institucional["'][\s\S]*?title=["']Corporativo \/ Institucional["'][\s\S]*?intro=["']Explore o contexto corporativo ou institucional, consulte as evidências disponíveis e avance para o fluxo estruturado quando fizer sentido\.["']\s*\/>/);
+  assert.match(servicos, /<SegmentContextPage\s+[\s\S]*?context=["']residencial["'][\s\S]*?title=["']Residencial["'][\s\S]*?intro=["']Explore o contexto residencial, consulte Projetos e inicie seu projeto quando estiver pronto\.["']\s*\/>/);
+  assert.match(corporativo, /<SegmentContextPage\s+[\s\S]*?context=["']corporativo_institucional["'][\s\S]*?title=["']Corporativo \/ Institucional["'][\s\S]*?intro=["']Explore o contexto corporativo ou institucional, consulte Projetos e inicie seu projeto quando estiver pronto\.["']\s*\/>/);
 
   for (const wrapper of [servicos, corporativo]) {
     assert.doesNotMatch(wrapper, /visualMode\s*=/);

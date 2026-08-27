@@ -229,7 +229,7 @@ test.describe(
         page.getByRole("heading", {
           level: 2,
           name:
-            "Método detalhado",
+            "Caminhos para seu projeto",
         }),
       ).toBeVisible();
     });
