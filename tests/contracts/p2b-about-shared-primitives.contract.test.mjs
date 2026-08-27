@@ -95,6 +95,7 @@ test("trust composition remains route-local and consumer allowlists stay isolate
     if (source.includes("site-primitive-")) primitiveConsumers.push(relative);
   }
   const authorizedBrandConsumers = [
+    "src/pages/404.astro",
     "src/pages/index.astro",
     "src/pages/lp/fibra.astro",
     "src/pages/lp/corporativo.astro",

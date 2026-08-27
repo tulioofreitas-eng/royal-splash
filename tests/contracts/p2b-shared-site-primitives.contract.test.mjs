@@ -149,6 +149,7 @@ test("primitive consumers remain limited to explicitly authorized production con
     if (source.includes("site-primitive-")) primitiveConsumers.push(relative);
   }
   const authorizedBrandConsumers = [
+    "src/pages/404.astro",
     "src/pages/index.astro",
     "src/pages/lp/fibra.astro",
     "src/pages/lp/corporativo.astro",
