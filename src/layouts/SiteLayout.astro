@@ -3,6 +3,7 @@ import ConversionOrigin from "../components/runtime/ConversionOrigin.astro";
 import MainContent from "../components/runtime/MainContent.astro";
 import SemanticAnalytics from "../components/runtime/SemanticAnalytics.astro";
 import SkipLink from "../components/runtime/SkipLink.astro";
+import SiteFooter from "../components/site/SiteFooter.astro";
 import { getCurrentSeoRobots } from "../seo/runtime.ts";
 import "../styles/site-system.css";
 
@@ -51,7 +52,9 @@ const effectiveRobots =
     <MainContent>
       <slot />
     </MainContent>
-    <slot name="footer" />
+    <slot name="footer">
+      <SiteFooter />
+    </slot>
     <ConversionOrigin />
     <SemanticAnalytics />
     <slot name="body-end" />
