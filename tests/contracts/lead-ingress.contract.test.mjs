@@ -73,6 +73,7 @@ test("normalized lead keeps contact, interest, acquisition and consent explicit"
     source,
     /\bschemaVersion:\s*typeof SITE_LEAD_SCHEMA_VERSION;/,
   );
+  assert.match(source, /\bsubmissionRef:\s*string;/);
   assert.match(source, /\bcontact:\s*SiteLeadContact;/);
   assert.match(source, /\bcity\?:\s*string;/);
   assert.match(source, /\binterest\?:\s*SiteLeadInterest;/);

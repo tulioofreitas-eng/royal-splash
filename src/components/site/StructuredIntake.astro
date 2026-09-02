@@ -325,6 +325,12 @@
       );
 
       let currentStep = 0;
+      let composedPayload:
+        Record<string, unknown> | undefined;
+
+      form.addEventListener("input", () => {
+        composedPayload = undefined;
+      });
 
       const clearFieldError = (
         control: HTMLInputElement |
@@ -572,31 +578,38 @@
             submissionError.hidden = true;
           }
 
-          const data = new FormData(form);
+          if (!composedPayload) {
+            const data = new FormData(form);
 
-          const payload = {
-            projectContext: String(
-              data.get("projectContext") ?? "",
-            ),
-            projectNeed: String(
-              data.get("projectNeed") ?? "",
-            ),
-            city: String(
-              data.get("city") ?? "",
-            ),
-            name: String(
-              data.get("name") ?? "",
-            ),
-            email: String(
-              data.get("email") ?? "",
-            ),
-            phone: String(
-              data.get("phone") ?? "",
-            ),
-            consent:
-              data.get("consent") === "on",
-            ...conversionOrigin,
-          };
+            composedPayload = {
+              submissionRef: crypto.randomUUID(),
+              consentCapturedAt:
+                new Date().toISOString(),
+              projectContext: String(
+                data.get("projectContext") ?? "",
+              ),
+              projectNeed: String(
+                data.get("projectNeed") ?? "",
+              ),
+              city: String(
+                data.get("city") ?? "",
+              ),
+              name: String(
+                data.get("name") ?? "",
+              ),
+              email: String(
+                data.get("email") ?? "",
+              ),
+              phone: String(
+                data.get("phone") ?? "",
+              ),
+              consent:
+                data.get("consent") === "on",
+              ...conversionOrigin,
+            };
+          }
+
+          const payload = composedPayload;
 
           try {
             const response = await fetch(

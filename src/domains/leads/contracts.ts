@@ -53,6 +53,7 @@ export interface SiteLeadConsent {
 
 export interface SiteLeadIngress {
   schemaVersion: typeof SITE_LEAD_SCHEMA_VERSION;
+  submissionRef: string;
   contact: SiteLeadContact;
   city?: string;
   interest?: SiteLeadInterest;

@@ -65,11 +65,11 @@ test("legacy completion and direct persistence remain isolated compatibility sur
 test("protected H2 boundary preserves controlled base fingerprints", () => {
   const expected = {
     form: "9890eb8f89995198152822fe68ab684f94aba1e07f855acd6e044232a82082c0",
-    intake: "3c12380ac929167bf4c81442d63f1f380e8ba35e9aeacfc7d58d629c8610c52b",
+    intake: "f4fa2c93a28bdb307530374885c17078eb56a1f08850d6410938067b5e2b4ce1",
     thankYou: "0bddc29e8db85ab0c1d47ec84afaab810ccd805f4b04acad335266dd7962f5c6",
-    preview: "08133ca784eaf7a0f230ba7bea4aa8d8555eea7110afd45c21961f124e1d2dd4",
+    preview: "84d272e897b11ab262218f267db4a72941df7941e00c019e64033d10e2daa1d9",
     legacyLead: "e319eb440bf41ff668e3836a321d0535844ce8cbb20cf0df8db1d18137852230",
-    contracts: "9cda2711c997689f6b73a2eb26e4b8ad872f711d0a24acf7b4e6d1b729a0eaec",
+    contracts: "2818320dc0c1bdf0feb3d95cf7036acdcac5bc26e87d20b9a7f28eac4d7b97ca",
     adapter: "757c59fcd4af2d48a0dba04df20332ebb45308b58e73c0f27373daf0f5b83962",
   };
 

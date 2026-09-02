@@ -48,9 +48,11 @@ test("WP3 target path is bound only to normalized Preview ingress", () => {
   assert.deepEqual(fetchTargets, ["/api/site-lead-preview"]);
   assert.doesNotMatch(intake, /["']\/api\/lead["']/);
 
-  assert.match(sources.preview, /type\s+SiteLeadIngress/);
-  assert.match(sources.preview, /const\s+lead:\s*SiteLeadIngress\s*=\s*{/);
-  assert.match(sources.preview, /schemaVersion:\s*SITE_LEAD_SCHEMA_VERSION/);
+  assert.match(sources.preview, /type\s+SiteLeadRequestPayload/);
+  assert.match(
+    sources.preview,
+    /const\s+lead\s*=\s*normalizeSiteLeadRequest\(body\)/,
+  );
   assert.match(sources.preview, /new\s+InMemoryLeadIngressAdapter\s*\(\s*\)/);
   assert.match(sources.preview, /await\s+adapter\.submit\s*\(\s*lead\s*\)/);
 });
@@ -67,6 +69,7 @@ test("normalized domain, port and in-memory adapter keep the provider boundary",
 
   const lead = {
     schemaVersion: SITE_LEAD_SCHEMA_VERSION,
+    submissionRef: "site.12345678-1234-4123-8123-123456789abc",
     contact: { name: "Boundary fixture", email: "boundary@example.com" },
     interest: { description: "Normalized fixture" },
     acquisition: { ingressChannel: "site_form" },
@@ -146,9 +149,9 @@ test("target flow has no dependency on the legacy /api/lead route", () => {
 
 test("WP3 boundary sources match the controlled WP2B materialization fingerprints", () => {
   const controlledWp2bSha256 = {
-    contracts: "9cda2711c997689f6b73a2eb26e4b8ad872f711d0a24acf7b4e6d1b729a0eaec",
-    intake: "3c12380ac929167bf4c81442d63f1f380e8ba35e9aeacfc7d58d629c8610c52b",
-    preview: "08133ca784eaf7a0f230ba7bea4aa8d8555eea7110afd45c21961f124e1d2dd4",
+    contracts: "2818320dc0c1bdf0feb3d95cf7036acdcac5bc26e87d20b9a7f28eac4d7b97ca",
+    intake: "f4fa2c93a28bdb307530374885c17078eb56a1f08850d6410938067b5e2b4ce1",
+    preview: "84d272e897b11ab262218f267db4a72941df7941e00c019e64033d10e2daa1d9",
     legacy: "e319eb440bf41ff668e3836a321d0535844ce8cbb20cf0df8db1d18137852230",
   };
 

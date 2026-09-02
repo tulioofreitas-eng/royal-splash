@@ -6,6 +6,8 @@ import {
 } from "@playwright/test";
 
 const validServerPayload = {
+  submissionRef: "site.12345678-1234-4123-8123-123456789abc",
+  consentCapturedAt: new Date().toISOString(),
   projectContext: "residencial",
   projectNeed: "Verificar invariantes atuais.",
   city: "Cidade obrigatória",
