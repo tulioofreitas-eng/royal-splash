@@ -1,74 +1,13 @@
 import {
   expect,
   test,
-  type Page,
 } from "@playwright/test";
-
-async function completeMinimalIntake(
-  page: Page,
-): Promise<void> {
-  const context =
-    page.getByLabel(
-      "Contexto",
-      {
-        exact: true,
-      },
-    );
-
-  if (!(await context.inputValue())) {
-    await context.selectOption(
-      "residencial",
-    );
-  }
-
-  await page.getByLabel("Cidade", { exact: true }).fill(
-    "Cidade Origem",
-  );
-
-  await page.getByRole(
-    "button",
-    {
-      name: "Continuar",
-    },
-  ).click();
-
-  await page.getByLabel(
-    "Descreva brevemente o que você precisa",
-  ).fill(
-    "Fixture de atribuição de origem.",
-  );
-
-  await page.getByRole(
-    "button",
-    {
-      name: "Continuar",
-    },
-  ).click();
-
-  await page.getByLabel(
-    "Nome",
-  ).fill(
-    "Pessoa Origem",
-  );
-
-  await page.getByLabel(
-    "E-mail",
-  ).fill(
-    "origem@example.com",
-  );
-
-  await page
-    .getByLabel(
-      /Concordo com o envio destas informações/,
-    )
-    .check();
-}
 
 test.describe(
   "conversion origin attribution",
   () => {
     test(
-      "Projects CTA preserves semantic source and origin page into intake payload",
+      "Projects final CTA routes directly to WhatsApp, without an intake detour",
       async ({
         page,
       }) => {
@@ -76,170 +15,71 @@ test.describe(
           "/projetos",
         );
 
-        await page
-          .getByRole(
-            "region",
-            {
-              name:
-                "Avance com o contexto do seu projeto",
-            },
-          )
-          .getByRole(
-            "link",
-            {
-              name:
-                "Inicie seu projeto",
-              exact: true,
-            },
-          )
+        const conversion = page.getByRole(
+          "region",
+          {
+            name:
+              "Seu projeto pode começar com uma conversa.",
+          },
+        );
+
+        await expect(
+          conversion.getByRole("link", { name: "WhatsApp sobre um projeto" }),
+        ).toHaveAttribute("href", "https://wa.me/5521982590643");
+      },
+    );
+
+    test(
+      "segment secondary CTA routes to the structured project-start form without stray origin parameters",
+      async ({
+        page,
+      }) => {
+        await page.goto(
+          "/servicos",
+        );
+
+        const conversion = page.getByRole(
+          "region",
+          {
+            name:
+              "Compartilhe o contexto do seu projeto.",
+          },
+        );
+
+        await expect(
+          conversion.getByRole("link", { name: "WhatsApp para projeto Residencial" }),
+        ).toHaveAttribute("href", "https://wa.me/5521982590643");
+
+        await conversion
+          .getByRole("link", { name: "Prepare a conversa", exact: true })
           .click();
 
-        const intakeUrl =
+        const targetUrl =
           new URL(
             page.url(),
           );
 
         expect(
-          intakeUrl.pathname,
+          targetUrl.pathname,
         ).toBe(
           "/inicie-seu-projeto",
         );
 
         expect(
-          intakeUrl.searchParams.get(
-            "source",
-          ),
-        ).toBe(
-          "royal_projects",
-        );
-
-        expect(
-          intakeUrl.searchParams.get(
-            "pageRef",
-          ),
-        ).toBe(
-          "/projetos",
-        );
-
-        await completeMinimalIntake(
-          page,
-        );
-
-        const requestPromise =
-          page.waitForRequest(
-            (request) =>
-              request.url().includes(
-                "/api/site-lead-preview",
-              ) &&
-              request.method() ===
-                "POST",
-          );
-
-        await page.getByRole(
-          "button",
-          {
-            name:
-              "Enviar contexto do projeto",
-          },
-        ).click();
-
-        const request =
-          await requestPromise;
-
-        const payload =
-          request.postDataJSON();
-
-        expect(
-          payload.source,
-        ).toBe(
-          "royal_projects",
-        );
-
-        expect(
-          payload.pageRef,
-        ).toBe(
-          "/projetos",
-        );
+          targetUrl.search,
+        ).toBe("");
 
         await expect(
-          page.getByRole(
-            "status",
-          ),
+          page.getByRole("heading", {
+            level: 1,
+            name: "Organize seu contexto para uma conversa mais útil.",
+          }),
         ).toBeVisible();
       },
     );
 
     test(
-      "segment CTA keeps context while adding semantic origin",
-      async ({
-        page,
-      }) => {
-        await page.goto(
-          "/servicos",
-        );
-
-        await page
-          .getByRole(
-            "link",
-            {
-              name:
-                "Inicie seu projeto residencial",
-              exact: true,
-            },
-          )
-          .first()
-          .click();
-
-        const intakeUrl =
-          new URL(
-            page.url(),
-          );
-
-        expect(
-          intakeUrl.pathname,
-        ).toBe(
-          "/inicie-seu-projeto",
-        );
-
-        expect(
-          intakeUrl.searchParams.get(
-            "context",
-          ),
-        ).toBe(
-          "residencial",
-        );
-
-        expect(
-          intakeUrl.searchParams.get(
-            "source",
-          ),
-        ).toBe(
-          "segment_context",
-        );
-
-        expect(
-          intakeUrl.searchParams.get(
-            "pageRef",
-          ),
-        ).toBe(
-          "/servicos",
-        );
-
-        await expect(
-          page.getByLabel(
-            "Contexto",
-            {
-              exact: true,
-            },
-          ),
-        ).toHaveValue(
-          "residencial",
-        );
-      },
-    );
-
-    test(
-      "SiteHeader qualified CTA records header origin",
+      "SiteHeader primary CTA routes to the structured project-start form with its own analytics origin, not a lead-payload field",
       async ({
         page,
       }) => {
@@ -265,47 +105,51 @@ test.describe(
           )
           .click();
 
-        const intakeUrl =
+        const targetUrl =
           new URL(
             page.url(),
           );
 
         expect(
-          intakeUrl.searchParams.get(
-            "source",
-          ),
+          targetUrl.pathname,
         ).toBe(
-          "site_header",
+          "/inicie-seu-projeto",
         );
 
         expect(
-          intakeUrl.searchParams.get(
-            "pageRef",
-          ),
-        ).toBe(
-          "/sobre",
-        );
+          targetUrl.searchParams.get("source"),
+        ).toBe("site_header");
+
+        expect(
+          targetUrl.searchParams.get("pageRef"),
+        ).toBe("/sobre");
       },
     );
 
     test(
-      "explicit origin survives direct intake navigation without relying on referrer",
+      "direct project-start submission posts to the accepted Atlas seam and completes WhatsApp continuation",
       async ({
         page,
       }) => {
         await page.goto(
-          "/inicie-seu-projeto?source=royal_projects&pageRef=%2Fprojetos",
+          "/inicie-seu-projeto",
         );
 
-        await completeMinimalIntake(
-          page,
-        );
+        await page.getByLabel("Nome", { exact: false }).fill("Pessoa Origem");
+        await page.getByLabel("Tipo de projeto", { exact: false }).selectOption("residencial");
+        await page.getByLabel("Cidade / Localização", { exact: false }).fill("Cidade Origem");
+        await page.getByLabel("07 E-mail", { exact: true }).fill("origem@example.com");
+        await page
+          .getByLabel(
+            /Autorizo o envio destas informações/,
+          )
+          .check();
 
         const requestPromise =
           page.waitForRequest(
             (request) =>
               request.url().includes(
-                "/api/site-lead-preview",
+                "/api/site-lead",
               ) &&
               request.method() ===
                 "POST",
@@ -326,20 +170,19 @@ test.describe(
           request.postDataJSON();
 
         expect(
-          payload.source,
-        ).toBe(
-          "royal_projects",
-        );
-
-        expect(
           payload.pageRef,
         ).toBe(
-          "/projetos",
+          "/inicie-seu-projeto",
         );
 
+        expect(payload.name).toBe("Pessoa Origem");
+        expect(payload.city).toBe("Cidade Origem");
+        expect(payload.projectContext).toBe("residencial");
+        expect(payload.consent).toBe(true);
+
         await expect(
-          page.getByRole(
-            "status",
+          page.locator(
+            "[data-whatsapp-fallback]",
           ),
         ).toBeVisible();
       },

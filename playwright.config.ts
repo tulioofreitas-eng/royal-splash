@@ -7,16 +7,16 @@ export default defineConfig({
   reporter: "list",
 
   use: {
-    baseURL: "http://127.0.0.1:4321",
+    baseURL: process.env.SC_R16_BASE_URL ?? "http://127.0.0.1:4321",
     browserName: "chromium",
     headless: true,
   },
 
-  webServer: {
+  webServer: process.env.SC_R16_BASE_URL ? undefined : {
     command:
       "VERCEL_ENV=preview pnpm exec astro dev --host 127.0.0.1 --port 4321",
     url: "http://127.0.0.1:4321/sobre",
-    reuseExistingServer: false,
+    reuseExistingServer: true,
     timeout: 120_000,
   },
 });

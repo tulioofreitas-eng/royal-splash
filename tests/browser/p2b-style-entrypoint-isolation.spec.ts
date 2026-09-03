@@ -2,13 +2,13 @@ import { expect, test, type Page } from "@playwright/test";
 
 const functionalRoutes: string[] = [];
 const brandRoutes = [
-  { route: "/", heading: "Encontre o contexto certo para avançar.", bodySelector: '[data-home-stage="entry"] > p' },
-  { route: "/inicie-seu-projeto", heading: "Inicie seu projeto", bodySelector: ".structured-intake label" },
-  { route: "/sobre", heading: "A Royal", bodySelector: '[data-trust-stage="entry"] > p' },
-  { route: "/metodo-royal", heading: "Método Royal", bodySelector: '[data-method-stage="entry"] > p' },
-  { route: "/projetos", heading: "Projetos", bodySelector: '[data-projects-stage="entry"] > .site-primitive-body' },
-  { route: "/servicos", heading: "Residencial", bodySelector: '[data-segment-context="residencial"] > p' },
-  { route: "/corporativo", heading: "Corporativo / Institucional", bodySelector: '[data-segment-context="corporativo_institucional"] > p' },
+  { route: "/", heading: "Água como parte da arquitetura.", bodySelector: '[data-home-stage="entry"] .cinematic-hero__content > p:not(.kicker)' },
+  { route: "/inicie-seu-projeto", heading: "Organize seu contexto para uma conversa mais útil.", bodySelector: ".experience-entry .experience-lead" },
+  { route: "/sobre", heading: "Engenharia de água para espaços que permanecem.", bodySelector: ".experience-entry .experience-lead" },
+  { route: "/metodo-royal", heading: "Como a conversa se organiza em execução.", bodySelector: ".experience-entry .experience-lead" },
+  { route: "/projetos", heading: "Fotografias de projetos realizados.", bodySelector: ".experience-entry .experience-lead" },
+  { route: "/servicos", heading: "Água integrada ao projeto de habitar.", bodySelector: '[data-segment-context="residencial"] > p' },
+  { route: "/corporativo", heading: "Engenharia aquática para uso coletivo.", bodySelector: '[data-segment-context="corporativo_institucional"] > p' },
 ];
 
 async function expectNoHorizontalOverflow(page: Page): Promise<void> {

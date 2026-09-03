@@ -10,29 +10,38 @@ async function expectNoHorizontalOverflow(page: Page): Promise<void> {
   )).toBe(true);
 }
 
+async function expectNonDecreasingHeadingLevels(page: Page): Promise<void> {
+  const levels = await page.locator("main h1, main h2, main h3, main h4, main h5, main h6").evaluateAll((headings) =>
+    headings.map((heading) => Number(heading.tagName.slice(1))),
+  );
+  expect(levels[0]).toBe(1);
+  expect(levels.filter((level) => level === 1)).toHaveLength(1);
+  for (let index = 1; index < levels.length; index += 1) {
+    expect(levels[index] - levels[index - 1]).toBeLessThanOrEqual(1);
+  }
+}
+
 const segments = [
   {
-    homeLink: "Explorar Residencial",
+    navLinkName: "Residencial",
     route: "/servicos",
-    context: "residencial",
-    heading: "Residencial",
-    intro: "Explore o contexto residencial, consulte Projetos e inicie seu projeto quando estiver pronto.",
-    cta: "Inicie seu projeto residencial",
+    heading: "Água integrada ao projeto de habitar.",
+    intro: "Piscinas, sauna, lazer, reforma, proteção estrutural e acabamentos especializados — coordenados como parte da arquitetura residencial.",
+    conversionHeading: "Compartilhe o contexto do seu projeto.",
+    whatsappName: "WhatsApp para projeto Residencial",
   },
   {
-    homeLink:
-      "Explorar Corporativo / Institucional",
+    navLinkName: "Corporativo / Institucional",
     route: "/corporativo",
-    context: "corporativo_institucional",
-    heading: "Corporativo / Institucional",
-    intro: "Explore o contexto corporativo ou institucional, consulte Projetos e inicie seu projeto quando estiver pronto.",
-    cta:
-      "Inicie seu projeto corporativo / institucional",
+    heading: "Engenharia aquática para uso coletivo.",
+    intro: "Escala, circulação, intensidade de uso e contexto técnico orientam cada projeto corporativo ou institucional.",
+    conversionHeading: "Comece pela escala e pelo contexto de uso.",
+    whatsappName: "WhatsApp para projeto Corporativo / Institucional",
   },
 ] as const;
 
 for (const segment of segments) {
-  test(`${segment.heading} is an exact Brand consumer with preserved content and links`, async ({
+  test(`${segment.navLinkName} is an exact Brand consumer with preserved content and links`, async ({
     page,
   }) => {
     const brandFontRequests: string[] = [];
@@ -47,7 +56,9 @@ for (const segment of segments) {
     await expect(page.locator("[data-site-header]")).toHaveAttribute(
       "data-site-header-visual", "brand",
     );
-    await expect(page.locator(`img[src="${SIGNATURE_PATH}"]`)).toBeVisible();
+    await expect(
+      page.locator("[data-site-header]").locator(`img[src="${SIGNATURE_PATH}"]`),
+    ).toBeVisible();
 
     const main = page.getByRole("main");
     const heading = main.getByRole("heading", {
@@ -61,52 +72,32 @@ for (const segment of segments) {
     await expect(page.locator("body")).toHaveCSS("background-color", "rgb(250, 249, 246)");
     await expect(page.locator("body")).toHaveCSS("color", "rgb(18, 23, 28)");
 
-    const qualifiedActions = main.getByRole("link", { name: segment.cta, exact: true });
-    await expect(qualifiedActions).toHaveCount(2);
-    for (let index = 0; index < 2; index += 1) {
-      await expect(qualifiedActions.nth(index)).toHaveAttribute(
-        "href", `/inicie-seu-projeto?context=${segment.context}`,
-      );
-      await expect(qualifiedActions.nth(index)).toHaveAttribute(
-        "data-analytics-component", "segment_context",
-      );
-      await expect(qualifiedActions.nth(index)).toHaveAttribute(
-        "data-analytics-subject", segment.context,
-      );
-      await expect(qualifiedActions.nth(index)).toHaveAttribute(
-        "data-analytics-channel", "site_form",
-      );
-    }
-
-    for (const [name, href] of [
-      ["Ver Projetos", "/projetos"],
-      ["Explorar Projetos", "/projetos"],
-      ["Conhecer Método Royal", "/metodo-royal"],
-      ["Contato e canais auxiliares", "/contato"],
-    ] as const) {
-      await expect(main.getByRole("link", { name, exact: true })).toHaveAttribute("href", href);
-    }
+    await expect(
+      main.getByRole("link", { name: "Ver Acervo", exact: true }),
+    ).toHaveAttribute("href", "/projetos");
 
     const conversion = main.getByRole("region", {
-      name: "Avance com o contexto do seu projeto",
+      name: segment.conversionHeading,
     });
+    await expect(conversion.getByRole("link", { name: segment.whatsappName })).toHaveAttribute(
+      "href", "https://wa.me/5521982590643",
+    );
+    await expect(
+      conversion.getByRole("link", { name: "Prepare a conversa", exact: true }),
+    ).toHaveAttribute("href", "/inicie-seu-projeto");
     await expect(conversion).toHaveCSS("background-color", "rgb(18, 23, 28)");
     await expect(conversion).toHaveCSS("color", "rgb(255, 255, 255)");
     expect(brandFontRequests.some((url) => url.includes("hanken-grotesk"))).toBe(true);
     expect(brandFontRequests.some((url) => url.includes("cormorant-garamond"))).toBe(true);
   });
 
-  test(`${segment.heading} preserves context into qualified intake`, async ({
+  test(`${segment.navLinkName} routes its secondary action to the structured project-start form`, async ({
     page,
   }) => {
     await page.goto("/");
 
-    const router = page.getByRole("region", {
-      name: "Escolha seu contexto",
-    });
-
-    await router.getByRole("link", {
-      name: segment.homeLink,
+    await page.getByRole("navigation", { name: "Navegação principal" }).getByRole("link", {
+      name: segment.navLinkName,
       exact: true,
     }).click();
 
@@ -124,44 +115,22 @@ for (const segment of segments) {
       }),
     ).toBeVisible();
 
-    const qualifiedActions =
-      main.getByRole("link", {
-        name: segment.cta,
-        exact: true,
-      });
+    const conversion = main.getByRole("region", {
+      name: segment.conversionHeading,
+    });
 
-    await expect(
-      qualifiedActions,
-    ).toHaveCount(2);
+    await conversion.getByRole("link", { name: "Prepare a conversa", exact: true }).click();
 
-    const expectedHref =
-      `/inicie-seu-projeto?context=${segment.context}`;
-
-    for (let index = 0; index < 2; index += 1) {
-      await expect(
-        qualifiedActions.nth(index),
-      ).toHaveAttribute(
-        "href",
-        expectedHref,
-      );
-    }
-
-    await qualifiedActions.first().click();
-
-    await expect(page).toHaveURL(
-      new RegExp(
-        `/inicie-seu-projeto\\?context=${segment.context}&source=segment_context&pageRef=%2F${segment.route.slice(1)}$`,
-      ),
-    );
-
-    await expect(
-      page.getByLabel("Contexto", {
-        exact: true,
-      }),
-    ).toHaveValue(segment.context);
+    await expect(page).toHaveURL(/\/inicie-seu-projeto$/);
+    expect(new URL(page.url()).search).toBe("");
+    await expect(page.getByRole("heading", {
+      level: 1,
+      name: "Organize seu contexto para uma conversa mais útil.",
+      exact: true,
+    })).toBeVisible();
   });
 
-  test(`${segment.heading} has responsive, keyboard, focus and accessibility integrity`, async ({
+  test(`${segment.navLinkName} has responsive, keyboard, focus and accessibility integrity`, async ({
     page,
   }) => {
     for (const viewport of [
@@ -174,13 +143,11 @@ for (const segment of segments) {
       await expect(page.getByRole("heading", {
         level: 1, name: segment.heading, exact: true,
       })).toBeVisible();
-      await expect(page.getByRole("link", { name: segment.cta, exact: true }).first()).toBeVisible();
+      await expect(page.getByRole("link", { name: "Prepare a conversa", exact: true })).toBeVisible();
       await expectNoHorizontalOverflow(page);
     }
 
-    expect(await page.locator("main h1, main h2, main h3, main h4, main h5, main h6").evaluateAll((headings) =>
-      headings.map((heading) => Number(heading.tagName.slice(1)))
-    )).toEqual([1, 2, 2, 2]);
+    await expectNonDecreasingHeadingLevels(page);
 
     await page.keyboard.press("Tab");
     const focused = page.locator(":focus-visible");

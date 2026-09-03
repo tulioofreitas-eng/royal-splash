@@ -100,7 +100,7 @@ const projectStartIsCurrent =
         data-analytics-cta
         data-analytics-component="site_header"
         data-analytics-subject="project_start"
-        data-analytics-channel="site_form"
+        data-analytics-channel="site_contact"
         aria-current={
           projectStartIsCurrent
             ? "page"
@@ -114,11 +114,16 @@ const projectStartIsCurrent =
     <button
       class="site-header__trigger"
       type="button"
+      aria-label="Abrir navegação"
       aria-expanded="false"
       aria-controls="site-mobile-navigation"
       data-site-nav-trigger
     >
-      Abrir navegação
+      <span class="site-header__menu-icon" aria-hidden="true">
+        <span></span>
+        <span></span>
+        <span></span>
+      </span>
     </button>
   </nav>
 
@@ -150,7 +155,7 @@ const projectStartIsCurrent =
         data-analytics-cta
         data-analytics-component="site_header"
         data-analytics-subject="project_start"
-        data-analytics-channel="site_form"
+        data-analytics-channel="site_contact"
         aria-current={
           projectStartIsCurrent
             ? "page"
@@ -192,9 +197,10 @@ const projectStartIsCurrent =
           String(open),
         );
 
-        trigger.textContent = open
-          ? "Fechar navegação"
-          : "Abrir navegação";
+        trigger.setAttribute(
+          "aria-label",
+          open ? "Fechar navegação" : "Abrir navegação",
+        );
 
         mobileNavigation.hidden = !open;
 
@@ -290,12 +296,46 @@ const projectStartIsCurrent =
   }
 
   .site-header__trigger {
+    display: inline-grid;
+    width: 3rem;
+    min-width: 3rem;
+    height: 3rem;
+    place-items: center;
     border: 2px solid currentColor;
     background: transparent;
     color: inherit;
-    padding: 0.65rem 0.85rem;
+    padding: 0.65rem;
     font: inherit;
     cursor: pointer;
+  }
+
+  .site-header__menu-icon {
+    display: grid;
+    width: 1.35rem;
+    gap: 0.28rem;
+  }
+
+  .site-header__menu-icon > span {
+    display: block;
+    height: 2px;
+    background: currentColor;
+    transform-origin: center;
+    transition: transform 160ms ease, opacity 160ms ease;
+  }
+
+  .site-header__trigger[aria-expanded="true"]
+    .site-header__menu-icon > span:first-child {
+    transform: translateY(0.38rem) rotate(45deg);
+  }
+
+  .site-header__trigger[aria-expanded="true"]
+    .site-header__menu-icon > span:nth-child(2) {
+    opacity: 0;
+  }
+
+  .site-header__trigger[aria-expanded="true"]
+    .site-header__menu-icon > span:last-child {
+    transform: translateY(-0.38rem) rotate(-45deg);
   }
 
   .site-header__mobile {
@@ -428,6 +468,12 @@ const projectStartIsCurrent =
     .site-header[data-site-header-visual="brand"]
       .site-header__mobile {
       display: none;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .site-header__menu-icon > span {
+      transition: none;
     }
   }
 </style>

@@ -14,8 +14,10 @@ for (const viewport of viewports) {
   test(`Piscinas Landing Brand migration at ${viewport.width}px`, async ({ page }) => {
     await page.setViewportSize(viewport);
     const whatsappTrackingRequests: string[] = [];
+    const leadRequests: string[] = [];
     page.on("request", (request) => {
       if (new URL(request.url()).pathname === "/api/whatsapp-click") whatsappTrackingRequests.push(request.url());
+      if (new URL(request.url()).pathname === "/api/lead") leadRequests.push(request.url());
     });
 
     const response = await page.goto("/lp/piscinas");
@@ -42,15 +44,104 @@ for (const viewport of viewports) {
     await expect(page.getByRole("link", { name: "Falar no WhatsApp" })).toHaveCount(0);
     await expect(page.locator("main .abrir-whatsapp-modal")).toHaveCount(0);
 
-    const heroImage = page.locator('img[alt="..."]');
+    const heroImage = page.getByAltText("Piscina iluminada em frente a uma residência contemporânea à noite");
     await expect(heroImage).toHaveAttribute("srcset", /\s390w(?:,|$)/);
     await expect(heroImage).toHaveAttribute("srcset", /\s1792w(?:,|$)/);
     await expect(heroImage).toHaveAttribute("sizes", "100vw");
     await expect(heroImage).toHaveAttribute("loading", "eager");
     await expect(heroImage).toHaveAttribute("fetchpriority", "high");
 
+    const faqItems = page.locator(".piscinas-faq__item");
+    await expect(faqItems).toHaveCount(5);
+
+    const projectForm = page.locator("[data-piscinas-whatsapp-form]");
+    await expect(projectForm).toBeVisible();
+    await expect(page.locator('iframe[src*="starterfunnels"]')).toHaveCount(0);
+
+    await page.evaluate(() => document.fonts.ready);
+    const ctaTitleBox = await page.locator(".piscinas-cta h2").boundingBox();
+    const closingCtaBox = await closingCta.boundingBox();
+    expect(ctaTitleBox).not.toBeNull();
+    expect(closingCtaBox).not.toBeNull();
+    if (ctaTitleBox && closingCtaBox) {
+      expect(closingCtaBox.y).toBeGreaterThanOrEqual(ctaTitleBox.y + ctaTitleBox.height);
+      if (viewport.width > 832) {
+        expect(Math.abs(closingCtaBox.x - ctaTitleBox.x)).toBeLessThanOrEqual(1);
+      } else {
+        const titleCenter = ctaTitleBox.x + ctaTitleBox.width / 2;
+        const ctaCenter = closingCtaBox.x + closingCtaBox.width / 2;
+        expect(Math.abs(titleCenter - ctaCenter)).toBeLessThanOrEqual(1);
+      }
+    }
+
+    const faqTitleBox = await page.locator(".piscinas-faq h2").boundingBox();
+    const faqListBox = await page.locator(".piscinas-faq__list").boundingBox();
+    expect(faqTitleBox).not.toBeNull();
+    expect(faqListBox).not.toBeNull();
+    if (faqTitleBox && faqListBox) {
+      if (viewport.width > 832) {
+        const titleCenter = faqTitleBox.y + faqTitleBox.height / 2;
+        const listCenter = faqListBox.y + faqListBox.height / 2;
+        expect(Math.abs(titleCenter - listCenter)).toBeLessThanOrEqual(1);
+        expect(faqTitleBox.x).toBeLessThan(faqListBox.x);
+      } else {
+        expect(faqTitleBox.y + faqTitleBox.height).toBeLessThanOrEqual(faqListBox.y);
+      }
+    }
+
     const geometry = await page.evaluate(() => ({ width: document.documentElement.clientWidth, scrollWidth: document.documentElement.scrollWidth }));
     expect(geometry.scrollWidth).toBeLessThanOrEqual(geometry.width);
+
+    await heroCta.click();
+    await expect(page).toHaveURL(/#orcamento$/);
+    await expect(page.locator("section#orcamento")).toBeInViewport();
+
+    await projectForm.getByRole("button", { name: "Abrir conversa no WhatsApp" }).click();
+    await expect(page.locator("[data-error-for=nome]")).toHaveText("Informe seu nome.");
+    await expect(page.locator("[data-error-for=consentimento]")).toHaveText("Confirme o consentimento antes de continuar.");
+
+    await page.evaluate(() => {
+      const browserWindow = window as Window & {
+        __piscinasWhatsAppUrl?: string;
+        __piscinasHandoffDetail?: unknown;
+      };
+      window.addEventListener("site:whatsapp-handoff-initiated", (event) => {
+        browserWindow.__piscinasHandoffDetail = (event as CustomEvent).detail;
+      });
+      window.open = ((url?: string | URL) => {
+        browserWindow.__piscinasWhatsAppUrl = String(url ?? "");
+        return window;
+      }) as typeof window.open;
+    });
+
+    await page.getByLabel("Nome Obrigatório").fill("Cliente Teste");
+    await page.getByLabel("Espaço ou necessidade Opcional").fill("Piscina integrada ao deck existente");
+    await page.getByLabel("Prazo Opcional").selectOption("proximos_meses");
+    await page.getByLabel(/Autorizo preparar estas informações/).check();
+    await projectForm.getByRole("button", { name: "Abrir conversa no WhatsApp" }).click();
+
+    const handoff = await page.evaluate(() => {
+      const browserWindow = window as Window & {
+        __piscinasWhatsAppUrl?: string;
+        __piscinasHandoffDetail?: unknown;
+      };
+      return {
+        url: browserWindow.__piscinasWhatsAppUrl,
+        detail: browserWindow.__piscinasHandoffDetail,
+        pageUrl: window.location.href,
+      };
+    });
+    expect(handoff.url).toContain("https://wa.me/5521982590643?text=");
+    const message = decodeURIComponent(new URL(handoff.url!).searchParams.get("text") ?? "");
+    expect(message).toContain("Nome: Cliente Teste");
+    expect(message).toContain("Interesse: Piscinas");
+    expect(message).toContain("Espaço ou necessidade: Piscina integrada ao deck existente");
+    expect(handoff.detail).toEqual({ componentRef: "lp_piscinas_whatsapp_form", subjectRef: "piscinas", channelRef: "whatsapp" });
+    expect(handoff.pageUrl).not.toContain("Cliente");
+    expect(handoff.pageUrl).toMatch(/\/lp\/piscinas#orcamento$/);
+    expect(leadRequests).toEqual([]);
+    await expect(page.locator("[data-whatsapp-fallback]")).toBeVisible();
+    await expect(page.locator("[data-composed-message]")).toHaveValue(message);
 
     const whatsapp = page.locator("#btn-abrir-whatsapp");
     await expect(whatsapp).toBeVisible();

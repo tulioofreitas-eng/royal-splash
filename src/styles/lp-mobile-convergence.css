@@ -1,0 +1,124 @@
+/*
+ * ROYAL SPLASH — LP MOBILE CONVERGENCE
+ *
+ * SYSTEM CAPABILITY:
+ * - page-local mobile centering/layout overrides for the seven LP routes
+ *
+ * SITE_SPECIFIC:
+ * - selectors are intentionally page-scoped (per-route hero/service/trust/
+ *   cta/faq class names), not primitive-namespaced
+ *
+ * THIS FILE IS NOT PART OF THE SHARED PRIMITIVE API.
+ * Relocated out of site-primitives.css, which must contain only
+ * BRAND_SCOPE-qualified `.site-primitive-*` selectors.
+ */
+
+/* --- GOLDEN MOBILE CONVERGENCE R4 --- */
+@media (max-width: 52rem) {
+  /* HERO CENTERING */
+  .piscinas-hero__content, .fibra-hero__content, .reforma-hero__content, .lazer-hero__content, .sauna-hero__content, .vazamento-hero__content, .corporativo-hero__content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  .piscinas-hero h1, .fibra-hero h1, .reforma-hero h1, .lazer-hero h1, .sauna-hero h1, .vazamento-hero h1, .corporativo-hero h1,
+  .piscinas-hero p, .fibra-hero p, .reforma-hero p, .lazer-hero p, .sauna-hero p, .vazamento-hero p, .corporativo-hero p {
+    margin-inline: auto !important;
+    text-align: center !important;
+  }
+  .piscinas-hero .site-primitive-actions, .fibra-hero .site-primitive-actions, .reforma-hero .site-primitive-actions, .lazer-hero .site-primitive-actions, .sauna-hero .site-primitive-actions, .vazamento-hero .site-primitive-actions, .corporativo-hero .site-primitive-actions {
+    justify-content: center !important;
+    width: 100% !important;
+  }
+
+  /* SECTION HEADINGS & MARKETING COPY CENTERING */
+  :is(.site-brand-lp-piscinas, .site-brand-lp-fibra, .site-brand-lp-reforma, .site-brand-lp-lazer, .site-brand-lp-sauna, .site-brand-lp-vazamento, .site-brand-lp-corporativo) .site-primitive-section-title,
+  :is(.site-brand-lp-piscinas, .site-brand-lp-fibra, .site-brand-lp-reforma, .site-brand-lp-lazer, .site-brand-lp-sauna, .site-brand-lp-vazamento, .site-brand-lp-corporativo) .site-primitive-display,
+  .piscinas-narrative .site-primitive-body, .fibra-narrative .site-primitive-body, .reforma-narrative .site-primitive-body, .lazer-narrative .site-primitive-body, .sauna-introduction .site-primitive-body, .vazamento-narrative .site-primitive-body, .corporativo-narrative .site-primitive-body,
+  :is(.site-brand-lp-piscinas, .site-brand-lp-fibra, .site-brand-lp-reforma, .site-brand-lp-lazer, .site-brand-lp-sauna, .site-brand-lp-vazamento, .site-brand-lp-corporativo) [class*="-faq__heading"] .site-primitive-body {
+    text-align: center;
+  }
+
+  /* Form Intro Centering */
+  :is(.site-brand-lp-piscinas, .site-brand-lp-fibra, .site-brand-lp-reforma, .site-brand-lp-lazer, .site-brand-lp-sauna, .site-brand-lp-vazamento, .site-brand-lp-corporativo) [class*="-form__heading"] {
+    text-align: center;
+    margin-inline: auto;
+  }
+  :is(.site-brand-lp-piscinas, .site-brand-lp-fibra, .site-brand-lp-reforma, .site-brand-lp-lazer, .site-brand-lp-sauna, .site-brand-lp-vazamento, .site-brand-lp-corporativo) [class*="-form__heading"] p {
+    text-align: center;
+    margin-inline: auto;
+  }
+  :is(.site-brand-lp-piscinas, .site-brand-lp-fibra, .site-brand-lp-reforma, .site-brand-lp-lazer, .site-brand-lp-sauna, .site-brand-lp-vazamento, .site-brand-lp-corporativo) [class*="-whatsapp-form"] .site-primitive-actions {
+    justify-content: center !important;
+  }
+
+  /* NOSSOS SERVICOS - ICON LEFT, TEXT LEFT */
+  .piscinas-services__list, .fibra-services__list, .reforma-services__list, .lazer-services__list, .sauna-services__list, .vazamento-services__list, .corporativo-services__list {
+    display: flex;
+    flex-direction: column;
+  }
+  .piscinas-service, .fibra-service, .reforma-service, .lazer-service, .sauna-service, .vazamento-service, .corporativo-service {
+    display: grid !important;
+    grid-template-columns: auto minmax(0,1fr) !important;
+    gap: var(--site-space-4);
+    align-items: flex-start !important;
+    text-align: left !important;
+  }
+  .piscinas-service__icon, .fibra-service__icon, .reforma-service__icon, .lazer-service__icon, .sauna-service__icon, .vazamento-service__icon, .corporativo-service__icon {
+    margin-inline: 0 !important;
+    width: 1.5rem !important;
+    height: 1.5rem !important;
+    min-width: 1.5rem !important;
+  }
+
+  /* POR QUE A ROYAL SPLASH - ICON LEFT, TEXT LEFT */
+  .piscinas-trust__entry, .fibra-trust__entry, .reforma-trust__entry, .lazer-trust__entry, .sauna-trust__entry, .vazamento-trust__entry {
+    display: grid !important;
+    grid-template-columns: auto minmax(0,1fr) !important;
+    gap: var(--site-space-4);
+    align-items: flex-start !important;
+    text-align: left !important;
+  }
+  .piscinas-trust__icon, .fibra-trust__icon, .reforma-trust__icon, .lazer-trust__icon, .sauna-trust__icon, .vazamento-trust__icon {
+    margin-inline: 0 !important;
+    width: 1.5rem !important;
+    height: 1.5rem !important;
+    min-width: 1.5rem !important;
+  }
+
+  /* DARK CTA */
+  .piscinas-cta > .site-primitive-section, .fibra-cta > .site-primitive-section, .reforma-cta > .site-primitive-section, .lazer-cta__copy, .sauna-cta__copy, .vazamento-cta__copy {
+    text-align: center !important;
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: center !important;
+  }
+  .piscinas-cta h2, .fibra-cta h2, .reforma-cta h2, .lazer-cta h2, .sauna-cta h2, .vazamento-cta h2, .corporativo-cta h2,
+  .piscinas-cta p, .fibra-cta p, .reforma-cta p, .lazer-cta p, .sauna-cta p, .vazamento-cta p {
+    margin-inline: auto !important;
+    text-align: center !important;
+  }
+  .piscinas-cta .site-primitive-actions, .fibra-cta .site-primitive-actions, .reforma-cta .site-primitive-actions, .lazer-cta .site-primitive-actions, .sauna-cta .site-primitive-actions, .vazamento-cta .site-primitive-actions, .corporativo-cta .site-primitive-actions {
+    justify-content: center !important;
+    width: 100% !important;
+  }
+
+  /* BLOCK TWO SPACING */
+  .piscinas-narrative h2, .reforma-narrative h2, .lazer-narrative h2, .sauna-introduction h2, .corporativo-narrative h2, .corporativo-trust h2 {
+    margin-block-end: var(--site-space-5) !important;
+  }
+
+  /* FAQ CENTERING */
+  :is(.site-brand-lp-piscinas, .site-brand-lp-fibra, .site-brand-lp-reforma, .site-brand-lp-lazer, .site-brand-lp-sauna, .site-brand-lp-vazamento, .site-brand-lp-corporativo) [class*="-faq__heading"] {
+    text-align: center;
+  }
+  :is(.site-brand-lp-piscinas, .site-brand-lp-fibra, .site-brand-lp-reforma, .site-brand-lp-lazer, .site-brand-lp-sauna, .site-brand-lp-vazamento, .site-brand-lp-corporativo) [class*="-faq__heading"] h2,
+  :is(.site-brand-lp-piscinas, .site-brand-lp-fibra, .site-brand-lp-reforma, .site-brand-lp-lazer, .site-brand-lp-sauna, .site-brand-lp-vazamento, .site-brand-lp-corporativo) [class*="-faq__heading"] p {
+    margin-inline: auto;
+  }
+  /* KEEP FAQ SUMMARY LEFT ALIGNED */
+  :is(.site-brand-lp-piscinas, .site-brand-lp-fibra, .site-brand-lp-reforma, .site-brand-lp-lazer, .site-brand-lp-sauna, .site-brand-lp-vazamento, .site-brand-lp-corporativo) [class*="-faq__item"] summary {
+    text-align: left;
+    justify-content: space-between;
+  }
+}

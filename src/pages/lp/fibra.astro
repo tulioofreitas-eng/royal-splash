@@ -6,10 +6,15 @@ import GTMBody from '../../components/GTMBody.astro';
 import LPHeader from '../../components/LPHeader.astro';
 import LPFooter from '../../components/LPFooter.astro';
 import BotaoWhatsapp from '../../components/BotaoWhatsapp.astro';
-import FormularioGHL from '../../components/FormularioGHL.astro';
+import FibraWhatsAppForm from '../../components/lp/FibraWhatsAppForm.astro';
 import Icon from '../../components/Icon.astro';
 import { Image } from 'astro:assets';
-import servicoFibra from '../../assets/servico-fibra.jpg';
+import fibraDepois from '../../assets/fibra-depois.jpg';
+import GaleriaZoom from '../../components/GaleriaZoom.astro';
+import fibraAntes from '../../assets/fibra-antes.jpg';
+import fibraAplicacao from '../../assets/fibra-aplicacao.jpg';
+import fibraDetalhe from '../../assets/fibra-detalhe.jpg';
+
 ---
 
 <LandingLayout title="Restauração de Piscina de Fibra — Royal Splash" description="Restauração de piscinas de fibra." robots="noindex, nofollow" visualMode="brand" bodyClass="site-brand-lp-fibra site-primitive-page">
@@ -19,40 +24,122 @@ import servicoFibra from '../../assets/servico-fibra.jpg';
   <LPHeader slot="header" visualMode="brand" />
 
   <section class="fibra-hero site-primitive-surface--dark">
-    <Image src={servicoFibra} alt="Piscina de fibra de alto padrão" widths={[390, 640, 768, 1024, 1280, 1536, 1792, 2400]} sizes="100vw" priority class="fibra-hero__image" />
+    <Image src={fibraDepois} alt="Piscina de fibra revitalizada em área residencial" widths={[390, 640, 768, 1024, 1280, 1536, 1792, 2400]} sizes="100vw" priority class="fibra-hero__image" />
     <div class="fibra-hero__veil"></div>
     <div class="fibra-hero__content">
-      <h1 class="site-primitive-page-title">Sua piscina de fibra perdeu o brilho? Nós restauramos</h1>
-      <p class="site-primitive-body">Restauração completa.</p>
+      <h1 class="site-primitive-page-title">Restauração de piscinas de fibra</h1>
+      <p class="site-primitive-body">Recuperação de aparência, estrutura e acabamento, com avaliação de trincas, rachaduras, desbotamento e desgaste.</p>
+      <div class="site-primitive-actions">
+        <a href="#orcamento" class="site-primitive-action site-primitive-action--primary">Solicitar avaliação</a>
+      </div>
     </div>
   </section>
 
-  <section class="site-primitive-section fibra-introduction">
-    <div class="site-primitive-reading">
-      <h2 class="site-primitive-display">Restauração de Fibra</h2>
-      <p class="site-primitive-body site-primitive-supporting">Trabalhamos com reforma e revitalização de piscinas de fibra existentes — trincas, desbotamento e sinais de desgaste.</p>
-      <ul class="fibra-capability-list">
-        <li><Icon name="check" class="fibra-icon" /> Reparo de trincas e desgaste estrutural</li>
-      </ul>
+  
+  <!-- Narrative -->
+  <section class="fibra-narrative site-primitive-surface--light site-primitive-datum-bottom">
+    <div class="site-primitive-section site-primitive-section--entry fibra-narrative__layout">
+      <div class="fibra-narrative__copy">
+        <h2 class="site-primitive-display">Antes e depois da restauração</h2>
+        <div class="site-primitive-reading">
+          <p class="site-primitive-body site-primitive-supporting">Restauração completa com pintura em Gel Coat ou Tinta PU. Devolvemos a beleza e a proteção da sua piscina, avaliando e corrigindo desgaste e sinais de envelhecimento.</p>
+        </div>
+        <ul class="fibra-narrative__scope">
+          <li><Icon name="check" class="fibra-narrative__icon" /> Recuperação de cor e textura</li>
+          <li><Icon name="check" class="fibra-narrative__icon" /> Resistência a raios UV e química da água</li>
+        </ul>
+      </div>
+      <div class="fibra-gallery">
+        <GaleriaZoom imagens={[
+          { src: fibraAntes, alt: 'Piscina antes da restauração' },
+          { src: fibraAplicacao, alt: 'Processo de aplicação' },
+          { src: fibraDetalhe, alt: 'Detalhe do acabamento' },
+          { src: fibraDepois, alt: 'Piscina finalizada' },
+        ]} />
+      </div>
     </div>
   </section>
 
-  <section class="fibra-services site-primitive-surface--muted site-primitive-datum-top site-primitive-datum-bottom">
+  <section class="fibra-services site-primitive-surface--muted site-primitive-datum-bottom">
     <div class="site-primitive-section">
       <h2 class="site-primitive-section-title">Nossos Serviços</h2>
-      <article class="fibra-service">
-        <Icon name="wrench" class="fibra-service__icon" />
-        <div>
-          <h3 class="site-primitive-subtitle">Reparo de Trincas</h3>
-          <p class="site-primitive-body">Correção de rachaduras e desgaste estrutural.</p>
-        </div>
-      </article>
+      <div class="fibra-services__list">
+        <article class="fibra-service">
+          <Icon name="wrench" class="fibra-service__icon" />
+          <div>
+            <h3 class="site-primitive-subtitle">Restauração e reparos</h3>
+            <p class="site-primitive-body site-primitive-supporting">Recuperação da condição existente da piscina de fibra, considerando trincas, rachaduras e sinais de desgaste.</p>
+          </div>
+        </article>
+        <article class="fibra-service">
+          <Icon name="refresh" class="fibra-service__icon" />
+          <div>
+            <h3 class="site-primitive-subtitle">Pintura e revitalização</h3>
+            <p class="site-primitive-body site-primitive-supporting">Renovação da aparência e do acabamento em piscinas com desbotamento ou desgaste.</p>
+          </div>
+        </article>
+        <article class="fibra-service fibra-service--secondary">
+          <Icon name="box" class="fibra-service__icon" />
+          <div>
+            <h3 class="site-primitive-subtitle">Instalação de piscinas de fibra</h3>
+            <p class="site-primitive-body site-primitive-supporting">Para novos espaços, a Royal Splash também realiza a instalação de piscinas de fibra.</p>
+          </div>
+        </article>
+      </div>
+      <aside class="fibra-method-note" aria-label="Soluções em PU e Gel Coat">
+        <p class="site-primitive-body"><strong>PU e Gel Coat.</strong> A Royal Splash trabalha com soluções em PU e Gel Coat e avalia cada piscina individualmente para determinar a abordagem adequada.</p>
+      </aside>
+    </div>
+  </section>
+
+  <section class="fibra-trust site-primitive-surface--light site-primitive-datum-bottom">
+    <div class="site-primitive-section">
+      <h2 class="site-primitive-section-title">Por que a Royal Splash?</h2>
+      <div class="fibra-trust__list">
+        <article class="fibra-trust__entry">
+          <Icon name="users" class="fibra-trust__icon" />
+          <div>
+            <h3 class="site-primitive-subtitle">Atendimento Premium</h3>
+            <p class="site-primitive-body site-primitive-supporting">Consultoria exclusiva do primeiro contato à entrega.</p>
+          </div>
+        </article>
+        <article class="fibra-trust__entry">
+          <Icon name="check" class="fibra-trust__icon" />
+          <div>
+            <h3 class="site-primitive-subtitle">Avaliação individual</h3>
+            <p class="site-primitive-body site-primitive-supporting">Cada piscina é avaliada antes da recomendação da abordagem adequada.</p>
+          </div>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <section class="fibra-faq site-primitive-surface--soft site-primitive-datum-bottom">
+    <div class="site-primitive-section fibra-faq__layout">
+      <h2 class="site-primitive-display">Perguntas frequentes</h2>
+      <div class="fibra-faq__list">
+        {[
+          { pergunta: 'Quais sinais indicam que uma piscina de fibra deve ser avaliada?', resposta: 'Trincas, desbotamento e outros sinais de desgaste podem justificar uma avaliação da condição existente antes de definir a recuperação necessária.' },
+          { pergunta: 'Vocês recuperam piscinas de fibra com trincas?', resposta: 'A Royal Splash realiza reparo de trincas em piscinas de fibra. A condição existente precisa ser avaliada para definir o escopo adequado.' },
+          { pergunta: 'É possível revitalizar uma piscina de fibra desbotada?', resposta: 'O desbotamento está entre os sinais considerados nos serviços de reforma e revitalização. A avaliação da piscina orienta o que pode ser realizado.' },
+          { pergunta: 'Como é definida a recuperação necessária?', resposta: 'A equipe avalia a condição existente e os sinais de desgaste observados para entender o contexto e definir os próximos passos.' },
+          { pergunta: 'Como solicitar uma avaliação da piscina?', resposta: 'Preencha o formulário desta página com seu nome e, se desejar, um breve contexto para abrir a conversa com a Royal Splash pelo WhatsApp.' },
+        ].map((item) => (
+          <details class="fibra-faq__item">
+            <summary class="site-primitive-subtitle">
+              {item.pergunta}
+              <span aria-hidden="true">+</span>
+            </summary>
+            <p class="site-primitive-body site-primitive-supporting">{item.resposta}</p>
+          </details>
+        ))}
+      </div>
     </div>
   </section>
 
   <section class="fibra-cta site-primitive-surface--dark">
     <div class="site-primitive-section">
-      <h2 class="site-primitive-display">Dê nova vida à sua piscina de fibra</h2>
+      <h2 class="site-primitive-display">Sua piscina de fibra precisa de uma nova vida?</h2>
       <div class="site-primitive-actions">
         <a href="#orcamento" class="site-primitive-action site-primitive-action--primary">Falar com um especialista</a>
       </div>
@@ -62,9 +149,9 @@ import servicoFibra from '../../assets/servico-fibra.jpg';
   <section id="orcamento" class="site-primitive-section fibra-form">
     <div class="site-primitive-reading fibra-form__heading">
       <h2 class="site-primitive-section-title">Solicite seu Orçamento</h2>
-      <p class="site-primitive-body site-primitive-supporting">Preencha os dados abaixo e nossa equipe entrará em contato para entender seu projeto em detalhes.</p>
+      <p class="site-primitive-body site-primitive-supporting">Compartilhe o contexto que já souber e abra uma conversa estruturada com a equipe Royal Splash pelo WhatsApp.</p>
     </div>
-    <FormularioGHL />
+    <FibraWhatsAppForm />
   </section>
 
   <LPFooter slot="footer" visualMode="brand" />
@@ -72,28 +159,63 @@ import servicoFibra from '../../assets/servico-fibra.jpg';
 </LandingLayout>
 
 <style>
-  .fibra-hero { position: relative; display: grid; min-height: clamp(28rem, 68vh, 46rem); isolation: isolate; }
+  
+  .fibra-narrative__layout { display: grid; grid-template-columns: minmax(18rem, 0.85fr) minmax(0, 1.15fr); gap: var(--site-space-8); align-items: center; }
+  .fibra-narrative p { margin-block-start: 0; }
+  .fibra-narrative h2 { margin-block-start: 0; margin-block-end: var(--site-space-3); }
+  .fibra-narrative__scope { display: grid; gap: var(--site-space-3); margin: var(--site-space-6) 0 0; padding: var(--site-space-5) 0 0; border-block-start: 1px solid var(--site-color-divider); list-style: none; }
+  .fibra-narrative__scope li { display: flex; gap: var(--site-space-3); align-items: center; }
+  :global(.fibra-narrative__icon) { width: 1.25rem; height: 1.25rem; flex: none; color: var(--site-color-text-primary); }
+  .fibra-gallery { min-width: 0; }
+  .fibra-hero { position: relative; display: grid; min-height: max(40rem, 85svh); isolation: isolate; overflow: hidden; }
   .fibra-hero__image, .fibra-hero__veil { position: absolute; inset: 0; width: 100%; height: 100%; }
-  .fibra-hero__image { object-fit: cover; z-index: -2; }
-  .fibra-hero__veil { background: color-mix(in srgb, var(--site-color-surface-dark) 78%, transparent); z-index: -1; }
+  .fibra-hero__image { object-fit: cover; object-position: center 58%; z-index: -2; }
+  .fibra-hero__veil { background: color-mix(in srgb, var(--site-color-surface-dark) 73%, transparent); z-index: -1; }
   .fibra-hero__content { align-self: end; width: min(calc(100% - (2 * var(--site-layout-gutter))), var(--site-layout-content-max)); margin-inline: auto; padding-block: var(--site-space-8); }
   .fibra-hero h1 { max-width: 14ch; margin: 0; }
-  .fibra-hero p { margin: var(--site-space-5) 0 0; color: var(--site-color-text-on-dark); }
-  .fibra-introduction .site-primitive-reading { margin-inline: auto; }
-  .fibra-introduction h2, .fibra-services h2, .fibra-service h3, .fibra-form h2 { margin-block-start: 0; }
-  .fibra-capability-list { margin: var(--site-space-6) 0 0; padding: var(--site-space-5) 0 0; border-block-start: 1px solid var(--site-color-divider); list-style: none; }
-  .fibra-capability-list li { display: flex; gap: var(--site-space-3); align-items: center; font-weight: var(--site-font-weight-ui-strong); }
-  :global(.fibra-icon), :global(.fibra-service__icon) { width: 1.5rem; height: 1.5rem; flex: none; color: var(--site-color-text-primary); }
-  .fibra-services h2 { margin-block-end: var(--site-space-6); }
-  .fibra-service { display: grid; grid-template-columns: auto 1fr; gap: var(--site-space-5); max-width: var(--site-layout-reading-max); padding-block-start: var(--site-space-5); border-block-start: 1px solid var(--site-color-required-boundary); }
-  .fibra-service p, .fibra-form p { margin-block-end: 0; }
-  .fibra-cta { text-align: center; }
-  .fibra-cta .site-primitive-section { max-width: var(--site-layout-reading-max); }
-  .fibra-cta h2 { margin: 0; }
-  .fibra-cta .site-primitive-actions { justify-content: center; }
+  .fibra-hero p { max-width: 39rem; margin: var(--site-space-5) 0 0; color: var(--site-color-text-on-dark); }
+  .fibra-services h2, .fibra-service h3, .fibra-trust h2, .fibra-trust h3, .fibra-faq h2, .fibra-form h2 { margin-block-start: 0; }
+  .fibra-services h2, .fibra-trust h2 { margin-block-end: var(--site-space-6); }
+  :global(.fibra-service__icon), :global(.fibra-trust__icon) { width: 1.5rem; height: 1.5rem; flex: none; color: var(--site-color-text-primary); }
+  .fibra-services__list { max-width: var(--site-layout-reading-max); border-block: 1px solid var(--site-color-divider); }
+  .fibra-service { display: grid; grid-template-columns: auto minmax(0, 1fr); gap: var(--site-space-4); padding-block: var(--site-space-6); }
+  .fibra-service + .fibra-service { border-block-start: 1px solid var(--site-color-divider); }
+  .fibra-service--secondary { margin-block-start: var(--site-space-2); border-inline-start: 2px solid var(--site-color-divider); padding-inline: var(--site-space-4); }
+  .fibra-service p, .fibra-trust p, .fibra-method-note p, .fibra-form p { margin-block-end: 0; }
+  .fibra-services .site-primitive-supporting { color: inherit; }
+  .fibra-method-note { max-width: var(--site-layout-reading-max); margin-block-start: var(--site-space-6); border-inline-start: 3px solid var(--site-color-accent-on-dark); padding: var(--site-space-4) var(--site-space-5); background: var(--site-color-surface); }
+  .fibra-method-note p { margin-block-start: 0; }
+  .fibra-trust__list { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); max-width: 60rem; }
+  .fibra-trust__entry { display: grid; grid-template-columns: auto minmax(0, 1fr); gap: var(--site-space-4); padding-block: var(--site-space-5); border-block-start: 1px solid var(--site-color-divider); }
+  .fibra-trust__entry + .fibra-trust__entry { margin-inline-start: var(--site-space-7); }
+  .fibra-faq .fibra-faq__layout { display: grid; grid-template-columns: minmax(14rem, 0.7fr) minmax(0, 1.3fr); align-items: center; gap: var(--site-space-8); }
+  .fibra-faq h2 { max-width: 12ch; margin-block-end: 0; }
+  .fibra-faq__list { border-block-start: 1px solid var(--site-color-divider); }
+  .fibra-faq__item { border-block-end: 1px solid var(--site-color-divider); }
+  .fibra-faq__item summary { display: flex; justify-content: space-between; gap: var(--site-space-4); padding-block: var(--site-space-5); cursor: pointer; list-style: none; }
+  .fibra-faq__item summary::-webkit-details-marker { display: none; }
+  .fibra-faq__item summary span { color: var(--site-color-text-primary); transition: transform 160ms ease; }
+  .fibra-faq__item[open] summary span { transform: rotate(45deg); }
+  .fibra-faq__item p { margin: 0; padding: 0 0 var(--site-space-5); }
+  .fibra-cta .site-primitive-section { display: block; }
+  .fibra-cta h2 { max-width: 28ch; margin: 0; }
+  .fibra-cta .site-primitive-actions { margin-block-start: var(--site-space-6); }
   .fibra-form__heading { margin: 0 auto var(--site-space-7); text-align: center; }
+  @media (max-width: 52rem) {
+    .fibra-narrative__layout { grid-template-columns: 1fr; gap: var(--site-space-7); }
+    .fibra-gallery { width: min(100%, 38rem); margin-inline: auto; }
+    .fibra-hero__content { text-align: center; }
+    .fibra-hero h1, .fibra-hero p { margin-inline: auto; }
+    .fibra-hero .site-primitive-actions { justify-content: center; }
+    .fibra-services h2, .fibra-trust h2, .fibra-faq h2 { text-align: center; }
+    .fibra-trust__list { grid-template-columns: 1fr; }
+    .fibra-trust__entry + .fibra-trust__entry { margin-inline-start: 0; }
+    .fibra-faq .fibra-faq__layout { grid-template-columns: 1fr; align-items: stretch; gap: var(--site-space-5); }
+    .fibra-faq h2 { max-width: none; }
+  }
   @media (max-width: 30rem) {
-    .fibra-hero { min-height: calc(100svh - 4.5rem); }
+    
+  .fibra-hero { min-height: calc(100svh + 2rem); }
     .fibra-hero__content { align-self: center; padding-block: var(--site-space-7); }
     .fibra-service { gap: var(--site-space-3); }
   }

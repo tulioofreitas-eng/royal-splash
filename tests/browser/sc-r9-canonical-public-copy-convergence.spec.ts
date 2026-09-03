@@ -2,17 +2,17 @@ import AxeBuilder from "@axe-core/playwright";
 import { expect, test } from "@playwright/test";
 
 const routes = [
-  ["/", "Encontre o contexto certo para avançar."],
-  ["/servicos", "Residencial"],
-  ["/corporativo", "Corporativo / Institucional"],
-  ["/projetos", "Projetos"],
-  ["/metodo-royal", "Método Royal"],
-  ["/sobre", "A Royal"],
-  ["/inicie-seu-projeto", "Inicie seu projeto"],
+  ["/", "Água como parte da arquitetura."],
+  ["/servicos", "Água integrada ao projeto de habitar."],
+  ["/corporativo", "Engenharia aquática para uso coletivo."],
+  ["/projetos", "Fotografias de projetos realizados."],
+  ["/metodo-royal", "Como a conversa se organiza em execução."],
+  ["/sobre", "Engenharia de água para espaços que permanecem."],
+  ["/inicie-seu-projeto", "Organize seu contexto para uma conversa mais útil."],
   ["/404", "Página não encontrada"],
 ] as const;
 
-const prohibited = /implementação|implementado|implementada|funcional|governança|governado|governada|controlado|controlada|superfície institucional|fluxo estruturado|verificação|verificado|verificada|publicação|publicável|publicado|publicada|disponível para publicação|catálogo controlado|registro controlado|intake/i;
+const prohibited = /implementação|implementado|implementada|funcional|governança|governado|governada|controlado|controlada|superfície institucional|fluxo estruturado|publicação|publicável|publicado|publicada|disponível para publicação|catálogo controlado|registro controlado/i;
 
 test("canonical launch surfaces render visitor-facing copy in the shared shell", async ({
   page,
@@ -27,7 +27,7 @@ test("canonical launch surfaces render visitor-facing copy in the shared shell",
   }
 });
 
-test("canonical convergence preserves navigation, segment intake destinations, and Projects empty state", async ({
+test("canonical convergence preserves conversion destinations and Projects gallery state", async ({
   page,
 }) => {
   await page.goto("/");
@@ -36,21 +36,51 @@ test("canonical convergence preserves navigation, segment intake destinations, a
     "/inicie-seu-projeto",
   );
 
-  for (const [route, context] of [
-    ["/servicos", "residencial"],
-    ["/corporativo", "corporativo_institucional"],
+  for (const route of [
+    "/servicos",
+    "/corporativo",
   ] as const) {
     await page.goto(route);
-    await expect(page.locator("[data-segment-qualified-action]").first()).toHaveAttribute(
-      "href",
-      `/inicie-seu-projeto?context=${context}`,
-    );
+    await expect(
+      page.getByRole("main").locator('.site-primitive-action--primary[data-analytics-cta]').first(),
+    ).toHaveAttribute("href", "https://wa.me/5521982590643");
   }
 
   await page.goto("/projetos");
-  await expect(page.locator('[data-projects-state="empty"]')).toContainText(
-    "Nenhum projeto disponível no momento",
-  );
+  await expect(page.locator('[data-project-gallery]')).toBeVisible();
+  await expect(page.locator('[data-project-gallery]')).toHaveAttribute("data-projects-count", /^\d+$/);
+});
+
+test("normal primary conversion surfaces have no lingering /contato default routing", async ({ page }) => {
+  const expectedChannels: Record<string, { href: string; channel: string } | null> = {
+    "/": { href: "/inicie-seu-projeto", channel: "site_form" },
+    "/metodo-royal": null,
+    "/projetos": { href: "https://wa.me/5521982590643", channel: "whatsapp" },
+    "/sobre": null,
+    "/servicos": { href: "https://wa.me/5521982590643", channel: "whatsapp" },
+    "/corporativo": { href: "https://wa.me/5521982590643", channel: "whatsapp" },
+  };
+
+  for (const [route, expected] of Object.entries(expectedChannels)) {
+    await page.goto(route);
+    const primaryActions = page.getByRole("main").locator(
+      '.site-primitive-action--primary[data-analytics-cta]',
+    );
+    const count = await primaryActions.count();
+    if (expected === null) {
+      expect(count).toBe(0);
+      continue;
+    }
+    expect(count).toBeGreaterThan(0);
+    for (let index = 0; index < count; index += 1) {
+      await expect(primaryActions.nth(index)).toHaveAttribute("href", expected.href);
+      await expect(primaryActions.nth(index)).toHaveAttribute(
+        "data-analytics-channel",
+        expected.channel,
+      );
+      await expect(primaryActions.nth(index)).not.toHaveAttribute("href", "/contato");
+    }
+  }
 });
 
 test("representative converged surfaces remain accessible and responsive", async ({

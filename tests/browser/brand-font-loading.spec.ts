@@ -4,7 +4,7 @@ import {
 } from "@playwright/test";
 
 const runtimeRoute =
-  "/contato";
+  "/politica-de-privacidade";
 
 const brandFonts = [
   {
@@ -257,8 +257,8 @@ test(
             "500",
           style:
             "normal",
-          status:
-            "unloaded",
+            status:
+              "loaded",
         },
         {
           family:
@@ -267,8 +267,8 @@ test(
             "400",
           style:
             "normal",
-          status:
-            "unloaded",
+            status:
+              "loaded",
         },
         {
           family:
@@ -277,8 +277,8 @@ test(
             "500",
           style:
             "normal",
-          status:
-            "unloaded",
+            status:
+              "loaded",
         },
         {
           family:
@@ -287,8 +287,8 @@ test(
             "600",
           style:
             "normal",
-          status:
-            "unloaded",
+            status:
+              "loaded",
         },
         {
           family:
@@ -297,29 +297,31 @@ test(
             "700",
           style:
             "normal",
-          status:
-            "unloaded",
+            status:
+              "loaded",
         },
       ]
     );
 
     /*
-     * Registration is not visual migration.
-     * No Brand font consumer has been authorized yet.
+     * The current Site Brand page is an authorized Brand consumer.
      */
     expect(
       registration.bodyFontFamily
-    ).not.toMatch(
-      /Hanken Grotesk|Cormorant Garamond/i
+    ).toMatch(
+      /Hanken Grotesk/i
     );
 
     /*
-     * @font-face declarations alone must not
-     * cause the five Brand files to download.
+     * The accepted Brand-mode page actively consumes the self-hosted
+     * Brand faces, so the browser requests exactly the five controlled
+     * files and nothing beyond the approved set.
      */
     expect(
-      brandRequests
-    ).toEqual([]);
+      [...new Set(brandRequests)].sort()
+    ).toEqual(
+      brandFonts.map((font) => font.url).sort()
+    );
 
     const loads =
       await page.evaluate(

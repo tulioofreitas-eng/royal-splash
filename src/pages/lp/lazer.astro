@@ -6,7 +6,7 @@ import GTMBody from '../../components/GTMBody.astro';
 import LPHeader from '../../components/LPHeader.astro';
 import LPFooter from '../../components/LPFooter.astro';
 import BotaoWhatsapp from '../../components/BotaoWhatsapp.astro';
-import FormularioGHL from '../../components/FormularioGHL.astro';
+import LazerWhatsAppForm from '../../components/lp/LazerWhatsAppForm.astro';
 import Icon from '../../components/Icon.astro';
 import GaleriaZoom from '../../components/GaleriaZoom.astro';
 import { Image } from 'astro:assets';
@@ -57,27 +57,51 @@ import lazerNoturno from '../../assets/lazer-noturno.jpg';
     </div>
   </section>
 
-  <section class="lazer-service site-primitive-surface--soft site-primitive-datum-bottom">
-    <div class="site-primitive-section lazer-service__layout">
+    <section class="lazer-services site-primitive-surface--muted site-primitive-datum-bottom">
+    <div class="site-primitive-section">
       <h2 class="site-primitive-section-title">Nossos Serviços</h2>
-      <article class="lazer-service__entry">
-        <Icon name="box" class="lazer-service__icon" />
-        <div><h3 class="site-primitive-subtitle">Projeto Integrado</h3><p class="site-primitive-body site-primitive-supporting">Piscina, deck e área gourmet planejados como um único espaço.</p></div>
-      </article>
-    </div>
-  </section>
-
-  <section class="lazer-trust site-primitive-surface--muted site-primitive-datum-bottom">
-    <div class="site-primitive-section lazer-trust__layout">
-      <h2 class="site-primitive-section-title">Por que a Royal Splash?</h2>
-      <div class="lazer-trust__list">
-        <article><Icon name="users" class="lazer-trust__icon" /><h3 class="site-primitive-subtitle">Atendimento Premium</h3><p class="site-primitive-body site-primitive-supporting">Consultoria exclusiva do primeiro contato à entrega.</p></article>
-        <article><Icon name="cpu" class="lazer-trust__icon" /><h3 class="site-primitive-subtitle">Tecnologia de Ponta</h3><p class="site-primitive-body site-primitive-supporting">Automação, aquecimento e iluminação de última geração.</p></article>
+      <div class="lazer-services__list">
+        <article class="lazer-service">
+          <Icon name="box" class="lazer-service__icon" />
+          <div>
+            <h3 class="site-primitive-subtitle">Projeto Integrado</h3>
+            <p class="site-primitive-body site-primitive-supporting">Piscina, deck e área gourmet planejados como um conjunto.</p>
+          </div>
+        </article>
+        <article class="lazer-service">
+          <Icon name="sun" class="lazer-service__icon" />
+          <div>
+            <h3 class="site-primitive-subtitle">Paisagismo e Iluminação</h3>
+            <p class="site-primitive-body site-primitive-supporting">Integração dos elementos externos ao ambiente de lazer.</p>
+          </div>
+        </article>
       </div>
     </div>
   </section>
 
-  <section class="lazer-faq site-primitive-surface--light site-primitive-datum-bottom">
+    <section class="lazer-trust site-primitive-surface--light site-primitive-datum-bottom">
+    <div class="site-primitive-section">
+      <h2 class="site-primitive-section-title">Por que a Royal Splash?</h2>
+      <div class="lazer-trust__list">
+        <article class="lazer-trust__entry">
+          <Icon name="users" class="lazer-trust__icon" />
+          <div>
+            <h3 class="site-primitive-subtitle">Atendimento Premium</h3>
+            <p class="site-primitive-body site-primitive-supporting">Consultoria exclusiva do primeiro contato à entrega.</p>
+          </div>
+        </article>
+        <article class="lazer-trust__entry">
+          <Icon name="cpu" class="lazer-trust__icon" />
+          <div>
+            <h3 class="site-primitive-subtitle">Conforto e Tecnologia</h3>
+            <p class="site-primitive-body site-primitive-supporting">Automação, aquecimento e iluminação integrados ao projeto conforme a necessidade de cada espaço.</p>
+          </div>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <section class="lazer-faq site-primitive-surface--soft site-primitive-datum-bottom">
     <div class="site-primitive-section lazer-faq__layout">
       <div class="lazer-faq__heading"><h2 class="site-primitive-display">Perguntas frequentes</h2></div>
       <div class="lazer-faq__disclosures">
@@ -86,6 +110,7 @@ import lazerNoturno from '../../assets/lazer-noturno.jpg';
           { pergunta: 'Preciso ter piscina pra contratar a área de lazer completa?', resposta: 'Não. Também executamos deck, área gourmet e paisagismo separadamente, mesmo em espaços que já têm piscina pronta.' },
           { pergunta: 'Vocês cuidam do paisagismo também?', resposta: 'Sim. Paisagismo e iluminação fazem parte do projeto integrado, pensados junto com a arquitetura de todo o espaço.' },
           { pergunta: 'É possível fazer em etapas, respeitando o orçamento?', resposta: 'Sim. Planejamos o projeto completo, mas a execução pode ser dividida em etapas, de acordo com sua prioridade e orçamento.' },
+          { pergunta: 'Como solicitar uma avaliação e orçamento?', resposta: 'Preencha o formulário desta página para compartilhar seu contexto e receber o contato da equipe Royal Splash.' },
         ].map((item) => (
           <details class="lazer-faq__item">
             <summary class="site-primitive-subtitle">
@@ -100,12 +125,12 @@ import lazerNoturno from '../../assets/lazer-noturno.jpg';
   </section>
 
   <section class="lazer-cta site-primitive-surface--dark">
-    <div class="site-primitive-section"><h2 class="site-primitive-display">Pronto para criar sua área de lazer dos sonhos?</h2><div class="site-primitive-actions"><a href="#orcamento" class="site-primitive-action site-primitive-action--primary">Falar com um especialista</a></div></div>
+    <div class="site-primitive-section"><h2 class="site-primitive-display">Pronto para transformar sua área de lazer?</h2><div class="site-primitive-actions"><a href="#orcamento" class="site-primitive-action site-primitive-action--primary">Falar com um especialista</a></div></div>
   </section>
 
   <section id="orcamento" class="site-primitive-section lazer-form">
-    <div class="site-primitive-reading lazer-form__heading"><h2 class="site-primitive-section-title">Solicite seu Orçamento</h2><p class="site-primitive-body site-primitive-supporting">Preencha os dados abaixo e nossa equipe entrará em contato para entender seu projeto em detalhes.</p></div>
-    <FormularioGHL />
+    <div class="site-primitive-reading lazer-form__heading"><h2 class="site-primitive-section-title">Solicite seu Orçamento</h2><p class="site-primitive-body site-primitive-supporting">Compartilhe o contexto que já souber e abra uma conversa estruturada com a equipe Royal Splash pelo WhatsApp.</p></div>
+    <LazerWhatsAppForm />
   </section>
 
   <LPFooter slot="footer" visualMode="brand" />
@@ -127,42 +152,51 @@ import lazerNoturno from '../../assets/lazer-noturno.jpg';
   .lazer-narrative__scope li { display: flex; gap: var(--site-space-3); align-items: center; }
   :global(.lazer-narrative__icon) { width: 1.25rem; height: 1.25rem; flex: none; }
   .lazer-gallery { min-width: 0; }
-  .lazer-service__layout, .lazer-trust__layout { display: grid; grid-template-columns: minmax(14rem, 0.65fr) minmax(0, 1.35fr); gap: var(--site-space-8); }
-  .lazer-service h2, .lazer-trust h2 { margin-block-start: 0; }
-  .lazer-service__entry { display: grid; grid-template-columns: auto minmax(0, 1fr); gap: var(--site-space-5); padding-block: var(--site-space-5); border-block: 1px solid var(--site-color-divider); }
-  .lazer-service__entry h3, .lazer-service__entry p { margin-block-start: 0; }
-  .lazer-service__entry p { margin-block-end: 0; }
+  
+  .lazer-services h2, .lazer-services h3, .lazer-trust h2, .lazer-trust h3, .lazer-faq h2, .lazer-form h2 { margin-block-start: 0; }
+  .lazer-services h2, .lazer-trust h2 { margin-block-end: var(--site-space-6); }
+  .lazer-services .site-primitive-supporting { color: var(--site-color-text-primary); }
+  
+  
+  .lazer-services__list { max-width: var(--site-layout-reading-max); border-block: 1px solid var(--site-color-divider); }
+  .lazer-service { display: grid; grid-template-columns: auto minmax(0, 1fr); gap: var(--site-space-4); padding-block: var(--site-space-6); }
+  .lazer-service + .lazer-service { border-block-start: 1px solid var(--site-color-divider); }
+  .lazer-service p, .lazer-trust p, .lazer-form p { margin-block-end: 0; }
   :global(.lazer-service__icon), :global(.lazer-trust__icon) { width: 1.5rem; height: 1.5rem; }
-  .lazer-trust__list { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--site-space-6); }
-  .lazer-trust__list article { padding-block-start: var(--site-space-4); border-block-start: 1px solid var(--site-color-divider); }
-  .lazer-trust__list h3 { margin: var(--site-space-4) 0 var(--site-space-2); }
-  .lazer-trust__list p { margin: 0; color: var(--site-color-text-primary); }
-  .lazer-faq__layout { display: grid; grid-template-columns: minmax(14rem, 0.65fr) minmax(0, 1.35fr); gap: var(--site-space-8); align-items: start; }
-  .lazer-faq__heading { position: sticky; top: var(--site-space-6); }
+  .lazer-trust__list { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); max-width: 60rem; }
+  .lazer-trust__entry { display: grid; grid-template-columns: auto minmax(0, 1fr); gap: var(--site-space-4); padding-block: var(--site-space-5); border-block-start: 1px solid var(--site-color-divider); }
+  .lazer-trust__entry + .lazer-trust__entry { margin-inline-start: var(--site-space-7); }
+  
+  
+  .lazer-faq__layout { display: grid; grid-template-columns: minmax(14rem, 0.7fr) minmax(0, 1.3fr); align-items: center; gap: var(--site-space-8); }
+  
   .lazer-faq h2 { margin: 0; }
   .lazer-faq__disclosures { border-block-start: 1px solid var(--site-color-divider); }
   .lazer-faq__item { border-block-end: 1px solid var(--site-color-divider); }
   .lazer-faq__item summary { display: flex; gap: var(--site-space-5); align-items: center; justify-content: space-between; padding-block: var(--site-space-5); cursor: pointer; list-style: none; }
   .lazer-faq__item summary::-webkit-details-marker { display: none; }
-  .lazer-faq__item summary span { flex: none; font-family: var(--site-font-family-body); }
+  .lazer-faq__item summary span { flex: none; font-family: var(--site-font-family-body); transition: transform 160ms ease; }
+  .lazer-faq__item[open] summary span { transform: rotate(45deg); }
   .lazer-faq__item p { margin: calc(-1 * var(--site-space-2)) 0 var(--site-space-5); }
-  .lazer-cta .site-primitive-section { display: flex; gap: var(--site-space-7); align-items: end; justify-content: space-between; }
+  .lazer-cta .site-primitive-section { display: block; }
   .lazer-cta h2 { max-width: 19ch; margin: 0; }
-  .lazer-cta .site-primitive-actions { flex: none; margin: 0; }
+  .lazer-cta .site-primitive-actions { margin-block-start: var(--site-space-6); }
   .lazer-form { padding-block-end: calc(var(--site-space-8) + 4.5rem); }
   .lazer-form__heading { margin: 0 auto var(--site-space-7); text-align: center; }
   .lazer-form__heading h2, .lazer-form__heading p { margin-block-start: 0; }
   @media (max-width: 52rem) {
-    .lazer-narrative__layout, .lazer-service__layout, .lazer-trust__layout, .lazer-faq__layout { grid-template-columns: 1fr; gap: var(--site-space-7); }
+    .lazer-narrative__layout, .lazer-faq__layout { grid-template-columns: 1fr; gap: var(--site-space-7); }
     .lazer-gallery { width: min(100%, 38rem); margin-inline: auto; }
     .lazer-faq__heading { position: static; }
-    .lazer-cta .site-primitive-section { display: block; }
-    .lazer-cta .site-primitive-actions { margin-block-start: var(--site-space-6); }
+
   }
   @media (max-width: 42rem) {
     .lazer-hero { min-height: calc(100svh + 5rem); }
     .lazer-hero__content { align-self: center; }
-    .lazer-trust__list { grid-template-columns: 1fr; }
+    .lazer-trust__list, .lazer-faq__layout { grid-template-columns: 1fr; }
+    .lazer-faq__layout { align-items: stretch; gap: var(--site-space-5); }
+    .lazer-faq h2 { max-width: none; }
+    .lazer-trust__entry + .lazer-trust__entry { margin-inline-start: 0; }
     .lazer-form { padding-block-end: calc(var(--site-space-7) + 5rem); }
   }
 </style>

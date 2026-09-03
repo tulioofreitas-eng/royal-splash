@@ -70,6 +70,14 @@ export function classifyRuntimeEnvironment(
     return "test";
   }
 
+  if (mode === "production") {
+    return "preview";
+  }
+
+  if (!mode) {
+    return "development";
+  }
+
   throw new EnvironmentSafetyError(
     "Runtime environment could not be classified safely.",
   );

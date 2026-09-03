@@ -1,222 +1,155 @@
 ---
 import SiteHeader from "../components/site/SiteHeader.astro";
 import SiteLayout from "../layouts/SiteLayout.astro";
+import media from "../assets/sobre-equipe.jpg";
+import "../styles/complete-experience.css";
+
+const practice = [
+  ["01", "Projeto", "Entendimento técnico de como a água se integra à arquitetura, com materiais e sistemas adequados ao contexto."],
+  ["02", "Execução", "Construção acompanhada em suas fases, com atenção ao detalhe e presença técnica no canteiro."],
+  ["03", "Relacionamento", "Conversa clara com cliente e arquiteto sobre escopo, cronograma, responsabilidades e próximos passos."],
+];
 ---
 
-<SiteLayout
-  title="A Royal — Royal Splash"
-  robots="noindex, nofollow"
-  bodyClass="site-brand-about site-primitive-page"
-  visualMode="brand"
->
+<SiteLayout title="A Royal — Royal Splash" robots="noindex, nofollow" bodyClass="site-primitive-page experience-page" visualMode="brand">
   <SiteHeader slot="header" visualMode="brand" />
 
-  <section
-    class="trust-section trust-entry site-primitive-section site-primitive-section--entry"
-    aria-labelledby="trust-heading"
-    data-trust-stage="entry"
-  >
-    <p class="trust-eyebrow site-primitive-eyebrow site-primitive-supporting">
-      A Royal
-    </p>
+  <section class="experience-entry" aria-labelledby="about-heading" data-about-block="entry">
+    <p class="experience-kicker">A Royal</p>
+    <h1 id="about-heading">Engenharia de água para espaços que permanecem.</h1>
+    <p class="experience-lead">Piscinas, lazer, sauna, proteção estrutural e acabamentos coordenados como parte da arquitetura residencial, corporativa e institucional.</p>
+  </section>
 
-    <h1
-      id="trust-heading"
-      class="site-primitive-page-title site-primitive-reading"
-    >
-      A Royal
-    </h1>
-
-    <p class="site-primitive-body site-primitive-supporting site-primitive-reading">
-      Acesse Projetos, Método Royal e os próximos passos
-      disponíveis no site.
-    </p>
-
-    <div class="trust-actions site-primitive-actions">
-      <a
-        class="site-primitive-action site-primitive-action--tertiary"
-        href="/projetos"
-      >
-        Ver Projetos
-      </a>
-
-      <a
-        class="site-primitive-action site-primitive-action--tertiary"
-        href="/metodo-royal"
-      >
-        Conhecer Método Royal
-      </a>
+  <section class="experience-section about-context" aria-labelledby="contexts-heading" data-about-block="photo-context">
+    <div>
+      <p class="experience-kicker">Contextos de trabalho</p>
+      <h2 id="contexts-heading">Residencial e coletivo pedem leituras diferentes.</h2>
+      <p>No residencial, piscina, sauna e lazer se integram ao projeto de habitar. Em espaços corporativos e institucionais, escala, circulação e intensidade de uso orientam a solução.</p>
+      <p>Cada contexto recebe uma leitura técnica específica, sem perder a relação entre água, arquitetura e execução.</p>
+    </div>
+    <div class="experience-media">
+      <img src={media.src} alt="Equipe Royal Splash em contexto de trabalho" />
+      <span class="experience-media__veil"></span>
+      <p class="experience-media__label">Royal Splash • Equipe</p>
     </div>
   </section>
 
-  <section
-    class="trust-section site-primitive-section site-primitive-datum-top"
-    aria-labelledby="institutional-context-heading"
-    data-trust-stage="institutional-context"
-  >
-    <h2
-      id="institutional-context-heading"
-      class="site-primitive-section-title"
-    >
-      Contexto institucional
-    </h2>
-
-    <p class="site-primitive-body site-primitive-supporting site-primitive-reading">
-      Use os caminhos desta página para conhecer Projetos,
-      Método Royal e as formas de iniciar um projeto.
-    </p>
-  </section>
-
-  <section
-    class="trust-section site-primitive-section site-primitive-datum-top"
-    aria-labelledby="trust-references-heading"
-    data-trust-stage="references"
-  >
-    <h2
-      id="trust-references-heading"
-      class="site-primitive-section-title"
-    >
-      Referências para sua avaliação
-    </h2>
-
-    <div class="trust-grid">
-      <article class="site-primitive-datum-top">
-        <h3 class="site-primitive-subtitle">
-          Projetos
-        </h3>
-
-        <p class="site-primitive-body site-primitive-supporting">
-          Consulte a área de Projetos para ver os projetos
-          atualmente disponíveis.
-        </p>
-
-        <a
-          class="site-primitive-action site-primitive-action--tertiary"
-          href="/projetos"
-        >
-          Explorar Projetos
-        </a>
-      </article>
-
-      <article class="site-primitive-datum-top">
-        <h3 class="site-primitive-subtitle">
-          Método Royal
-        </h3>
-
-        <p class="site-primitive-body site-primitive-supporting">
-          Acesse a seção Método Royal e continue explorando
-          os contextos de projeto.
-        </p>
-
-        <a
-          class="site-primitive-action site-primitive-action--tertiary"
-          href="/metodo-royal"
-        >
-          Conhecer Método Royal
-        </a>
-      </article>
-
-      <article class="site-primitive-datum-top">
-        <h3 class="site-primitive-subtitle">
-          Próximos passos
-        </h3>
-
-        <p class="site-primitive-body site-primitive-supporting">
-          Continue para Projetos, Método Royal ou para o início
-          de um projeto usando os caminhos desta página.
-        </p>
-      </article>
+  <section class="experience-section" aria-labelledby="practice-heading" data-about-block="practice">
+    <div class="experience-section__intro about-editorial-pair">
+      <p class="experience-kicker">Prática e identidade</p>
+      <h2 id="practice-heading">Engenharia, execução e integração.</h2>
+      <p>A Royal Splash trabalha na intersecção entre projeto, execução e relacionamento.</p>
+    </div>
+    <div class="experience-grid about-practice-grid">
+      {practice.map(([number, heading, body]) => (
+        <article class="experience-card">
+          <span>{number}</span>
+          <h3>{heading}</h3>
+          <p>{body}</p>
+        </article>
+      ))}
     </div>
   </section>
 
-  <section
-    class="trust-section trust-conversion site-primitive-section site-primitive-surface--dark"
-    aria-labelledby="trust-action-heading"
-    data-trust-stage="qualified-action"
-  >
-    <h2 id="trust-action-heading" class="site-primitive-section-title">
-      Próximo passo
-    </h2>
-
-    <p class="site-primitive-body site-primitive-reading">
-      Se estiver pronto para avançar, compartilhe informações
-      sobre o projeto e seus dados de contato.
-    </p>
-
-    <div class="trust-actions site-primitive-actions">
-      <a
-        class="trust-primary-action site-primitive-action site-primitive-action--primary"
-        href="/inicie-seu-projeto"
-        data-analytics-cta
-        data-analytics-component="royal_trust"
-        data-analytics-subject="project_start"
-        data-analytics-channel="site_form"
-      >
-        Inicie seu projeto
-      </a>
-
-      <a
-        class="site-primitive-action site-primitive-action--tertiary"
-        href="/contato"
-      >
-        Contato e canais auxiliares
-      </a>
+  <section class="experience-section about-identity" aria-labelledby="identity-heading" data-about-block="identity">
+    <div class="about-identity__content about-editorial-pair">
+      <p class="experience-kicker">Identidade</p>
+      <h2 id="identity-heading">A prática aparece no trabalho.</h2>
+      <div class="about-identity__support">
+        <p>Fotografia de projetos, capacidades técnicas concretas, documentação de escopo e contato direto mostram como a Royal atua hoje.</p>
+        <div class="experience-links">
+          <a class="site-primitive-action site-primitive-action--tertiary" href="/projetos">Ver Acervo</a>
+          <a class="site-primitive-action site-primitive-action--tertiary" href="/metodo-royal">Ver Método Royal</a>
+        </div>
+      </div>
     </div>
+  </section>
+
+  <section class="experience-conversion" data-about-block="conversion">
+    <p class="experience-kicker">Contato direto</p>
+    <h2>Pronto para conversar?</h2>
+    <p>Escolha o canal que funciona para você.</p>
+    <a class="site-primitive-action site-primitive-action--primary" href="https://wa.me/5521982590643" target="_blank" rel="noopener noreferrer">Conversar no WhatsApp</a>
   </section>
 </SiteLayout>
 
 <style>
-  .trust-eyebrow {
-    margin-block: 0 var(--site-space-4);
-  }
-
-  .trust-entry .site-primitive-page-title {
-    margin-block: 0 var(--site-space-5);
-  }
-
-  .trust-section .site-primitive-section-title {
-    margin-block: 0 var(--site-space-5);
-  }
-
-  .trust-grid .site-primitive-subtitle {
-    margin-block: 0 var(--site-space-3);
-  }
-
-  .trust-section > p {
-    margin-block: 0;
-  }
-
-  .trust-grid {
+  .about-context {
     display: grid;
-    gap: var(--site-space-6);
-    margin-block-start: var(--site-space-6);
+    gap: 2rem;
   }
 
-  .trust-grid article {
-    padding-block-start: var(--site-space-5);
+  .about-context h2 {
+    max-width: 14ch;
+    margin: 0.3rem 0 1.5rem;
+    font: 500 clamp(2.5rem, 5vw, 4rem) / 0.98 var(--site-font-display);
   }
 
-  .trust-grid article p {
-    margin-block: 0 var(--site-space-4);
+  .about-context > div:first-child > p:not(.experience-kicker) {
+    max-width: 38rem;
+    color: var(--site-color-text-secondary);
   }
 
-  .trust-conversion {
-    margin-block-end: var(--site-space-8);
-    padding: var(--site-space-7);
-    border-block-start: 3px solid var(--site-color-accent-on-dark);
+  .about-identity__support > p {
+    max-width: 38rem;
+    margin: 0;
+    color: var(--site-color-text-secondary);
+  }
+
+  .about-editorial-pair {
+    display: grid;
   }
 
   @media (min-width: 48rem) {
-    .trust-grid {
-      grid-template-columns:
-        repeat(3, minmax(0, 1fr));
+    .about-practice-grid > :last-child {
+      grid-column: 1 / -1;
     }
+
+    .about-context {
+      grid-template-columns: 0.85fr 1.15fr;
+      align-items: center;
+    }
+
+    .about-editorial-pair {
+      grid-template-columns: minmax(0, 1fr) minmax(18rem, 0.72fr);
+      column-gap: clamp(2rem, 6vw, 7rem);
+      row-gap: 0.75rem;
+      align-items: end;
+    }
+
+    .about-editorial-pair > .experience-kicker {
+      grid-column: 1 / -1;
+      margin-bottom: 0;
+    }
+
+    .about-editorial-pair > h2 {
+      grid-column: 1;
+    }
+
+    .about-identity__content > h2 {
+      margin-bottom: 0.35rem;
+    }
+
+    .about-editorial-pair > p,
+    .about-editorial-pair > .about-identity__support {
+      grid-column: 2;
+      padding-bottom: 0.35rem;
+    }
+
+    .about-identity__content > .about-identity__support {
+      padding-bottom: 0;
+    }
+
   }
 
-  @media (max-width: 30rem) {
-    .trust-conversion {
-      margin-block-end: var(--site-space-6);
-      padding-inline: var(--site-space-5);
+  @media (min-width: 64rem) {
+    .about-practice-grid {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
     }
+
+    .about-practice-grid > :last-child {
+      grid-column: auto;
+    }
+
   }
 </style>

@@ -1,108 +1,135 @@
 ---
-import '../styles/global.css';
-import GTMHead from '../components/GTMHead.astro';
-import GTMBody from '../components/GTMBody.astro';
-import Header from '../components/Header.astro';
-import Footer from '../components/Footer.astro';
-import BotaoWhatsapp from '../components/BotaoWhatsapp.astro';
-import { getCurrentSeoRobots } from '../seo/runtime.ts';
-
-const robots = getCurrentSeoRobots();
+import SiteHeader from "../components/site/SiteHeader.astro";
+import SiteLayout from "../layouts/SiteLayout.astro";
+import "../styles/complete-experience.css";
 ---
 
-<html lang="pt-BR">
-  <head>
-    <GTMHead />
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>Política de Privacidade — Royal Splash</title>
-    <meta name="description" content="Política de Privacidade da Royal Splash: como coletamos, usamos e protegemos seus dados pessoais." />
-    {robots && <meta name="robots" content={robots} />}
-    <link rel="icon" type="image/x-icon" href="/favicon.ico" />
-  </head>
-  <body class="bg-marca text-white pt-20">
-    <GTMBody />
+<SiteLayout title="Política de Privacidade — Royal Splash" description="Conheça como a Royal Splash trata informações no site e em seus fluxos de projeto e campanha." robots="noindex, nofollow" bodyClass="site-primitive-page experience-page privacy-page" visualMode="brand">
+  <SiteHeader slot="header" visualMode="brand" />
 
-    <Header />
+  <section class="experience-entry" aria-labelledby="privacy-title">
+    <p class="experience-kicker">Privacidade</p>
+    <h1 id="privacy-title">Política de Privacidade</h1>
+    <p class="experience-lead">Esta política explica, de forma clara, como a Royal Splash trata informações no site, no fluxo “Inicie seu Projeto” e nas superfícies de campanha.</p>
+    <p class="privacy-page__updated">Última atualização: setembro de 2026</p>
+  </section>
 
-    <main class="max-w-3xl mx-auto px-6 py-16">
-      <h1 class="text-3xl md:text-4xl font-semibold mb-2">Política de Privacidade</h1>
-      <p class="text-sm text-slate-500 mb-10">Última atualização: julho de 2026</p>
+  <div class="privacy-page__content" aria-label="Conteúdo da política de privacidade">
+    <section aria-labelledby="privacy-scope">
+      <p class="experience-kicker">01 / Escopo</p>
+      <h2 id="privacy-scope">Dois fluxos, práticas diferentes.</h2>
+      <p>Esta política se aplica ao site da Royal Splash, incluindo o fluxo principal “Inicie seu Projeto” e as páginas públicas de campanha. Os fluxos são descritos separadamente porque não funcionam da mesma maneira.</p>
+    </section>
 
-      <div class="space-y-8 text-slate-300 leading-relaxed">
-        <section>
-          <p>A Royal Splash (parte do MTM Group) respeita a sua privacidade e trata seus dados pessoais em conformidade com a Lei Geral de Proteção de Dados (Lei nº 13.709/2018 — LGPD). Esta política explica quais dados coletamos, por que coletamos, e quais são os seus direitos.</p>
-        </section>
+    <section aria-labelledby="privacy-main-flow">
+      <p class="experience-kicker">02 / Fluxo principal</p>
+      <h2 id="privacy-main-flow">O preenchimento permanece local.</h2>
+      <p>Ao preencher o formulário, você pode informar nome, tipo de projeto, escala (opcional), prazo (opcional) e uma questão ou contexto específico (opcional). Esse fluxo não solicita e-mail, telefone, cidade ou canal de contato preferido.</p>
+      <ol>
+        <li>As informações são preparadas localmente no navegador enquanto você preenche o formulário.</li>
+        <li>Ao escolher “Abrir WhatsApp com contexto”, uma mensagem é composta no navegador e o WhatsApp é aberto.</li>
+        <li>Você pode revisar, alterar ou não enviar a mensagem.</li>
+        <li>O envio ao WhatsApp só ocorre se você confirmar essa ação dentro do próprio serviço.</li>
+      </ol>
+      <p>De acordo com a verificação técnica do fluxo atual, os dados de início de projeto não são persistidos em banco de dados, CRM ou outra plataforma da Royal Splash antes dessa ação voluntária de encaminhamento.</p>
+    </section>
 
-        <section>
-          <h2 class="text-xl font-semibold text-white mb-3">1. Quais dados coletamos</h2>
-          <p class="mb-3">Quando você preenche um formulário em nosso site ou em uma de nossas páginas de campanha, coletamos:</p>
-          <ul class="list-disc list-inside space-y-1">
-            <li>Nome</li>
-            <li>Telefone / WhatsApp</li>
-            <li>E-mail (quando solicitado)</li>
-            <li>Tipo de projeto de interesse e, quando aplicável, uma descrição do que você procura</li>
-          </ul>
-          <p class="mt-3">Não coletamos dados sensíveis (saúde, origem racial, opinião política, etc.) e não solicitamos nenhuma informação além do necessário para entrar em contato e apresentar uma proposta.</p>
-        </section>
+    <section aria-labelledby="privacy-whatsapp">
+      <p class="experience-kicker">03 / WhatsApp</p>
+      <h2 id="privacy-whatsapp">Você decide quando compartilhar.</h2>
+      <p>Se você enviar a mensagem, o conteúdo passa a integrar a conversa no WhatsApp. A partir desse momento, aplicam-se também os <a href="https://www.whatsapp.com/legal/terms-of-service" target="_blank" rel="noopener noreferrer">Termos de Serviço do WhatsApp</a> e a <a href="https://www.whatsapp.com/privacy" target="_blank" rel="noopener noreferrer">Política de Privacidade do WhatsApp</a>. A Royal Splash não controla as práticas do WhatsApp ou da Meta após o envio.</p>
+    </section>
 
-        <section>
-          <h2 class="text-xl font-semibold text-white mb-3">2. Por que coletamos esses dados</h2>
-          <p class="mb-3">Usamos essas informações exclusivamente para:</p>
-          <ul class="list-disc list-inside space-y-1">
-            <li>Entrar em contato para entender sua necessidade e apresentar um orçamento</li>
-            <li>Agendar visitas técnicas, quando aplicável</li>
-            <li>Enviar comunicações sobre o andamento do seu atendimento</li>
-          </ul>
-          <p class="mt-3">Não vendemos, alugamos ou compartilhamos seus dados com terceiros para fins de marketing de outras empresas.</p>
-        </section>
+    <section aria-labelledby="privacy-campaigns">
+      <p class="experience-kicker">04 / Campanhas e legado</p>
+      <h2 id="privacy-campaigns">As páginas de campanha podem seguir outro caminho.</h2>
+      <p>As superfícies públicas <code>/lp/corporativo</code>, <code>/lp/fibra</code>, <code>/lp/lazer</code>, <code>/lp/piscinas</code>, <code>/lp/reforma</code>, <code>/lp/sauna</code>, <code>/lp/vazamento</code> e <code>/obrigado</code> são páginas de campanha ou legadas. Elas podem usar formulários incorporados do StarterFunnels e enviar dados de lead para serviços externos.</p>
+      <p>Esses formulários podem solicitar nome, e-mail, telefone, cidade, descrição do projeto e tipo de serviço. Conforme o fluxo utilizado, informações de lead podem ser encaminhadas ao StarterFunnels e também armazenadas pela Royal Splash no Supabase para comunicação e análise de campanha.</p>
+      <p>As rotas de campanha também podem utilizar <code>/api/lead</code> para recebimento de leads e <code>/api/whatsapp-click</code> para registrar a página de origem de um clique de WhatsApp. O registro de clique verificado contém a página de origem, sem os campos do formulário.</p>
+    </section>
 
-        <section>
-          <h2 class="text-xl font-semibold text-white mb-3">3. Com quem seus dados são compartilhados</h2>
-          <p class="mb-3">Para operar nossos formulários de contato, utilizamos os seguintes prestadores de serviço (processadores de dados), que recebem apenas o necessário para o funcionamento do formulário:</p>
-          <ul class="list-disc list-inside space-y-1">
-            <li><strong class="text-white">Formspree, Inc.</strong> — processa os envios do formulário de contato do site principal.</li>
-            <li><strong class="text-white">HighLevel (GoHighLevel)</strong> — processa os envios dos formulários das páginas de campanha (landing pages).</li>
-            <li><strong class="text-white">Google (Google Ads / Tag Manager)</strong> — mede o desempenho de nossas campanhas publicitárias.</li>
-          </ul>
-          <p class="mt-3">Todos atuam como <strong class="text-white">operadores</strong> dos dados (processam em nosso nome, sob nossas instruções), enquanto a Royal Splash é a <strong class="text-white">controladora</strong> dos dados.</p>
-        </section>
+    <section aria-labelledby="privacy-cookies">
+      <p class="experience-kicker">05 / Cookies</p>
+      <h2 id="privacy-cookies">Tecnologias similares variam por fluxo.</h2>
+      <p>Determinadas páginas de campanha utilizam um cookie de curta duração, com expiração aproximada de 300 segundos, relacionado ao fluxo da campanha. O fluxo principal “Inicie seu Projeto” não utiliza cookies não essenciais segundo a verificação do repositório.</p>
+    </section>
 
-        <section>
-          <h2 class="text-xl font-semibold text-white mb-3">4. Por quanto tempo guardamos seus dados</h2>
-          <p>Mantemos seus dados pelo tempo necessário para concluir o atendimento e cumprir obrigações legais ou contratuais. Você pode solicitar a exclusão a qualquer momento (veja o item 6).</p>
-        </section>
+    <section aria-labelledby="privacy-measurement">
+      <p class="experience-kicker">06 / Medição</p>
+      <h2 id="privacy-measurement">Medição comportamental com descrição cuidadosa.</h2>
+      <p>A Royal Splash utiliza Google Tag Manager e Google Ads em superfícies nas quais o contêiner está carregado. A configuração publicada inspecionada é o contêiner <code>GTM-TFW2WDRG</code>, versão 4, e mostrou Google tag, Conversion Linker e uma conversão associada à página de obrigado.</p>
+      <p>Os eventos comportamentais do fluxo “Inicie seu Projeto” podem indicar visualização, início do formulário, erros de validação e clique para continuar. O código do repositório não mostra envio explícito desses campos para o GTM, e a configuração publicada inspecionada não mostrou captura explícita de nome, e-mail, telefone ou conteúdo do formulário. Isso descreve a evidência disponível; não constitui garantia de que o GTM não possa receber dados nem de que não haja qualquer rastreamento.</p>
+      <p>A configuração de Consent Mode e o comportamento de consentimento das tags não foram verificados nesta auditoria.</p>
+    </section>
 
-        <section>
-          <h2 class="text-xl font-semibold text-white mb-3">5. Cookies</h2>
-          <p>Nosso site pode usar cookies técnicos para o funcionamento de formulários e, quando aplicável, ferramentas de analytics (como Google Tag Manager) para entender o desempenho de nossas páginas. Você pode gerenciar cookies nas configurações do seu navegador.</p>
-        </section>
+    <section aria-labelledby="privacy-purposes">
+      <p class="experience-kicker">07 / Finalidades</p>
+      <h2 id="privacy-purposes">Para que as informações podem ser usadas.</h2>
+      <ul>
+        <li>Comunicar-se com você sobre o projeto solicitado.</li>
+        <li>Realizar análise agregada de campanha, como volume e origem.</li>
+        <li>Medir navegação e comportamento nas superfícies que utilizam medição.</li>
+        <li>Cumprir obrigações legais e exercer direitos.</li>
+      </ul>
+      <p>Não há, na formação factual utilizada para esta política, indicação de venda de dados a terceiros ou de decisão exclusivamente automatizada sobre visitantes.</p>
+    </section>
 
-        <section>
-          <h2 class="text-xl font-semibold text-white mb-3">6. Seus direitos como titular dos dados</h2>
-          <p class="mb-3">Conforme a LGPD, você tem direito a:</p>
-          <ul class="list-disc list-inside space-y-1">
-            <li>Confirmar a existência de tratamento dos seus dados</li>
-            <li>Acessar os dados que temos sobre você</li>
-            <li>Corrigir dados incompletos, inexatos ou desatualizados</li>
-            <li>Solicitar a exclusão dos seus dados</li>
-            <li>Revogar o consentimento a qualquer momento</li>
-            <li>Solicitar a portabilidade dos dados a outro fornecedor</li>
-          </ul>
-          <p class="mt-3">Para exercer qualquer um desses direitos, entre em contato pelo e-mail <a href="mailto:contato@royalsplash.com.br" class="text-piscina hover:opacity-80 underline underline-offset-2">contato@royalsplash.com.br</a>.</p>
-        </section>
+    <section aria-labelledby="privacy-retention">
+      <p class="experience-kicker">08 / Retenção</p>
+      <h2 id="privacy-retention">O prazo depende do contexto.</h2>
+      <p>As informações do fluxo principal não são retidas pela Royal Splash antes do encaminhamento voluntário ao WhatsApp. Para leads de campanha, a Royal Splash mantém as informações enquanto forem necessárias para comunicação, análise de campanha e cumprimento de obrigações legais. Esta política não informa um prazo fixo de retenção ou exclusão.</p>
+      <p>As informações enviadas ao WhatsApp ficam sujeitas às práticas de retenção do WhatsApp e da Meta.</p>
+    </section>
 
-        <section>
-  <h2 class="text-xl font-semibold text-white mb-3">7. Contato</h2>
-  <p>
-    E-mail: <a href="mailto:contato@royalsplash.com.br" class="text-piscina hover:opacity-80 underline underline-offset-2">contato@royalsplash.com.br</a><br />
-    Telefone/WhatsApp: <a href="https://wa.me/5521982590643" target="_blank" rel="noopener" class="text-piscina hover:opacity-80 underline underline-offset-2">(21) 98259-0643</a>
-  </p>
-</section>
-      </div>
-    </main>
+    <section aria-labelledby="privacy-security">
+      <p class="experience-kicker">09 / Segurança</p>
+      <h2 id="privacy-security">Medidas proporcionais ao tratamento.</h2>
+      <p>O acesso aos bancos de dados de produção ocorre por credenciais de ambiente e as credenciais de produção são separadas de ambientes não produtivos. Nenhum sistema oferece segurança absoluta. Se você suspeitar de um incidente, entre em contato pelo <a href="mailto:privacidade@royalsplash.com.br">canal de privacidade</a>.</p>
+    </section>
 
-    <Footer />
-    <BotaoWhatsapp />
-  </body>
-</html>
+    <section aria-labelledby="privacy-rights">
+      <p class="experience-kicker">10 / Seus direitos</p>
+      <h2 id="privacy-rights">Você pode fazer uma solicitação.</h2>
+      <p>Nos termos da legislação aplicável, incluindo a LGPD, você pode solicitar, conforme o caso, acesso aos seus dados pessoais, correção de dados imprecisos, exclusão em determinadas circunstâncias e informações sobre o tratamento realizado.</p>
+      <p>Para exercer seus direitos, envie um e-mail para <a href="mailto:privacidade@royalsplash.com.br">privacidade@royalsplash.com.br</a> com detalhes da solicitação. Alguns dados podem ser mantidos por obrigação legal ou para concluir operações já iniciadas.</p>
+    </section>
+
+    <section aria-labelledby="privacy-identity">
+      <p class="experience-kicker">11 / Identificação e contato</p>
+      <h2 id="privacy-identity">Fale com a Royal Splash.</h2>
+      <dl>
+        <div><dt>Razão social</dt><dd>ROYAL SPLASH PROJETOS E AMBIENTES LTDA.</dd></div>
+        <div><dt>Nome fantasia</dt><dd>ROYAL SPLASH</dd></div>
+        <div><dt>Contato de privacidade</dt><dd><a href="mailto:privacidade@royalsplash.com.br">privacidade@royalsplash.com.br</a></dd></div>
+      </dl>
+      <p>Para alterações ou dúvidas sobre esta política, utilize exclusivamente o e-mail de privacidade. A identificação cadastral complementar poderá ser atualizada nesta página quando estiver disponível.</p>
+    </section>
+
+    <section aria-labelledby="privacy-changes">
+      <p class="experience-kicker">12 / Atualizações</p>
+      <h2 id="privacy-changes">Esta política pode mudar.</h2>
+      <p>Esta política pode ser atualizada periodicamente para refletir mudanças no site, nos fluxos ou nas obrigações aplicáveis. Alterações relevantes poderão ser comunicadas por aviso no site ou por contato direto.</p>
+      <p>Versão atual: 2026-09-01.</p>
+      <a class="site-primitive-action site-primitive-action--primary" href="/inicie-seu-projeto">Voltar para Inicie seu Projeto</a>
+    </section>
+  </div>
+</SiteLayout>
+
+<style>
+  .privacy-page__updated { margin: 1.25rem 0 0; color: var(--site-color-text-secondary); font: 600 .75rem/1.4 var(--site-font-ui); letter-spacing: .08em; text-transform: uppercase; }
+  .privacy-page__content { width: min(100% - 2 * var(--site-layout-gutter), 52rem); margin-inline: auto; padding-bottom: clamp(5rem, 10vw, 9rem); }
+  .privacy-page__content section { padding-block: clamp(2.5rem, 6vw, 4.5rem); border-top: 1px solid var(--site-color-divider); }
+  .privacy-page__content h2 { max-width: 19ch; margin: 0 0 1.25rem; font: 500 clamp(2rem, 4.5vw, 3.6rem)/1 var(--site-font-display); }
+  .privacy-page__content p:not(.experience-kicker), .privacy-page__content li { max-width: 44rem; color: var(--site-color-text-secondary); }
+  .privacy-page__content p + p { margin-top: 1rem; }
+  .privacy-page__content ol, .privacy-page__content ul { display: grid; gap: .75rem; margin: 1.5rem 0; padding-left: 1.4rem; }
+  .privacy-page__content li::marker { color: #6f5500; font-weight: 700; }
+  .privacy-page__content a:not(.site-primitive-action) { color: inherit; text-underline-offset: .22em; }
+  .privacy-page__content code { padding: .1em .25em; background: var(--site-color-surface); color: var(--site-color-text-primary); font: .9em var(--site-font-ui); overflow-wrap: anywhere; }
+  .privacy-page__content dl { display: grid; gap: 1rem; margin: 1.5rem 0; }
+  .privacy-page__content dl div { padding-top: 1rem; border-top: 1px solid var(--site-color-divider); }
+  .privacy-page__content dt { color: var(--site-color-text-secondary); font: 600 .72rem/1.3 var(--site-font-ui); letter-spacing: .1em; text-transform: uppercase; }
+  .privacy-page__content dd { margin: .35rem 0 0; font: 500 clamp(1.35rem, 2.5vw, 2rem)/1.15 var(--site-font-display); }
+  .privacy-page__content .site-primitive-action { margin-top: 1rem; }
+  @media (max-width: 35rem) { .privacy-page__content h2 { max-width: none; } .privacy-page__content dd { font-size: 1.45rem; } }
+</style>

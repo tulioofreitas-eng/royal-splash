@@ -4,6 +4,7 @@ import MainContent from "../components/runtime/MainContent.astro";
 import SemanticAnalytics from "../components/runtime/SemanticAnalytics.astro";
 import SkipLink from "../components/runtime/SkipLink.astro";
 import SiteFooter from "../components/site/SiteFooter.astro";
+import PersistentWhatsApp from "../components/site/PersistentWhatsApp.astro";
 import { getCurrentSeoRobots } from "../seo/runtime.ts";
 import "../styles/site-system.css";
 
@@ -55,6 +56,9 @@ const effectiveRobots =
     <slot name="footer">
       <SiteFooter />
     </slot>
+    <aside aria-label="Contato rápido por WhatsApp">
+      <PersistentWhatsApp />
+    </aside>
     <ConversionOrigin />
     <SemanticAnalytics />
     <slot name="body-end" />

@@ -76,12 +76,13 @@ test("local development remains mock-only", () => {
   assert.equal(contract.allowProductionAnalytics, false);
 });
 
-test("local production build without Vercel classification fails closed", () => {
-  assert.throws(
-    () =>
-      createEnvironmentContractFromRuntimeEnv({
-        MODE: "production",
-      }),
-    /could not be classified safely/,
-  );
+test("local production build without Vercel authorization remains preview-safe", () => {
+  const contract = createEnvironmentContractFromRuntimeEnv({
+    MODE: "production",
+  });
+
+  assert.equal(contract.runtime, "preview");
+  assert.equal(contract.isProduction, false);
+  assert.equal(contract.allowProductionAnalytics, false);
+  assert.equal(contract.leadProvider, "mock");
 });

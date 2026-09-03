@@ -86,10 +86,9 @@ test.describe(
       await page
         .getByRole("main")
         .getByRole("link", {
-          name: "Inicie seu projeto",
+          name: "Fale com a Royal",
           exact: true,
         })
-        .first()
         .click();
 
       const events =
@@ -105,12 +104,53 @@ test.describe(
           route: "/",
           templateRef: "site",
           componentRef:
-            "home_entry",
+            "home_final_project_form",
         },
         subjectRef:
           "project_start",
         channelRef:
           "site_form",
+      });
+    });
+
+    test("records the rerouted SiteHeader CTA with the Royal site_contact channel", async ({
+      page,
+    }) => {
+      await page.goto("/sobre");
+
+      await page.evaluate(() => {
+        document.addEventListener(
+          "click",
+          (event) => {
+            if (
+              event.target instanceof Element &&
+              event.target.closest("[data-analytics-cta]")
+            ) {
+              event.preventDefault();
+            }
+          },
+          { capture: true, once: true },
+        );
+      });
+
+      await page
+        .getByRole("navigation", { name: "Navegação principal" })
+        .getByRole("link", { name: "Inicie seu projeto", exact: true })
+        .click();
+
+      const events = await readEvents(page);
+
+      expect(events.at(-1)).toEqual({
+        schemaVersion: "site-analytics.v1",
+        eventName: "cta_activated",
+        context: {
+          pageRef: "/sobre",
+          route: "/sobre",
+          templateRef: "site",
+          componentRef: "site_header",
+        },
+        subjectRef: "project_start",
+        channelRef: "site_contact",
       });
     });
 
@@ -142,8 +182,7 @@ test.describe(
       await page
         .getByRole("link", {
           name:
-            "Inicie seu projeto residencial",
-          exact: true,
+            "WhatsApp para projeto Residencial",
         })
         .first()
         .click();
@@ -164,69 +203,48 @@ test.describe(
           templateRef:
             "site",
           componentRef:
-            "segment_context",
+            "residencial_whatsapp",
         },
         subjectRef:
-          "residencial",
+          "project_start",
         channelRef:
-          "site_form",
+          "whatsapp",
       });
     });
 
-    test("records lead_submitted after successful mock ingress without PII", async ({
-      page,
-    }) => {
-      await page.goto(
-        "/inicie-seu-projeto?context=residencial",
-      );
-
-      await page.getByLabel("Cidade", { exact: true }).fill(
-        "Cidade Analytics",
-      );
-
-      await page.getByRole(
-        "button",
-        {
-          name: "Continuar",
-        },
-      ).click();
-
-      await page.getByLabel(
-        "Descreva brevemente o que você precisa",
-      ).fill(
+    async function fillValidProjectStartForm(page: import("@playwright/test").Page): Promise<void> {
+      await page.locator("#project-name").fill("Pessoa Analytics");
+      await page.locator("#project-type").selectOption("residencial");
+      await page.locator("#project-city").fill("Cidade Analytics");
+      await page.locator("#project-question").fill(
         "Conteúdo sensível de teste que não pode entrar em analytics.",
       );
+      await page.locator("#project-email").fill("analytics@example.com");
+      await page.locator("#project-phone").fill("11987654321");
+      await page.locator("#project-consent").check();
+    }
 
-      await page.getByRole(
-        "button",
-        {
-          name: "Continuar",
-        },
-      ).click();
+    test("records lead_submitted after successful mock ingress without PII, exactly once, with WhatsApp continuation and no duplicate Atlas submission", async ({
+      page,
+    }) => {
+      const siteLeadRequests: string[] = [];
+      page.on("request", (request) => {
+        if (request.url().includes("/api/site-lead") && request.method() === "POST") {
+          siteLeadRequests.push(request.url());
+        }
+      });
 
-      await page.getByLabel(
-        "Nome",
-      ).fill(
-        "Pessoa Analytics",
+      await page.goto(
+        "/inicie-seu-projeto",
       );
 
-      await page.getByLabel(
-        "E-mail",
-      ).fill(
-        "analytics@example.com",
-      );
+      await fillValidProjectStartForm(page);
 
-      await page.getByLabel(
-        "Telefone",
-      ).fill(
-        "11987654321",
+      const requestPromise = page.waitForRequest(
+        (request) =>
+          request.url().includes("/api/site-lead") &&
+          request.method() === "POST",
       );
-
-      await page
-        .getByLabel(
-          /Concordo com o envio destas informações/,
-        )
-        .check();
 
       await page.getByRole(
         "button",
@@ -236,21 +254,29 @@ test.describe(
         },
       ).click();
 
+      await requestPromise;
+
       await expect(
-        page.getByRole("status"),
+        page.locator("[data-whatsapp-fallback]"),
       ).toBeVisible();
+
+      // exactly one Atlas submission — no duplicate lead ingress
+      expect(siteLeadRequests).toHaveLength(1);
 
       const events =
         await readEvents(page);
 
-      const leadEvent =
-        events.find(
+      const leadEvents =
+        events.filter(
           (event) =>
             event.eventName ===
             "lead_submitted",
         );
 
-      expect(leadEvent).toEqual({
+      // exactly one semantic event for the one successful submission
+      expect(leadEvents).toHaveLength(1);
+
+      expect(leadEvents[0]).toEqual({
         schemaVersion:
           "site-analytics.v1",
         eventName:
@@ -263,7 +289,7 @@ test.describe(
           templateRef:
             "site",
           componentRef:
-            "structured_intake",
+            "project_start_form",
         },
         subjectRef:
           "residencial",
@@ -293,6 +319,93 @@ test.describe(
       expect(serialized).not.toContain(
         "Conteúdo sensível de teste",
       );
+
+      // WhatsApp continuation semantics remain unchanged: opt-in button
+      // opens the composed WhatsApp handoff, independent of analytics.
+      await page.evaluate(() => {
+        const browserWindow = window as Window & { __openedUrl?: string };
+        window.open = ((url?: string | URL) => {
+          browserWindow.__openedUrl = String(url ?? "");
+          return window;
+        }) as typeof window.open;
+      });
+
+      await page.locator("[data-whatsapp-fallback] [data-open-whatsapp]").click();
+
+      const openedUrl = await page.evaluate(
+        () => (window as Window & { __openedUrl?: string }).__openedUrl,
+      );
+
+      expect(openedUrl).toContain("https://wa.me/5521982590643?text=");
+    });
+
+    test("does not dispatch lead_submitted on client-side validation failure", async ({
+      page,
+    }) => {
+      await page.goto(
+        "/inicie-seu-projeto",
+      );
+
+      // Submit with every required field left empty.
+      await page.getByRole(
+        "button",
+        {
+          name:
+            "Enviar contexto do projeto",
+        },
+      ).click();
+
+      await expect(
+        page.locator("[data-error-summary]"),
+      ).toBeVisible();
+
+      const events = await readEvents(page);
+      expect(
+        events.some((event) => event.eventName === "lead_submitted"),
+      ).toBe(false);
+    });
+
+    test("does not dispatch lead_submitted when the Atlas submission fails", async ({
+      page,
+    }) => {
+      await page.route(
+        "**/api/site-lead",
+        (route) => route.fulfill({ status: 500, contentType: "application/json", body: "{}" }),
+      );
+
+      await page.goto(
+        "/inicie-seu-projeto",
+      );
+
+      await fillValidProjectStartForm(page);
+
+      const requestPromise = page.waitForRequest(
+        (request) =>
+          request.url().includes("/api/site-lead") &&
+          request.method() === "POST",
+      );
+
+      await page.getByRole(
+        "button",
+        {
+          name:
+            "Enviar contexto do projeto",
+        },
+      ).click();
+
+      await requestPromise;
+
+      await expect(
+        page.locator("[data-error-summary]"),
+      ).toBeVisible();
+      await expect(
+        page.locator("[data-whatsapp-fallback]"),
+      ).toBeHidden();
+
+      const events = await readEvents(page);
+      expect(
+        events.some((event) => event.eventName === "lead_submitted"),
+      ).toBe(false);
     });
   },
 );

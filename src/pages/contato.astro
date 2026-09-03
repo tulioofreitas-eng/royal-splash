@@ -1,62 +1,11 @@
 ---
-import '../styles/global.css';
-import Header from '../components/Header.astro';
-import Footer from '../components/Footer.astro';
-import BotaoWhatsapp from '../components/BotaoWhatsapp.astro';
-import GTMHead from '../components/GTMHead.astro';
-import GTMBody from '../components/GTMBody.astro';
-import { getCurrentSeoRobots } from '../seo/runtime.ts';
-
-const robots = getCurrentSeoRobots();
+import SiteHeader from "../components/site/SiteHeader.astro"; import SiteLayout from "../layouts/SiteLayout.astro"; import "../styles/complete-experience.css";
+const channels=[{n:"01",name:"WhatsApp",note:"Conversa direta com a equipe",href:"https://wa.me/5521982590643",channel:"whatsapp",external:true},{n:"02",name:"Telefone",note:"(21) 98259-0643",href:"tel:+5521982590643",channel:"phone"},{n:"03",name:"E-mail",note:"contato@royalsplash.com.br",href:"mailto:contato@royalsplash.com.br",channel:"email"},{n:"04",name:"Instagram",note:"@royalsplashoficial",href:"https://instagram.com/royalsplashoficial",channel:"instagram",external:true}];
 ---
-
-<html lang="pt-BR">
-  <head>
-    <GTMHead />
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>Contato — Royal Splash</title>
-    <meta name="description" content="Fale com a Royal Splash pelos canais de contato ou acesse o formulário estruturado para iniciar um projeto." />
-    {robots && <meta name="robots" content={robots} />}
-  <link rel="icon" type="image/x-icon" href="/favicon.ico" />
-<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-<link rel="icon" type="image/png" sizes="96x96" href="/favicon-96x96.png" />
-<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
-<link rel="manifest" href="/site.webmanifest" />
-  </head>
-  <body class="bg-marca text-white pt-20">
-    <GTMBody />
-
-    <Header />
-    <main id="main-content" tabindex="-1">
-
-    <section class="pt-16 pb-16 px-6 text-center">
-      <span class="text-sm uppercase tracking-widest text-piscina">Fale com a Royal Splash</span>
-      <h1 class="text-4xl md:text-6xl font-semibold mt-3 mb-4">Contato</h1>
-      <p class="text-lg text-slate-400 max-w-2xl mx-auto">
-        Para iniciar um projeto, use o formulário estruturado.
-      </p>
-      <a href="/inicie-seu-projeto" class="inline-block bg-piscina hover:opacity-90 text-marca font-medium px-8 py-4 rounded-full transition-opacity mt-8 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-white">
-        Iniciar um projeto
-      </a>
-    </section>
-
-    <section class="pb-24 px-6 text-center" aria-labelledby="contact-channels-heading">
-      <h2 id="contact-channels-heading" class="text-2xl font-semibold mb-6">Outros canais de contato</h2>
-      <div class="flex flex-col sm:flex-row gap-4 justify-center max-w-xl mx-auto">
-        <a href="https://instagram.com/royalsplashoficial" target="_blank" class="border border-white/30 hover:border-white/60 text-white font-medium px-8 py-4 rounded-full transition-colors focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-white">Instagram</a>
-        <a href="https://wa.me/5521982590643" target="_blank" class="bg-piscina hover:opacity-90 text-marca font-medium px-8 py-4 rounded-full transition-opacity focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-white">WhatsApp</a>
-      </div>
-      <p class="text-slate-400 mt-8 text-sm">
-        <a href="tel:+5521982590643" class="hover:text-white focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-white">(21) 98259-0643</a>
-        <span aria-hidden="true"> · </span>
-        <a href="mailto:contato@royalsplash.com.br" class="hover:text-white focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-white">contato@royalsplash.com.br</a>
-      </p>
-    </section>
-
-    </main>
-    <Footer />
-    <BotaoWhatsapp />
-
-  </body>
-</html>
+<SiteLayout title="Contato — Royal Splash" robots="noindex, nofollow" bodyClass="site-primitive-page experience-page experience-dark" visualMode="brand"><SiteHeader slot="header" visualMode="brand" />
+  <section class="experience-entry" aria-labelledby="contact-heading"><p class="experience-kicker">Contato</p><h1 id="contact-heading">Todos os canais diretos da Royal Splash.</h1><p class="experience-lead">Use o WhatsApp para uma conversa imediata ou escolha o canal que funciona melhor para você.</p></section>
+  <section class="contact-prepare" aria-labelledby="prepare-contact-heading"><p class="experience-kicker">Antes de conversar?</p><h2 id="prepare-contact-heading">Prepare o contexto do projeto.</h2><p>O formulário organiza tipo, escala, prazo e questão principal antes de abrir o WhatsApp. Ele é opcional.</p><a class="site-primitive-action site-primitive-action--primary" href="/inicie-seu-projeto">Ir para Inicie seu Projeto</a></section>
+  <section class="contact-channels" aria-labelledby="channels-heading"><h2 id="channels-heading">Canais diretos</h2>{channels.map(item => <a href={item.href} target={item.external?"_blank":undefined} rel={item.external?"noopener noreferrer":undefined} aria-label={`${item.name}: ${item.note}${item.external?" (abre em nova janela)":""}`} data-analytics-cta data-analytics-component={`contact_${item.channel}`} data-analytics-subject="initial_contact" data-analytics-channel={item.channel}><span>{item.n}</span><strong>{item.name}</strong><small>{item.note}</small><b aria-hidden="true">{item.external?"↗":"→"}</b></a>)}</section>
+  <aside class="contact-privacy"><p>Você escolhe o canal e fala diretamente com a Royal Splash.</p><a href="/politica-de-privacidade">Política de Privacidade</a></aside>
+</SiteLayout>
+<style>.contact-channels,.contact-prepare,.contact-privacy{width:min(100% - 2 * var(--site-layout-gutter),var(--site-layout-content-max));margin:auto}.experience-entry{padding-bottom:clamp(2rem,4vw,3rem)}.experience-entry h1,.contact-channels h2,.contact-prepare h2{color:#fff}.contact-prepare{padding:clamp(2.5rem,5vw,4rem) 0;border-top:1px solid rgba(255,255,255,.2)}.contact-channels{padding:clamp(2.5rem,5vw,4rem) 0 clamp(3rem,6vw,5rem);border-top:1px solid rgba(255,255,255,.2)}.contact-channels h2,.contact-prepare h2{margin:0 0 1.5rem;font:500 clamp(2.3rem,5vw,4rem) var(--site-font-display)}.contact-channels>a{display:grid;grid-template-columns:3rem 1fr auto;gap:.5rem 1rem;align-items:center;padding:1.5rem 0;border-top:1px solid rgba(255,255,255,.2);color:#fff;text-decoration:none}.contact-channels>a:last-child{border-bottom:1px solid rgba(255,255,255,.2)}.contact-channels>a:first-of-type{color:#d9b746}.contact-channels span{grid-row:1/3;color:rgba(255,255,255,.6);font:600 .7rem var(--site-font-ui)}.contact-channels strong{font:500 clamp(1.5rem,3vw,2.2rem) var(--site-font-display)}.contact-channels small{grid-column:2;color:rgba(255,255,255,.72)}.contact-channels b{grid-column:3;grid-row:1/3;font-size:1.4rem}.contact-channels>a:focus-visible{outline:3px solid #d9b746;outline-offset:5px}.contact-prepare p:not(.experience-kicker){max-width:38rem;color:rgba(255,255,255,.72)}.contact-privacy{padding:2rem 0 5rem;border-top:1px solid rgba(255,255,255,.2)}.contact-privacy a{color:#fff}</style>

@@ -6,7 +6,7 @@ import GTMBody from '../../components/GTMBody.astro';
 import LPHeader from '../../components/LPHeader.astro';
 import LPFooter from '../../components/LPFooter.astro';
 import BotaoWhatsapp from '../../components/BotaoWhatsapp.astro';
-import FormularioGHL from '../../components/FormularioGHL.astro';
+import SaunaWhatsAppForm from '../../components/lp/SaunaWhatsAppForm.astro';
 import Icon from '../../components/Icon.astro';
 import GaleriaZoom from '../../components/GaleriaZoom.astro';
 import { Image } from 'astro:assets';
@@ -57,22 +57,69 @@ import saunaEspacoIntegrado from '../../assets/sauna-espaco-integrado.jpg';
     </div>
   </section>
 
-  <section class="sauna-services site-primitive-surface--soft site-primitive-datum-bottom">
+  <section class="sauna-services site-primitive-surface--muted site-primitive-datum-bottom">
     <div class="site-primitive-section">
       <h2 class="site-primitive-section-title">Nossos Serviços</h2>
       <div class="sauna-services__list">
-        <article class="sauna-services__entry"><Icon name="sun" class="sauna-services__icon" /><div><h3 class="site-primitive-subtitle">Sauna Seca e a Vapor</h3><p class="site-primitive-body site-primitive-supporting">Projetos personalizados com sistemas de aquecimento.</p></div></article>
-        <article class="sauna-services__entry"><Icon name="droplet" class="sauna-services__icon" /><div><h3 class="site-primitive-subtitle">Spa e Ofurô</h3><p class="site-primitive-body site-primitive-supporting">Espaços completos de relaxamento, integrados à área de lazer.</p></div></article>
+        <article class="sauna-service">
+          <Icon name="sun" class="sauna-service__icon" />
+          <div>
+            <h3 class="site-primitive-subtitle">Sauna Seca e a Vapor</h3>
+            <p class="site-primitive-body site-primitive-supporting">Projetos personalizados com sistemas de aquecimento.</p>
+          </div>
+        </article>
+        <article class="sauna-service">
+          <Icon name="droplet" class="sauna-service__icon" />
+          <div>
+            <h3 class="site-primitive-subtitle">Spa e Ofurô</h3>
+            <p class="site-primitive-body site-primitive-supporting">Espaços completos de relaxamento, integrados à área de lazer.</p>
+          </div>
+        </article>
       </div>
     </div>
   </section>
 
-  <section class="sauna-trust site-primitive-surface--muted site-primitive-datum-bottom">
-    <div class="site-primitive-section sauna-trust__layout">
+  <section class="sauna-trust site-primitive-surface--light site-primitive-datum-bottom">
+    <div class="site-primitive-section">
       <h2 class="site-primitive-section-title">Por que a Royal Splash?</h2>
       <div class="sauna-trust__list">
-        <article><Icon name="users" class="sauna-trust__icon" /><h3 class="site-primitive-subtitle">Atendimento Premium</h3><p class="site-primitive-body site-primitive-supporting">Consultoria exclusiva do primeiro contato à entrega.</p></article>
-        <article><Icon name="cpu" class="sauna-trust__icon" /><h3 class="site-primitive-subtitle">Tecnologia de Ponta</h3><p class="site-primitive-body site-primitive-supporting">Sistemas de aquecimento e automação modernos.</p></article>
+        <article class="sauna-trust__entry">
+          <Icon name="users" class="sauna-trust__icon" />
+          <div>
+            <h3 class="site-primitive-subtitle">Atendimento Premium</h3>
+            <p class="site-primitive-body site-primitive-supporting">Consultoria exclusiva do primeiro contato à entrega.</p>
+          </div>
+        </article>
+        <article class="sauna-trust__entry">
+          <Icon name="cpu" class="sauna-trust__icon" />
+          <div>
+            <h3 class="site-primitive-subtitle">Tecnologia de Ponta</h3>
+            <p class="site-primitive-body site-primitive-supporting">Sistemas de aquecimento e automação modernos.</p>
+          </div>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <section class="sauna-faq site-primitive-surface--soft site-primitive-datum-bottom">
+    <div class="site-primitive-section sauna-faq__layout">
+      <h2 class="site-primitive-display">Perguntas frequentes</h2>
+      <div class="sauna-faq__list">
+        {[
+          { pergunta: 'Qual a diferença entre sauna seca e a vapor?', resposta: 'A sauna seca utiliza calor gerado por pedras ou resistências, oferecendo um ambiente de baixa umidade. A sauna a vapor funciona com geradores dedicados, proporcionando alta umidade e calor envolvente.' },
+          { pergunta: 'É possível integrar a sauna ou spa a um ambiente existente?', resposta: 'Sim. Avaliamos a estrutura atual da sua área de lazer ou residência para adequar equipamentos e revestimentos de forma harmônica.' },
+          { pergunta: 'Quais tipos de acabamentos são utilizados?', resposta: 'Trabalhamos com materiais nobres como madeiras selecionadas para saunas secas e pedras ou pastilhas premium para saunas a vapor e spas.' },
+          { pergunta: 'O projeto inclui os sistemas de aquecimento?', resposta: 'Sim. Projetamos a infraestrutura completa, especificando e instalando os geradores de vapor ou aquecedores adequados para o volume do seu ambiente.' },
+          { pergunta: 'Como solicitar um orçamento ou avaliação?', resposta: 'Preencha o formulário desta página com o contexto do seu espaço. Nossa equipe iniciará uma conversa estruturada pelo WhatsApp para orientar os próximos passos.' },
+        ].map((item) => (
+          <details class="sauna-faq__item">
+            <summary class="site-primitive-subtitle">
+              {item.pergunta}
+              <span aria-hidden="true">+</span>
+            </summary>
+            <p class="site-primitive-body site-primitive-supporting">{item.resposta}</p>
+          </details>
+        ))}
       </div>
     </div>
   </section>
@@ -83,7 +130,7 @@ import saunaEspacoIntegrado from '../../assets/sauna-espaco-integrado.jpg';
 
   <section id="orcamento" class="site-primitive-section sauna-form">
     <div class="site-primitive-reading sauna-form__heading"><h2 class="site-primitive-section-title">Solicite seu Orçamento</h2><p class="site-primitive-body site-primitive-supporting">Preencha os dados abaixo e nossa equipe entrará em contato para entender seu projeto em detalhes.</p></div>
-    <FormularioGHL />
+    <SaunaWhatsAppForm />
   </section>
 
   <LPFooter slot="footer" visualMode="brand" />
@@ -91,7 +138,16 @@ import saunaEspacoIntegrado from '../../assets/sauna-espaco-integrado.jpg';
 </LandingLayout>
 
 <style>
-  .sauna-hero { position: relative; display: grid; min-height: max(40rem, 88svh); isolation: isolate; overflow: hidden; }
+.sauna-faq__layout { display: grid; grid-template-columns: minmax(14rem, 0.7fr) minmax(0, 1.3fr); align-items: center; gap: var(--site-space-8); }
+  .sauna-faq h2 { max-width: 12ch; margin-block-end: 0; }
+  .sauna-faq__list { border-block-start: 1px solid var(--site-color-divider); }
+  .sauna-faq__item { border-block-end: 1px solid var(--site-color-divider); }
+  .sauna-faq__item summary { display: flex; justify-content: space-between; gap: var(--site-space-4); padding-block: var(--site-space-5); cursor: pointer; list-style: none; }
+  .sauna-faq__item summary::-webkit-details-marker { display: none; }
+  .sauna-faq__item summary span { color: var(--site-color-text-primary); transition: transform 160ms ease; }
+  .sauna-faq__item[open] summary span { transform: rotate(45deg); }
+  .sauna-faq__item p { margin: 0; padding: 0 0 var(--site-space-5); }
+  .sauna-hero { position: relative; display: grid; min-height: max(40rem, 85svh); isolation: isolate; overflow: hidden; }
   .sauna-hero__image, .sauna-hero__veil { position: absolute; inset: 0; width: 100%; height: 100%; }
   .sauna-hero__image { z-index: -2; object-fit: cover; object-position: center; }
   .sauna-hero__veil { z-index: -1; background: color-mix(in srgb, var(--site-color-surface-dark) 72%, transparent); }
@@ -105,35 +161,34 @@ import saunaEspacoIntegrado from '../../assets/sauna-espaco-integrado.jpg';
   .sauna-introduction__qualities li { display: flex; gap: var(--site-space-3); align-items: center; }
   :global(.sauna-introduction__icon) { width: 1.25rem; height: 1.25rem; flex: none; }
   .sauna-gallery { min-width: 0; }
-  .sauna-services h2, .sauna-trust h2 { margin-block-start: 0; }
-  .sauna-services__list { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); margin-block-start: var(--site-space-7); border-block-start: 1px solid var(--site-color-divider); }
-  .sauna-services__entry { display: grid; grid-template-columns: auto minmax(0, 1fr); gap: var(--site-space-4); padding: var(--site-space-6); border-block-end: 1px solid var(--site-color-divider); }
-  .sauna-services__entry + .sauna-services__entry { border-inline-start: 1px solid var(--site-color-divider); }
-  .sauna-services__entry h3, .sauna-services__entry p { margin-block-start: 0; }
-  .sauna-services__entry p { margin-block-end: 0; }
-  :global(.sauna-services__icon), :global(.sauna-trust__icon) { width: 1.5rem; height: 1.5rem; }
-  .sauna-trust__layout { display: grid; grid-template-columns: minmax(14rem, 0.65fr) minmax(0, 1.35fr); gap: var(--site-space-8); }
-  .sauna-trust__list { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--site-space-6); }
-  .sauna-trust__list article { padding-block-start: var(--site-space-4); border-block-start: 1px solid var(--site-color-divider); }
-  .sauna-trust__list h3 { margin: var(--site-space-4) 0 var(--site-space-2); }
-  .sauna-trust__list p { margin: 0; color: var(--site-color-text-primary); }
-  .sauna-cta .site-primitive-section { display: flex; gap: var(--site-space-7); align-items: end; justify-content: space-between; }
+  .sauna-services h2, .sauna-services h3, .sauna-trust h2, .sauna-trust h3, .sauna-faq h2, .sauna-form h2 { margin-block-start: 0; }
+  .sauna-services h2, .sauna-trust h2 { margin-block-end: var(--site-space-6); }
+  .sauna-services .site-primitive-supporting { color: var(--site-color-text-primary); }
+  .sauna-services__list { max-width: var(--site-layout-reading-max); border-block: 1px solid var(--site-color-divider); }
+  .sauna-service { display: grid; grid-template-columns: auto minmax(0, 1fr); gap: var(--site-space-4); padding-block: var(--site-space-6); }
+  .sauna-service + .sauna-service { border-block-start: 1px solid var(--site-color-divider); }
+  .sauna-service p, .sauna-trust p, .sauna-form p { margin-block-end: 0; }
+  :global(.sauna-service__icon), :global(.sauna-trust__icon) { width: 1.5rem; height: 1.5rem; flex: none; color: var(--site-color-text-primary); }
+  .sauna-trust__list { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); max-width: 60rem; }
+  .sauna-trust__entry { display: grid; grid-template-columns: auto minmax(0, 1fr); gap: var(--site-space-4); padding-block: var(--site-space-5); border-block-start: 1px solid var(--site-color-divider); }
+  .sauna-trust__entry + .sauna-trust__entry { margin-inline-start: var(--site-space-7); }
+  .sauna-cta .site-primitive-section { display: block; }
   .sauna-cta h2 { max-width: 18ch; margin: 0; }
-  .sauna-cta .site-primitive-actions { flex: none; margin: 0; }
+  .sauna-cta .site-primitive-actions { margin-block-start: var(--site-space-6); }
   .sauna-form { padding-block-end: calc(var(--site-space-8) + 4.5rem); }
   .sauna-form__heading { margin: 0 auto var(--site-space-7); text-align: center; }
   .sauna-form__heading h2, .sauna-form__heading p { margin-block-start: 0; }
   @media (max-width: 52rem) {
-    .sauna-introduction__layout, .sauna-trust__layout { grid-template-columns: 1fr; gap: var(--site-space-7); }
+    .sauna-introduction__layout, .sauna-faq__layout { grid-template-columns: 1fr; gap: var(--site-space-7); }
+    .sauna-faq__layout { align-items: stretch; gap: var(--site-space-5); }
+    .sauna-faq h2 { max-width: none; }
     .sauna-gallery { width: min(100%, 38rem); margin-inline: auto; }
-    .sauna-cta .site-primitive-section { display: block; }
-    .sauna-cta .site-primitive-actions { margin-block-start: var(--site-space-6); }
+    .sauna-trust__list { grid-template-columns: 1fr; }
+    .sauna-trust__entry + .sauna-trust__entry { margin-inline-start: 0; }
   }
   @media (max-width: 42rem) {
-    .sauna-hero { min-height: calc(100svh + 5rem); }
-    .sauna-services__list, .sauna-trust__list { grid-template-columns: 1fr; }
-    .sauna-services__entry { padding-inline: 0; }
-    .sauna-services__entry + .sauna-services__entry { border-inline-start: 0; }
+    .sauna-hero { min-height: calc(100svh + 2rem); }
+    .sauna-faq__layout { grid-template-columns: 1fr; }
     .sauna-form { padding-block-end: calc(var(--site-space-7) + 5rem); }
   }
 </style>

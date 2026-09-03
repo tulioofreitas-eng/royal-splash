@@ -6,10 +6,19 @@ import GTMBody from '../../components/GTMBody.astro';
 import LPHeader from '../../components/LPHeader.astro';
 import LPFooter from '../../components/LPFooter.astro';
 import BotaoWhatsapp from '../../components/BotaoWhatsapp.astro';
-import FormularioGHL from '../../components/FormularioGHL.astro';
+import VazamentoWhatsAppForm from '../../components/lp/VazamentoWhatsAppForm.astro';
 import Icon from '../../components/Icon.astro';
-import { Image } from 'astro:assets';
-import servicoVazamento from '../../assets/servico-vazamento.jpg';
+import { Image, getImage } from 'astro:assets';
+import heroVazamentoPanoramico from '../../assets/vazamento-hero-panoramico.png';
+import imgInvestigacao from '../../assets/vazamento-investigacao-original.png';
+import imgTestePressao from '../../assets/vazamento-teste-pressao.png';
+import imgInspecao from '../../assets/vazamento-inspecao-localizada.png';
+import imgReparoLocal from '../../assets/vazamento-reparo-localizado.png';
+import imgReparoCTA from '../../assets/vazamento-reparo-original.png';
+
+const desktopHero = await getImage({ src: heroVazamentoPanoramico, format: 'webp', width: 2400 });
+const mobileHero = await getImage({ src: imgInvestigacao, format: 'webp', width: 800 });
+import GaleriaZoom from '../../components/GaleriaZoom.astro';
 ---
 
 <LandingLayout title="Detecção de Vazamento em Piscinas — Royal Splash" description="Sua piscina está perdendo água? Detectamos e reparamos vazamentos." robots="noindex, nofollow" visualMode="brand" bodyClass="site-brand-lp-vazamento site-primitive-page">
@@ -19,57 +28,120 @@ import servicoVazamento from '../../assets/servico-vazamento.jpg';
   <LPHeader slot="header" visualMode="brand" />
 
   <section class="vazamento-hero site-primitive-surface--dark">
-    <Image src={servicoVazamento} alt="Detecção de vazamento em piscina" widths={[390, 640, 768, 1024, 1280, 1536, 1792, 2400]} sizes="100vw" priority class="vazamento-hero__image" />
+    <picture class="vazamento-hero__image-wrapper">
+      <source media="(max-width: 52rem)" srcset={mobileHero.src} />
+      <img src={desktopHero.src} alt="Detecção de vazamento em piscina" class="vazamento-hero__image" />
+    </picture>
     <div class="vazamento-hero__veil"></div>
     <div class="vazamento-hero__content">
       <h1 class="site-primitive-page-title">Sua piscina está perdendo água?</h1>
-    </div>
-  </section>
-
-  <section class="vazamento-diagnosis site-primitive-surface--light site-primitive-datum-bottom">
-    <div class="site-primitive-section site-primitive-section--entry">
-      <div class="site-primitive-reading vazamento-diagnosis__reading">
-        <h2 class="site-primitive-display">Detecção de Vazamentos</h2>
-        <p class="site-primitive-body site-primitive-supporting">Piscina perdendo nível de água constantemente? Pode ser vazamento estrutural, em tubulação ou no revestimento.</p>
+      <p class="site-primitive-body">Investigação completa para encontrar o vazamento e resolver com segurança e sem quebra desnecessária.</p>
+      <div class="site-primitive-actions">
+        <a href="#orcamento" class="site-primitive-action site-primitive-action--primary">Solicitar orçamento exclusivo</a>
       </div>
     </div>
   </section>
 
-  <section class="vazamento-method site-primitive-surface--muted site-primitive-datum-bottom">
-    <div class="site-primitive-section">
-      <h2 class="site-primitive-section-title">Como Trabalhamos</h2>
-      <article class="vazamento-method__entry">
-        <Icon name="wrench" class="vazamento-method__icon" />
-        <div>
-          <h3 class="site-primitive-subtitle">Reparo</h3>
-          <p class="site-primitive-body">Correção estrutural, de tubulação ou revestimento, sem gambiarra.</p>
+  <section class="vazamento-narrative site-primitive-surface--light site-primitive-datum-bottom">
+    <div class="site-primitive-section site-primitive-section--entry vazamento-narrative__layout">
+      <div class="vazamento-narrative__copy">
+        <h2 class="site-primitive-display">Investigação antes da intervenção</h2>
+        <div class="site-primitive-reading">
+          <p class="site-primitive-body site-primitive-supporting">Cada sinal de perda de água precisa ser avaliado de acordo com as características da piscina. A investigação ajuda a identificar indícios e possíveis fontes do problema antes da definição da intervenção mais adequada.</p>
         </div>
-      </article>
+        <ul class="vazamento-narrative__scope">
+          <li><Icon name="check" class="vazamento-narrative__icon" /> Investigação da estrutura, tubulação e revestimento</li>
+          <li><Icon name="check" class="vazamento-narrative__icon" /> Intervenção definida de acordo com cada situação</li>
+        </ul>
+      </div>
+      <div class="vazamento-narrative__gallery">
+        <GaleriaZoom imagens={[
+          { src: imgInvestigacao, alt: 'Investigação da estrutura' },
+          { src: imgTestePressao, alt: 'Teste de pressão' },
+          { src: imgInspecao, alt: 'Inspeção localizada' },
+          { src: imgReparoLocal, alt: 'Reparo localizado' },
+        ]} />
+      </div>
+    </div>
+  </section>
+
+  <section class="vazamento-services site-primitive-surface--muted site-primitive-datum-bottom">
+    <div class="site-primitive-section">
+      <h2 class="site-primitive-section-title">Nossos Serviços</h2>
+      <div class="vazamento-services__list">
+        <article class="vazamento-service">
+          <Icon name="droplet" class="vazamento-service__icon" />
+          <div>
+            <h3 class="site-primitive-subtitle">Investigação e Diagnóstico</h3>
+            <p class="site-primitive-body site-primitive-supporting">Avaliação técnica para identificar indícios e possíveis fontes de perda de água na estrutura, tubulação ou revestimento.</p>
+          </div>
+        </article>
+        <article class="vazamento-service">
+          <Icon name="wrench" class="vazamento-service__icon" />
+          <div>
+            <h3 class="site-primitive-subtitle">Reparo e Intervenção</h3>
+            <p class="site-primitive-body site-primitive-supporting">Definição e execução da correção estrutural ou hidráulica adequada para o seu caso.</p>
+          </div>
+        </article>
+      </div>
     </div>
   </section>
 
   <section class="vazamento-trust site-primitive-surface--light site-primitive-datum-bottom">
     <div class="site-primitive-section">
       <h2 class="site-primitive-section-title">Por que a Royal Splash?</h2>
-      <div class="vazamento-trust__grid">
+      <div class="vazamento-trust__list">
         <article class="vazamento-trust__entry">
-          <Icon name="cpu" class="vazamento-trust__icon" />
-          <h3 class="site-primitive-subtitle font-semibold mb-1">Tecnologia de Ponta</h3>
+          <Icon name="check" class="vazamento-trust__icon" />
+          <div>
+            <h3 class="site-primitive-subtitle">Avaliação Cuidadosa</h3>
+            <p class="site-primitive-body site-primitive-supporting">Análise criteriosa para definir a intervenção mais adequada para a sua piscina.</p>
+          </div>
         </article>
         <article class="vazamento-trust__entry">
           <Icon name="users" class="vazamento-trust__icon" />
-          <h3 class="site-primitive-subtitle font-semibold mb-1">Atendimento Premium</h3>
-          <p class="site-primitive-body site-primitive-supporting">Consultoria clara do diagnóstico à entrega.</p>
+          <div>
+            <h3 class="site-primitive-subtitle">Orientação Clara</h3>
+            <p class="site-primitive-body site-primitive-supporting">Transparência em todas as etapas, do diagnóstico inicial até a conclusão do reparo.</p>
+          </div>
         </article>
       </div>
     </div>
   </section>
 
+  <section class="vazamento-faq site-primitive-surface--soft site-primitive-datum-bottom">
+    <div class="site-primitive-section vazamento-faq__layout">
+      <div class="vazamento-faq__heading"><h2 class="site-primitive-display">Perguntas frequentes</h2></div>
+      <div class="vazamento-faq__list">
+        {[
+          { pergunta: 'Quais são os sinais de que minha piscina pode ter um vazamento?', resposta: 'Perda constante e anormal do nível de água, poças persistentes ao redor da piscina ou um aumento inexplicável na conta de água são os principais indícios.' },
+          { pergunta: 'A avaliação consegue localizar exatamente onde está o problema?', resposta: 'Nossa investigação técnica busca identificar indícios e delimitar a área do problema. A precisão depende do tipo de estrutura, tubulação e acabamento.' },
+          { pergunta: 'É sempre necessário quebrar o revestimento?', resposta: 'Depende do diagnóstico. Alguns reparos em tubulações externas ou equipamentos são mais simples, enquanto vazamentos estruturais profundos podem exigir intervenções no revestimento ou piso.' },
+          { pergunta: 'A Royal Splash também faz o reparo?', resposta: 'Sim, realizamos tanto a investigação inicial quanto a intervenção corretiva, oferecendo uma solução integrada para a sua piscina.' },
+          { pergunta: 'Como solicitar uma avaliação técnica?', resposta: 'Preencha o formulário desta página com os sintomas observados. Nossa equipe iniciará uma conversa pelo WhatsApp para orientar os próximos passos.' },
+        ].map((item) => (
+          <details class="vazamento-faq__item">
+            <summary class="site-primitive-subtitle">
+              {item.pergunta}
+              <span aria-hidden="true">+</span>
+            </summary>
+            <p class="site-primitive-body site-primitive-supporting">{item.resposta}</p>
+          </details>
+        ))}
+      </div>
+    </div>
+  </section>
+
   <section class="vazamento-cta site-primitive-surface--dark">
-    <div class="site-primitive-section">
-      <h2 class="site-primitive-display">Não deixe o vazamento aumentar sua conta de água</h2>
-      <div class="site-primitive-actions">
-        <a href="#orcamento" class="site-primitive-action site-primitive-action--primary">Falar com um especialista</a>
+    <div class="site-primitive-section vazamento-cta__layout">
+      <div class="vazamento-cta__copy">
+        <h2 class="site-primitive-display">Não deixe o vazamento aumentar sua conta de água</h2>
+        <div class="site-primitive-actions">
+          <a href="#orcamento" class="site-primitive-action site-primitive-action--primary">Falar com um especialista</a>
+        </div>
+      </div>
+      <div class="vazamento-cta__image-container">
+        <Image src={imgReparoCTA} alt="Especialista em reparo" widths={[400, 800]} class="vazamento-cta__image" />
       </div>
     </div>
   </section>
@@ -79,7 +151,7 @@ import servicoVazamento from '../../assets/servico-vazamento.jpg';
       <h2 class="site-primitive-section-title">Solicite seu Orçamento</h2>
       <p class="site-primitive-body site-primitive-supporting">Preencha os dados abaixo e nossa equipe entrará em contato para entender seu caso em detalhes.</p>
     </div>
-    <FormularioGHL />
+    <VazamentoWhatsAppForm />
   </section>
 
   <LPFooter slot="footer" visualMode="brand" />
@@ -87,35 +159,71 @@ import servicoVazamento from '../../assets/servico-vazamento.jpg';
 </LandingLayout>
 
 <style>
-  .vazamento-hero { position: relative; display: grid; min-height: clamp(24rem, 58vh, 40rem); isolation: isolate; border-block-end: 1px solid var(--site-color-accent-on-dark); }
+  .vazamento-hero { position: relative; display: grid; min-height: max(40rem, 88svh); isolation: isolate; overflow: hidden; }
   .vazamento-hero__image, .vazamento-hero__veil { position: absolute; inset: 0; width: 100%; height: 100%; }
-  .vazamento-hero__image { z-index: -2; object-fit: cover; object-position: center 30%; }
-  .vazamento-hero__veil { z-index: -1; background: linear-gradient(90deg, color-mix(in srgb, var(--site-color-surface-dark) 92%, transparent) 0%, color-mix(in srgb, var(--site-color-surface-dark) 72%, transparent) 58%, color-mix(in srgb, var(--site-color-surface-dark) 46%, transparent) 100%); }
-  .vazamento-hero__content { align-self: end; width: min(calc(100% - (2 * var(--site-layout-gutter))), var(--site-layout-content-max)); margin-inline: auto; padding-block: var(--site-space-8); }
-  .vazamento-hero h1 { max-width: 12ch; margin: 0; }
-  .vazamento-diagnosis__reading { max-width: 46rem; }
-  .vazamento-diagnosis h2, .vazamento-method h2, .vazamento-method h3, .vazamento-trust h2, .vazamento-trust h3, .vazamento-form h2 { margin-block-start: 0; }
-  .vazamento-diagnosis p, .vazamento-method p, .vazamento-trust p, .vazamento-form p { margin-block-end: 0; }
-  .vazamento-method h2, .vazamento-trust h2 { margin-block-end: var(--site-space-6); }
-  .vazamento-method__entry { display: grid; grid-template-columns: auto minmax(0, 1fr); gap: var(--site-space-5); max-width: 46rem; padding-block: var(--site-space-5); border-block: 1px solid var(--site-color-required-boundary); }
-  :global(.vazamento-method__icon), :global(.vazamento-trust__icon) { width: 1.5rem; height: 1.5rem; flex: none; color: var(--site-color-text-primary); }
-  .vazamento-trust__grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); max-width: 52rem; border-block: 1px solid var(--site-color-divider); }
-  .vazamento-trust__entry { display: grid; grid-template-columns: auto minmax(0, 1fr); align-content: start; gap: var(--site-space-3) var(--site-space-4); padding: var(--site-space-5); }
-  .vazamento-trust__entry + .vazamento-trust__entry { border-inline-start: 1px solid var(--site-color-divider); }
-  .vazamento-trust__entry p { grid-column: 2; }
-  .vazamento-cta .site-primitive-section { max-width: 52rem; }
-  .vazamento-cta h2 { max-width: 18ch; margin: 0; }
+  .vazamento-hero__image-wrapper { position: absolute; inset: 0; width: 100%; height: 100%; z-index: -2; }
+  .vazamento-hero__image { object-fit: cover; object-position: center; width: 100%; height: 100%; }
+  .vazamento-hero__veil { z-index: -1; background: color-mix(in srgb, var(--site-color-surface-dark) 72%, transparent); }
+  .vazamento-hero__content { align-self: center; width: min(calc(100% - (2 * var(--site-layout-gutter))), var(--site-layout-content-max)); margin-inline: auto; padding-block: var(--site-space-8); }
+  .vazamento-hero h1 { max-width: 18ch; margin: 0; }
+  .vazamento-hero p { max-width: 38rem; margin: var(--site-space-5) 0 0; color: var(--site-color-text-on-dark); }
+  .vazamento-hero .site-primitive-actions { margin-block-start: var(--site-space-6); }
+
+  .vazamento-narrative__layout { display: grid; grid-template-columns: minmax(18rem, 0.85fr) minmax(0, 1.15fr); gap: var(--site-space-8); align-items: center; }
+  .vazamento-narrative h2, .vazamento-narrative p { margin-block-start: 0; }
+  .vazamento-narrative h2 { margin-block-end: var(--site-space-5); }
+  .vazamento-narrative__scope { display: grid; gap: var(--site-space-3); margin: var(--site-space-6) 0 0; padding: var(--site-space-5) 0 0; border-block-start: 1px solid var(--site-color-divider); list-style: none; }
+  .vazamento-narrative__scope li { display: flex; gap: var(--site-space-3); align-items: center; }
+  :global(.vazamento-narrative__icon) { width: 1.25rem; height: 1.25rem; flex: none; }
+  .vazamento-narrative__gallery { min-width: 0; }
+  
+  .vazamento-services h2, .vazamento-services h3, .vazamento-trust h2, .vazamento-trust h3, .vazamento-faq h2, .vazamento-form h2 { margin-block-start: 0; }
+  .vazamento-services h2, .vazamento-trust h2 { margin-block-end: var(--site-space-6); }
+  .vazamento-services .site-primitive-supporting { color: var(--site-color-text-primary); }
+  
+  .vazamento-services__list { max-width: var(--site-layout-reading-max); border-block: 1px solid var(--site-color-divider); }
+  .vazamento-service { display: grid; grid-template-columns: auto minmax(0, 1fr); gap: var(--site-space-4); padding-block: var(--site-space-6); }
+  .vazamento-service + .vazamento-service { border-block-start: 1px solid var(--site-color-divider); }
+  .vazamento-service p, .vazamento-trust p, .vazamento-form p { margin-block-end: 0; }
+  :global(.vazamento-service__icon), :global(.vazamento-trust__icon) { width: 1.5rem !important; height: 1.5rem !important; flex: none; min-width: 1.5rem; max-width: 1.5rem; }
+
+  .vazamento-trust__list { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); max-width: 60rem; }
+  .vazamento-trust__entry { display: grid; grid-template-columns: auto minmax(0, 1fr); gap: var(--site-space-4); padding-block: var(--site-space-5); border-block-start: 1px solid var(--site-color-divider); }
+  .vazamento-trust__entry + .vazamento-trust__entry { margin-inline-start: var(--site-space-7); }
+  
+  .vazamento-faq__layout { display: grid; grid-template-columns: minmax(14rem, 0.7fr) minmax(0, 1.3fr); align-items: center; gap: var(--site-space-8); }
+  .vazamento-faq h2 { margin: 0; }
+  .vazamento-faq__list { border-block-start: 1px solid var(--site-color-divider); }
+  .vazamento-faq__item { border-block-end: 1px solid var(--site-color-divider); }
+  .vazamento-faq__item summary { display: flex; gap: var(--site-space-5); align-items: center; justify-content: space-between; padding-block: var(--site-space-5); cursor: pointer; list-style: none; }
+  .vazamento-faq__item summary::-webkit-details-marker { display: none; }
+  .vazamento-faq__item summary span { flex: none; font-family: var(--site-font-family-body); transition: transform 160ms ease; }
+  .vazamento-faq__item[open] summary span { transform: rotate(45deg); }
+  .vazamento-faq__item p { margin: calc(-1 * var(--site-space-2)) 0 var(--site-space-5); }
+  
+  .vazamento-cta__layout { display: grid; grid-template-columns: minmax(18rem, 0.85fr) minmax(0, 1.15fr); gap: var(--site-space-8); align-items: center; }
+  .vazamento-cta h2 { max-width: 19ch; margin: 0; }
+  .vazamento-cta .site-primitive-actions { margin-block-start: var(--site-space-6); }
+  .vazamento-cta__image { width: 100%; height: auto; border-radius: var(--site-radius-md, 0.5rem); display: block; object-fit: cover; }
+  
   .vazamento-form { padding-block-end: calc(var(--site-space-8) + 4.5rem); }
-  .vazamento-form__heading { margin: 0 auto var(--site-space-7); }
+  .vazamento-form__heading { margin: 0 auto var(--site-space-7); text-align: center; }
+
   @media (max-width: 52rem) {
-    .vazamento-hero { min-height: 100svh; }
-    .vazamento-hero__content { align-self: center; padding-block: var(--site-space-7); }
-    .vazamento-trust__grid { grid-template-columns: 1fr; }
-    .vazamento-trust__entry { padding-inline: 0; }
-    .vazamento-trust__entry + .vazamento-trust__entry { border-block-start: 1px solid var(--site-color-divider); border-inline-start: 0; }
+    .vazamento-narrative__layout, .vazamento-faq__layout, .vazamento-cta__layout { grid-template-columns: 1fr; gap: var(--site-space-7); }
+    .vazamento-narrative__gallery { width: min(100%, 38rem); margin-inline: auto; }
+    .vazamento-faq__heading { position: static; }
+    .vazamento-hero { min-height: calc(100svh + 2rem); }
+    .vazamento-hero__content { align-self: center; }
   }
-  @media (max-width: 30rem) {
-    .vazamento-method__entry { gap: var(--site-space-3); }
+  
+  @media (max-width: 42rem) {
+    .vazamento-hero__image { object-position: 75% center; }
+
+    .vazamento-trust__list, .vazamento-faq__layout { grid-template-columns: 1fr; }
+    .vazamento-faq__layout { align-items: stretch; gap: var(--site-space-5); }
+    .vazamento-faq h2 { max-width: none; }
+    .vazamento-trust__entry + .vazamento-trust__entry { margin-inline-start: 0; }
     .vazamento-form { padding-block-end: calc(var(--site-space-7) + 5rem); }
   }
 </style>

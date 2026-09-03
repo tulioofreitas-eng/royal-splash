@@ -27,7 +27,7 @@ async function removeDevelopmentToolbar(page: Page): Promise<void> {
 }
 
 async function expectProportionalSignature(page: Page): Promise<void> {
-  const signature = page.locator(`img[src="${SIGNATURE_PATH}"]`);
+  const signature = page.locator("[data-site-header]").locator(`img[src="${SIGNATURE_PATH}"]`);
 
   await expect(signature).toBeVisible();
 
@@ -73,11 +73,11 @@ test.describe("P2A Brand visual slice", () => {
 
     await expectProportionalSignature(page);
 
-    const heading = page.getByRole("heading", { level: 1, name: "A Royal" });
+    const heading = page.getByRole("heading", { level: 1, name: "Engenharia de água para espaços que permanecem." });
     await expect(heading).toBeVisible();
     await expect(heading).toHaveCSS("font-family", /Cormorant Garamond/);
 
-    await expect(page.locator('[data-trust-stage="entry"] > p').last())
+    await expect(page.locator(".experience-entry .experience-lead").last())
       .toHaveCSS("font-family", /Hanken Grotesk/);
     await expect(page.locator("[data-site-header]")).toHaveCSS(
       "background-color",
@@ -103,7 +103,7 @@ test.describe("P2A Brand visual slice", () => {
     );
     await expectProportionalSignature(page);
 
-    const signature = page.locator(`img[src="${SIGNATURE_PATH}"]`);
+    const signature = page.locator("[data-site-header]").locator(`img[src="${SIGNATURE_PATH}"]`);
     const signatureBounds = await signature.boundingBox();
     expect(signatureBounds).not.toBeNull();
     expect(signatureBounds!.x + signatureBounds!.width).toBeLessThanOrEqual(390);

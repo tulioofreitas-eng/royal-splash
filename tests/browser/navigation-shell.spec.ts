@@ -62,6 +62,16 @@ test.describe("target Site navigation shell", () => {
       "href",
       "/inicie-seu-projeto",
     );
+
+    await expect(
+      navigation.getByRole("link", {
+        name: "Inicie seu projeto",
+        exact: true,
+      }),
+    ).toHaveAttribute(
+      "data-analytics-channel",
+      "site_contact",
+    );
   });
 
   test("mobile navigation manages state, focus and explicit closure", async ({
@@ -117,12 +127,18 @@ test.describe("target Site navigation shell", () => {
 
     await expect(firstLink).toBeFocused();
 
-    await expect(
+    const mobilePrimaryAction =
       mobileNavigation.getByRole("link", {
         name: "Inicie seu projeto",
         exact: true,
-      }),
-    ).toBeVisible();
+      });
+
+    await expect(mobilePrimaryAction).toBeVisible();
+    await expect(mobilePrimaryAction).toHaveAttribute("href", "/inicie-seu-projeto");
+    await expect(mobilePrimaryAction).toHaveAttribute(
+      "data-analytics-channel",
+      "site_contact",
+    );
 
     await expect(
       mobileNavigation.getByRole("link", {

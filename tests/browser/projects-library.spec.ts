@@ -33,7 +33,7 @@ async function removeDevelopmentToolbar(page: Page): Promise<void> {
 test.describe(
   "publication-safe Brand Projects library",
   () => {
-    test("renders the approved Brand consumer and controlled zero-Case state", async ({
+    test("renders the approved Brand consumer and the governed final-result gallery", async ({
       page,
     }) => {
       await page.setViewportSize({
@@ -58,14 +58,14 @@ test.describe(
         "brand",
       );
 
-      const signature = page.locator(
+      const signature = page.locator("[data-site-header]").locator(
         `img[src="${SIGNATURE_PATH}"]`,
       );
       await expect(signature).toBeVisible();
 
       const heading = page.getByRole("heading", {
         level: 1,
-        name: "Projetos",
+        name: "Fotografias de projetos realizados.",
       });
       await expect(heading).toBeVisible();
       await expect(heading).toHaveCSS(
@@ -74,7 +74,7 @@ test.describe(
       );
 
       await expect(
-        page.locator('[data-projects-stage="entry"] > .site-primitive-body'),
+        page.locator('.experience-entry .experience-lead'),
       ).toHaveCSS(
         "font-family",
         /Hanken Grotesk/,
@@ -98,24 +98,21 @@ test.describe(
         "page",
       );
 
-      const library =
-        page.getByRole("region", {
-          name:
-            "Projetos disponíveis",
-        });
+      const gallery =
+        page.locator(
+          "[data-project-gallery]",
+        );
 
       await expect(
-        library,
+        gallery,
       ).toHaveAttribute(
         "data-projects-count",
-        "0",
+        "14",
       );
 
       await expect(
-        library.locator(
-          '[data-projects-state="empty"]',
-        ),
-      ).toBeVisible();
+        gallery.locator("figure.project-gallery__item"),
+      ).toHaveCount(14);
 
       await expect(
         page.getByRole("heading", {
@@ -123,7 +120,7 @@ test.describe(
           name:
             "Nenhum projeto disponível no momento",
         }),
-      ).toBeVisible();
+      ).toHaveCount(0);
 
       await expect(
         page.locator(
@@ -140,15 +137,20 @@ test.describe(
       });
     });
 
-    test("preserves trust routes, structured project CTA, auxiliary route, and analytics", async ({
+    test("preserves trust routes, direct WhatsApp conversion, and analytics", async ({
       page,
     }) => {
       await page.goto(
         "/projetos",
       );
 
+      const conversion = page.getByRole("region", {
+        name:
+          "Seu projeto pode começar com uma conversa.",
+      });
+
       await expect(
-        page.getByRole("link", {
+        conversion.getByRole("link", {
           name:
             "Conhecer Método Royal",
         }),
@@ -157,63 +159,40 @@ test.describe(
         "/metodo-royal",
       );
 
-      await expect(
-        page.getByRole("link", {
+      const primaryAction =
+        conversion.getByRole("link", {
           name:
-            "Conhecer A Royal",
-        }),
-      ).toHaveAttribute(
-        "href",
-        "/sobre",
-      );
-
-      const qualifiedAction =
-        page.getByRole("region", {
-          name:
-            "Avance com o contexto do seu projeto",
-        }).getByRole("link", {
-          name:
-            "Inicie seu projeto",
-          exact: true,
+            "WhatsApp sobre um projeto",
         });
 
       await expect(
-        qualifiedAction,
+        primaryAction,
       ).toHaveAttribute(
         "href",
-        "/inicie-seu-projeto",
+        "https://wa.me/5521982590643",
       );
 
       await expect(
-        qualifiedAction,
+        primaryAction,
       ).toHaveAttribute(
         "data-analytics-component",
-        "royal_projects",
+        "projects_whatsapp",
       );
       await expect(
-        qualifiedAction,
+        primaryAction,
       ).toHaveAttribute(
         "data-analytics-subject",
         "project_start",
       );
       await expect(
-        qualifiedAction,
+        primaryAction,
       ).toHaveAttribute(
         "data-analytics-channel",
-        "site_form",
-      );
-
-      await expect(
-        page.getByRole("link", {
-          name: "Contato e canais auxiliares",
-        }),
-      ).toHaveAttribute(
-        "href",
-        "/contato",
+        "whatsapp",
       );
     });
 
-    test("mobile preserves keyboard focus, responsive integrity, zero Case links, and accessibility", async ({
+    test("mobile preserves keyboard focus, responsive integrity, no legacy Case links, and accessibility", async ({
       page,
     }) => {
       await page.setViewportSize({
@@ -246,12 +225,10 @@ test.describe(
       await expect(mobileNavigation).toBeHidden();
       await expect(trigger).toBeFocused();
 
-      const library = page.getByRole("region", {
-        name: "Projetos disponíveis",
-      });
-      await expect(library).toHaveAttribute(
+      const gallery = page.locator("[data-project-gallery]");
+      await expect(gallery).toHaveAttribute(
         "data-projects-count",
-        "0",
+        "14",
       );
       await expect(
         page.locator('a[href^="/projetos/"]'),

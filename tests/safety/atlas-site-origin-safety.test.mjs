@@ -106,24 +106,31 @@ test("Preview route remains Atlas-credential-free and mock-only", async () => {
   );
 });
 
-test("live WhatsApp surfaces remain unwired from Atlas", async () => {
+test("live WhatsApp forms and current project-start surface remain unwired", async () => {
   const paths = [
-    "src/pages/lp/corporativo.astro",
-    "src/pages/lp/fibra.astro",
-    "src/pages/lp/lazer.astro",
-    "src/pages/lp/piscinas.astro",
-    "src/pages/lp/reforma.astro",
-    "src/pages/lp/sauna.astro",
-    "src/pages/lp/vazamento.astro",
+    "src/components/lp/CorporativoWhatsAppForm.astro",
+    "src/components/lp/FibraWhatsAppForm.astro",
+    "src/components/lp/LazerWhatsAppForm.astro",
+    "src/components/lp/PiscinasWhatsAppForm.astro",
+    "src/components/lp/ReformaWhatsAppForm.astro",
+    "src/components/lp/SaunaWhatsAppForm.astro",
+    "src/components/lp/VazamentoWhatsAppForm.astro",
   ];
 
   for (const path of paths) {
     const source = await readFile(path, "utf8");
-    assert.match(source, /FormularioGHL|BotaoWhatsapp/, path);
+    assert.match(source, /whatsapp|wa\.me/i, path);
     assert.doesNotMatch(
       source,
       /\/api\/site-lead(?:["'])|AtlasSiteOrigin|ATLAS_INGRESS_TOKEN/,
       path,
     );
   }
+
+  const projectStartPage = await readFile(
+    "src/pages/inicie-seu-projeto.astro",
+    "utf8",
+  );
+  assert.match(projectStartPage, /<ProjectStartForm \/>/);
+  assert.doesNotMatch(projectStartPage, /StructuredIntake/);
 });

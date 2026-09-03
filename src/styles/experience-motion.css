@@ -1,0 +1,70 @@
+[data-experience-motion] [data-motion-media],
+[data-experience-motion] [data-motion-image] {
+  backface-visibility: hidden;
+  transform-origin: center;
+}
+
+[data-experience-motion] .experience-action,
+[data-experience-motion] .context-transition > a,
+[data-experience-motion] .proof-stage a,
+[data-experience-motion] .method-stage > a,
+[data-experience-motion] .home-final a {
+  transition:
+    transform 220ms cubic-bezier(.2, .7, .2, 1),
+    background-color 220ms ease,
+    color 220ms ease,
+    border-color 220ms ease;
+}
+
+[data-experience-motion] .experience-action:hover,
+[data-experience-motion] .proof-stage a:hover,
+[data-experience-motion] .method-stage > a:hover,
+[data-experience-motion] .home-final a:hover {
+  transform: translateY(-3px);
+}
+
+[data-experience-motion] .experience-action:active,
+[data-experience-motion] .proof-stage a:active,
+[data-experience-motion] .method-stage > a:active,
+[data-experience-motion] .home-final a:active {
+  transform: translateY(0);
+}
+
+@media (hover: hover) and (pointer: fine) {
+  [data-experience-motion] .context-transition > a img {
+    transition: transform 700ms cubic-bezier(.2, .7, .2, 1), filter 350ms ease;
+  }
+
+  [data-experience-motion] .context-transition > a:hover img {
+    filter: brightness(.72);
+    transform: scale(1.035);
+  }
+}
+
+@media (max-width: 47.99rem) {
+  [data-experience-motion] [data-motion-image] {
+    will-change: auto;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  [data-experience-motion] *,
+  [data-experience-motion] *::before,
+  [data-experience-motion] *::after {
+    scroll-behavior: auto !important;
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+
+  [data-experience-motion] [data-motion-reveal],
+  [data-experience-motion] [data-motion-media],
+  [data-experience-motion] [data-motion-image],
+  [data-experience-motion] .experience-action:hover,
+  [data-experience-motion] .context-transition > a:hover img {
+    clip-path: none !important;
+    opacity: 1 !important;
+    visibility: visible !important;
+    transform: none !important;
+  }
+}

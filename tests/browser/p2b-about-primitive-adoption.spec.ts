@@ -19,11 +19,11 @@ async function expectBrandFoundation(page: Page): Promise<void> {
   await expect(page.locator("[data-site-header]")).toHaveAttribute(
     "data-site-header-visual", "brand",
   );
-  await expect(page.locator(`img[src="${SIGNATURE_PATH}"]`)).toBeVisible();
-  await expect(page.getByRole("heading", { level: 1, name: "A Royal" })).toHaveCSS(
+  await expect(page.locator("[data-site-header]").locator(`img[src="${SIGNATURE_PATH}"]`)).toBeVisible();
+  await expect(page.getByRole("heading", { level: 1, name: "Engenharia de água para espaços que permanecem." })).toHaveCSS(
     "font-family", /Cormorant Garamond/,
   );
-  await expect(page.locator('[data-trust-stage="entry"] > p').last()).toHaveCSS(
+  await expect(page.locator(".experience-entry .experience-lead").last()).toHaveCSS(
     "font-family", /Hanken Grotesk/,
   );
 }
@@ -33,10 +33,11 @@ test("desktop adopts shared primitives without changing the approved About surfa
   await page.goto("/sobre");
   await expectBrandFoundation(page);
 
-  const conversion = page.locator('[data-trust-stage="qualified-action"]');
-  await expect(conversion).toHaveClass(/site-primitive-surface--dark/);
+  const conversion = page.locator('[data-about-block="conversion"]');
+  await expect(conversion).toHaveClass(/experience-conversion/);
   await expect(conversion).toHaveCSS("background-color", "rgb(18, 23, 28)");
-  const primary = conversion.getByRole("link", { name: "Inicie seu projeto" });
+  const primary = conversion.getByRole("link", { name: "Conversar no WhatsApp" });
+  await expect(primary).toHaveAttribute("href", "https://wa.me/5521982590643");
   await expect(primary).toHaveClass(/site-primitive-action--primary/);
   await expect(primary).toHaveCSS("font-family", /Hanken Grotesk/);
   await expect(primary).toHaveCSS("border-top-width", "2px");
@@ -64,8 +65,8 @@ test("mobile preserves signature, navigation behavior, and primitive adoption", 
   await expect(navigation).toBeHidden();
   await expect(trigger).toBeFocused();
 
-  const conversion = page.locator('[data-trust-stage="qualified-action"]');
-  await expect(conversion.getByRole("link", { name: "Inicie seu projeto" })).toBeVisible();
+  const conversion = page.locator('[data-about-block="conversion"]');
+  await expect(conversion.getByRole("link", { name: "Conversar no WhatsApp" })).toBeVisible();
   await expectNoHorizontalOverflow(page);
   await expectNoAxeViolations(page);
   await page.screenshot({

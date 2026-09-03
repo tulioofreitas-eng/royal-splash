@@ -2,7 +2,7 @@ import AxeBuilder from "@axe-core/playwright";
 import { expect, test } from "@playwright/test";
 
 test.describe("Home Brand orchestration", () => {
-  test("implements the approved context-to-qualified-action journey", async ({
+  test("implements the approved cinematic-hero to structured-conversion journey", async ({
     page,
   }) => {
     await page.goto("/");
@@ -15,117 +15,47 @@ test.describe("Home Brand orchestration", () => {
     const main = page.getByRole("main");
     const entry = main.locator('[data-home-stage="entry"]');
 
-    await expect(entry.getByText("Royal Splash", { exact: true })).toBeVisible();
+    await expect(
+      main.getByRole("heading", {
+        level: 1,
+        name: "Água como parte da arquitetura.",
+      }),
+    ).toBeVisible();
     await expect(entry.getByText(
-      "Escolha entre os contextos Residencial e Corporativo / Institucional, consulte Projetos e avance quando estiver pronto para iniciar seu projeto.",
+      "Projetamos e executamos soluções aquáticas com leitura técnica, integração ao espaço e atenção à experiência final.",
       { exact: true },
     )).toBeVisible();
     await expect(entry.getByRole("link", { name: "Inicie seu projeto", exact: true }))
       .toHaveAttribute("href", "/inicie-seu-projeto");
-    await expect(entry.getByRole("link", { name: "Ver Projetos" }))
+    await expect(entry.getByRole("link", { name: "Explorar projetos" }))
       .toHaveAttribute("href", "/projetos");
 
+    const contextTransition = main.locator(".context-transition");
     await expect(
-      main.getByRole("heading", {
-        level: 1,
-        name: "Encontre o contexto certo para avançar.",
-      }),
-    ).toBeVisible();
-
-    const segmentRouter = main.getByRole("region", {
-      name: "Escolha seu contexto",
-    });
-
-    await expect(segmentRouter.getByText(
-      "Siga pela experiência que corresponde ao contexto do seu projeto.",
-      { exact: true },
-    )).toBeVisible();
-    await expect(segmentRouter.getByText(
-      "Explore a jornada destinada a necessidades em contexto residencial.",
-      { exact: true },
-    )).toBeVisible();
-    await expect(segmentRouter.getByText(
-      "Explore a jornada destinada a contextos corporativos ou institucionais.",
-      { exact: true },
-    )).toBeVisible();
-
-    await expect(
-      segmentRouter.getByRole("link", {
-        name: "Explorar Residencial",
-      }),
+      contextTransition.getByRole("link", { name: /Residencial/ }),
     ).toHaveAttribute("href", "/servicos");
-
     await expect(
-      segmentRouter.getByRole("link", {
-        name: "Explorar Corporativo / Institucional",
-      }),
+      contextTransition.getByRole("link", { name: /Corporativo \/ Institucional/ }),
     ).toHaveAttribute("href", "/corporativo");
 
+    const capabilities = main.locator(".capabilities");
+    for (const capability of ["Piscinas", "Sauna", "Lazer", "Reforma", "Vazamento", "Fibra"]) {
+      await expect(capabilities.getByText(capability)).toBeVisible();
+    }
+
     await expect(
-      main.getByRole("link", {
-        name: "Explorar Projetos",
-      }),
+      main.locator(".proof-stage").getByRole("link", { name: "Ver Acervo" }),
     ).toHaveAttribute("href", "/projetos");
-    await expect(main.getByText(
-      "Acesse a área de Projetos para consultar os projetos atualmente disponíveis.",
-      { exact: true },
-    )).toBeVisible();
 
     await expect(
-      main.getByRole("link", {
-        name: "Conhecer Método Royal",
-      }),
+      main.locator(".method-stage").getByRole("link", { name: "Conhecer o método" }),
     ).toHaveAttribute("href", "/metodo-royal");
-    await expect(main.getByText(
-      "Acesse a seção Método Royal e continue explorando os contextos de projeto.",
-      { exact: true },
-    )).toBeVisible();
 
-    await expect(
-      main.getByRole("link", {
-        name: "Conhecer A Royal",
-      }),
-    ).toHaveAttribute("href", "/sobre");
-    await expect(main.getByText(
-      "Acesse a seção A Royal e encontre caminhos para Projetos, Método Royal e contato.",
-      { exact: true },
-    )).toBeVisible();
-
-    const qualifiedActions = main.getByRole("link", {
-      name: "Inicie seu projeto",
-      exact: true,
-    });
-
-    await expect(qualifiedActions).toHaveCount(2);
-
-    for (let index = 0; index < 2; index += 1) {
-      await expect(
-        qualifiedActions.nth(index),
-      ).toHaveAttribute(
-        "href",
-        "/inicie-seu-projeto",
-      );
-    }
-
-    await expect(
-      main.getByRole("link", {
-        name: "Contato e canais auxiliares",
-      }),
-    ).toHaveAttribute("href", "/contato");
-
-    const entryAction = entry.getByRole("link", { name: "Inicie seu projeto", exact: true });
-    const finalStage = main.locator('[data-home-stage="qualified-action"]');
-    const finalAction = finalStage.getByRole("link", { name: "Inicie seu projeto", exact: true });
-    await expect(finalStage.getByText(
-      "Quando fizer sentido avançar, compartilhe informações sobre seu projeto e seus dados de contato.",
-      { exact: true },
-    )).toBeVisible();
-    await expect(entryAction).toHaveAttribute("data-analytics-component", "home_entry");
-    await expect(finalAction).toHaveAttribute("data-analytics-component", "home_qualified_action");
-    for (const action of [entryAction, finalAction]) {
-      await expect(action).toHaveAttribute("data-analytics-subject", "project_start");
-      await expect(action).toHaveAttribute("data-analytics-channel", "site_form");
-    }
+    const homeFinal = main.locator(".home-final");
+    const finalAction = homeFinal.getByRole("link", { name: "Fale com a Royal" });
+    await expect(finalAction).toHaveAttribute("href", "/inicie-seu-projeto");
+    await expect(finalAction).toHaveAttribute("data-analytics-subject", "project_start");
+    await expect(finalAction).toHaveAttribute("data-analytics-channel", "site_form");
   });
 
   test("activates canonical Brand typography, colors, identity, and font delivery", async ({ page }) => {
@@ -138,22 +68,22 @@ test.describe("Home Brand orchestration", () => {
     expect(response?.ok()).toBe(true);
     const body = page.locator("body");
     const heading = page.getByRole("heading", { level: 1 });
-    const finalStage = page.locator('[data-home-stage="qualified-action"]');
+    const homeFinal = page.locator(".home-final");
 
     await expect(body).toHaveAttribute("data-site-visual", "brand");
     await expect(body).toHaveClass(/site-primitive-page/);
     await expect(page.locator("[data-site-header]"))
       .toHaveAttribute("data-site-header-visual", "brand");
-    await expect(page.locator('img[src="/brand/identity/signatures/royal-splash-signature-h1-gold.svg"]'))
+    await expect(page.locator("[data-site-header]").locator('img[src="/brand/identity/signatures/royal-splash-signature-h1-gold.svg"]'))
       .toBeVisible();
-    await expect(heading).toHaveText("Encontre o contexto certo para avançar.");
+    await expect(heading).toHaveText("Água como parte da arquitetura.");
     await expect(heading).toHaveCSS("font-family", /Cormorant Garamond/);
-    await expect(page.locator('[data-home-stage="entry"] > p').last())
+    await expect(page.locator('[data-home-stage="entry"] .cinematic-hero__content > p:not(.kicker)'))
       .toHaveCSS("font-family", /Hanken Grotesk/);
     await expect(body).toHaveCSS("background-color", "rgb(250, 249, 246)");
     await expect(body).toHaveCSS("color", "rgb(18, 23, 28)");
-    await expect(finalStage).toHaveCSS("background-color", "rgb(18, 23, 28)");
-    await expect(finalStage).toHaveCSS("color", "rgb(255, 255, 255)");
+    await expect(homeFinal).toHaveCSS("background-color", "rgb(18, 23, 28)");
+    await expect(homeFinal).toHaveCSS("color", "rgb(255, 255, 255)");
     expect(brandFontRequests.some((url) => url.includes("HankenGrotesk"))).toBe(true);
     expect(brandFontRequests.some((url) => url.includes("CormorantGaramond"))).toBe(true);
   });
@@ -170,7 +100,7 @@ test.describe("Home Brand orchestration", () => {
 
     const entry = page.locator('[data-home-stage="entry"]');
     const primary = entry.getByRole("link", { name: "Inicie seu projeto", exact: true });
-    const secondary = entry.getByRole("link", { name: "Ver Projetos" });
+    const secondary = entry.getByRole("link", { name: "Explorar projetos" });
     await primary.focus();
     await expect(primary).toBeFocused();
     expect(await primary.evaluate((element) => getComputedStyle(element).outlineStyle)).not.toBe("none");
@@ -188,12 +118,11 @@ test.describe("Home Brand orchestration", () => {
       await page.goto("/");
       await expect(page.getByRole("heading", {
         level: 1,
-        name: "Encontre o contexto certo para avançar.",
+        name: "Água como parte da arquitetura.",
       })).toBeVisible();
-      await expect(page.locator('[data-home-stage="entry"] .site-primitive-actions')).toBeVisible();
-      await expect(page.locator("[data-segment-router] .segment-router__options")).toBeVisible();
-      await expect(page.locator('[data-home-stage="method-trust"] .home-bridge-grid')).toBeVisible();
-      await expect(page.locator('[data-home-stage="qualified-action"]')).toBeVisible();
+      await expect(page.locator('[data-home-stage="entry"] .actions')).toBeVisible();
+      await expect(page.locator(".context-transition")).toBeVisible();
+      await expect(page.locator(".home-final")).toBeVisible();
       expect(await page.evaluate(() =>
         document.documentElement.scrollWidth <= document.documentElement.clientWidth,
       )).toBe(true);
@@ -218,5 +147,65 @@ test.describe("Home Brand orchestration", () => {
     expect(
       accessibilityScanResults.violations,
     ).toEqual([]);
+  });
+
+  test("hero H1 and CTA row remain in the accessibility tree and keyboard-operable at immediate load", async ({ page }) => {
+    await page.goto("/", { waitUntil: "domcontentloaded" });
+
+    const results = await new AxeBuilder({ page })
+      .withRules(["page-has-heading-one"])
+      .analyze();
+    expect(results.violations).toEqual([]);
+
+    const heading = page.getByRole("heading", { level: 1 });
+    const entry = page.locator('[data-home-stage="entry"]');
+    const actions = entry.locator(".actions");
+    const primary = actions.getByRole("link", { name: "Inicie seu projeto", exact: true });
+    const secondary = actions.getByRole("link", { name: "Explorar projetos" });
+
+    // Never removed from the accessibility tree (visibility never toggles
+    // to "hidden"), regardless of where the entrance fade currently is.
+    expect(await heading.evaluate((el) => getComputedStyle(el).visibility)).toBe("visible");
+    expect(await actions.evaluate((el) => getComputedStyle(el).visibility)).toBe("visible");
+
+    // Interactive and reachable by keyboard immediately, even mid-fade.
+    await primary.focus();
+    await expect(primary).toBeFocused();
+    await expect(primary).toHaveAttribute("href", "/inicie-seu-projeto");
+    await page.keyboard.press("Tab");
+    await expect(secondary).toBeFocused();
+  });
+
+  test("hero entrance animation still fades the CTA row in without ever hiding it, and settles at full opacity", async ({ page }) => {
+    await page.goto("/", { waitUntil: "domcontentloaded" });
+
+    const actions = page.locator('[data-home-stage="entry"] .actions');
+
+    // Poll across the ~1.3s entrance timeline: visibility must never drop
+    // to "hidden" at any sampled point, proving the CTA row is exposed to
+    // assistive tech throughout the cinematic fade, not just at the end.
+    for (let elapsed = 0; elapsed <= 1400; elapsed += 200) {
+      const visibility = await actions.evaluate((el) => getComputedStyle(el).visibility);
+      expect(visibility).toBe("visible");
+      if (elapsed < 1400) await page.waitForTimeout(200);
+    }
+
+    const finalOpacity = await actions.evaluate((el) => Number(getComputedStyle(el).opacity));
+    expect(finalOpacity).toBe(1);
+  });
+
+  test("reduced motion renders the hero CTA row fully opaque and visible immediately", async ({ browser }) => {
+    const context = await browser.newContext({ reducedMotion: "reduce" });
+    const page = await context.newPage();
+    await page.goto("/");
+
+    const actions = page.locator('[data-home-stage="entry"] .actions');
+    const style = await actions.evaluate((el) => {
+      const computed = getComputedStyle(el);
+      return { opacity: computed.opacity, visibility: computed.visibility };
+    });
+
+    expect(style).toEqual({ opacity: "1", visibility: "visible" });
+    await context.close();
   });
 });

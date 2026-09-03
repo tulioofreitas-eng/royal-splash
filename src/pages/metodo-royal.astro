@@ -1,169 +1,124 @@
 ---
 import SiteHeader from "../components/site/SiteHeader.astro";
 import SiteLayout from "../layouts/SiteLayout.astro";
+import understanding from "../assets/metodo-process-entendimento.png";
+import scope from "../assets/metodo-process-escopo.png";
+import work from "../assets/metodo-process-obra-supervisionada.png";
+import delivery from "../assets/metodo-process-entrega.png";
+import "../styles/complete-experience.css";
+
+const steps = [
+  {
+    number: "01",
+    phase: "Entendimento",
+    heading: "Primeira conversa",
+    items: [
+      "O que o projeto envolve e qual é a condição atual.",
+      "Contexto residencial, corporativo ou institucional.",
+      "Escala, prazo e restrições já conhecidas.",
+      "Questões específicas que precisam de atenção.",
+    ],
+    image: understanding,
+    alt: "Conversa de entendimento do projeto junto às plantas, com escuta e registro das necessidades",
+  },
+  {
+    number: "02",
+    phase: "Escopo",
+    heading: "Clareza técnica",
+    items: [
+      "Definição técnica da solução, dos materiais e sistemas.",
+      "Fases e cronograma compatíveis com o contexto.",
+      "Responsabilidades e próximos passos claros.",
+      "Pontos que ainda precisam ser resolvidos antes da obra.",
+    ],
+    image: scope,
+    alt: "Definição técnica do escopo com planta, materiais, régua de medição e calculadora",
+  },
+  {
+    number: "03",
+    phase: "Obra",
+    heading: "Execução acompanhada",
+    items: [
+      "Acompanhamento das fases previstas.",
+      "Comunicação sobre avanço e questões da execução.",
+      "Atenção a materiais, procedimentos e integração.",
+      "Alterações de escopo tratadas com clareza.",
+    ],
+    image: work,
+    alt: "Construção de piscina acompanhada por supervisor técnico de capacete e tablet",
+  },
+  {
+    number: "04",
+    phase: "Entrega",
+    heading: "Conclusão e apoio",
+    items: [
+      "Inspeção final e verificação de funcionamento.",
+      "Orientações de uso e cuidados específicos.",
+      "Entrega conforme o escopo acordado.",
+      "Canal aberto para dúvidas após a conclusão.",
+    ],
+    image: delivery,
+    alt: "Inspeção final de piscina concluída com checklist de entrega e orientação",
+  },
+];
 ---
 
-<SiteLayout
-  title="Método Royal — Royal Splash"
-  robots="noindex, nofollow"
-  bodyClass="site-brand-method site-primitive-page"
-  visualMode="brand"
->
+<SiteLayout title="Método Royal — Royal Splash" robots="noindex, nofollow" bodyClass="site-primitive-page experience-page" visualMode="brand">
   <SiteHeader slot="header" visualMode="brand" />
 
-  <section
-    class="method-section method-entry site-primitive-section site-primitive-section--entry"
-    aria-labelledby="method-heading"
-    data-method-stage="entry"
-  >
-    <p class="method-eyebrow site-primitive-eyebrow site-primitive-supporting">
-      Método Royal
-    </p>
+  <section class="experience-entry" aria-labelledby="method-heading">
+    <p class="experience-kicker">Método Royal</p>
+    <h1 id="method-heading">Como a conversa se organiza em execução.</h1>
+    <p class="experience-lead">Quatro fases legíveis, do primeiro contato até a entrega.</p>
+  </section>
 
-    <h1 id="method-heading" class="site-primitive-page-title site-primitive-reading">
-      Método Royal
-    </h1>
-
-    <p class="site-primitive-body site-primitive-supporting site-primitive-reading">
-      Acesse os contextos Residencial e Corporativo / Institucional,
-      consulte Projetos e escolha o próximo passo para seu projeto.
-    </p>
-
-    <div class="method-actions site-primitive-actions">
-      <a class="site-primitive-action site-primitive-action--tertiary" href="/projetos">
-        Ver Projetos
-      </a>
-
-      <a class="site-primitive-action site-primitive-action--tertiary" href="/sobre">
-        Conhecer A Royal
-      </a>
+  <section class="experience-section" aria-labelledby="process-heading">
+    <div class="experience-section__intro method-process-intro">
+      <h2 id="process-heading">Entendimento → Escopo → Obra → Entrega</h2>
     </div>
+
+    <ol class="method-depth">
+      {steps.map(({ number, phase, heading, items, image, alt }) => (
+        <li data-method-step={number}>
+          <div class="method-depth__copy">
+            <span>{number} / {phase}</span>
+            <h3>{heading}</h3>
+            <ul>{items.map((item) => <li>{item}</li>)}</ul>
+          </div>
+          <img src={image.src} width={image.width} height={image.height} alt={alt} loading={number === "01" ? "eager" : "lazy"} decoding="async" />
+        </li>
+      ))}
+    </ol>
   </section>
 
-  <section
-    class="method-section site-primitive-section site-primitive-datum-top"
-    aria-labelledby="method-context-heading"
-    data-method-stage="context"
-  >
-    <h2 id="method-context-heading" class="site-primitive-section-title">
-      Contexto antes do processo
-    </h2>
-
-    <p class="site-primitive-body site-primitive-supporting site-primitive-reading">
-      Comece escolhendo o contexto que corresponde
-      ao seu projeto.
-    </p>
-
-    <div class="method-links site-primitive-actions">
-      <a class="site-primitive-action site-primitive-action--tertiary" href="/servicos">
-        Explorar Residencial
-      </a>
-
-      <a class="site-primitive-action site-primitive-action--tertiary" href="/corporativo">
-        Explorar Corporativo / Institucional
-      </a>
-    </div>
-  </section>
-
-  <section
-    class="method-section site-primitive-section site-primitive-datum-top"
-    aria-labelledby="method-controlled-heading"
-    data-method-stage="controlled-method"
-  >
-    <h2 id="method-controlled-heading" class="site-primitive-section-title">
-      Caminhos para seu projeto
-    </h2>
-
-    <p class="site-primitive-body site-primitive-supporting site-primitive-reading">
-      Escolha entre os contextos Residencial e Corporativo / Institucional
-      para encontrar o caminho adequado no site.
-    </p>
-
-    <p class="site-primitive-body site-primitive-supporting site-primitive-reading">
-      Você também pode consultar Projetos ou iniciar seu projeto.
-    </p>
-  </section>
-
-  <section
-    class="method-section site-primitive-section site-primitive-datum-top"
-    aria-labelledby="method-proof-heading"
-    data-method-stage="proof"
-  >
-    <h2 id="method-proof-heading" class="site-primitive-section-title">
-      Projetos
-    </h2>
-
-    <p class="site-primitive-body site-primitive-supporting site-primitive-reading">
-      Consulte a área de Projetos para ver os projetos
-      atualmente disponíveis.
-    </p>
-
-    <a class="site-primitive-action site-primitive-action--tertiary" href="/projetos">
-      Explorar Projetos
-    </a>
-  </section>
-
-  <section
-    class="method-section method-conversion site-primitive-section site-primitive-surface--dark"
-    aria-labelledby="method-action-heading"
-    data-method-stage="qualified-action"
-  >
-    <h2 id="method-action-heading" class="site-primitive-section-title">
-      Avance com o contexto do seu projeto
-    </h2>
-
-    <p class="site-primitive-body site-primitive-reading">
-      Quando estiver pronto, compartilhe informações sobre
-      o projeto e seus dados de contato.
-    </p>
-
-    <div class="method-actions site-primitive-actions">
-      <a
-        class="method-primary-action site-primitive-action site-primitive-action--primary"
-        href="/inicie-seu-projeto"
-        data-analytics-cta
-        data-analytics-component="royal_method"
-        data-analytics-subject="project_start"
-        data-analytics-channel="site_form"
-      >
-        Inicie seu projeto
-      </a>
-
-      <a class="site-primitive-action site-primitive-action--tertiary" href="/contato">
-        Contato e canais auxiliares
-      </a>
+  <section class="experience-conversion" aria-labelledby="method-conversion">
+    <p class="experience-kicker">Primeira conversa</p>
+    <h2 id="method-conversion">Traga o contexto. A conversa organiza o próximo passo.</h2>
+    <div class="experience-links">
+      <a class="site-primitive-action site-primitive-action--primary" href="https://wa.me/5521982590643" target="_blank" rel="noopener noreferrer">Conversar no WhatsApp</a>
+      <a class="site-primitive-action site-primitive-action--tertiary" href="/projetos">Ver Acervo</a>
     </div>
   </section>
 </SiteLayout>
 
 <style>
-  .method-eyebrow {
-    margin-block: 0 var(--site-space-4);
+  .method-process-intro { display: block; }
+  .method-process-intro h2 { max-width: none; text-wrap: balance; }
+  .method-depth { margin: 0; padding: 0; list-style: none; }
+  .method-depth > li { display: grid; gap: 1.5rem; padding: clamp(2rem, 5vw, 4rem) 0; border-top: 1px solid var(--site-color-divider); }
+  .method-depth__copy > span { color: #6f5500; font: 600 0.75rem var(--site-font-ui); letter-spacing: 0.08em; }
+  .method-depth h3 { margin: 0.6rem 0 1.2rem; font: 500 clamp(2rem, 4vw, 3.5rem) / 1 var(--site-font-display); }
+  .method-depth ul { padding-left: 1.2rem; color: var(--site-color-text-secondary); }
+  .method-depth ul li { margin: 0.6rem 0; }
+  .method-depth img { display: block; width: 100%; height: auto; object-fit: contain; }
+
+  @media (min-width: 48rem) {
+    .method-depth > li { grid-template-columns: 1fr 1fr; align-items: center; }
+    .method-depth > li:nth-child(even) img { grid-column: 1; grid-row: 1; }
+    .method-depth > li:nth-child(even) .method-depth__copy { grid-column: 2; }
   }
 
-  .method-entry .site-primitive-page-title,
-  .method-section .site-primitive-section-title {
-    margin-block: 0 var(--site-space-5);
-  }
-
-  .method-section > p {
-    margin-block: 0;
-  }
-
-  .method-section > .site-primitive-action {
-    margin-block-start: var(--site-space-6);
-  }
-
-  .method-conversion {
-    margin-block-end: var(--site-space-8);
-    padding: var(--site-space-7);
-    border-block-start: 3px solid var(--site-color-accent-on-dark);
-  }
-
-  @media (max-width: 30rem) {
-    .method-conversion {
-      margin-block-end: var(--site-space-6);
-      padding-inline: var(--site-space-5);
-    }
+  @media (min-width: 64rem) {
+    .method-process-intro h2 { font-size: clamp(3rem, 4.25vw, 3.8rem); white-space: nowrap; }
   }
 </style>

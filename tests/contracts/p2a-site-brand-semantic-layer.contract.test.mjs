@@ -152,6 +152,7 @@ test("only approved pages opt into Site Brand mode", async () => {
 
   assert.deepEqual(optIns.sort(), [
     "src/pages/404.astro",
+    "src/pages/contato.astro",
     "src/pages/index.astro",
     "src/pages/lp/fibra.astro",
     "src/pages/lp/corporativo.astro",
@@ -162,6 +163,7 @@ test("only approved pages opt into Site Brand mode", async () => {
     "src/pages/lp/vazamento.astro",
     "src/pages/inicie-seu-projeto.astro",
     "src/pages/metodo-royal.astro",
+    "src/pages/politica-de-privacidade.astro",
     "src/pages/projetos.astro",
     "src/pages/projetos/[slug].astro",
     "src/pages/sobre.astro",

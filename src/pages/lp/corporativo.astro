@@ -6,12 +6,14 @@ import GTMBody from '../../components/GTMBody.astro';
 import LPHeader from '../../components/LPHeader.astro';
 import LPFooter from '../../components/LPFooter.astro';
 import BotaoWhatsapp from '../../components/BotaoWhatsapp.astro';
-import FormularioGHL from '../../components/FormularioGHL.astro';
+import CorporativoWhatsAppForm from '../../components/lp/CorporativoWhatsAppForm.astro';
 import Icon from '../../components/Icon.astro';
 import { Image } from 'astro:assets';
 import corpOlimpica from '../../assets/corp-olimpica.jpg';
 import corpHotel from '../../assets/corp-hotel.jpg';
 import corpManutencao from '../../assets/corp-manutencao.jpg';
+import corpRevestimento from '../../assets/corp-revestimento.jpg';
+import GaleriaZoom from '../../components/GaleriaZoom.astro';
 ---
 
 <LandingLayout title="Soluções Corporativas em Piscinas — Royal Splash" description="Piscinas olímpicas, áreas de lazer para hotéis e manutenção expressa. Soluções para hotéis, resorts, clubes e academias." robots="noindex, nofollow" visualMode="brand" bodyClass="site-brand-lp-corporativo site-primitive-page">
@@ -24,50 +26,142 @@ import corpManutencao from '../../assets/corp-manutencao.jpg';
     <Image src={corpHotel} alt="Áreas de lazer corporativas" widths={[390, 640, 768, 1024, 1280, 1536, 1792, 2400]} sizes="100vw" priority class="corporativo-hero__image" />
     <div class="corporativo-hero__veil"></div>
     <div class="corporativo-hero__content">
-      <h1 class="site-primitive-page-title">Piscinas e áreas de lazer para elevar o padrão do seu negócio</h1>
-      <p class="site-primitive-body">Soluções completas para hotéis, resorts, clubes e academias, do projeto à manutenção.</p>
-      <div class="site-primitive-actions"><a href="#orcamento" class="site-primitive-action site-primitive-action--primary">Solicitar proposta sob medida</a></div>
-    </div>
-  </section>
-
-  <section class="corporativo-capabilities site-primitive-surface--light site-primitive-datum-bottom">
-    <div class="site-primitive-section site-primitive-section--entry">
-      <div class="corporativo-capabilities__heading">
-        <h2 class="site-primitive-display">Soluções para o seu negócio</h2>
-        <p class="site-primitive-body site-primitive-supporting">Infraestrutura profissional, acabamento de padrão internacional e operação sem interrupções.</p>
-      </div>
-      <div class="corporativo-capabilities__list">
-        <article class="corporativo-capability">
-          <div class="corporativo-capability__media"><Image src={corpOlimpica} alt="Piscinas olímpicas e complexos aquáticos" widths={[340, 480, 640, 768, 960]} sizes="(min-width: 1072px) 480px, (min-width: 768px) calc(50vw - 3.5rem), calc(100vw - 3rem)" class="corporativo-capability__image" /></div>
-          <div class="corporativo-capability__content"><h3 class="site-primitive-subtitle">Piscinas Olímpicas e Complexos Aquáticos</h3><p class="site-primitive-body site-primitive-supporting">Projetamos e executamos piscinas semiolímpicas, olímpicas e recreativas, para clubes, escolas, academias e centros esportivos.</p></div>
-        </article>
-        <article class="corporativo-capability corporativo-capability--reverse">
-          <div class="corporativo-capability__media"><Image src={corpHotel} alt="Áreas de lazer para hotéis e resorts" widths={[340, 480, 640, 768, 960]} sizes="(min-width: 1072px) 480px, (min-width: 768px) calc(50vw - 3.5rem), calc(100vw - 3rem)" class="corporativo-capability__image" /></div>
-          <div class="corporativo-capability__content"><h3 class="site-primitive-subtitle">Áreas de Lazer para Hotéis e Resorts</h3><p class="site-primitive-body site-primitive-supporting">Transformamos ambientes externos em diferenciais de experiência para os hóspedes: piscinas sofisticadas, spas, saunas, decks e áreas molhadas.</p><p class="site-primitive-body site-primitive-supporting">Paisagismo integrado, com padrão internacional de acabamento.</p></div>
-        </article>
-        <article class="corporativo-capability">
-          <div class="corporativo-capability__media"><Image src={corpManutencao} alt="Manutenção expressa de piscinas" widths={[340, 480, 640, 768, 960]} sizes="(min-width: 1072px) 480px, (min-width: 768px) calc(50vw - 3.5rem), calc(100vw - 3rem)" class="corporativo-capability__image" /></div>
-          <div class="corporativo-capability__content"><h3 class="site-primitive-subtitle">Manutenção Expressa</h3><p class="site-primitive-body site-primitive-supporting">Recuperação emergencial da qualidade da água para estabelecimentos que não podem parar. Técnicas avançadas e produtos específicos.</p></div>
-        </article>
+      <h1 class="site-primitive-page-title">Soluções Corporativas</h1>
+      <p class="site-primitive-body">Piscinas, spas e áreas de lazer de alto padrão para hotéis, resorts, clubes e academias.</p>
+      <div class="site-primitive-actions">
+        <a href="#orcamento" class="site-primitive-action site-primitive-action--primary">Falar com um especialista</a>
       </div>
     </div>
   </section>
 
-  <section class="corporativo-trust site-primitive-surface--muted site-primitive-datum-bottom">
+  <!-- Editorial Block + Services + Gallery -->
+  <section class="corporativo-narrative site-primitive-surface--light site-primitive-datum-bottom">
+    <div class="site-primitive-section site-primitive-section--entry corporativo-narrative__layout">
+      <div class="corporativo-narrative__copy">
+        <h2 class="site-primitive-display">Estrutura e tecnologia para demandas empresariais</h2>
+        <div class="site-primitive-reading">
+          <p class="site-primitive-body site-primitive-supporting">A Royal Splash atende hotéis, clubes, resorts, escolas de natação e condomínios que exigem execução impecável, cumprimento rigoroso de cronograma e respeito às normas técnicas de segurança e acessibilidade.</p>
+        </div>
+        
+        <ul class="corporativo-narrative__scope">
+          <li><Icon name="check" class="corporativo-narrative__icon" /> Projetos com padrão internacional</li>
+          <li><Icon name="check" class="corporativo-narrative__icon" /> Adequação a normas de acessibilidade</li>
+        </ul>
+      </div>
+      
+      <div class="corporativo-gallery">
+        <GaleriaZoom imagens={[
+          { src: corpOlimpica, alt: 'Piscinas Olímpicas e Complexos Aquáticos' },
+          { src: corpHotel, alt: 'Áreas de Lazer para Hotéis e Resorts' },
+          { src: corpRevestimento, alt: 'Substituição Submersa de Revestimentos' },
+          { src: corpManutencao, alt: 'Manutenção Expressa' },
+        ]} />
+      </div>
+    </div>
+  </section>
+
+  <!-- Nossos Serviços -->
+  <section class="corporativo-services site-primitive-surface--muted site-primitive-datum-both">
+    <div class="site-primitive-section">
+      <h2 class="site-primitive-section-title">Nossos Serviços</h2>
+      <div class="corporativo-services__list">
+        <article class="corporativo-service">
+          <Icon name="droplet" class="corporativo-service__icon" />
+          <div>
+            <h3 class="site-primitive-subtitle">Piscinas Olímpicas e Complexos Aquáticos</h3>
+            <p class="site-primitive-body site-primitive-supporting">Projetamos e executamos piscinas semiolímpicas, olímpicas e recreativas para clubes, escolas, academias e centros esportivos.</p>
+          </div>
+        </article>
+        <article class="corporativo-service">
+          <Icon name="sun" class="corporativo-service__icon" />
+          <div>
+            <h3 class="site-primitive-subtitle">Áreas de Lazer para Hotéis e Resorts</h3>
+            <p class="site-primitive-body site-primitive-supporting">Transformamos ambientes externos em diferenciais de experiência: piscinas, spas e saunas com paisagismo integrado.</p>
+          </div>
+        </article>
+        <article class="corporativo-service">
+          <Icon name="wrench" class="corporativo-service__icon" />
+          <div>
+            <h3 class="site-primitive-subtitle">Substituição Submersa de Revestimentos</h3>
+            <p class="site-primitive-body site-primitive-supporting">Troca de azulejos e revestimentos com a piscina cheia, evitando esvaziamento e minimizando a interrupção da operação.</p>
+          </div>
+        </article>
+        <article class="corporativo-service">
+          <Icon name="clock" class="corporativo-service__icon" />
+          <div>
+            <h3 class="site-primitive-subtitle">Manutenção Expressa</h3>
+            <p class="site-primitive-body site-primitive-supporting">Recuperação emergencial da água com técnicas avançadas para estabelecimentos que não podem parar a operação.</p>
+          </div>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <!-- Por que a Royal Splash? -->
+  <section class="corporativo-trust site-primitive-surface--light site-primitive-datum-bottom">
     <div class="site-primitive-section">
       <h2 class="site-primitive-section-title">Por que empresas confiam na Royal Splash?</h2>
       <div class="corporativo-trust__list">
-        <article class="corporativo-trust__entry"><Icon name="users" class="corporativo-trust__icon" /><div><h3 class="site-primitive-subtitle font-semibold mb-1">Atendimento Dedicado</h3><p class="site-primitive-body site-primitive-supporting">Consultoria exclusiva do projeto à entrega.</p></div></article>
-        <article class="corporativo-trust__entry"><Icon name="cpu" class="corporativo-trust__icon" /><div><h3 class="site-primitive-subtitle font-semibold mb-1">Padrão Internacional</h3><p class="site-primitive-body site-primitive-supporting">Acabamento e tecnologia à altura da sua marca.</p></div></article>
+        <article class="corporativo-trust__entry">
+          <Icon name="users" class="corporativo-trust__icon" />
+          <div>
+            <h3 class="site-primitive-subtitle font-semibold mb-1">Atendimento Dedicado</h3>
+            <p class="site-primitive-body site-primitive-supporting">Consultoria exclusiva do projeto à entrega.</p>
+          </div>
+        </article>
+        <article class="corporativo-trust__entry">
+          <Icon name="cpu" class="corporativo-trust__icon" />
+          <div>
+            <h3 class="site-primitive-subtitle font-semibold mb-1">Padrão Internacional</h3>
+            <p class="site-primitive-body site-primitive-supporting">Acabamento e tecnologia à altura da sua marca.</p>
+          </div>
+        </article>
       </div>
     </div>
   </section>
 
-  <section class="corporativo-cta site-primitive-surface--dark"><div class="site-primitive-section"><h2 class="site-primitive-display">Vamos elevar o padrão do seu negócio?</h2><div class="site-primitive-actions"><a href="#orcamento" class="site-primitive-action site-primitive-action--primary">Falar com nossa equipe</a></div></div></section>
+  <!-- FAQ -->
+  <section class="corporativo-faq site-primitive-surface--muted site-primitive-datum-bottom">
+    <div class="site-primitive-section corporativo-faq__layout">
+      <h2 class="site-primitive-display">Perguntas frequentes</h2>
+      <div class="corporativo-faq__list">
+        {[
+          { pergunta: 'A Royal Splash atende projetos corporativos de que tipo?', resposta: 'A Royal Splash atende hotéis, clubes, resorts, escolas de natação e condomínios.' },
+          { pergunta: 'Vocês executam piscinas olímpicas e semiolímpicas?', resposta: 'Sim. Projetamos e executamos piscinas semiolímpicas, olímpicas e recreativas para academias e centros esportivos.' },
+          { pergunta: 'A Royal Splash oferece serviço de manutenção para empresas?', resposta: 'Sim. Oferecemos manutenção expressa e recuperação emergencial da qualidade da água para estabelecimentos que não podem parar.' },
+          { pergunta: 'O atendimento é exclusivo para o projeto?', resposta: 'Sim. Oferecemos consultoria exclusiva do projeto à entrega, com atendimento dedicado.' },
+          { pergunta: 'É possível trocar azulejos ou revestimentos sem esvaziar a piscina?', resposta: 'Sim. Nossa equipe realiza a substituição submersa de revestimentos com a piscina cheia, evitando o esvaziamento desnecessário e preservando a operação do ambiente.' },
+        ].map((item) => (
+          <details class="corporativo-faq__item">
+            <summary class="site-primitive-subtitle">
+              {item.pergunta}
+              <span aria-hidden="true">+</span>
+            </summary>
+            <p class="site-primitive-body site-primitive-supporting">{item.resposta}</p>
+          </details>
+        ))}
+      </div>
+    </div>
+  </section>
 
+  <!-- Dark CTA -->
+  <section class="corporativo-cta site-primitive-surface--dark">
+    <div class="site-primitive-section">
+      <h2 class="site-primitive-display">Vamos elevar o padrão do seu negócio?</h2>
+      <p class="site-primitive-body site-primitive-supporting">Invista em estrutura e tecnologia corporativa com a Royal Splash.</p>
+      <div class="site-primitive-actions">
+        <a href="#orcamento" class="site-primitive-action site-primitive-action--primary">Falar com nossa equipe</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Formulário -->
   <section id="orcamento" class="site-primitive-section corporativo-form">
-    <div class="site-primitive-reading corporativo-form__heading"><h2 class="site-primitive-section-title">Solicite uma Proposta</h2><p class="site-primitive-body site-primitive-supporting">Preencha os dados abaixo e nossa equipe entrará em contato para entender seu projeto em detalhes.</p></div>
-    <FormularioGHL />
+    <div class="site-primitive-reading corporativo-form__heading">
+      <h2 class="site-primitive-section-title">Solicite seu Orçamento</h2>
+      <p class="site-primitive-body site-primitive-supporting">Compartilhe o contexto que já souber e abra uma conversa estruturada com a equipe Royal Splash pelo WhatsApp.</p>
+    </div>
+    <CorporativoWhatsAppForm />
   </section>
 
   <LPFooter slot="footer" visualMode="brand" />
@@ -75,47 +169,72 @@ import corpManutencao from '../../assets/corp-manutencao.jpg';
 </LandingLayout>
 
 <style>
-  .corporativo-hero { position: relative; display: grid; min-height: max(42rem, 100svh); isolation: isolate; }
+  .corporativo-narrative__layout { display: grid; grid-template-columns: minmax(18rem, 0.85fr) minmax(0, 1.15fr); gap: var(--site-space-8); align-items: center; }
+  .corporativo-narrative h2, .corporativo-narrative p { margin-block-start: 0; }
+  .corporativo-narrative .site-primitive-reading { margin-block-start: var(--site-space-6); }
+  .corporativo-narrative__scope { display: grid; gap: var(--site-space-3); margin: var(--site-space-7) 0 0; padding: var(--site-space-6) 0 0; border-block-start: 1px solid var(--site-color-divider); list-style: none; }
+  .corporativo-narrative__scope li { display: flex; gap: var(--site-space-3); align-items: center; }
+  :global(.corporativo-narrative__icon) { width: 1.25rem; height: 1.25rem; flex: none; color: var(--site-color-text-primary); }
+  .corporativo-gallery { min-width: 0; }
+
+  .corporativo-hero { position: relative; display: grid; min-height: max(40rem, 85svh); isolation: isolate; overflow: hidden; }
   .corporativo-hero__image, .corporativo-hero__veil { position: absolute; inset: 0; width: 100%; height: 100%; }
-  .corporativo-hero__image { z-index: -2; object-fit: cover; object-position: center; }
-  .corporativo-hero__veil { z-index: -1; background: color-mix(in srgb, var(--site-color-surface-dark) 76%, transparent); }
+  .corporativo-hero__image { z-index: -2; object-fit: cover; object-position: center 58%; }
+  .corporativo-hero__veil { z-index: -1; background: color-mix(in srgb, var(--site-color-surface-dark) 74%, transparent); }
   .corporativo-hero__content { align-self: end; width: min(calc(100% - (2 * var(--site-layout-gutter))), var(--site-layout-content-max)); margin-inline: auto; padding-block: var(--site-space-8); }
-  .corporativo-hero h1 { max-width: 16ch; margin: 0; }
-  .corporativo-hero p { max-width: 39rem; margin: var(--site-space-5) 0 0; color: var(--site-color-text-on-dark); }
-  .corporativo-hero .site-primitive-actions { margin-block-start: var(--site-space-6); }
-  .corporativo-capabilities__heading { display: grid; grid-template-columns: minmax(0, 1.15fr) minmax(18rem, 0.85fr); gap: var(--site-space-7); align-items: end; margin-block-end: var(--site-space-8); }
-  .corporativo-capabilities__heading h2, .corporativo-capabilities__heading p { margin: 0; }
-  .corporativo-capabilities__list { border-block-start: 1px solid var(--site-color-divider); }
-  .corporativo-capability { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--site-space-8); align-items: center; padding-block: var(--site-space-7); border-block-end: 1px solid var(--site-color-divider); }
-  .corporativo-capability--reverse .corporativo-capability__media { order: 2; }
-  .corporativo-capability__media { aspect-ratio: 4 / 3; overflow: hidden; }
-  .corporativo-capability__image { width: 100%; height: 100%; object-fit: cover; }
-  .corporativo-capability__content { max-width: 35rem; }
-  .corporativo-capability h3, .corporativo-capability p, .corporativo-trust h2, .corporativo-trust h3, .corporativo-trust p, .corporativo-form h2, .corporativo-form p { margin-block-start: 0; }
-  .corporativo-capability p:last-child, .corporativo-trust p, .corporativo-form p { margin-block-end: 0; }
-  .corporativo-trust .site-primitive-section { display: grid; grid-template-columns: minmax(15rem, 0.7fr) minmax(0, 1.3fr); gap: var(--site-space-8); }
-  .corporativo-trust__list { border-block-start: 1px solid var(--site-color-divider); }
-  .corporativo-trust__entry { display: grid; grid-template-columns: auto minmax(0, 1fr); gap: var(--site-space-4); padding-block: var(--site-space-5); border-block-end: 1px solid var(--site-color-divider); }
-  .corporativo-trust .site-primitive-supporting { color: var(--site-color-text-primary); }
-  :global(.corporativo-trust__icon) { width: 1.5rem; height: 1.5rem; color: var(--site-color-text-primary); }
-  .corporativo-cta .site-primitive-section { display: flex; gap: var(--site-space-7); align-items: end; justify-content: space-between; }
-  .corporativo-cta h2 { max-width: 18ch; margin: 0; }
-  .corporativo-cta .site-primitive-actions { flex: none; margin: 0; }
+  .corporativo-hero h1 { max-width: 15ch; margin: 0; }
+  .corporativo-hero p { max-width: 38rem; margin: var(--site-space-5) 0 0; color: var(--site-color-text-on-dark); }
+  
+  .corporativo-services h2, .corporativo-services h3, .corporativo-trust h2, .corporativo-trust h3, .corporativo-faq h2, .corporativo-form h2 { margin-block-start: 0; }
+  .corporativo-services h2, .corporativo-trust h2 { margin-block-end: var(--site-space-6); }
+  .corporativo-services .site-primitive-supporting { color: var(--site-color-text-primary); }
+  .corporativo-services__list { max-width: var(--site-layout-reading-max); border-block: 1px solid var(--site-color-divider); }
+  .corporativo-service { display: grid; grid-template-columns: auto minmax(0, 1fr); gap: var(--site-space-4); padding-block: var(--site-space-6); }
+  .corporativo-service + .corporativo-service { border-block-start: 1px solid var(--site-color-divider); }
+  :global(.corporativo-service__icon), :global(.corporativo-trust__icon) { width: 1.5rem; height: 1.5rem; flex: none; color: var(--site-color-text-primary); }
+  .corporativo-service p, .corporativo-trust p, .corporativo-form p { margin-block-end: 0; }
   .corporativo-form { padding-block-end: calc(var(--site-space-8) + 4.5rem); }
   .corporativo-form__heading { margin: 0 auto var(--site-space-7); text-align: center; }
+  
+  .corporativo-trust__list { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); max-width: 60rem; }
+  .corporativo-trust__entry { display: grid; grid-template-columns: auto minmax(0, 1fr); gap: var(--site-space-4); padding-block: var(--site-space-5); border-block-start: 1px solid var(--site-color-divider); }
+  .corporativo-trust__entry + .corporativo-trust__entry { margin-inline-start: var(--site-space-7); }
+  
+  .corporativo-faq__layout { display: grid; grid-template-columns: minmax(14rem, 0.7fr) minmax(0, 1.3fr); align-items: center; gap: var(--site-space-8); }
+  .corporativo-faq h2 { max-width: 12ch; margin-block-end: 0; }
+  .corporativo-faq__list { border-block-start: 1px solid var(--site-color-divider); }
+  .corporativo-faq__item { border-block-end: 1px solid var(--site-color-divider); }
+  .corporativo-faq__item summary { display: flex; justify-content: space-between; gap: var(--site-space-4); padding-block: var(--site-space-5); cursor: pointer; list-style: none; }
+  .corporativo-faq__item summary::-webkit-details-marker { display: none; }
+  .corporativo-faq__item summary span { color: var(--site-color-text-primary); transition: transform 160ms ease; }
+  .corporativo-faq__item[open] summary span { transform: rotate(45deg); }
+  .corporativo-faq__item p { margin: 0; padding: 0 0 var(--site-space-5); }
+  
+  .corporativo-cta .site-primitive-section { display: flex; flex-direction: column; align-items: flex-start; text-align: left; }
+  .corporativo-cta h2 { max-width: 28ch; margin: 0; }
+  .corporativo-cta p { margin-block-start: var(--site-space-5); margin-block-end: 0; }
+  .corporativo-cta .site-primitive-actions { margin-block-start: var(--site-space-7); align-self: flex-start; }
+  
+  
+  
   @media (max-width: 52rem) {
-    .corporativo-hero { min-height: max(42rem, 100svh); }
-    .corporativo-capabilities__heading, .corporativo-trust .site-primitive-section { grid-template-columns: 1fr; gap: var(--site-space-5); }
-    .corporativo-capability { gap: var(--site-space-6); }
-    .corporativo-cta .site-primitive-section { display: block; }
-    .corporativo-cta .site-primitive-actions { margin-block-start: var(--site-space-6); }
+    .corporativo-narrative__layout { grid-template-columns: 1fr; gap: var(--site-space-7); }
+    .corporativo-gallery { width: 100%; margin-inline: auto; }
+    .corporativo-trust__list, .corporativo-faq__layout { grid-template-columns: 1fr; }
+    .corporativo-faq__layout { align-items: stretch; gap: var(--site-space-5); }
+    .corporativo-faq h2 { max-width: none; }
+    .corporativo-trust__entry + .corporativo-trust__entry { margin-inline-start: 0; }
+    .corporativo-cta .site-primitive-section { align-items: center; text-align: center; }
+    .corporativo-cta .site-primitive-actions { align-self: center; }
   }
-  @media (max-width: 42rem) {
-    .corporativo-hero { min-height: calc(100svh + 8rem); }
+  @media (max-width: 30rem) {
+    .corporativo-hero { min-height: calc(100svh + 2rem); }
     .corporativo-hero__content { align-self: center; padding-block: var(--site-space-7); }
-    .corporativo-capability { grid-template-columns: 1fr; gap: var(--site-space-5); }
-    .corporativo-capability--reverse .corporativo-capability__media { order: initial; }
-    .corporativo-capability__media { width: calc(100% - 1rem); max-width: 21.875rem; margin-inline: auto; }
     .corporativo-form { padding-block-end: calc(var(--site-space-7) + 5rem); }
+  }
+
+  .corporativo-form__heading {
+    margin: 0 auto var(--site-space-7) !important;
+    text-align: center !important;
   }
 </style>

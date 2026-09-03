@@ -1,0 +1,169 @@
+<form class="piscinas-whatsapp-form" data-piscinas-whatsapp-form novalidate>
+  <div class="piscinas-whatsapp-form__summary" data-error-summary role="alert" tabindex="-1" hidden></div>
+
+  <div class="piscinas-whatsapp-form__field">
+    <label for="piscinas-project-name">Nome <small>Obrigatório</small></label>
+    <p id="piscinas-project-name-help">Como você prefere ser chamado?</p>
+    <input id="piscinas-project-name" name="nome" type="text" minlength="2" maxlength="100" autocomplete="name" aria-describedby="piscinas-project-name-help piscinas-project-name-error" required />
+    <p id="piscinas-project-name-error" class="piscinas-whatsapp-form__error" data-error-for="nome"></p>
+  </div>
+
+  <div class="piscinas-whatsapp-form__field">
+    <label for="piscinas-project-scale">Espaço ou necessidade <small>Opcional</small></label>
+    <p id="piscinas-project-scale-help">Conte brevemente o que já sabe sobre o espaço ou a piscina desejada.</p>
+    <textarea id="piscinas-project-scale" name="escala" maxlength="200" rows="4" aria-describedby="piscinas-project-scale-help piscinas-project-scale-count"></textarea>
+    <output id="piscinas-project-scale-count" for="piscinas-project-scale">0 / 200 caracteres</output>
+  </div>
+
+  <div class="piscinas-whatsapp-form__field">
+    <label for="piscinas-project-timeline">Prazo <small>Opcional</small></label>
+    <p id="piscinas-project-timeline-help">Quando espera começar?</p>
+    <select id="piscinas-project-timeline" name="prazo" aria-describedby="piscinas-project-timeline-help">
+      <option value="">Selecione se já souber</option>
+      <option value="urgente">Urgente (próximas semanas)</option>
+      <option value="proximos_meses">Próximos meses</option>
+      <option value="aberto">Aberto (sem prazo definido)</option>
+    </select>
+  </div>
+
+  <div class="piscinas-whatsapp-form__consent">
+    <input id="piscinas-project-consent" name="consentimento" type="checkbox" aria-describedby="piscinas-project-consent-error" required />
+    <label for="piscinas-project-consent">
+      Autorizo preparar estas informações neste navegador e abri-las no WhatsApp para iniciar uma conversa com a Royal Splash. Li a <a href="/politica-de-privacidade" target="_blank" rel="noopener noreferrer">Política de Privacidade</a>.
+    </label>
+    <p id="piscinas-project-consent-error" class="piscinas-whatsapp-form__error" data-error-for="consentimento"></p>
+  </div>
+
+  <button class="site-primitive-action site-primitive-action--primary" type="submit">Abrir conversa no WhatsApp</button>
+  <p class="piscinas-whatsapp-form__privacy">Os dados permanecem neste navegador até o handoff para o WhatsApp. Este formulário não os armazena em servidor ou CRM da Royal Splash.</p>
+</form>
+
+<div class="piscinas-whatsapp-form__fallback" data-whatsapp-fallback role="status" tabindex="-1" hidden>
+  <h3 class="site-primitive-subtitle">Sua mensagem está pronta.</h3>
+  <p data-copy-status>Se o WhatsApp não abriu, copie a mensagem abaixo e cole em uma conversa com a Royal Splash.</p>
+  <textarea data-composed-message rows="8" readonly aria-label="Mensagem preparada para o WhatsApp"></textarea>
+  <button type="button" data-copy-message>Copiar mensagem</button>
+</div>
+
+<script>
+  import {
+    buildPiscinasWhatsAppUrl,
+    composePiscinasProjectMessage,
+    type PiscinasProjectContext,
+  } from "../../utils/whatsapp-composer.ts";
+
+  const form = document.querySelector<HTMLFormElement>("[data-piscinas-whatsapp-form]");
+
+  if (form) {
+    const fields = {
+      nome: form.elements.namedItem("nome") as HTMLInputElement,
+      escala: form.elements.namedItem("escala") as HTMLTextAreaElement,
+      prazo: form.elements.namedItem("prazo") as HTMLSelectElement,
+      consentimento: form.elements.namedItem("consentimento") as HTMLInputElement,
+    };
+
+    let lastMessage = "";
+
+    const setError = (name: "nome" | "consentimento", message = "") => {
+      const field = fields[name];
+      const target = form.querySelector<HTMLElement>(`[data-error-for="${name}"]`);
+      field.setAttribute("aria-invalid", message ? "true" : "false");
+      if (target) target.textContent = message;
+    };
+
+    const validate = () => {
+      setError("nome");
+      setError("consentimento");
+
+      const errors: Array<{ field: "nome" | "consentimento"; message: string }> = [];
+      const nome = fields.nome.value.trim();
+      if (!nome) errors.push({ field: "nome", message: "Informe seu nome." });
+      else if (nome.length < 2) errors.push({ field: "nome", message: "O nome deve ter pelo menos 2 caracteres." });
+      if (!fields.consentimento.checked) errors.push({ field: "consentimento", message: "Confirme o consentimento antes de continuar." });
+
+      errors.forEach(({ field, message }) => setError(field, message));
+      const summary = form.querySelector<HTMLElement>("[data-error-summary]");
+      if (summary) {
+        summary.hidden = errors.length === 0;
+        summary.textContent = errors.length ? `Revise ${errors.length === 1 ? "o campo indicado" : "os campos indicados"}.` : "";
+      }
+      if (errors.length) fields[errors[0].field].focus();
+      return errors.length === 0;
+    };
+
+    fields.escala.addEventListener("input", () => {
+      const count = document.getElementById("piscinas-project-scale-count");
+      if (count) count.textContent = `${fields.escala.value.length} / ${fields.escala.maxLength} caracteres`;
+    });
+
+    form.addEventListener("submit", (event) => {
+      event.preventDefault();
+      if (!validate()) return;
+
+      const context: PiscinasProjectContext = {
+        nome: fields.nome.value,
+        escala: fields.escala.value,
+        prazo: fields.prazo.value as PiscinasProjectContext["prazo"],
+      };
+
+      lastMessage = composePiscinasProjectMessage(context);
+      const fallback = document.querySelector<HTMLElement>("[data-whatsapp-fallback]");
+      const composedMessage = fallback?.querySelector<HTMLTextAreaElement>("[data-composed-message]");
+      if (composedMessage) composedMessage.value = lastMessage;
+      if (fallback) fallback.hidden = false;
+
+      window.dispatchEvent(new CustomEvent("site:whatsapp-handoff-initiated", {
+        detail: {
+          componentRef: "lp_piscinas_whatsapp_form",
+          subjectRef: "piscinas",
+          channelRef: "whatsapp",
+        },
+      }));
+
+      const opened = window.open(buildPiscinasWhatsAppUrl(context), "_blank", "noopener,noreferrer");
+      if (!opened) fallback?.focus();
+    });
+
+    document.querySelector<HTMLButtonElement>("[data-copy-message]")?.addEventListener("click", async () => {
+      const status = document.querySelector<HTMLElement>("[data-copy-status]");
+      try {
+        await navigator.clipboard.writeText(lastMessage);
+        if (status) status.textContent = "Mensagem copiada. Cole o conteúdo no WhatsApp para continuar.";
+      } catch {
+        if (status) status.textContent = "Não foi possível copiar automaticamente. Selecione a mensagem e copie antes de continuar.";
+      }
+    });
+  }
+</script>
+
+<style>
+  .piscinas-whatsapp-form, .piscinas-whatsapp-form__fallback { width: min(100%, var(--site-layout-reading-max)); margin-inline: auto; }
+  .piscinas-whatsapp-form > button { display: block; margin-inline: auto; }
+  .piscinas-whatsapp-form__field { margin-block-end: var(--site-space-6); }
+  .piscinas-whatsapp-form__field label { display: flex; align-items: baseline; justify-content: space-between; gap: var(--site-space-4); font-weight: var(--site-font-weight-ui-strong); }
+  .piscinas-whatsapp-form__field label span { color: var(--site-color-required-boundary); }
+  .piscinas-whatsapp-form__field label small { color: var(--site-color-text-secondary); font-weight: var(--site-font-weight-ui); }
+  .piscinas-whatsapp-form__field > p:not(.piscinas-whatsapp-form__error) { margin: var(--site-space-2) 0 var(--site-space-3); color: var(--site-color-text-secondary); }
+  .piscinas-whatsapp-form input[type="text"], .piscinas-whatsapp-form select, .piscinas-whatsapp-form textarea, .piscinas-whatsapp-form__fallback textarea { width: 100%; min-height: 3.25rem; border: 1px solid var(--site-color-divider); border-radius: 0; padding: .8rem 1rem; background: var(--site-color-surface); color: var(--site-color-text-primary); font: inherit; }
+  .piscinas-whatsapp-form textarea { min-height: 7rem; resize: vertical; }
+  .piscinas-whatsapp-form output { display: block; margin-block-start: var(--site-space-2); color: var(--site-color-text-secondary); font-size: .8rem; text-align: right; }
+  .piscinas-whatsapp-form__consent { display: grid; grid-template-columns: 1.5rem minmax(0, 1fr); gap: var(--site-space-3); margin-block: var(--site-space-7) var(--site-space-6); }
+  .piscinas-whatsapp-form__consent input { width: 1.35rem; height: 1.35rem; margin: .15rem 0 0; }
+  .piscinas-whatsapp-form__consent a { color: inherit; text-decoration: dotted underline; text-decoration-color: var(--site-color-accent-on-dark); text-decoration-thickness: 1px; text-underline-offset: .2em; transition: text-decoration-color 160ms ease; }
+  .piscinas-whatsapp-form__consent a:hover { text-decoration-color: var(--site-color-accent-on-dark); text-decoration-style: solid; }
+  .piscinas-whatsapp-form__consent a:focus-visible { outline: 3px solid var(--site-color-required-boundary); outline-offset: 3px; }
+  .piscinas-whatsapp-form__consent .piscinas-whatsapp-form__error { grid-column: 2; }
+  .piscinas-whatsapp-form__error { min-height: 1.25rem; margin: var(--site-space-2) 0 0; color: var(--site-color-required-boundary); font-weight: var(--site-font-weight-ui-strong); }
+  .piscinas-whatsapp-form__summary { margin-block-end: var(--site-space-5); border-inline-start: 3px solid var(--site-color-required-boundary); padding: var(--site-space-4); background: var(--site-color-surface-muted); }
+  .piscinas-whatsapp-form__privacy { max-width: 42rem; margin: var(--site-space-4) 0 0; color: var(--site-color-text-secondary); font-size: .9rem; }
+  .piscinas-whatsapp-form__fallback { margin-block-start: var(--site-space-7); border-block-start: 3px solid var(--site-color-accent-on-dark); padding: var(--site-space-6); background: var(--site-color-surface-muted); }
+  .piscinas-whatsapp-form__fallback h3 { margin-block-start: 0; }
+  .piscinas-whatsapp-form__fallback textarea { display: block; margin-block: var(--site-space-4); resize: vertical; }
+  .piscinas-whatsapp-form__fallback button { min-height: 2.75rem; border: 1px solid currentColor; padding: .7rem 1rem; background: transparent; color: var(--site-color-text-primary); font: inherit; font-weight: var(--site-font-weight-ui-strong); }
+  .piscinas-whatsapp-form :is(input, select, textarea, button, a):focus-visible, .piscinas-whatsapp-form__fallback :is(textarea, button):focus-visible { outline: 3px solid var(--site-color-required-boundary); outline-offset: 3px; }
+  .piscinas-whatsapp-form [aria-invalid="true"] { border: 2px solid var(--site-color-required-boundary); }
+  @media (max-width: 30rem) {
+    .piscinas-whatsapp-form .site-primitive-action { width: 100%; }
+    .piscinas-whatsapp-form__fallback { padding: var(--site-space-5); }
+  }
+</style>

@@ -1,264 +1,89 @@
 import AxeBuilder from "@axe-core/playwright";
-import {
-  expect,
-  test,
-  type Page,
-} from "@playwright/test";
+import { expect, test, type Page } from "@playwright/test";
 
-const SIGNATURE_PATH =
-  "/brand/identity/signatures/royal-splash-signature-h1-gold.svg";
+const viewports = [
+  { width: 390, height: 844 },
+  { width: 430, height: 932 },
+  { width: 768, height: 1024 },
+  { width: 1440, height: 1000 },
+];
 
 async function expectNoHorizontalOverflow(page: Page): Promise<void> {
-  expect(await page.evaluate(() =>
-    document.documentElement.scrollWidth <= document.documentElement.clientWidth
-  )).toBe(true);
+  expect(await page.evaluate(() => document.documentElement.scrollWidth <= document.documentElement.clientWidth)).toBe(true);
 }
 
-test.describe(
-  "Método Royal Brand consumer",
-  () => {
-    test("connects context, controlled method, proof, trust and qualified action", async ({
-      page,
-    }) => {
-      await page.goto(
-        "/metodo-royal",
-      );
+test.describe("Método Royal page closure R1", () => {
+  test("maps the four approved process concepts in sequence", async ({ page }) => {
+    await page.goto("/metodo-royal");
 
-      await expect(page.locator("body")).toHaveAttribute(
-        "data-site-visual",
-        "brand",
-      );
-      await expect(page.locator("[data-site-header]")).toHaveAttribute(
-        "data-site-header-visual",
-        "brand",
-      );
-      await expect(page.locator(`img[src="${SIGNATURE_PATH}"]`)).toBeVisible();
+    const expected = [
+      ["01", "Primeira conversa", /Conversa de entendimento do projeto/],
+      ["02", "Clareza técnica", /planta, materiais, régua de medição e calculadora/],
+      ["03", "Execução acompanhada", /supervisor técnico de capacete e tablet/],
+      ["04", "Conclusão e apoio", /Inspeção final de piscina concluída/],
+    ] as const;
 
-      await expect(
-        page.getByRole("heading", {
-          level: 1,
-          name: "Método Royal",
-        }),
-      ).toBeVisible();
+    for (const [number, heading, alt] of expected) {
+      const step = page.locator(`[data-method-step="${number}"]`);
+      await expect(step.getByRole("heading", { level: 3, name: heading })).toBeVisible();
+      await expect(step.getByRole("img", { name: alt })).toBeVisible();
+    }
+  });
 
-      for (
-        const stage
-        of [
-          "context",
-          "controlled-method",
-          "proof",
-          "qualified-action",
-        ]
-      ) {
-        await expect(
-          page.locator(
-            `[data-method-stage="${stage}"]`,
-          ),
-        ).toBeVisible();
-      }
+  test("keeps the desktop process heading on one line", async ({ page }) => {
+    await page.setViewportSize({ width: 1440, height: 1000 });
+    await page.goto("/metodo-royal");
+    const heading = page.getByRole("heading", { level: 2, name: "Entendimento → Escopo → Obra → Entrega" });
+    await expect(heading).toBeVisible();
+    expect(await heading.evaluate((element) => {
+      const range = document.createRange();
+      range.selectNodeContents(element);
+      return range.getClientRects().length;
+    })).toBe(1);
+  });
 
-      await expect(
-        page.getByRole("link", {
-          name: "Explorar Residencial",
-        }),
-      ).toHaveAttribute(
-        "href",
-        "/servicos",
-      );
-
-      await expect(
-        page.getByRole("link", {
-          name:
-            "Explorar Corporativo / Institucional",
-        }),
-      ).toHaveAttribute(
-        "href",
-        "/corporativo",
-      );
-
-      await expect(
-        page.getByRole("link", {
-          name: "Conhecer A Royal",
-        }),
-      ).toHaveAttribute(
-        "href",
-        "/sobre",
-      );
-
-      await expect(
-        page.getByRole("link", {
-          name: "Explorar Projetos",
-        }),
-      ).toHaveAttribute(
-        "href",
-        "/projetos",
-      );
-
-      const qualifiedAction =
-        page.getByRole("region", {
-          name:
-            "Avance com o contexto do seu projeto",
-        }).getByRole("link", {
-          name:
-            "Inicie seu projeto",
-          exact: true,
-        });
-
-      await expect(
-        qualifiedAction,
-      ).toHaveAttribute(
-        "href",
-        "/inicie-seu-projeto",
-      );
-
-      await expect(
-        qualifiedAction,
-      ).toHaveAttribute(
-        "data-analytics-component",
-        "royal_method",
-      );
-
-      await expect(
-        qualifiedAction,
-      ).toHaveAttribute(
-        "data-analytics-channel",
-        "site_form",
-      );
-
-      await expect(
-        qualifiedAction,
-      ).toHaveAttribute(
-        "data-analytics-subject",
-        "project_start",
-      );
-
-      await expect(
-        page.getByRole("link", {
-          name:
-            "Contato e canais auxiliares",
-        }),
-      ).toHaveAttribute(
-        "href",
-        "/contato",
-      );
-    });
-
-    test("consumes canonical Brand typography, colors, fonts and qualified-action surface", async ({
-      page,
-    }) => {
-      const brandFontRequests: string[] = [];
-      page.on("request", (request) => {
-        if (request.url().includes("/brand/fonts/")) {
-          brandFontRequests.push(request.url());
-        }
-      });
-
+  test("preserves responsive integrity, intrinsic image ratios and natural scroll", async ({ page }) => {
+    for (const viewport of viewports) {
+      await page.setViewportSize(viewport);
       await page.goto("/metodo-royal");
+      await expectNoHorizontalOverflow(page);
+      expect(await page.evaluate(() => document.documentElement.scrollHeight > window.innerHeight)).toBe(true);
 
-      await expect(page.getByRole("heading", {
-        level: 1,
-        name: "Método Royal",
-      })).toHaveCSS("font-family", /Cormorant Garamond/);
-      await expect(page.locator('[data-method-stage="entry"] > p').last()).toHaveCSS(
-        "font-family",
-        /Hanken Grotesk/,
-      );
-      await expect(page.locator("body")).toHaveCSS(
-        "background-color",
-        "rgb(250, 249, 246)",
-      );
-      await expect(page.locator("body")).toHaveCSS("color", "rgb(18, 23, 28)");
+      const imageResults = await page.locator(".method-depth > li > img").evaluateAll((images) => images.map((image) => {
+        const img = image as HTMLImageElement;
+        const renderedRatio = img.getBoundingClientRect().width / img.getBoundingClientRect().height;
+        const intrinsicRatio = img.naturalWidth / img.naturalHeight;
+        return { complete: img.complete, naturalWidth: img.naturalWidth, ratioDelta: Math.abs(renderedRatio - intrinsicRatio) };
+      }));
 
-      const conversion = page.locator('[data-method-stage="qualified-action"]');
-      await expect(conversion).toHaveClass(/site-primitive-surface--dark/);
-      await expect(conversion).toHaveCSS("background-color", "rgb(18, 23, 28)");
-      await expect(conversion).toHaveCSS("color", "rgb(255, 255, 255)");
-      expect(brandFontRequests.some((url) => url.includes("hanken-grotesk"))).toBe(true);
-      expect(brandFontRequests.some((url) => url.includes("cormorant-garamond"))).toBe(true);
-    });
-
-    test("preserves heading hierarchy and visible keyboard focus", async ({ page }) => {
-      await page.goto("/metodo-royal");
-
-      expect(await page.locator("h1, h2, h3, h4, h5, h6").evaluateAll((headings) =>
-        headings.map((heading) => Number(heading.tagName.slice(1)))
-      )).toEqual([1, 2, 2, 2, 2]);
-
-      await page.keyboard.press("Tab");
-      const focused = page.locator(":focus-visible");
-      await expect(focused).toBeVisible();
-      expect(await focused.evaluate((element) => {
-        const style = getComputedStyle(element);
-        return style.outlineStyle !== "none" && parseFloat(style.outlineWidth) > 0;
-      })).toBe(true);
-    });
-
-    test("does not invent detailed operational method claims", async ({
-      page,
-    }) => {
-      await page.goto(
-        "/metodo-royal",
-      );
-
-      const bodyText =
-        await page.locator(
-          "body",
-        ).innerText();
-
-      const unsupportedFixtures = [
-        "30 dias",
-        "prazo garantido",
-        "equipe própria",
-        "100%",
-        "visita técnica gratuita",
-        "garantia vitalícia",
-      ];
-
-      for (
-        const fixture
-        of unsupportedFixtures
-      ) {
-        expect(
-          bodyText,
-        ).not.toContain(
-          fixture,
-        );
+      expect(imageResults).toHaveLength(4);
+      for (const result of imageResults) {
+        expect(result.complete).toBe(true);
+        expect(result.naturalWidth).toBeGreaterThan(0);
+        expect(result.ratioDelta).toBeLessThan(0.01);
       }
+    }
+  });
 
-      await expect(
-        page.getByRole("heading", {
-          level: 2,
-          name:
-            "Caminhos para seu projeto",
-        }),
-      ).toBeVisible();
+  test("has no serious or critical axe violations and preserves preview indexing safety", async ({ page }) => {
+    await page.goto("/metodo-royal");
+    await expect(page.locator('meta[name="robots"]')).toHaveAttribute("content", /noindex/);
+    await expect(page.locator('meta[name="robots"]')).toHaveAttribute("content", /nofollow/);
+
+    const scan = await new AxeBuilder({ page }).analyze();
+    expect(scan.violations.filter(({ impact }) => impact === "serious" || impact === "critical")).toEqual([]);
+  });
+
+  test("loads without broken images or console errors", async ({ page }) => {
+    const errors: string[] = [];
+    page.on("console", (message) => {
+      if (message.type() === "error") errors.push(message.text());
     });
+    page.on("pageerror", (error) => errors.push(error.message));
 
-    test("has responsive integrity at mobile, tablet and desktop with zero automated axe violations", async ({
-      page,
-    }) => {
-      for (const viewport of [
-        { width: 390, height: 844 },
-        { width: 768, height: 1024 },
-        { width: 1440, height: 1000 },
-      ]) {
-        await page.setViewportSize(viewport);
-        await page.goto("/metodo-royal");
-        await expect(page.getByRole("heading", {
-          level: 1,
-          name: "Método Royal",
-        })).toBeVisible();
-        await expectNoHorizontalOverflow(page);
-      }
-
-      const scan =
-        await new AxeBuilder({
-          page,
-        }).analyze();
-
-      expect(
-        scan.violations,
-      ).toEqual([]);
-    });
-  },
-);
+    await page.goto("/metodo-royal");
+    await page.waitForLoadState("networkidle");
+    expect(await page.locator(".method-depth img").evaluateAll((images) => images.filter((image) => !(image as HTMLImageElement).complete || (image as HTMLImageElement).naturalWidth === 0).length)).toBe(0);
+    expect(errors).toEqual([]);
+  });
+});

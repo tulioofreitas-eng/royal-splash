@@ -150,6 +150,7 @@ test("primitive consumers remain limited to explicitly authorized production con
   }
   const authorizedBrandConsumers = [
     "src/pages/404.astro",
+    "src/pages/contato.astro",
     "src/pages/index.astro",
     "src/pages/lp/fibra.astro",
     "src/pages/lp/corporativo.astro",
@@ -160,6 +161,7 @@ test("primitive consumers remain limited to explicitly authorized production con
     "src/pages/lp/vazamento.astro",
     "src/pages/inicie-seu-projeto.astro",
     "src/pages/metodo-royal.astro",
+    "src/pages/politica-de-privacidade.astro",
     "src/pages/projetos.astro",
     "src/pages/projetos/[slug].astro",
     "src/pages/sobre.astro",
@@ -167,6 +169,14 @@ test("primitive consumers remain limited to explicitly authorized production con
   ];
   const authorizedPrimitiveConsumers = [
     ...authorizedBrandConsumers,
+    "src/components/lp/CorporativoWhatsAppForm.astro",
+    "src/components/lp/FibraWhatsAppForm.astro",
+    "src/components/lp/LazerWhatsAppForm.astro",
+    "src/components/lp/PiscinasWhatsAppForm.astro",
+    "src/components/lp/ReformaWhatsAppForm.astro",
+    "src/components/lp/SaunaWhatsAppForm.astro",
+    "src/components/lp/VazamentoWhatsAppForm.astro",
+    "src/components/site/ProjectStartForm.astro",
     "src/components/site/RoyalCaseDetail.astro",
     "src/components/site/SegmentRouter.astro",
     "src/components/site/StructuredIntake.astro",

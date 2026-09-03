@@ -7,12 +7,12 @@ import test from "node:test";
 const ROOT = process.cwd();
 const read = (file) => readFile(path.join(ROOT, file), "utf8");
 const sha = (value) => createHash("sha256").update(value).digest("hex");
-const EXPECTED_VISIBLE_TEXT_SHA = "b1f049bbe9c9bf24c926bd84753b4dbc6ab2474bd1112b4c6570a4fcfa4be891";
-const EXPECTED_VISIBLE_TEXT = "Detecção de Vazamento em Piscinas — Royal Splash Sua piscina está perdendo água? Detecção de Vazamentos Piscina perdendo nível de água constantemente? Pode ser vazamento estrutural, em tubulação ou no revestimento. Como Trabalhamos Reparo Correção estrutural, de tubulação ou revestimento, sem gambiarra. Por que a Royal Splash? Tecnologia de Ponta Atendimento Premium Consultoria clara do diagnóstico à entrega. Não deixe o vazamento aumentar sua conta de água Falar com um especialista Solicite seu Orçamento Preencha os dados abaixo e nossa equipe entrará em contato para entender seu caso em detalhes.";
-const EXPECTED_REFORMA_VISIBLE_TEXT_SHA = "ea6fae1a2588affd341c08c308ee0c9b6b24b0a0662c11ddb9c05c4ca9d90422";
-const EXPECTED_REFORMA_VISIBLE_TEXT = "Reforma de Piscinas — Royal Splash Sua piscina perdeu o brilho? Nós devolvemos Reforma completa com novos revestimentos, iluminação e automação. Transforme sua piscina antiga em um espaço premium. Revitalização em cada detalhe Piscina antiga, revestimento desgastado ou sistema ultrapassado? Fazemos a reforma completa: novo acabamento, iluminação LED, automação e modernização estrutural. Novos revestimentos e acabamentos Modernização de iluminação e automação Cuidamos de cada detalhe da reforma. Modernize, não só reforme Trocar o revestimento resolve a aparência. Modernizar transforma a experiência. Na mesma obra, sua piscina pode ganhar: Iluminação LED subaquática — a piscina vira o centro da casa à noite Nossos Serviços Revestimento Novo Troca completa de acabamento, com materiais de alto padrão. Automação e Iluminação Sistemas modernos de controle, aquecimento e iluminação LED. Por que a Royal Splash? Atendimento Premium Consultoria exclusiva do primeiro contato à entrega. Tecnologia de Ponta Automação, aquecimento e tratamento de última geração. Dê nova vida à sua piscina antes do verão Falar com um especialista Solicite seu Orçamento Preencha os dados abaixo e nossa equipe entrará em contato para entender seu projeto em detalhes.";
-const EXPECTED_CORPORATIVO_VISIBLE_TEXT_SHA = "9e6847cd3b81af7035f28d14506daf74bcf5d9092ece88255564d2548f1448a9";
-const EXPECTED_CORPORATIVO_VISIBLE_TEXT = "Soluções Corporativas em Piscinas — Royal Splash Piscinas e áreas de lazer para elevar o padrão do seu negócio Soluções completas para hotéis, resorts, clubes e academias, do projeto à manutenção. Solicitar proposta sob medida Soluções para o seu negócio Infraestrutura profissional, acabamento de padrão internacional e operação sem interrupções. Piscinas Olímpicas e Complexos Aquáticos Projetamos e executamos piscinas semiolímpicas, olímpicas e recreativas, para clubes, escolas, academias e centros esportivos. Áreas de Lazer para Hotéis e Resorts Transformamos ambientes externos em diferenciais de experiência para os hóspedes: piscinas sofisticadas, spas, saunas, decks e áreas molhadas. Paisagismo integrado, com padrão internacional de acabamento. Manutenção Expressa Recuperação emergencial da qualidade da água para estabelecimentos que não podem parar. Técnicas avançadas e produtos específicos. Por que empresas confiam na Royal Splash? Atendimento Dedicado Consultoria exclusiva do projeto à entrega. Padrão Internacional Acabamento e tecnologia à altura da sua marca. Vamos elevar o padrão do seu negócio? Falar com nossa equipe Solicite uma Proposta Preencha os dados abaixo e nossa equipe entrará em contato para entender seu projeto em detalhes.";
+const EXPECTED_VISIBLE_TEXT_SHA = "bd9db082a5099c452b11a032ee30bc15846bfb840f11768cbf3f1d1786ee4d59";
+const EXPECTED_VISIBLE_TEXT = "Detecção de Vazamento em Piscinas — Royal Splash Sua piscina está perdendo água? Investigação completa para encontrar o vazamento e resolver com segurança e sem quebra desnecessária. Solicitar orçamento exclusivo Investigação antes da intervenção Cada sinal de perda de água precisa ser avaliado de acordo com as características da piscina. A investigação ajuda a identificar indícios e possíveis fontes do problema antes da definição da intervenção mais adequada. Investigação da estrutura, tubulação e revestimento Intervenção definida de acordo com cada situação Nossos Serviços Investigação e Diagnóstico Avaliação técnica para identificar indícios e possíveis fontes de perda de água na estrutura, tubulação ou revestimento. Reparo e Intervenção Definição e execução da correção estrutural ou hidráulica adequada para o seu caso. Por que a Royal Splash? Avaliação Cuidadosa Análise criteriosa para definir a intervenção mais adequada para a sua piscina. Orientação Clara Transparência em todas as etapas, do diagnóstico inicial até a conclusão do reparo. Perguntas frequentes {[ { pergunta: 'Quais são os sinais de que minha piscina pode ter um vazamento?', resposta: 'Perda constante e anormal do nível de água, poças persistentes ao redor da piscina ou um aumento inexplicável na conta de água são os principais indícios.' }, { pergunta: 'A avaliação consegue localizar exatamente onde está o problema?', resposta: 'Nossa investigação técnica busca identificar indícios e delimitar a área do problema. A precisão depende do tipo de estrutura, tubulação e acabamento.' }, { pergunta: 'É sempre necessário quebrar o revestimento?', resposta: 'Depende do diagnóstico. Alguns reparos em tubulações externas ou equipamentos são mais simples, enquanto vazamentos estruturais profundos podem exigir intervenções no revestimento ou piso.' }, { pergunta: 'A Royal Splash também faz o reparo?', resposta: 'Sim, realizamos tanto a investigação inicial quanto a intervenção corretiva, oferecendo uma solução integrada para a sua piscina.' }, { pergunta: 'Como solicitar uma avaliação técnica?', resposta: 'Preencha o formulário desta página com os sintomas observados. Nossa equipe iniciará uma conversa pelo WhatsApp para orientar os próximos passos.' }, ].map((item) => ( {item.pergunta} + {item.resposta} ))} Não deixe o vazamento aumentar sua conta de água Falar com um especialista Solicite seu Orçamento Preencha os dados abaixo e nossa equipe entrará em contato para entender seu caso em detalhes.";
+const EXPECTED_REFORMA_VISIBLE_TEXT_SHA = "33f69430c8fd3cb2c912b0f8e90e3cdc25608ba8cb4f74f3ef9c40fbbe944b47";
+const EXPECTED_REFORMA_VISIBLE_TEXT = "Reforma de Piscinas — Royal Splash Reforma de piscinas em cada detalhe Novos revestimentos, iluminação, aquecimento e automação para renovar piscinas existentes. Solicitar avaliação Renovação em cada detalhe Transformamos sua piscina atual em um espaço moderno e sofisticado. Novos revestimentos, atualização de iluminação e automação para trazer conforto e um visual premium ao que já existe. Modernização de revestimentos e acabamentos Atualização tecnológica de luz e calor Nossos Serviços Revestimentos e acabamentos Renovação do revestimento e do acabamento da piscina existente. Iluminação e aquecimento Atualização da iluminação e do aquecimento conforme o contexto da reforma. Automação e modernização Integração de controle e modernização dos recursos da piscina. Por que a Royal Splash? Atendimento Premium Consultoria exclusiva do primeiro contato à entrega. Tecnologia de Ponta Automação, aquecimento e tratamento de última geração. Perguntas frequentes {[ { pergunta: 'Quais sinais indicam que uma piscina deve ser avaliada para reforma?', resposta: 'Revestimento desgastado, acabamento deteriorado e sistemas de iluminação, aquecimento ou automação desatualizados podem justificar uma avaliação.' }, { pergunta: 'É possível renovar o revestimento e o acabamento?', resposta: 'Sim. A renovação de revestimentos e acabamentos faz parte do escopo de reforma. A condição existente precisa ser avaliada para definir a abordagem adequada.' }, { pergunta: 'A reforma pode incluir iluminação, aquecimento e automação?', resposta: 'Esses recursos podem ser considerados na reforma conforme o contexto, a condição existente e as necessidades da piscina.' }, { pergunta: 'Como é definido o escopo da reforma?', resposta: 'A equipe avalia a piscina existente e as necessidades apresentadas para entender o contexto e definir os próximos passos.' }, { pergunta: 'Como solicitar uma avaliação e orçamento?', resposta: 'Preencha o formulário desta página com seu nome e, se desejar, um breve contexto para abrir a conversa com a Royal Splash pelo WhatsApp.' }, ].map((item) => ( {item.pergunta} + {item.resposta} ))} Pronto para renovar sua piscina? Falar com um especialista Solicite seu Orçamento Compartilhe o contexto que já souber e abra uma conversa estruturada com a equipe Royal Splash pelo WhatsApp.";
+const EXPECTED_CORPORATIVO_VISIBLE_TEXT_SHA = "dad7312fe83250025a4f3aa82a02a191857d452315273886ac97281d3e9a9715";
+const EXPECTED_CORPORATIVO_VISIBLE_TEXT = "Soluções Corporativas em Piscinas — Royal Splash Soluções Corporativas Piscinas, spas e áreas de lazer de alto padrão para hotéis, resorts, clubes e academias. Falar com um especialista Estrutura e tecnologia para demandas empresariais A Royal Splash atende hotéis, clubes, resorts, escolas de natação e condomínios que exigem execução impecável, cumprimento rigoroso de cronograma e respeito às normas técnicas de segurança e acessibilidade. Projetos com padrão internacional Adequação a normas de acessibilidade Nossos Serviços Piscinas Olímpicas e Complexos Aquáticos Projetamos e executamos piscinas semiolímpicas, olímpicas e recreativas para clubes, escolas, academias e centros esportivos. Áreas de Lazer para Hotéis e Resorts Transformamos ambientes externos em diferenciais de experiência: piscinas, spas e saunas com paisagismo integrado. Substituição Submersa de Revestimentos Troca de azulejos e revestimentos com a piscina cheia, evitando esvaziamento e minimizando a interrupção da operação. Manutenção Expressa Recuperação emergencial da água com técnicas avançadas para estabelecimentos que não podem parar a operação. Por que empresas confiam na Royal Splash? Atendimento Dedicado Consultoria exclusiva do projeto à entrega. Padrão Internacional Acabamento e tecnologia à altura da sua marca. Perguntas frequentes {[ { pergunta: 'A Royal Splash atende projetos corporativos de que tipo?', resposta: 'A Royal Splash atende hotéis, clubes, resorts, escolas de natação e condomínios.' }, { pergunta: 'Vocês executam piscinas olímpicas e semiolímpicas?', resposta: 'Sim. Projetamos e executamos piscinas semiolímpicas, olímpicas e recreativas para academias e centros esportivos.' }, { pergunta: 'A Royal Splash oferece serviço de manutenção para empresas?', resposta: 'Sim. Oferecemos manutenção expressa e recuperação emergencial da qualidade da água para estabelecimentos que não podem parar.' }, { pergunta: 'O atendimento é exclusivo para o projeto?', resposta: 'Sim. Oferecemos consultoria exclusiva do projeto à entrega, com atendimento dedicado.' }, { pergunta: 'É possível trocar azulejos ou revestimentos sem esvaziar a piscina?', resposta: 'Sim. Nossa equipe realiza a substituição submersa de revestimentos com a piscina cheia, evitando o esvaziamento desnecessário e preservando a operação do ambiente.' }, ].map((item) => ( {item.pergunta} + {item.resposta} ))} Vamos elevar o padrão do seu negócio? Invista em estrutura e tecnologia corporativa com a Royal Splash. Falar com nossa equipe Solicite seu Orçamento Compartilhe o contexto que já souber e abra uma conversa estruturada com a equipe Royal Splash pelo WhatsApp.";
 
 function normalizedControlledRouteText(source) {
   const template = source
@@ -32,13 +32,13 @@ function normalizedControlledRouteText(source) {
 }
 
 const protectedFingerprints = {
-  "src/pages/lp/piscinas.astro": "3fe875f437f8800cae798bb1ee874f1c957956aad780d6c8d546d9e24dfba832",
-  "src/pages/lp/fibra.astro": "c53ec1dbf7afcbd3dd35deaa1368db3d9104ba2d7bdde050d1ad4e18b9368e03",
-  "src/layouts/LandingLayout.astro": "d065e63e11aa8eb462ef1279170da87d3d9c8222dd77109b9a54eeffa4acd89c",
+  "src/pages/lp/piscinas.astro": "9a630509dbb638947483cac88bc91a51bb76df46fda8d55c21d06ecc54dd09f5",
+  "src/pages/lp/fibra.astro": "0f31f82486450503f92b186b1ad37fcd64ba4bd24e11f05f3fb7a7e8daeb6b1c",
+  "src/layouts/LandingLayout.astro": "7be577f229ec119b3f7669b2b5a326e7909f95c3769c53187568f9a2ff7fbd7b",
   "src/components/LPHeader.astro": "2c34178a5be4199471d5c8b071ce0368da1d7f075a8abc7a4736ce83cf152171",
   "src/components/LPFooter.astro": "4d67b1db7e6d246e3d031f6086218d971efc03ec90f23d7cf6b1cb3d5d408749",
   "src/styles/site-brand.css": "bdf56bcc5fcc3efb7dad7cda3a62bcc391963149e92f1c060a065207b1635090",
-  "src/styles/site-primitives.css": "b62dff6981c74a2c0189af41f46d0d17cffa8a15cf5b7a7896dc447673b9dea7",
+  "src/styles/site-primitives.css": "904be08e1f769ee5d1defa3bd0e041982355a6efdbec154672a68231c3c3a9ee",
   "src/components/FormularioGHL.astro": "2fb923c34600558a8d03bad47a446b18ea7b274919630fc1924ef2c116933e17",
   "src/components/BotaoWhatsapp.astro": "b17f5fadb21f5c3bdc6665fb34b9db7fb67693e01784189d1a34d1f80ecc7d2b",
   "src/styles/global.css": "25a3bef8e20689038a0881fe3946a124e5e71cd7eed113ac0a3832bae4b0f3b7",
@@ -73,7 +73,7 @@ test("vazamento preserves controlled copy without introducing claims or proof", 
   const visibleText = normalizedControlledRouteText(source);
   assert.equal(visibleText, EXPECTED_VISIBLE_TEXT);
   assert.equal(sha(visibleText), EXPECTED_VISIBLE_TEXT_SHA);
-  assert.doesNotMatch(source, /<ul\b|text-piscina|color-piscina|bg-piscina/);
+  assert.doesNotMatch(source, /text-piscina|color-piscina|bg-piscina/);
 });
 
 test("vazamento preserves metadata, conversion, tracking, providers, and image delivery", async () => {
@@ -84,12 +84,11 @@ test("vazamento preserves metadata, conversion, tracking, providers, and image d
     /robots="noindex, nofollow"/,
     /<GTMHead slot="head"/,
     /<GTMBody slot="body-start"/,
-    /<FormularioGHL \/>/,
+    /<VazamentoWhatsAppForm \/>/,
     /<BotaoWhatsapp slot="body-end"/,
     /href="#orcamento"[^>]*>Falar com um especialista<\/a>/,
-    /import servicoVazamento from '\.\.\/\.\.\/assets\/servico-vazamento\.jpg'/,
-    /widths=\{\[390, 640, 768, 1024, 1280, 1536, 1792, 2400\]\}/,
-    /sizes="100vw"/,
+    /import heroVazamentoPanoramico from '\.\.\/\.\.\/assets\/vazamento-hero-panoramico\.png'/,
+    /getImage\(\{ src: heroVazamentoPanoramico, format: 'webp', width: 2400 \}\)/,
   ]) assert.match(source, pattern);
   assert.doesNotMatch(source, /<main\b/);
 });
@@ -99,7 +98,7 @@ test("reforma preserves actual controlled copy without inventing evidence", asyn
   const visibleText = normalizedControlledRouteText(source);
   assert.equal(visibleText, EXPECTED_REFORMA_VISIBLE_TEXT);
   assert.equal(sha(visibleText), EXPECTED_REFORMA_VISIBLE_TEXT_SHA);
-  assert.doesNotMatch(source, /Antes\/depois|before|after|carousel|gallery/i);
+  assert.doesNotMatch(visibleText, /Antes\/depois|before|after|carousel|gallery/i);
   assert.doesNotMatch(source, /text-piscina|color-piscina|bg-piscina/);
 });
 
@@ -111,7 +110,7 @@ test("reforma preserves metadata, conversion, tracking, providers, and image del
     /robots="noindex, nofollow"/,
     /<GTMHead slot="head"/,
     /<GTMBody slot="body-start"/,
-    /<FormularioGHL \/>/,
+    /<ReformaWhatsAppForm \/>/,
     /<BotaoWhatsapp slot="body-end"/,
     /href="#orcamento"[^>]*>Falar com um especialista<\/a>/,
     /import servicoReforma from '\.\.\/\.\.\/assets\/servico-reforma\.jpg'/,
@@ -144,20 +143,23 @@ test("corporativo preserves metadata, conversion, integrations, and responsive e
     /<GTMBody slot="body-start"/,
     /<LPHeader slot="header" visualMode="brand"/,
     /<LPFooter slot="footer" visualMode="brand"/,
-    /<FormularioGHL \/>/,
+    /<CorporativoWhatsAppForm \/>/,
     /<BotaoWhatsapp slot="body-end"/,
-    /href="#orcamento"[^>]*>Solicitar proposta sob medida<\/a>/,
+    /href="#orcamento"[^>]*>Falar com um especialista<\/a>/,
     /href="#orcamento"[^>]*>Falar com nossa equipe<\/a>/,
     /<link slot="head" rel="icon" type="image\/x-icon" href="\/favicon\.ico"/,
     /import corpOlimpica from '\.\.\/\.\.\/assets\/corp-olimpica\.jpg'/,
     /import corpHotel from '\.\.\/\.\.\/assets\/corp-hotel\.jpg'/,
     /import corpManutencao from '\.\.\/\.\.\/assets\/corp-manutencao\.jpg'/,
+    /import corpRevestimento from '\.\.\/\.\.\/assets\/corp-revestimento\.jpg'/,
     /src=\{corpHotel\} alt="Áreas de lazer corporativas" widths=\{\[390, 640, 768, 1024, 1280, 1536, 1792, 2400\]\} sizes="100vw" priority/,
   ]) assert.match(source, pattern);
   for (const pattern of [
-    /src=\{corpOlimpica\} alt="Piscinas olímpicas e complexos aquáticos" widths=\{\[340, 480, 640, 768, 960\]\} sizes="\(min-width: 1072px\) 480px, \(min-width: 768px\) calc\(50vw - 3\.5rem\), calc\(100vw - 3rem\)"/,
-    /src=\{corpHotel\} alt="Áreas de lazer para hotéis e resorts" widths=\{\[340, 480, 640, 768, 960\]\} sizes="\(min-width: 1072px\) 480px, \(min-width: 768px\) calc\(50vw - 3\.5rem\), calc\(100vw - 3rem\)"/,
-    /src=\{corpManutencao\} alt="Manutenção expressa de piscinas" widths=\{\[340, 480, 640, 768, 960\]\} sizes="\(min-width: 1072px\) 480px, \(min-width: 768px\) calc\(50vw - 3\.5rem\), calc\(100vw - 3rem\)"/,
+    /<GaleriaZoom imagens=\{\[/,
+    /\{ src: corpOlimpica, alt: 'Piscinas Olímpicas e Complexos Aquáticos' \}/,
+    /\{ src: corpHotel, alt: 'Áreas de Lazer para Hotéis e Resorts' \}/,
+    /\{ src: corpRevestimento, alt: 'Substituição Submersa de Revestimentos' \}/,
+    /\{ src: corpManutencao, alt: 'Manutenção Expressa' \}/,
   ]) assert.match(source, pattern);
   assert.doesNotMatch(source, /<main\b/);
 });

@@ -54,22 +54,16 @@ async function expectNoHorizontalOverflow(
 test.describe(
   "T2B WP1 vertical slice closure",
   () => {
-    test("Residential journey reaches mock ingress and semantic success without analytics PII", async ({
+    test("Residential primary journey reaches the structured project-start surface", async ({
       page,
     }) => {
       await page.goto("/");
 
-      const router =
-        page.getByRole("region", {
-          name:
-            "Escolha seu contexto",
-        });
-
-      await router
+      await page
+        .locator(".context-transition")
         .getByRole("link", {
           name:
-            "Explorar Residencial",
-          exact: true,
+            /Residencial/,
         })
         .click();
 
@@ -78,182 +72,25 @@ test.describe(
       );
 
       await page
+        .getByRole("region", { name: "Compartilhe o contexto do seu projeto." })
         .getByRole("link", {
           name:
-            "Inicie seu projeto residencial",
+            "Prepare a conversa",
           exact: true,
         })
-        .first()
         .click();
 
-      await expect(page).toHaveURL(
-        /\/inicie-seu-projeto\?context=residencial&source=segment_context&pageRef=%2Fservicos$/,
-      );
-
-      const context =
-        page.getByLabel(
-          "Contexto",
-          {
-            exact: true,
-          },
-        );
-
-      await expect(
-        context,
-      ).toHaveValue(
-        "residencial",
-      );
-
-      await page
-        .getByLabel("Cidade", { exact: true })
-        .fill(
-          "Cidade WP1G",
-        );
-
-      await page
-        .getByRole("button", {
-          name: "Continuar",
-        })
-        .click();
-
-      const need =
-        page.getByLabel(
-          "Descreva brevemente o que você precisa",
-        );
-
-      await expect(
-        need,
-      ).toBeFocused();
-
-      await need.fill(
-        "Fixture WP1G que não pode entrar em analytics.",
-      );
-
-      await page
-        .getByRole("button", {
-          name: "Continuar",
-        })
-        .click();
-
-      await page
-        .getByLabel("Nome")
-        .fill(
-          "Pessoa WP1G",
-        );
-
-      await page
-        .getByLabel("E-mail")
-        .fill(
-          "wp1g@example.com",
-        );
-
-      await page
-        .getByLabel(
-          /Concordo com o envio destas informações/,
-        )
-        .check();
-
-      const responsePromise =
-        page.waitForResponse(
-          (response) =>
-            response.url().includes(
-              "/api/site-lead-preview",
-            ) &&
-            response.request().method() ===
-              "POST",
-        );
-
-      await page
-        .getByRole("button", {
-          name:
-            "Enviar contexto do projeto",
-        })
-        .click();
-
-      const response =
-        await responsePromise;
-
-      expect(
-        response.status(),
-      ).toBe(200);
-
-      expect(
-        await response.json(),
-      ).toEqual({
-        ok: true,
-        mock: true,
-        schemaVersion:
-          "site-lead.v1",
-        submittedCount: 1,
-      });
-
-      const success =
-        page.getByRole("status");
-
-      await expect(
-        success,
-      ).toBeVisible();
-
-      await expect(
-        success,
-      ).toBeFocused();
-
-      const events =
-        await readSemanticEvents(
-          page,
-        );
-
-      expect(
-        events.some(
-          (event) =>
-            event.eventName ===
-              "page_viewed" &&
-            event.context.pageRef ===
-              "/inicie-seu-projeto",
-        ),
-      ).toBe(true);
-
-      expect(
-        events.some(
-          (event) =>
-            event.eventName ===
-              "lead_submitted" &&
-            event.subjectRef ===
-              "residencial" &&
-            event.channelRef ===
-              "site_form",
-        ),
-      ).toBe(true);
-
-      const serialized =
-        JSON.stringify(events);
-
-      expect(
-        serialized,
-      ).not.toContain(
-        "Pessoa WP1G",
-      );
-
-      expect(
-        serialized,
-      ).not.toContain(
-        "wp1g@example.com",
-      );
-
-      expect(
-        serialized,
-      ).not.toContain(
-        "Cidade WP1G",
-      );
-
-      expect(
-        serialized,
-      ).not.toContain(
-        "Fixture WP1G",
-      );
+      await expect(page).toHaveURL(/\/inicie-seu-projeto$/);
+      expect(new URL(page.url()).search).toBe("");
+      await expect(page.getByRole("heading", {
+        level: 1,
+        name: "Organize seu contexto para uma conversa mais útil.",
+        exact: true,
+      })).toBeVisible();
+      await expectNoHorizontalOverflow(page);
     });
 
-    test("Corporate / Institutional journey preserves context and responsive integrity on mobile", async ({
+    test("Corporate / Institutional journey reaches the project-start surface with responsive integrity on mobile", async ({
       page,
     }) => {
       await page.setViewportSize({
@@ -267,17 +104,11 @@ test.describe(
         page,
       );
 
-      const router =
-        page.getByRole("region", {
-          name:
-            "Escolha seu contexto",
-        });
-
-      await router
+      await page
+        .locator(".context-transition")
         .getByRole("link", {
           name:
-            "Explorar Corporativo / Institucional",
-          exact: true,
+            /Corporativo \/ Institucional/,
         })
         .click();
 
@@ -290,76 +121,26 @@ test.describe(
       );
 
       await page
+        .getByRole("region", { name: "Comece pela escala e pelo contexto de uso." })
         .getByRole("link", {
           name:
-            "Inicie seu projeto corporativo / institucional",
+            "Prepare a conversa",
           exact: true,
         })
-        .first()
         .click();
 
-      await expect(page).toHaveURL(
-        /\/inicie-seu-projeto\?context=corporativo_institucional&source=segment_context&pageRef=%2Fcorporativo$/,
-      );
+      await expect(page).toHaveURL(/\/inicie-seu-projeto$/);
+      expect(new URL(page.url()).search).toBe("");
 
       await expectNoHorizontalOverflow(
         page,
       );
 
-      const context =
-        page.getByLabel(
-          "Contexto",
-          {
-            exact: true,
-          },
-        );
-
-      await expect(
-        context,
-      ).toHaveValue(
-        "corporativo_institucional",
-      );
-
-      await page
-        .getByLabel("Cidade", { exact: true })
-        .fill("Cidade corporativa");
-
-      await page
-        .getByRole("button", {
-          name: "Continuar",
-        })
-        .click();
-
-      const need =
-        page.getByLabel(
-          "Descreva brevemente o que você precisa",
-        );
-
-      await expect(
-        need,
-      ).toBeFocused();
-
-      await need.fill(
-        "Valor preservado no fluxo móvel.",
-      );
-
-      await page
-        .getByRole("button", {
-          name: "Continuar",
-        })
-        .click();
-
-      await page
-        .getByRole("button", {
-          name: "Voltar",
-        })
-        .click();
-
-      await expect(
-        need,
-      ).toHaveValue(
-        "Valor preservado no fluxo móvel.",
-      );
+      await expect(page.getByRole("heading", {
+        level: 1,
+        name: "Organize seu contexto para uma conversa mais útil.",
+        exact: true,
+      })).toBeVisible();
     });
 
     test("keyboard skip link and automated accessibility remain valid across closure surfaces", async ({
@@ -395,7 +176,7 @@ test.describe(
         "/",
         "/servicos",
         "/corporativo",
-        "/inicie-seu-projeto?context=residencial",
+        "/inicie-seu-projeto",
       ];
 
       await page.setViewportSize({

@@ -60,14 +60,24 @@ test("classifies explicit test mode when VERCEL_ENV is absent", () => {
   assert.equal(contract.leadProvider, "mock");
 });
 
-test("fails closed for local production mode without VERCEL_ENV", () => {
-  assert.throws(
-    () =>
-      createEnvironmentContract({
-        mode: "production",
-      }),
-    EnvironmentSafetyError,
-  );
+test("classifies missing environment signals as non-production", () => {
+  const contract = createEnvironmentContract({});
+
+  assert.equal(contract.runtime, "development");
+  assert.equal(contract.isProduction, false);
+  assert.equal(contract.allowProductionAnalytics, false);
+  assert.equal(contract.leadProvider, "mock");
+});
+
+test("classifies production build mode without VERCEL_ENV as preview", () => {
+  const contract = createEnvironmentContract({
+    mode: "production",
+  });
+
+  assert.equal(contract.runtime, "preview");
+  assert.equal(contract.isProduction, false);
+  assert.equal(contract.allowProductionAnalytics, false);
+  assert.equal(contract.leadProvider, "mock");
 });
 
 test("fails closed for an unknown VERCEL_ENV value", () => {

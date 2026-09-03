@@ -5,6 +5,7 @@ import {
   AtlasPayloadValidationError,
   mapSiteLeadToAtlasPayload,
 } from "../../src/integrations/leads/atlas-site-origin-payload.ts";
+import { ROYAL_PRIVACY_R1 } from "../../src/domains/leads/contracts.ts";
 
 const NOW = new Date("2026-09-02T15:00:00.000Z");
 
@@ -31,7 +32,7 @@ function createLead(overrides = {}) {
     },
     consent: {
       state: "granted",
-      policyRef: "/politica-de-privacidade",
+      policyRef: ROYAL_PRIVACY_R1,
       capturedAt: "2026-09-02T14:59:30.000Z",
     },
     ...overrides,
@@ -61,7 +62,7 @@ test("maps valid Royal ingress to the closed Atlas v1 payload", () => {
     },
     consent: {
       state: "granted",
-      policyRef: "/politica-de-privacidade",
+      policyRef: ROYAL_PRIVACY_R1,
       capturedAt: "2026-09-02T14:59:30.000Z",
     },
   });
@@ -97,7 +98,7 @@ test("refuses not_recorded consent locally without coercion", () => {
         createLead({
           consent: {
             state: "not_recorded",
-            policyRef: "/politica-de-privacidade",
+            policyRef: ROYAL_PRIVACY_R1,
             capturedAt: "2026-09-02T14:59:30.000Z",
           },
         }),
@@ -118,7 +119,7 @@ test("refuses stale consent locally", () => {
         createLead({
           consent: {
             state: "granted",
-            policyRef: "/politica-de-privacidade",
+            policyRef: ROYAL_PRIVACY_R1,
             capturedAt: "2026-09-02T14:30:00.000Z",
           },
         }),

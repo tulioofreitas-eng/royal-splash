@@ -6,10 +6,16 @@ import GTMBody from '../../components/GTMBody.astro';
 import LPHeader from '../../components/LPHeader.astro';
 import LPFooter from '../../components/LPFooter.astro';
 import BotaoWhatsapp from '../../components/BotaoWhatsapp.astro';
-import FormularioGHL from '../../components/FormularioGHL.astro';
+import ReformaWhatsAppForm from '../../components/lp/ReformaWhatsAppForm.astro';
 import Icon from '../../components/Icon.astro';
 import { Image } from 'astro:assets';
 import servicoReforma from '../../assets/servico-reforma.jpg';
+import GaleriaZoom from '../../components/GaleriaZoom.astro';
+import reformaAntes from '../../assets/reforma-antes.jpg';
+import reformaRemocao from '../../assets/reforma-remocao.jpg';
+import reformaAplicacao from '../../assets/reforma-aplicacao.jpg';
+import reformaDepois from '../../assets/reforma-depois.jpg';
+
 ---
 
 <LandingLayout title="Reforma de Piscinas — Royal Splash" description="Sua piscina perdeu o brilho? Revitalizamos com acabamento premium, novos revestimentos e automação." robots="noindex, nofollow" visualMode="brand" bodyClass="site-brand-lp-reforma site-primitive-page">
@@ -22,35 +28,36 @@ import servicoReforma from '../../assets/servico-reforma.jpg';
     <Image src={servicoReforma} alt="Reforma de piscina de alto padrão" widths={[390, 640, 768, 1024, 1280, 1536, 1792, 2400]} sizes="100vw" priority class="reforma-hero__image" />
     <div class="reforma-hero__veil"></div>
     <div class="reforma-hero__content">
-      <h1 class="site-primitive-page-title">Sua piscina perdeu o brilho? Nós devolvemos</h1>
-      <p class="site-primitive-body">Reforma completa com novos revestimentos, iluminação e automação. Transforme sua piscina antiga em um espaço premium.</p>
+      <h1 class="site-primitive-page-title">Reforma de piscinas em cada detalhe</h1>
+      <p class="site-primitive-body">Novos revestimentos, iluminação, aquecimento e automação para renovar piscinas existentes.</p>
+      <div class="site-primitive-actions">
+        <a href="#orcamento" class="site-primitive-action site-primitive-action--primary">Solicitar avaliação</a>
+      </div>
     </div>
   </section>
 
-  <section class="reforma-revitalization site-primitive-surface--light site-primitive-datum-bottom">
-    <div class="site-primitive-section site-primitive-section--entry">
-      <div class="reforma-revitalization__heading">
-        <h2 class="site-primitive-display">Revitalização em cada detalhe</h2>
-        <p class="site-primitive-body site-primitive-supporting">Piscina antiga, revestimento desgastado ou sistema ultrapassado? Fazemos a reforma completa: novo acabamento, iluminação LED, automação e modernização estrutural.</p>
+  
+  <!-- Narrative -->
+  <section class="reforma-narrative site-primitive-surface--light site-primitive-datum-bottom">
+    <div class="site-primitive-section site-primitive-section--entry reforma-narrative__layout">
+      <div class="reforma-narrative__copy">
+        <h2 class="site-primitive-display">Renovação em cada detalhe</h2>
+        <div class="site-primitive-reading">
+          <p class="site-primitive-body site-primitive-supporting">Transformamos sua piscina atual em um espaço moderno e sofisticado. Novos revestimentos, atualização de iluminação e automação para trazer conforto e um visual premium ao que já existe.</p>
+        </div>
+        <ul class="reforma-narrative__scope">
+          <li><Icon name="check" class="reforma-narrative__icon" /> Modernização de revestimentos e acabamentos</li>
+          <li><Icon name="check" class="reforma-narrative__icon" /> Atualização tecnológica de luz e calor</li>
+        </ul>
       </div>
-      <ul class="reforma-revitalization__list">
-        <li><Icon name="check" class="reforma-icon" /> Novos revestimentos e acabamentos</li>
-        <li><Icon name="check" class="reforma-icon" /> Modernização de iluminação e automação</li>
-      </ul>
-      <p class="reforma-revitalization__closing site-primitive-body site-primitive-supporting">Cuidamos de cada detalhe da reforma.</p>
-    </div>
-  </section>
-
-  <section class="reforma-modernization site-primitive-surface--dark">
-    <div class="site-primitive-section">
-      <div class="reforma-modernization__heading">
-        <h2 class="site-primitive-display">Modernize, não só reforme</h2>
-        <p class="site-primitive-body">Trocar o revestimento resolve a aparência. Modernizar transforma a experiência. Na mesma obra, sua piscina pode ganhar:</p>
+      <div class="reforma-gallery">
+        <GaleriaZoom imagens={[
+          { src: reformaAntes, alt: 'Piscina antes da reforma' },
+          { src: reformaRemocao, alt: 'Etapa de remoção de revestimento' },
+          { src: reformaAplicacao, alt: 'Aplicação do novo acabamento' },
+          { src: reformaDepois, alt: 'Piscina modernizada finalizada' },
+        ]} />
       </div>
-      <article class="reforma-modernization__feature">
-        <Icon name="check" class="reforma-modernization__icon" />
-        <p class="site-primitive-body"><span>Iluminação LED subaquática</span> — a piscina vira o centro da casa à noite</p>
-      </article>
     </div>
   </section>
 
@@ -61,15 +68,22 @@ import servicoReforma from '../../assets/servico-reforma.jpg';
         <article class="reforma-service">
           <Icon name="refresh" class="reforma-service__icon" />
           <div>
-            <h3 class="site-primitive-subtitle">Revestimento Novo</h3>
-            <p class="site-primitive-body site-primitive-supporting">Troca completa de acabamento, com materiais de alto padrão.</p>
+            <h3 class="site-primitive-subtitle">Revestimentos e acabamentos</h3>
+            <p class="site-primitive-body site-primitive-supporting">Renovação do revestimento e do acabamento da piscina existente.</p>
+          </div>
+        </article>
+        <article class="reforma-service">
+          <Icon name="sun" class="reforma-service__icon" />
+          <div>
+            <h3 class="site-primitive-subtitle">Iluminação e aquecimento</h3>
+            <p class="site-primitive-body site-primitive-supporting">Atualização da iluminação e do aquecimento conforme o contexto da reforma.</p>
           </div>
         </article>
         <article class="reforma-service">
           <Icon name="cpu" class="reforma-service__icon" />
           <div>
-            <h3 class="site-primitive-subtitle">Automação e Iluminação</h3>
-            <p class="site-primitive-body site-primitive-supporting">Sistemas modernos de controle, aquecimento e iluminação LED.</p>
+            <h3 class="site-primitive-subtitle">Automação e modernização</h3>
+            <p class="site-primitive-body site-primitive-supporting">Integração de controle e modernização dos recursos da piscina.</p>
           </div>
         </article>
       </div>
@@ -83,14 +97,14 @@ import servicoReforma from '../../assets/servico-reforma.jpg';
         <article class="reforma-trust__entry">
           <Icon name="users" class="reforma-trust__icon" />
           <div>
-            <h3 class="site-primitive-subtitle font-semibold mb-1">Atendimento Premium</h3>
+            <h3 class="site-primitive-subtitle">Atendimento Premium</h3>
             <p class="site-primitive-body site-primitive-supporting">Consultoria exclusiva do primeiro contato à entrega.</p>
           </div>
         </article>
         <article class="reforma-trust__entry">
           <Icon name="cpu" class="reforma-trust__icon" />
           <div>
-            <h3 class="site-primitive-subtitle font-semibold mb-1">Tecnologia de Ponta</h3>
+            <h3 class="site-primitive-subtitle">Tecnologia de Ponta</h3>
             <p class="site-primitive-body site-primitive-supporting">Automação, aquecimento e tratamento de última geração.</p>
           </div>
         </article>
@@ -98,9 +112,32 @@ import servicoReforma from '../../assets/servico-reforma.jpg';
     </div>
   </section>
 
+  <section class="reforma-faq site-primitive-surface--soft site-primitive-datum-bottom">
+    <div class="site-primitive-section reforma-faq__layout">
+      <h2 class="site-primitive-display">Perguntas frequentes</h2>
+      <div class="reforma-faq__list">
+        {[
+          { pergunta: 'Quais sinais indicam que uma piscina deve ser avaliada para reforma?', resposta: 'Revestimento desgastado, acabamento deteriorado e sistemas de iluminação, aquecimento ou automação desatualizados podem justificar uma avaliação.' },
+          { pergunta: 'É possível renovar o revestimento e o acabamento?', resposta: 'Sim. A renovação de revestimentos e acabamentos faz parte do escopo de reforma. A condição existente precisa ser avaliada para definir a abordagem adequada.' },
+          { pergunta: 'A reforma pode incluir iluminação, aquecimento e automação?', resposta: 'Esses recursos podem ser considerados na reforma conforme o contexto, a condição existente e as necessidades da piscina.' },
+          { pergunta: 'Como é definido o escopo da reforma?', resposta: 'A equipe avalia a piscina existente e as necessidades apresentadas para entender o contexto e definir os próximos passos.' },
+          { pergunta: 'Como solicitar uma avaliação e orçamento?', resposta: 'Preencha o formulário desta página com seu nome e, se desejar, um breve contexto para abrir a conversa com a Royal Splash pelo WhatsApp.' },
+        ].map((item) => (
+          <details class="reforma-faq__item">
+            <summary class="site-primitive-subtitle">
+              {item.pergunta}
+              <span aria-hidden="true">+</span>
+            </summary>
+            <p class="site-primitive-body site-primitive-supporting">{item.resposta}</p>
+          </details>
+        ))}
+      </div>
+    </div>
+  </section>
+
   <section class="reforma-cta site-primitive-surface--dark">
     <div class="site-primitive-section">
-      <h2 class="site-primitive-display">Dê nova vida à sua piscina antes do verão</h2>
+      <h2 class="site-primitive-display">Pronto para renovar sua piscina?</h2>
       <div class="site-primitive-actions">
         <a href="#orcamento" class="site-primitive-action site-primitive-action--primary">Falar com um especialista</a>
       </div>
@@ -110,9 +147,9 @@ import servicoReforma from '../../assets/servico-reforma.jpg';
   <section id="orcamento" class="site-primitive-section reforma-form">
     <div class="site-primitive-reading reforma-form__heading">
       <h2 class="site-primitive-section-title">Solicite seu Orçamento</h2>
-      <p class="site-primitive-body site-primitive-supporting">Preencha os dados abaixo e nossa equipe entrará em contato para entender seu projeto em detalhes.</p>
+      <p class="site-primitive-body site-primitive-supporting">Compartilhe o contexto que já souber e abra uma conversa estruturada com a equipe Royal Splash pelo WhatsApp.</p>
     </div>
-    <FormularioGHL />
+    <ReformaWhatsAppForm />
   </section>
 
   <LPFooter slot="footer" visualMode="brand" />
@@ -120,54 +157,61 @@ import servicoReforma from '../../assets/servico-reforma.jpg';
 </LandingLayout>
 
 <style>
-  .reforma-hero { position: relative; display: grid; min-height: clamp(34rem, 78vh, 54rem); isolation: isolate; }
+  
+  .reforma-narrative__layout { display: grid; grid-template-columns: minmax(18rem, 0.85fr) minmax(0, 1.15fr); gap: var(--site-space-8); align-items: center; }
+  .reforma-narrative h2, .reforma-narrative p { margin-block-start: 0; }
+  .reforma-narrative__scope { display: grid; gap: var(--site-space-3); margin: var(--site-space-6) 0 0; padding: var(--site-space-5) 0 0; border-block-start: 1px solid var(--site-color-divider); list-style: none; }
+  .reforma-narrative__scope li { display: flex; gap: var(--site-space-3); align-items: center; }
+  :global(.reforma-narrative__icon) { width: 1.25rem; height: 1.25rem; flex: none; color: var(--site-color-text-primary); }
+  .reforma-gallery { min-width: 0; }
+  .reforma-hero { position: relative; display: grid; min-height: max(40rem, 85svh); isolation: isolate; overflow: hidden; }
   .reforma-hero__image, .reforma-hero__veil { position: absolute; inset: 0; width: 100%; height: 100%; }
-  .reforma-hero__image { z-index: -2; object-fit: cover; object-position: center; }
-  .reforma-hero__veil { z-index: -1; background: color-mix(in srgb, var(--site-color-surface-dark) 76%, transparent); }
+  .reforma-hero__image { z-index: -2; object-fit: cover; object-position: center 58%; }
+  .reforma-hero__veil { z-index: -1; background: color-mix(in srgb, var(--site-color-surface-dark) 72%, transparent); }
   .reforma-hero__content { align-self: end; width: min(calc(100% - (2 * var(--site-layout-gutter))), var(--site-layout-content-max)); margin-inline: auto; padding-block: var(--site-space-8); }
   .reforma-hero h1 { max-width: 15ch; margin: 0; }
   .reforma-hero p { max-width: 42rem; margin: var(--site-space-5) 0 0; color: var(--site-color-text-on-dark); }
-  .reforma-revitalization .site-primitive-section { display: grid; grid-template-columns: minmax(0, 1.35fr) minmax(16rem, 0.65fr); gap: var(--site-space-7); }
-  .reforma-revitalization__heading h2, .reforma-modernization h2, .reforma-services h2, .reforma-services h3, .reforma-trust h2, .reforma-trust h3, .reforma-form h2 { margin-block-start: 0; }
-  .reforma-revitalization__heading p { max-width: 44rem; margin-block-end: 0; }
-  .reforma-revitalization__list { margin: 0; padding: var(--site-space-5) 0 0; border-block-start: 1px solid var(--site-color-required-boundary); list-style: none; }
-  .reforma-revitalization__list li { display: flex; gap: var(--site-space-3); align-items: flex-start; padding-block: var(--site-space-3); font-weight: var(--site-font-weight-ui-strong); }
-  .reforma-revitalization__closing { grid-column: 1 / -1; margin: 0; padding-block-start: var(--site-space-5); border-block-start: 1px solid var(--site-color-divider); }
-  :global(.reforma-icon), :global(.reforma-service__icon), :global(.reforma-trust__icon) { width: 1.5rem; height: 1.5rem; flex: none; color: var(--site-color-text-primary); }
-  .reforma-modernization .site-primitive-section { display: grid; grid-template-columns: minmax(0, 1.2fr) minmax(16rem, 0.8fr); gap: var(--site-space-8); align-items: end; }
-  .reforma-modernization__heading p { max-width: 43rem; margin-block-end: 0; color: var(--site-color-text-on-dark); }
-  .reforma-modernization__feature { padding-block-start: var(--site-space-5); border-block-start: 1px solid var(--site-color-accent-on-dark); }
-  .reforma-modernization__feature p { margin: 0; }
-  .reforma-modernization__feature span { font-weight: var(--site-font-weight-ui-strong); }
-  :global(.reforma-modernization__icon) { width: 1.5rem; height: 1.5rem; margin-block-end: var(--site-space-3); color: var(--site-color-accent-on-dark); }
+  .reforma-services h2, .reforma-services h3, .reforma-trust h2, .reforma-trust h3, .reforma-faq h2, .reforma-form h2 { margin-block-start: 0; }
+  :global(.reforma-service__icon), :global(.reforma-trust__icon) { width: 1.5rem; height: 1.5rem; flex: none; color: var(--site-color-text-primary); }
   .reforma-services h2, .reforma-trust h2 { margin-block-end: var(--site-space-6); }
   .reforma-services .site-primitive-supporting { color: var(--site-color-text-primary); }
-  .reforma-services__list { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); border-block: 1px solid var(--site-color-divider); }
-  .reforma-service { display: grid; grid-template-columns: auto minmax(0, 1fr); gap: var(--site-space-4); padding: var(--site-space-6); }
-  .reforma-service + .reforma-service { border-inline-start: 1px solid var(--site-color-divider); }
+  .reforma-services__list { max-width: var(--site-layout-reading-max); border-block: 1px solid var(--site-color-divider); }
+  .reforma-service { display: grid; grid-template-columns: auto minmax(0, 1fr); gap: var(--site-space-4); padding-block: var(--site-space-6); }
+  .reforma-service + .reforma-service { border-block-start: 1px solid var(--site-color-divider); }
   .reforma-service p, .reforma-trust p, .reforma-form p { margin-block-end: 0; }
   .reforma-trust__list { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); max-width: 60rem; }
   .reforma-trust__entry { display: grid; grid-template-columns: auto minmax(0, 1fr); gap: var(--site-space-4); padding-block: var(--site-space-5); border-block-start: 1px solid var(--site-color-divider); }
   .reforma-trust__entry + .reforma-trust__entry { margin-inline-start: var(--site-space-7); }
-  .reforma-cta .site-primitive-section { display: flex; gap: var(--site-space-7); align-items: end; justify-content: space-between; }
-  .reforma-cta h2 { max-width: 17ch; margin: 0; }
-  .reforma-cta .site-primitive-actions { flex: none; margin: 0; }
+  .reforma-faq__layout { display: grid; grid-template-columns: minmax(14rem, 0.7fr) minmax(0, 1.3fr); align-items: center; gap: var(--site-space-8); }
+  .reforma-faq h2 { max-width: 12ch; margin-block-end: 0; }
+  .reforma-faq__list { border-block-start: 1px solid var(--site-color-divider); }
+  .reforma-faq__item { border-block-end: 1px solid var(--site-color-divider); }
+  .reforma-faq__item summary { display: flex; justify-content: space-between; gap: var(--site-space-4); padding-block: var(--site-space-5); cursor: pointer; list-style: none; }
+  .reforma-faq__item summary::-webkit-details-marker { display: none; }
+  .reforma-faq__item summary span { color: var(--site-color-text-primary); transition: transform 160ms ease; }
+  .reforma-faq__item[open] summary span { transform: rotate(45deg); }
+  .reforma-faq__item p { margin: 0; padding: 0 0 var(--site-space-5); }
+  .reforma-cta .site-primitive-section { display: block; }
+  .reforma-cta h2 { max-width: 28ch; margin: 0; }
+  .reforma-cta .site-primitive-actions { margin-block-start: var(--site-space-6); }
   .reforma-form { padding-block-end: calc(var(--site-space-8) + 4.5rem); }
   .reforma-form__heading { margin: 0 auto var(--site-space-7); text-align: center; }
   @media (max-width: 52rem) {
-    .reforma-hero { min-height: 76svh; }
-    .reforma-revitalization .site-primitive-section, .reforma-modernization .site-primitive-section { grid-template-columns: 1fr; gap: var(--site-space-6); }
-    .reforma-services__list, .reforma-trust__list { grid-template-columns: 1fr; }
-    .reforma-service { padding-inline: 0; }
-    .reforma-service + .reforma-service { border-block-start: 1px solid var(--site-color-divider); border-inline-start: 0; }
+    .reforma-narrative__layout { grid-template-columns: 1fr; gap: var(--site-space-7); }
+    .reforma-gallery { width: min(100%, 38rem); margin-inline: auto; }
+    .reforma-hero__content { text-align: center; }
+    .reforma-hero h1, .reforma-hero p { margin-inline: auto; }
+    .reforma-hero .site-primitive-actions { justify-content: center; }
+    .reforma-services h2, .reforma-trust h2, .reforma-faq h2 { text-align: center; }
+    .reforma-trust__list, .reforma-faq__layout { grid-template-columns: 1fr; }
     .reforma-trust__entry + .reforma-trust__entry { margin-inline-start: 0; }
-    .reforma-cta .site-primitive-section { display: block; }
-    .reforma-cta .site-primitive-actions { margin-block-start: var(--site-space-6); }
+    .reforma-faq__layout { align-items: stretch; gap: var(--site-space-5); }
+    .reforma-faq h2 { max-width: none; }
   }
   @media (max-width: 30rem) {
-    .reforma-hero { min-height: calc(100svh - 4.5rem); }
+    
+  .reforma-hero { min-height: calc(100svh + 2rem); }
     .reforma-hero__content { align-self: center; padding-block: var(--site-space-7); }
-    .reforma-revitalization .site-primitive-section { padding-block-start: calc(var(--site-space-7) + 4rem); }
     .reforma-form { padding-block-end: calc(var(--site-space-7) + 5rem); }
   }
 </style>

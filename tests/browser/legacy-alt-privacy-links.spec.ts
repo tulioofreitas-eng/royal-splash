@@ -2,9 +2,7 @@ import { expect, test } from "@playwright/test";
 import AxeBuilder from "@axe-core/playwright";
 
 const headerRoutes = [
-  "/contato",
   "/obrigado",
-  "/politica-de-privacidade",
 ];
 
 for (const route of headerRoutes) {
@@ -31,6 +29,29 @@ for (const route of headerRoutes) {
     expect(results.violations).toEqual([]);
   });
 }
+
+test("/politica-de-privacidade current SiteHeader avoids redundant signature alt text", async ({
+  page,
+}) => {
+  await page.goto("/politica-de-privacidade");
+
+  const homeLink = page.locator('header a[href="/"]').first();
+  const signature = homeLink.locator("img");
+
+  await expect(homeLink).toBeVisible();
+  await expect(signature).toHaveAttribute("alt", "");
+  await expect(homeLink).toHaveAccessibleName(/Royal\s*Splash/i);
+
+  const results = await new AxeBuilder({
+    page,
+  })
+    .withRules([
+      "image-redundant-alt",
+    ])
+    .analyze();
+
+  expect(results.violations).toEqual([]);
+});
 
 test("/politica-de-privacidade inline contact links do not rely only on color", async ({
   page,

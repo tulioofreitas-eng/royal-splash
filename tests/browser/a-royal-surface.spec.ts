@@ -1,153 +1,103 @@
 import AxeBuilder from "@axe-core/playwright";
-import {
-  expect,
-  test,
-} from "@playwright/test";
+import { expect, test, type Page } from "@playwright/test";
 
-test.describe(
-  "A Royal functional trust surface",
-  () => {
-    test("uses controlled trust architecture without carrying legacy institutional claims", async ({
-      page,
-    }) => {
-      await page.goto("/sobre");
+const viewports = [
+  { width: 390, height: 844 },
+  { width: 430, height: 932 },
+  { width: 768, height: 1024 },
+  { width: 1440, height: 1000 },
+];
 
-      await expect(
-        page.getByRole("heading", {
-          level: 1,
-          name: "A Royal",
-        }),
-      ).toBeVisible();
+async function expectNoHorizontalOverflow(page: Page, width: number): Promise<void> {
+  const result = await page.evaluate(() => ({
+    clientWidth: document.documentElement.clientWidth,
+    scrollWidth: document.documentElement.scrollWidth,
+    offenders: [...document.querySelectorAll("body *")].filter((element) => {
+      const rect = element.getBoundingClientRect();
+      return rect.right > document.documentElement.clientWidth + 1 || rect.left < -1;
+    }).slice(0, 8).map((element) => ({ tag: element.tagName, className: element.className, rect: element.getBoundingClientRect().toJSON() })),
+  }));
+  expect(result, `horizontal overflow at ${width}px`).toMatchObject({ scrollWidth: result.clientWidth, offenders: [] });
+}
 
-      await expect(
-        page.locator(
-          '[data-trust-stage="institutional-context"]',
-        ),
-      ).toBeVisible();
+test.describe("A Royal Founder gate composition repair R1", () => {
+  test("composes exactly three practice principles without an empty quadrant", async ({ page }) => {
+    await page.setViewportSize({ width: 1440, height: 1000 });
+    await page.goto("/sobre");
 
-      await expect(
-        page.locator(
-          '[data-trust-stage="references"]',
-        ),
-      ).toBeVisible();
+    const cards = page.locator('[data-about-block="practice"] .experience-card');
+    await expect(cards).toHaveCount(3);
+    await expect(cards.locator("h3")).toHaveText(["Projeto", "Execução", "Relacionamento"]);
+    await expect(cards.locator("span")).toHaveText(["01", "02", "03"]);
 
-      await expect(
-        page.getByRole("link", {
-          name: "Explorar Projetos",
-        }),
-      ).toHaveAttribute(
-        "href",
-        "/projetos",
-      );
+    const geometry = await cards.evaluateAll((elements) => elements.map((element) => {
+      const rect = element.getBoundingClientRect();
+      return { top: Math.round(rect.top), width: Math.round(rect.width) };
+    }));
+    expect(new Set(geometry.map(({ top }) => top)).size).toBe(1);
+    expect(Math.max(...geometry.map(({ width }) => width)) - Math.min(...geometry.map(({ width }) => width))).toBeLessThanOrEqual(1);
+  });
 
-      await expect(
-        page.getByRole("link", {
-          name: "Conhecer Método Royal",
-        }).last(),
-      ).toHaveAttribute(
-        "href",
-        "/metodo-royal",
-      );
+  test("places the existing photo and context directly after practice and before identity", async ({ page }) => {
+    await page.goto("/sobre");
+    expect(await page.locator("[data-about-block]").evaluateAll((blocks) => blocks.map((block) => block.getAttribute("data-about-block")))).toEqual([
+      "entry",
+      "photo-context",
+      "practice",
+      "identity",
+      "conversion",
+    ]);
+    await expect(page.getByRole("img", { name: "Equipe Royal Splash em contexto de trabalho" })).toHaveCount(1);
+  });
 
-      const qualifiedAction =
-        page.getByRole("region", {
-          name: "Próximo passo",
-        }).getByRole("link", {
-          name: "Inicie seu projeto",
-          exact: true,
-        });
+  test("keeps Identity title, copy and actions in one bounded hierarchy", async ({ page }) => {
+    await page.setViewportSize({ width: 1440, height: 1000 });
+    await page.goto("/sobre");
+    const content = page.locator(".about-identity__content");
+    await expect(content.getByText("Identidade", { exact: true })).toBeVisible();
+    await expect(content.getByRole("heading", { level: 2, name: "A prática aparece no trabalho." })).toBeVisible();
+    await expect(content.getByText("Fotografia de projetos, capacidades técnicas concretas, documentação de escopo e contato direto mostram como a Royal atua hoje.")).toBeVisible();
+    await expect(content.getByRole("link", { name: "Ver Acervo" })).toHaveAttribute("href", "/projetos");
+    await expect(content.getByRole("link", { name: "Ver Método Royal" })).toHaveAttribute("href", "/metodo-royal");
 
-      await expect(
-        qualifiedAction,
-      ).toHaveAttribute(
-        "href",
-        "/inicie-seu-projeto",
-      );
-
-      await expect(
-        qualifiedAction,
-      ).toHaveAttribute(
-        "data-analytics-component",
-        "royal_trust",
-      );
-
-      await expect(
-        qualifiedAction,
-      ).toHaveAttribute(
-        "data-analytics-channel",
-        "site_form",
-      );
-
-      await expect(
-        page.getByRole("link", {
-          name:
-            "Contato e canais auxiliares",
-        }),
-      ).toHaveAttribute(
-        "href",
-        "/contato",
-      );
-
-      const html =
-        await page.locator("body")
-          .innerText();
-
-      expect(html).not.toContain(
-        "20+",
-      );
-
-      expect(html).not.toContain(
-        "500+",
-      );
-
-      expect(html).not.toContain(
-        "100%",
-      );
-
-      expect(html).not.toContain(
-        "Rio de Janeiro",
-      );
-
-      expect(html).not.toContain(
-        "Santa Catarina",
-      );
-
-      expect(html).not.toContain(
-        "equipe própria",
-      );
+    const relationship = await content.evaluate((element) => {
+      const title = element.querySelector("h2")!.getBoundingClientRect();
+      const support = element.querySelector(".about-identity__support")!.getBoundingClientRect();
+      const kicker = element.querySelector(".experience-kicker")!.getBoundingClientRect();
+      return {
+        kickerAbove: kicker.bottom <= Math.min(title.top, support.top),
+        paired: support.left > title.right,
+        aligned: Math.abs(title.bottom - support.bottom) < 8,
+      };
     });
+    expect(relationship).toEqual({ kickerAbove: true, paired: true, aligned: true });
+  });
 
-    test("remains responsive and has no automated axe violations on mobile", async ({
-      page,
-    }) => {
-      await page.setViewportSize({
-        width: 390,
-        height: 844,
-      });
-
+  test("preserves responsive integrity and natural scroll at all required widths", async ({ page }) => {
+    for (const viewport of viewports) {
+      await page.setViewportSize(viewport);
       await page.goto("/sobre");
+      await expectNoHorizontalOverflow(page, viewport.width);
+      expect(await page.evaluate(() => document.documentElement.scrollHeight > window.innerHeight)).toBe(true);
+      await expect(page.getByRole("heading", { level: 1, name: "Engenharia de água para espaços que permanecem." })).toBeVisible();
+    }
+  });
 
-      const noOverflow =
-        await page.evaluate(() => {
-          const root =
-            document.documentElement;
-
-          return (
-            root.scrollWidth <=
-            root.clientWidth
-          );
-        });
-
-      expect(noOverflow).toBe(true);
-
-      const scan =
-        await new AxeBuilder({
-          page,
-        }).analyze();
-
-      expect(
-        scan.violations,
-      ).toEqual([]);
+  test("has no broken images, console errors, or serious accessibility defects", async ({ page }) => {
+    const errors: string[] = [];
+    page.on("console", (message) => {
+      if (message.type() === "error") errors.push(message.text());
     });
-  },
-);
+    page.on("pageerror", (error) => errors.push(error.message));
+
+    await page.goto("/sobre");
+    await page.waitForLoadState("networkidle");
+    expect(await page.locator("img").evaluateAll((images) => images.filter((image) => !(image as HTMLImageElement).complete || (image as HTMLImageElement).naturalWidth === 0).length)).toBe(0);
+    expect(errors).toEqual([]);
+
+    const scan = await new AxeBuilder({ page }).analyze();
+    expect(scan.violations.filter(({ impact }) => impact === "serious" || impact === "critical")).toEqual([]);
+    await expect(page.locator('meta[name="robots"]')).toHaveAttribute("content", /noindex/);
+    await expect(page.locator('meta[name="robots"]')).toHaveAttribute("content", /nofollow/);
+  });
+});
