@@ -3,6 +3,7 @@ import {
 } from "../../conversion/origin.ts";
 import {
   SITE_LEAD_SCHEMA_VERSION,
+  ROYAL_PRIVACY_R1,
   type SiteLeadIngress,
 } from "../../domains/leads/contracts.ts";
 
@@ -118,7 +119,7 @@ export function normalizeSiteLeadRequest(
     },
     consent: {
       state: "granted",
-      policyRef: "/politica-de-privacidade",
+      policyRef: ROYAL_PRIVACY_R1,
       capturedAt: consentCapturedAt,
     },
   };

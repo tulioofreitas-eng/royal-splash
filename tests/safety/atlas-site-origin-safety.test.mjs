@@ -127,3 +127,13 @@ test("live WhatsApp surfaces remain unwired from Atlas", async () => {
     );
   }
 });
+
+test("project-start surface mounts ProjectStartForm and drops legacy StructuredIntake", async () => {
+  const projectStartPage = await readFile(
+    "src/pages/inicie-seu-projeto.astro",
+    "utf8",
+  );
+
+  assert.match(projectStartPage, /<ProjectStartForm \/>/);
+  assert.doesNotMatch(projectStartPage, /StructuredIntake/);
+});

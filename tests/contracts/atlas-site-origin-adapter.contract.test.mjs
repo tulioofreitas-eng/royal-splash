@@ -7,6 +7,7 @@ import {
   AtlasSiteOriginError,
   mapAtlasPublicError,
 } from "../../src/integrations/leads/atlas-site-origin.ts";
+import { ROYAL_PRIVACY_R1 } from "../../src/domains/leads/contracts.ts";
 
 const NOW = Date.parse("2026-09-02T15:00:00.000Z");
 const CONFIG = {
@@ -33,7 +34,7 @@ function createLead() {
     },
     consent: {
       state: "granted",
-      policyRef: "/politica-de-privacidade",
+      policyRef: ROYAL_PRIVACY_R1,
       capturedAt: "2026-09-02T14:59:30.000Z",
     },
   };

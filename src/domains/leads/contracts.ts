@@ -9,6 +9,7 @@
  */
 
 export const SITE_LEAD_SCHEMA_VERSION = "site-lead.v1" as const;
+export const ROYAL_PRIVACY_R1 = "royal-privacy-r1" as const;
 
 export const LEAD_INGRESS_CHANNELS = [
   "site_form",
