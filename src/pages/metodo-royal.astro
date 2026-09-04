@@ -1,4 +1,5 @@
 ---
+import { Picture } from "astro:assets";
 import SiteHeader from "../components/site/SiteHeader.astro";
 import SiteLayout from "../layouts/SiteLayout.astro";
 import understanding from "../assets/metodo-process-entendimento.png";
@@ -85,7 +86,17 @@ const steps = [
             <h3>{heading}</h3>
             <ul>{items.map((item) => <li>{item}</li>)}</ul>
           </div>
-          <img src={image.src} width={image.width} height={image.height} alt={alt} loading={number === "01" ? "eager" : "lazy"} decoding="async" />
+          <Picture 
+            src={image} 
+            alt={alt} 
+            loading={number === "01" ? "eager" : "lazy"} 
+            fetchpriority={number === "01" ? "high" : "auto"}
+            decoding="async" 
+            widths={[400, image.width]} 
+            sizes="(max-width: 48rem) 100vw, 50vw" 
+            formats={["avif", "webp"]}
+            fallbackFormat="png"
+          />
         </li>
       ))}
     </ol>
@@ -110,11 +121,12 @@ const steps = [
   .method-depth h3 { margin: 0.6rem 0 1.2rem; font: 500 clamp(2rem, 4vw, 3.5rem) / 1 var(--site-font-display); }
   .method-depth ul { padding-left: 1.2rem; color: var(--site-color-text-secondary); }
   .method-depth ul li { margin: 0.6rem 0; }
+  .method-depth picture { display: block; }
   .method-depth img { display: block; width: 100%; height: auto; object-fit: contain; }
 
   @media (min-width: 48rem) {
     .method-depth > li { grid-template-columns: 1fr 1fr; align-items: center; }
-    .method-depth > li:nth-child(even) img { grid-column: 1; grid-row: 1; }
+    .method-depth > li:nth-child(even) picture, .method-depth > li:nth-child(even) img { grid-column: 1; grid-row: 1; }
     .method-depth > li:nth-child(even) .method-depth__copy { grid-column: 2; }
   }
 

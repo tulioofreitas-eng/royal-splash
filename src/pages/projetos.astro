@@ -1,4 +1,5 @@
 ---
+import { Picture } from "astro:assets";
 import ExperienceMotion from "../components/motion/ExperienceMotion.astro";
 import SiteHeader from "../components/site/SiteHeader.astro";
 import SiteLayout from "../layouts/SiteLayout.astro";
@@ -63,10 +64,15 @@ const images = [
       {images.map(({ image, layout }, index) => (
         <figure class={`project-gallery__item project-gallery__item--${layout}`} data-motion-section>
           <div class="project-gallery__media">
-            <img
-              src={image.src}
+            <Picture
+              src={image}
               alt={`Resultado final Royal Splash, imagem ${index + 1}`}
               loading={index < 3 ? "eager" : "lazy"}
+              fetchpriority={index === 0 ? "high" : "auto"}
+              widths={[400, 800, 1200]}
+              sizes={`(max-width: 35rem) 100vw, (max-width: 63.99rem) ${layout === 'feature' ? '100vw' : '50vw'}, ${layout === 'feature' ? '66vw' : layout === 'half' ? '50vw' : '33vw'}`}
+              formats={["avif", "webp"]}
+              fallbackFormat="jpg"
               data-motion-image
             />
           </div>
