@@ -1,53 +1,40 @@
 ---
 import ConsentCheckbox from './ConsentCheckbox.astro';
-import { getCurrentEnvironmentContract } from "../safety/runtime.ts";
 interface Props {
   tipoPreSelecionado?: string;
   campanha?: string;
 }
 const { tipoPreSelecionado = '', campanha = '' } = Astro.props;
-
-const { leadProvider } = getCurrentEnvironmentContract();
-const isProductionLeadEgress = leadProvider === "production";
-const formAction = isProductionLeadEgress
-  ? "https://formspree.io/f/mqerkgnw"
-  : "/api/lead";
 ---
-<form
-  action={formAction}
-  method="POST"
-  class="text-left max-w-xl mx-auto"
-  data-lead-form="true"
-  data-production-lead-egress={isProductionLeadEgress ? "true" : "false"}
->
+<form action="https://formspree.io/f/mqerkgnw" method="POST" class="text-left max-w-xl mx-auto">
   <input type="hidden" name="_next" value="https://www.royalsplash.com.br/obrigado" />
   {campanha && <input type="hidden" name="campanha" value={campanha} />}
 
   <div class="grid sm:grid-cols-2 gap-4 mb-4">
     <div>
-      <label for="lead-nome" class="block text-sm text-slate-400 mb-1">Nome</label>
-      <input type="text" id="lead-nome" name="nome" required class="w-full bg-marca border border-white/15 rounded-lg px-4 py-3 text-white focus:border-piscina focus:outline-none transition-colors" placeholder="Seu nome" />
+      <label class="block text-sm text-slate-400 mb-1">Nome</label>
+      <input type="text" name="nome" required class="w-full bg-marca border border-white/15 rounded-lg px-4 py-3 text-white focus:border-piscina focus:outline-none transition-colors" placeholder="Seu nome" />
     </div>
     <div>
-      <label for="lead-telefone" class="block text-sm text-slate-400 mb-1">Telefone / WhatsApp</label>
-      <input type="tel" id="lead-telefone" name="telefone" required class="w-full bg-marca border border-white/15 rounded-lg px-4 py-3 text-white focus:border-piscina focus:outline-none transition-colors" placeholder="(00) 00000-0000" />
+      <label class="block text-sm text-slate-400 mb-1">Telefone / WhatsApp</label>
+      <input type="tel" name="telefone" required class="w-full bg-marca border border-white/15 rounded-lg px-4 py-3 text-white focus:border-piscina focus:outline-none transition-colors" placeholder="(00) 00000-0000" />
     </div>
   </div>
 
   <div class="grid sm:grid-cols-2 gap-4 mb-4">
     <div>
-      <label for="lead-email" class="block text-sm text-slate-400 mb-1">E-mail</label>
-      <input type="email" id="lead-email" name="email" required class="w-full bg-marca border border-white/15 rounded-lg px-4 py-3 text-white focus:border-piscina focus:outline-none transition-colors" placeholder="seu@email.com" />
+      <label class="block text-sm text-slate-400 mb-1">E-mail</label>
+      <input type="email" name="email" required class="w-full bg-marca border border-white/15 rounded-lg px-4 py-3 text-white focus:border-piscina focus:outline-none transition-colors" placeholder="seu@email.com" />
     </div>
     <div>
-      <label for="lead-cidade" class="block text-sm text-slate-400 mb-1">Cidade</label>
-      <input type="text" id="lead-cidade" name="cidade" class="w-full bg-marca border border-white/15 rounded-lg px-4 py-3 text-white focus:border-piscina focus:outline-none transition-colors" placeholder="Sua cidade" />
+      <label class="block text-sm text-slate-400 mb-1">Cidade</label>
+      <input type="text" name="cidade" class="w-full bg-marca border border-white/15 rounded-lg px-4 py-3 text-white focus:border-piscina focus:outline-none transition-colors" placeholder="Sua cidade" />
     </div>
   </div>
 
   <div class="mb-4">
-    <label for="lead-tipo-projeto" class="block text-sm text-slate-400 mb-1">Tipo de projeto</label>
-    <select id="lead-tipo-projeto" name="tipo_projeto" class="w-full bg-marca border border-white/15 rounded-lg px-4 py-3 text-white focus:border-piscina focus:outline-none transition-colors">
+    <label class="block text-sm text-slate-400 mb-1">Tipo de projeto</label>
+    <select name="tipo_projeto" class="w-full bg-marca border border-white/15 rounded-lg px-4 py-3 text-white focus:border-piscina focus:outline-none transition-colors">
       <option value="" selected={tipoPreSelecionado === ''}>Selecione...</option>
       <option value="Construção de piscina" selected={tipoPreSelecionado === 'Construção de piscina'}>Construção de piscina</option>
       <option value="Área de lazer" selected={tipoPreSelecionado === 'Área de lazer'}>Área de lazer</option>
@@ -60,13 +47,13 @@ const formAction = isProductionLeadEgress
     </select>
   </div>
   <div class="mb-4 hidden" id="campo-descreva-outro">
-    <label for="lead-descreva-projeto" class="block text-sm text-slate-400 mb-1">Descreva o projeto</label>
-    <input type="text" id="lead-descreva-projeto" name="descreva_projeto" class="w-full bg-marca border border-white/15 rounded-lg px-4 py-3 text-white focus:border-piscina focus:outline-none transition-colors" placeholder="Qual seria o tipo de projeto?" />
+    <label class="block text-sm text-slate-400 mb-1">Descreva o projeto</label>
+    <input type="text" name="descreva_projeto" class="w-full bg-marca border border-white/15 rounded-lg px-4 py-3 text-white focus:border-piscina focus:outline-none transition-colors" placeholder="Qual seria o tipo de projeto?" />
   </div>
 
   <div class="mb-6">
-    <label for="lead-mensagem" class="block text-sm text-slate-400 mb-1">Mensagem</label>
-    <textarea id="lead-mensagem" name="mensagem" rows="4" class="w-full bg-marca border border-white/15 rounded-lg px-4 py-3 text-white focus:border-piscina focus:outline-none transition-colors" placeholder="Conte um pouco sobre o seu projeto..."></textarea>
+    <label class="block text-sm text-slate-400 mb-1">Mensagem</label>
+    <textarea name="mensagem" rows="4" class="w-full bg-marca border border-white/15 rounded-lg px-4 py-3 text-white focus:border-piscina focus:outline-none transition-colors" placeholder="Conte um pouco sobre o seu projeto..."></textarea>
   </div>
 
   <ConsentCheckbox />
@@ -77,7 +64,7 @@ const formAction = isProductionLeadEgress
 </form>
 
 <script>
-  const form = document.querySelector('form[data-lead-form="true"]') as HTMLFormElement;
+  const form = document.querySelector('form[action*="formspree"]') as HTMLFormElement;
 const selectTipo = document.querySelector('select[name="tipo_projeto"]') as HTMLSelectElement;
   const campoOutro = document.getElementById('campo-descreva-outro');
 
@@ -100,15 +87,7 @@ const selectTipo = document.querySelector('select[name="tipo_projeto"]') as HTML
     // Registra o lead no sistema-mtm em paralelo, sem bloquear nem depender
     // do envio pro Formspree — se isso falhar, o usuário nem percebe, o
     // Formspree continua sendo o caminho principal de notificação.
-    const isProductionLeadEgress =
-      form.dataset.productionLeadEgress === 'true';
-
-    if (isProductionLeadEgress) {
-      fetch('/api/lead', {
-        method: 'POST',
-        body: new FormData(form),
-      }).catch(() => {});
-    }
+    fetch('/api/lead', { method: 'POST', body: new FormData(form) }).catch(() => {});
 
     try {
       const response = await fetch(form.action, { method: 'POST', body: new FormData(form), headers: { Accept: 'application/json' } });
