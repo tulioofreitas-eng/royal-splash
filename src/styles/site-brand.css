@@ -1,0 +1,64 @@
+/*
+ * ROYAL SPLASH — SITE BRAND SEMANTIC LAYER
+ *
+ * BRAND_SPECIFIC:
+ * - values are consumed from the canonical Brand Foundation primitives
+ *
+ * SITE_SPECIFIC:
+ * - semantic token names, spacing, sizing, and layout mechanics
+ *
+ * CANDIDATE_REUSABLE:
+ * - translation from Brand primitives to Site semantic tokens
+ *
+ * This Site Engine implementation is not a Brand source of truth.
+ * It remains inert until a supported layout consumer explicitly opts into Brand mode.
+ */
+
+body:is([data-template-family="site"], [data-template-family="landing"])[data-site-visual="brand"] {
+  --site-color-page-background: var(--brand-color-soft-background);
+  --site-color-surface: var(--brand-color-white);
+  --site-color-surface-muted: var(--brand-color-surface);
+  --site-color-surface-dark: var(--brand-color-royal-dark);
+
+  --site-color-text-primary: var(--site-a11y-text-primary-on-light);
+  --site-color-text-secondary: var(--site-a11y-text-secondary-on-light);
+  --site-color-text-on-dark: var(--site-a11y-text-primary-on-dark);
+
+  --site-color-accent-on-dark: var(--site-a11y-text-accent-on-dark);
+
+  --site-color-divider: var(--brand-color-line);
+  --site-color-required-boundary: var(--site-a11y-required-ui-boundary-on-light);
+
+  --site-font-display: var(--brand-font-display);
+  --site-font-text: var(--brand-font-text);
+  --site-font-ui: var(--brand-font-text);
+  --site-font-weight-display: var(--brand-font-display-weight);
+  --site-font-weight-text: var(--brand-font-text-weight-regular);
+  --site-font-weight-ui: var(--brand-font-text-weight-medium);
+  --site-font-weight-ui-strong: var(--brand-font-text-weight-semibold);
+  --site-font-weight-strong: var(--brand-font-text-weight-bold);
+
+  --site-space-1: 0.25rem;
+  --site-space-2: 0.5rem;
+  --site-space-3: 0.75rem;
+  --site-space-4: 1rem;
+  --site-space-5: 1.5rem;
+  --site-space-6: 2rem;
+  --site-space-7: 3rem;
+  --site-space-8: 4rem;
+
+  --site-layout-gutter: clamp(1rem, 3vw, 2rem);
+  --site-layout-content-max: 72rem;
+  --site-layout-reading-max: 48rem;
+
+  --site-type-display-xl: clamp(3rem, 7vw, 6rem);
+  --site-type-display-lg: clamp(2.25rem, 5vw, 4rem);
+  --site-type-heading: clamp(1.5rem, 2.5vw, 2.25rem);
+  --site-type-body-lg: 1.125rem;
+  --site-type-body: 1rem;
+  --site-type-ui: 0.9375rem;
+  --site-leading-display: 0.95;
+  --site-leading-heading: 1.1;
+  --site-leading-body: 1.6;
+  --site-leading-ui: 1.3;
+}

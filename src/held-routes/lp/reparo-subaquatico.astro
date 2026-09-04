@@ -1,5 +1,6 @@
 ---
 import '../../styles/global.css';
+import LandingLayout from '../../layouts/LandingLayout.astro';
 import GTMHead from '../../components/GTMHead.astro';
 import GTMBody from '../../components/GTMBody.astro';
 import LPHeader from '../../components/LPHeader.astro';
@@ -7,7 +8,6 @@ import LPFooter from '../../components/LPFooter.astro';
 import BotaoWhatsapp from '../../components/BotaoWhatsapp.astro';
 import FormularioGHL from '../../components/FormularioGHL.astro';
 import Icon from '../../components/Icon.astro';
-import GoogleReviews from '../../components/GoogleReviews.astro';
 import { Image } from 'astro:assets';
 import corpRevestimento from '../../assets/corp-revestimento.jpg';
 
@@ -24,21 +24,20 @@ const jsonLd = {
 };
 ---
 
-<html lang="pt-BR">
-  <head>
+<LandingLayout
+  title="Troca de Revestimento de Piscina Sem Esvaziar — Royal Splash"
+  description="Substituição submersa de revestimentos, com a piscina cheia. Sem interromper a operação. Para hotéis, clubes, academias e condomínios no Rio de Janeiro."
+  robots="noindex, nofollow"
+  bodyClass="bg-marca text-white"
+>
+  <Fragment slot="head">
     <GTMHead />
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>Troca de Revestimento de Piscina Sem Esvaziar — Royal Splash</title>
-    <meta name="description" content="Substituição submersa de revestimentos, com a piscina cheia. Sem interromper a operação. Para hotéis, clubes, academias e condomínios no Rio de Janeiro." />
-    <meta name="robots" content="noindex, nofollow" />
     <link rel="icon" type="image/x-icon" href="/favicon.ico" />
     <script type="application/ld+json" set:html={JSON.stringify(jsonLd)} />
-  </head>
-  <body class="bg-marca text-white">
-    <GTMBody />
+  </Fragment>
 
-    <LPHeader />
+  <GTMBody slot="body-start" />
+  <LPHeader slot="header" />
 
     <section class="relative">
       <div class="absolute inset-0">
@@ -58,11 +57,6 @@ const jsonLd = {
       </div>
     </section>
 
-    <GoogleReviews depoimentos={[
-      { texto: 'Trocamos o revestimento inteiro sem fechar a piscina um único dia — os alunos nem perceberam a obra acontecendo.', nome: 'Fábio Werneck', local: 'Barra da Tijuca' },
-      { texto: 'Economizamos uma fortuna em água que seria desperdiçada esvaziando a piscina. A técnica é realmente diferente de tudo que eu já tinha visto.', nome: 'Luciana Prado Amorim', local: 'Zona Sul' },
-      { texto: 'Equipe especializada, trabalho limpo e a piscina do condomínio nunca ficou fora de uso durante o serviço.', nome: 'Ricardo Bittencourt', local: 'Niterói' },
-    ]} />
 
     <section class="py-16 px-6">
       <div class="max-w-5xl mx-auto grid md:grid-cols-2 gap-12 items-center">
@@ -92,22 +86,22 @@ const jsonLd = {
         <div class="grid grid-cols-2 md:grid-cols-4 gap-8">
           <div>
             <div class="w-14 h-14 rounded-full bg-ouro/10 flex items-center justify-center mb-3 mx-auto text-ouro"><Icon name="box" /></div>
-            <h4 class="font-semibold mb-1">Hotéis e Resorts</h4>
+            <h3 class="font-semibold mb-1">Hotéis e Resorts</h3>
             <p class="text-sm text-slate-400">Sem impacto na experiência dos hóspedes.</p>
           </div>
           <div>
             <div class="w-14 h-14 rounded-full bg-ouro/10 flex items-center justify-center mb-3 mx-auto text-ouro"><Icon name="users" /></div>
-            <h4 class="font-semibold mb-1">Clubes e Academias</h4>
+            <h3 class="font-semibold mb-1">Clubes e Academias</h3>
             <p class="text-sm text-slate-400">Mantém o uso da piscina durante a obra.</p>
           </div>
           <div>
             <div class="w-14 h-14 rounded-full bg-ouro/10 flex items-center justify-center mb-3 mx-auto text-ouro"><Icon name="shield" /></div>
-            <h4 class="font-semibold mb-1">Condomínios</h4>
+            <h3 class="font-semibold mb-1">Condomínios</h3>
             <p class="text-sm text-slate-400">Sem transtorno para os moradores.</p>
           </div>
           <div>
             <div class="w-14 h-14 rounded-full bg-ouro/10 flex items-center justify-center mb-3 mx-auto text-ouro"><Icon name="cpu" /></div>
-            <h4 class="font-semibold mb-1">Técnica Especializada</h4>
+            <h3 class="font-semibold mb-1">Técnica Especializada</h3>
             <p class="text-sm text-slate-400">Equipe treinada especificamente nesse método.</p>
           </div>
         </div>
@@ -124,7 +118,6 @@ const jsonLd = {
             { pergunta: 'Quanto tempo demora o serviço?', resposta: 'Depende da área da piscina, mas é bem mais rápido que uma troca convencional, já que não há espera pra encher ou esvaziar.' },
             { pergunta: 'Funciona em qualquer tipo de piscina?', resposta: 'Na maioria dos casos, sim. Fazemos uma avaliação técnica prévia pra confirmar a viabilidade no seu caso.' },
             { pergunta: 'A piscina pode continuar em uso durante o serviço?', resposta: 'Em geral, sim, com interrupções pontuais e programadas — ideal pra hotéis, clubes e academias que não podem parar.' },
-            { pergunta: 'O resultado tem garantia?', resposta: 'Sim. Garantia por escrito sobre o serviço executado, definida em contrato.' },
           ].map((item) => (
             <details class="bg-marca-suave border border-white/10 rounded-2xl p-6 group">
               <summary class="font-semibold cursor-pointer list-none flex items-center justify-between gap-4">
@@ -155,7 +148,6 @@ const jsonLd = {
       <FormularioGHL />
     </section>
 
-    <LPFooter />
-    <BotaoWhatsapp />
-  </body>
-</html>
+  <LPFooter slot="footer" />
+  <BotaoWhatsapp slot="body-end" />
+</LandingLayout>

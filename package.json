@@ -9,14 +9,22 @@
     "dev": "astro dev",
     "build": "astro build",
     "preview": "astro preview",
-    "astro": "astro"
+    "astro": "astro",
+    "verify:preview-safety": "node scripts/verify-preview-safety.mjs"
   },
   "dependencies": {
     "@astrojs/vercel": "^11.0.3",
     "@supabase/supabase-js": "^2.110.6",
     "@tailwindcss/vite": "^4.3.2",
     "astro": "^7.0.7",
+    "gsap": "^3.15.0",
     "sharp": "^0.35.3",
     "tailwindcss": "^4.3.2"
+  },
+  "devDependencies": {
+    "@astrojs/check": "^0.9.10",
+    "@axe-core/playwright": "^4.13.0",
+    "@playwright/test": "^1.62.1",
+    "typescript": "^6.0.3"
   }
 }

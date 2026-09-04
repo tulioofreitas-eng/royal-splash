@@ -1,195 +1,194 @@
 ---
 import '../../styles/global.css';
+import LandingLayout from '../../layouts/LandingLayout.astro';
 import GTMHead from '../../components/GTMHead.astro';
 import GTMBody from '../../components/GTMBody.astro';
 import LPHeader from '../../components/LPHeader.astro';
 import LPFooter from '../../components/LPFooter.astro';
 import BotaoWhatsapp from '../../components/BotaoWhatsapp.astro';
-import FormularioGHL from '../../components/FormularioGHL.astro';
+import SaunaWhatsAppForm from '../../components/lp/SaunaWhatsAppForm.astro';
 import Icon from '../../components/Icon.astro';
-import GoogleReviews from '../../components/GoogleReviews.astro';
 import GaleriaZoom from '../../components/GaleriaZoom.astro';
 import { Image } from 'astro:assets';
 import servicoSauna from '../../assets/servico-sauna.jpg';
-import obra1 from '../../assets/obra-1.jpg';
-import obra2 from '../../assets/obra-2.jpg';
-import obra3 from '../../assets/obra-3.jpg';
-import obra4 from '../../assets/obra-4.jpg';
-import obra5 from '../../assets/obra-5.jpg';
-import obra6 from '../../assets/obra-6.jpg';
-import obra7 from '../../assets/obra-7.jpg';
-import obra8 from '../../assets/obra-8.jpg';
 import saunaInterior from '../../assets/sauna-interior.jpg';
 import saunaSpa from '../../assets/sauna-spa.jpg';
 import saunaAquecedor from '../../assets/sauna-aquecedor.jpg';
 import saunaEspacoIntegrado from '../../assets/sauna-espaco-integrado.jpg';
-
-const jsonLd = {
-  '@context': 'https://schema.org',
-  '@type': 'LocalBusiness',
-  name: 'Royal Splash',
-  image: 'https://www.royalsplash.com.br/logo.png',
-  telephone: '+5521982590643',
-  email: 'contato@royalsplash.com.br',
-  areaServed: { '@type': 'State', name: 'Rio de Janeiro' },
-  address: { '@type': 'PostalAddress', addressRegion: 'RJ', addressCountry: 'BR' },
-  description: 'Construção e instalação de saunas e spas de alto padrão no estado do Rio de Janeiro.',
-};
 ---
 
-<html lang="pt-BR">
-  <head>
-    <GTMHead />
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>Sauna e Spa de Alto Padrão no Rio de Janeiro — Royal Splash</title>
-    <meta name="description" content="Construção e instalação de saunas e spas personalizados. Conforto e bem-estar em todo o Rio de Janeiro." />
-    <meta name="robots" content="noindex, nofollow" />
-    <link rel="icon" type="image/x-icon" href="/favicon.ico" />
-    <script type="application/ld+json" set:html={JSON.stringify(jsonLd)} />
-  </head>
-  <body class="bg-marca text-white">
-    <GTMBody />
+<LandingLayout title="Sauna e Spa de Alto Padrão — Royal Splash" description="Construção e instalação de saunas e spas personalizados. Conforto e bem-estar." robots="noindex, nofollow" visualMode="brand" bodyClass="site-brand-lp-sauna site-primitive-page">
+  <GTMHead slot="head" />
+  <link slot="head" rel="icon" type="image/x-icon" href="/favicon.ico" />
+  <GTMBody slot="body-start" />
+  <LPHeader slot="header" visualMode="brand" />
 
-    <LPHeader />
+  <section class="sauna-hero site-primitive-surface--dark">
+    <Image src={servicoSauna} alt="Sauna e spa de alto padrão" widths={[390, 640, 768, 1024, 1280, 1536, 1792, 2400]} sizes="100vw" priority class="sauna-hero__image" />
+    <div class="sauna-hero__veil"></div>
+    <div class="sauna-hero__content">
+      <h1 class="site-primitive-page-title">Transforme sua casa em um refúgio de bem-estar</h1>
+      <p class="site-primitive-body">Saunas e spas personalizados, com conforto e acabamento premium.</p>
+      <div class="site-primitive-actions"><a href="#orcamento" class="site-primitive-action site-primitive-action--primary">Solicitar orçamento exclusivo</a></div>
+    </div>
+  </section>
 
-    <section class="relative">
-      <div class="absolute inset-0">
-        <Image src={servicoSauna} alt="Sauna e spa de alto padrão Royal Splash, Rio de Janeiro" class="w-full h-full object-cover" />
-        <div class="absolute inset-0 bg-marca/80"></div>
-      </div>
-      <div class="relative max-w-3xl mx-auto text-center px-6 py-14 md:py-20">
-        <h1 class="text-3xl md:text-5xl font-semibold mb-4 leading-tight">
-          Transforme sua casa em um refúgio de bem-estar
-        </h1>
-        <p class="text-base md:text-lg text-slate-300 mb-6 max-w-xl mx-auto">
-          Saunas e spas personalizados, com conforto e acabamento premium. Atendimento em todo o Rio de Janeiro.
-        </p>
-        <a href="#orcamento" class="inline-block bg-ouro hover:opacity-90 text-marca font-semibold px-8 py-4 rounded-full transition-opacity">
-          Solicitar orçamento exclusivo
-        </a>
-      </div>
-    </section>
-
-    <GoogleReviews depoimentos={[
-      { texto: 'Integraram a sauna ao design da casa sem parecer um anexo — ficou como se o projeto original já tivesse previsto o espaço.', nome: 'Renata Assunção Lima', local: 'Zona Sul' },
-      { texto: 'O ofurô junto da sauna virou nosso ritual de fim de semana. O sistema de aquecimento é silencioso e a manutenção é simples.', nome: 'Thiago Ribas Coutinho', local: 'Barra da Tijuca' },
-      { texto: 'Pesquisei várias empresas e foi a única que topou desenhar o projeto sob medida pro espaço reduzido que eu tinha disponível.', nome: 'Marina Costa Prado', local: 'Niterói' },
-    ]} />
-
-    <section class="py-16 px-6">
-      <div class="max-w-5xl mx-auto grid md:grid-cols-2 gap-12 items-center">
-        <div>
-          <h2 class="text-3xl font-semibold mb-4">Bem-estar em <span class="text-piscina">cada detalhe</span></h2>
-          <p class="text-slate-400 mb-4">
-            Projetamos saunas secas e a vapor, ofurôs e espaços de spa completos, integrados à arquitetura da sua casa. Materiais nobres, sistemas de aquecimento eficientes e acabamento impecável.
-          </p>
-          <p class="text-slate-400 mb-6">
-            Do projeto à instalação, cuidamos de cada etapa com a mesma excelência que aplicamos em nossas piscinas.
-          </p>
-          <ul class="space-y-3">
-            <li class="flex items-center gap-3 text-slate-300"><Icon name="check" class="w-5 h-5 text-ouro shrink-0" /> Projetos sob medida</li>
-            <li class="flex items-center gap-3 text-slate-300"><Icon name="check" class="w-5 h-5 text-ouro shrink-0" /> Materiais e acabamentos premium</li>
-            <li class="flex items-center gap-3 text-slate-300"><Icon name="check" class="w-5 h-5 text-ouro shrink-0" /> Instalação completa, com garantia</li>
-          </ul>
+  <section class="sauna-introduction site-primitive-surface--light site-primitive-datum-bottom">
+    <div class="site-primitive-section site-primitive-section--entry sauna-introduction__layout">
+      <div class="sauna-introduction__copy">
+        <h2 class="site-primitive-display">Bem-estar em cada detalhe</h2>
+        <div class="site-primitive-reading">
+          <p class="site-primitive-body site-primitive-supporting">Projetamos saunas secas e a vapor, ofurôs e espaços de spa completos, integrados à arquitetura da sua casa. Materiais nobres, sistemas de aquecimento eficientes e acabamento impecável.</p>
+          <p class="site-primitive-body site-primitive-supporting">Do projeto à instalação, cuidamos de cada etapa com a mesma excelência que aplicamos em nossas piscinas.</p>
         </div>
+        <ul class="sauna-introduction__qualities">
+          <li><Icon name="check" class="sauna-introduction__icon" /> Projetos sob medida</li>
+          <li><Icon name="check" class="sauna-introduction__icon" /> Materiais e acabamentos premium</li>
+        </ul>
+      </div>
+      <div class="sauna-gallery">
         <GaleriaZoom imagens={[
-         { src: saunaInterior, alt: 'Sauna residencial de alto padrão Royal Splash, Rio de Janeiro' },
-         { src: saunaSpa, alt: 'Spa e ofurô Royal Splash, Rio de Janeiro' },
-         { src: saunaEspacoIntegrado, alt: 'Espaço integrado de spa Royal Splash, Rio de Janeiro' },
-         { src: saunaAquecedor, alt: 'Detalhe do aquecedor de sauna Royal Splash, Rio de Janeiro' },
-      ]} />
+          { src: saunaInterior, alt: 'Sauna residencial de alto padrão' },
+          { src: saunaSpa, alt: 'Spa e ofurô' },
+          { src: saunaEspacoIntegrado, alt: 'Espaço integrado de spa' },
+          { src: saunaAquecedor, alt: 'Detalhe do aquecedor de sauna' },
+        ]} />
       </div>
-    </section>
+    </div>
+  </section>
 
-    <section class="py-16 px-6 bg-marca-suave">
-      <div class="max-w-5xl mx-auto">
-        <h2 class="text-3xl font-semibold text-center mb-12">Nossos Serviços</h2>
-        <div class="grid md:grid-cols-3 gap-6">
-          <div class="bg-marca border border-ouro/30 rounded-2xl p-6">
-            <div class="w-14 h-14 rounded-full bg-ouro/10 flex items-center justify-center mb-4 text-ouro"><Icon name="sun" /></div>
-            <h3 class="text-xl font-semibold mb-2">Sauna Seca e a Vapor</h3>
-            <p class="text-slate-400">Projetos personalizados com sistemas de aquecimento eficientes e seguros.</p>
-          </div>
-          <div class="bg-marca border border-white/10 rounded-2xl p-6">
-            <div class="w-14 h-14 rounded-full bg-ouro/10 flex items-center justify-center mb-4 text-ouro"><Icon name="droplet" /></div>
-            <h3 class="text-xl font-semibold mb-2">Spa e Ofurô</h3>
-            <p class="text-slate-400">Espaços completos de relaxamento, integrados à área de lazer.</p>
-          </div>
-          <div class="bg-marca border border-white/10 rounded-2xl p-6">
-            <div class="w-14 h-14 rounded-full bg-ouro/10 flex items-center justify-center mb-4 text-ouro"><Icon name="shield" /></div>
-            <h3 class="text-xl font-semibold mb-2">Garantia Completa</h3>
-            <p class="text-slate-400">Acompanhamento pós-instalação e suporte técnico.</p>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <section class="py-16 px-6">
-      <div class="max-w-5xl mx-auto text-center">
-        <h2 class="text-3xl font-semibold mb-12">Por que a Royal Splash?</h2>
-        <div class="grid grid-cols-2 md:grid-cols-4 gap-8">
+  <section class="sauna-services site-primitive-surface--muted site-primitive-datum-bottom">
+    <div class="site-primitive-section">
+      <h2 class="site-primitive-section-title">Nossos Serviços</h2>
+      <div class="sauna-services__list">
+        <article class="sauna-service">
+          <Icon name="sun" class="sauna-service__icon" />
           <div>
-            <div class="w-14 h-14 rounded-full bg-ouro/10 flex items-center justify-center mb-3 mx-auto text-ouro"><Icon name="users" /></div>
-            <h4 class="font-semibold mb-1">Atendimento Premium</h4>
-            <p class="text-sm text-slate-400">Consultoria exclusiva do primeiro contato à entrega.</p>
+            <h3 class="site-primitive-subtitle">Sauna Seca e a Vapor</h3>
+            <p class="site-primitive-body site-primitive-supporting">Projetos personalizados com sistemas de aquecimento.</p>
           </div>
+        </article>
+        <article class="sauna-service">
+          <Icon name="droplet" class="sauna-service__icon" />
           <div>
-            <div class="w-14 h-14 rounded-full bg-ouro/10 flex items-center justify-center mb-3 mx-auto text-ouro"><Icon name="shield" /></div>
-            <h4 class="font-semibold mb-1">Equipe Qualificada</h4>
-            <p class="text-sm text-slate-400">Profissionais treinados em alto padrão.</p>
+            <h3 class="site-primitive-subtitle">Spa e Ofurô</h3>
+            <p class="site-primitive-body site-primitive-supporting">Espaços completos de relaxamento, integrados à área de lazer.</p>
           </div>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <section class="sauna-trust site-primitive-surface--light site-primitive-datum-bottom">
+    <div class="site-primitive-section">
+      <h2 class="site-primitive-section-title">Por que a Royal Splash?</h2>
+      <div class="sauna-trust__list">
+        <article class="sauna-trust__entry">
+          <Icon name="users" class="sauna-trust__icon" />
           <div>
-            <div class="w-14 h-14 rounded-full bg-ouro/10 flex items-center justify-center mb-3 mx-auto text-ouro"><Icon name="cpu" /></div>
-            <h4 class="font-semibold mb-1">Tecnologia de Ponta</h4>
-            <p class="text-sm text-slate-400">Sistemas de aquecimento e automação modernos.</p>
+            <h3 class="site-primitive-subtitle">Atendimento Premium</h3>
+            <p class="site-primitive-body site-primitive-supporting">Consultoria exclusiva do primeiro contato à entrega.</p>
           </div>
+        </article>
+        <article class="sauna-trust__entry">
+          <Icon name="cpu" class="sauna-trust__icon" />
           <div>
-            <div class="w-14 h-14 rounded-full bg-ouro/10 flex items-center justify-center mb-3 mx-auto text-ouro"><Icon name="clock" /></div>
-            <h4 class="font-semibold mb-1">Prazos Cumpridos</h4>
-            <p class="text-sm text-slate-400">Compromisso rigoroso com cronograma e qualidade.</p>
+            <h3 class="site-primitive-subtitle">Tecnologia de Ponta</h3>
+            <p class="site-primitive-body site-primitive-supporting">Sistemas de aquecimento e automação modernos.</p>
           </div>
-        </div>
+        </article>
       </div>
-    </section>
+    </div>
+  </section>
 
-    <section class="py-16 px-6 bg-marca-suave">
-      <div class="max-w-5xl mx-auto">
-        <h2 class="text-3xl font-semibold text-center mb-10">Projetos que falam por si</h2>
-        <GaleriaZoom
-          colunas="grid-cols-2 md:grid-cols-4"
-          imagens={[
-            { src: obra1, alt: 'Obra Royal Splash, Rio de Janeiro' },
-            { src: obra2, alt: 'Obra Royal Splash, Rio de Janeiro' },
-            { src: obra3, alt: 'Obra Royal Splash, Rio de Janeiro' },
-            { src: obra4, alt: 'Obra Royal Splash, Rio de Janeiro' },
-            { src: obra5, alt: 'Obra Royal Splash, Rio de Janeiro' },
-            { src: obra6, alt: 'Obra Royal Splash, Rio de Janeiro' },
-            { src: obra7, alt: 'Obra Royal Splash, Rio de Janeiro' },
-            { src: obra8, alt: 'Obra Royal Splash, Rio de Janeiro' },
-          ]}
-        />
+  <section class="sauna-faq site-primitive-surface--soft site-primitive-datum-bottom">
+    <div class="site-primitive-section sauna-faq__layout">
+      <h2 class="site-primitive-display">Perguntas frequentes</h2>
+      <div class="sauna-faq__list">
+        {[
+          { pergunta: 'Qual a diferença entre sauna seca e a vapor?', resposta: 'A sauna seca utiliza calor gerado por pedras ou resistências, oferecendo um ambiente de baixa umidade. A sauna a vapor funciona com geradores dedicados, proporcionando alta umidade e calor envolvente.' },
+          { pergunta: 'É possível integrar a sauna ou spa a um ambiente existente?', resposta: 'Sim. Avaliamos a estrutura atual da sua área de lazer ou residência para adequar equipamentos e revestimentos de forma harmônica.' },
+          { pergunta: 'Quais tipos de acabamentos são utilizados?', resposta: 'Trabalhamos com materiais nobres como madeiras selecionadas para saunas secas e pedras ou pastilhas premium para saunas a vapor e spas.' },
+          { pergunta: 'O projeto inclui os sistemas de aquecimento?', resposta: 'Sim. Projetamos a infraestrutura completa, especificando e instalando os geradores de vapor ou aquecedores adequados para o volume do seu ambiente.' },
+          { pergunta: 'Como solicitar um orçamento ou avaliação?', resposta: 'Preencha o formulário desta página com o contexto do seu espaço. Nossa equipe iniciará uma conversa estruturada pelo WhatsApp para orientar os próximos passos.' },
+        ].map((item) => (
+          <details class="sauna-faq__item">
+            <summary class="site-primitive-subtitle">
+              {item.pergunta}
+              <span aria-hidden="true">+</span>
+            </summary>
+            <p class="site-primitive-body site-primitive-supporting">{item.resposta}</p>
+          </details>
+        ))}
       </div>
-    </section>
+    </div>
+  </section>
 
-    <section class="py-16 px-6 bg-marca-suave text-center border-y border-ouro/20">
-      <h2 class="text-3xl md:text-4xl font-semibold mb-6 max-w-2xl mx-auto">
-        Pronto para criar seu espaço de bem-estar?
-      </h2>
-      <a href="#orcamento" class="inline-block bg-ouro hover:opacity-90 text-marca font-semibold px-8 py-4 rounded-full transition-opacity">
-        Falar com um especialista
-      </a>
-    </section>
+  <section class="sauna-cta site-primitive-surface--dark">
+    <div class="site-primitive-section"><h2 class="site-primitive-display">Pronto para criar seu espaço de bem-estar?</h2><div class="site-primitive-actions"><a href="#orcamento" class="site-primitive-action site-primitive-action--primary">Falar com um especialista</a></div></div>
+  </section>
 
-    <section id="orcamento" class="py-16 px-6">
-      <div class="max-w-xl mx-auto text-center mb-10">
-        <h2 class="text-3xl font-semibold mb-3">Solicite seu Orçamento</h2>
-        <p class="text-slate-400">Preencha os dados abaixo e nossa equipe entrará em contato para entender seu projeto em detalhes.</p>
-      </div>
-      <FormularioGHL />
-    </section>
+  <section id="orcamento" class="site-primitive-section sauna-form">
+    <div class="site-primitive-reading sauna-form__heading"><h2 class="site-primitive-section-title">Solicite seu Orçamento</h2><p class="site-primitive-body site-primitive-supporting">Preencha os dados abaixo e nossa equipe entrará em contato para entender seu projeto em detalhes.</p></div>
+    <SaunaWhatsAppForm />
+  </section>
 
-    <LPFooter />
-    <BotaoWhatsapp />
-  </body>
-</html>
+  <LPFooter slot="footer" visualMode="brand" />
+  <BotaoWhatsapp slot="body-end" />
+</LandingLayout>
+
+<style>
+.sauna-faq__layout { display: grid; grid-template-columns: minmax(14rem, 0.7fr) minmax(0, 1.3fr); align-items: center; gap: var(--site-space-8); }
+  .sauna-faq h2 { max-width: 12ch; margin-block-end: 0; }
+  .sauna-faq__list { border-block-start: 1px solid var(--site-color-divider); }
+  .sauna-faq__item { border-block-end: 1px solid var(--site-color-divider); }
+  .sauna-faq__item summary { display: flex; justify-content: space-between; gap: var(--site-space-4); padding-block: var(--site-space-5); cursor: pointer; list-style: none; }
+  .sauna-faq__item summary::-webkit-details-marker { display: none; }
+  .sauna-faq__item summary span { color: var(--site-color-text-primary); transition: transform 160ms ease; }
+  .sauna-faq__item[open] summary span { transform: rotate(45deg); }
+  .sauna-faq__item p { margin: 0; padding: 0 0 var(--site-space-5); }
+  .sauna-hero { position: relative; display: grid; min-height: max(40rem, 85svh); isolation: isolate; overflow: hidden; }
+  .sauna-hero__image, .sauna-hero__veil { position: absolute; inset: 0; width: 100%; height: 100%; }
+  .sauna-hero__image { z-index: -2; object-fit: cover; object-position: center; }
+  .sauna-hero__veil { z-index: -1; background: color-mix(in srgb, var(--site-color-surface-dark) 72%, transparent); }
+  .sauna-hero__content { align-self: center; width: min(calc(100% - (2 * var(--site-layout-gutter))), var(--site-layout-content-max)); margin-inline: auto; padding-block: var(--site-space-8); }
+  .sauna-hero h1 { max-width: 17ch; margin: 0; }
+  .sauna-hero p { max-width: 35rem; margin: var(--site-space-5) 0 0; color: var(--site-color-text-on-dark); }
+  .sauna-hero .site-primitive-actions { margin-block-start: var(--site-space-6); }
+  .sauna-introduction__layout { display: grid; grid-template-columns: minmax(18rem, 0.8fr) minmax(0, 1.2fr); gap: var(--site-space-8); align-items: center; }
+  .sauna-introduction h2, .sauna-introduction p { margin-block-start: 0; }
+  .sauna-introduction__qualities { display: grid; gap: var(--site-space-3); margin: var(--site-space-6) 0 0; padding: var(--site-space-5) 0 0; border-block-start: 1px solid var(--site-color-divider); list-style: none; }
+  .sauna-introduction__qualities li { display: flex; gap: var(--site-space-3); align-items: center; }
+  :global(.sauna-introduction__icon) { width: 1.25rem; height: 1.25rem; flex: none; }
+  .sauna-gallery { min-width: 0; }
+  .sauna-services h2, .sauna-services h3, .sauna-trust h2, .sauna-trust h3, .sauna-faq h2, .sauna-form h2 { margin-block-start: 0; }
+  .sauna-services h2, .sauna-trust h2 { margin-block-end: var(--site-space-6); }
+  .sauna-services .site-primitive-supporting { color: var(--site-color-text-primary); }
+  .sauna-services__list { max-width: var(--site-layout-reading-max); border-block: 1px solid var(--site-color-divider); }
+  .sauna-service { display: grid; grid-template-columns: auto minmax(0, 1fr); gap: var(--site-space-4); padding-block: var(--site-space-6); }
+  .sauna-service + .sauna-service { border-block-start: 1px solid var(--site-color-divider); }
+  .sauna-service p, .sauna-trust p, .sauna-form p { margin-block-end: 0; }
+  :global(.sauna-service__icon), :global(.sauna-trust__icon) { width: 1.5rem; height: 1.5rem; flex: none; color: var(--site-color-text-primary); }
+  .sauna-trust__list { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); max-width: 60rem; }
+  .sauna-trust__entry { display: grid; grid-template-columns: auto minmax(0, 1fr); gap: var(--site-space-4); padding-block: var(--site-space-5); border-block-start: 1px solid var(--site-color-divider); }
+  .sauna-trust__entry + .sauna-trust__entry { margin-inline-start: var(--site-space-7); }
+  .sauna-cta .site-primitive-section { display: block; }
+  .sauna-cta h2 { max-width: 18ch; margin: 0; }
+  .sauna-cta .site-primitive-actions { margin-block-start: var(--site-space-6); }
+  .sauna-form { padding-block-end: calc(var(--site-space-8) + 4.5rem); }
+  .sauna-form__heading { margin: 0 auto var(--site-space-7); text-align: center; }
+  .sauna-form__heading h2, .sauna-form__heading p { margin-block-start: 0; }
+  @media (max-width: 52rem) {
+    .sauna-introduction__layout, .sauna-faq__layout { grid-template-columns: 1fr; gap: var(--site-space-7); }
+    .sauna-faq__layout { align-items: stretch; gap: var(--site-space-5); }
+    .sauna-faq h2 { max-width: none; }
+    .sauna-gallery { width: min(100%, 38rem); margin-inline: auto; }
+    .sauna-trust__list { grid-template-columns: 1fr; }
+    .sauna-trust__entry + .sauna-trust__entry { margin-inline-start: 0; }
+  }
+  @media (max-width: 42rem) {
+    .sauna-hero { min-height: calc(100svh + 2rem); }
+    .sauna-faq__layout { grid-template-columns: 1fr; }
+    .sauna-form { padding-block-end: calc(var(--site-space-7) + 5rem); }
+  }
+</style>

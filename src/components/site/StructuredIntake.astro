@@ -1,0 +1,851 @@
+<section
+  class="structured-intake"
+  aria-labelledby="structured-intake-heading"
+  data-structured-intake
+>
+  <header class="structured-intake__header site-primitive-reading">
+    <h2
+      id="structured-intake-heading"
+      class="site-primitive-section-title"
+    >
+      Contexto do seu projeto
+    </h2>
+    <p class="site-primitive-body site-primitive-supporting">
+      Preencha as etapas abaixo com o contexto do projeto
+      e seus dados de contato.
+    </p>
+  </header>
+
+  <ol
+    class="structured-intake__progress"
+    aria-label="Progresso do formulário"
+  >
+    <li aria-current="step" data-progress-step="1">
+      SOBRE O PROJETO
+    </li>
+    <li data-progress-step="2">
+      O QUE VOCÊ PRECISA
+    </li>
+    <li data-progress-step="3">
+      SEUS DADOS
+    </li>
+  </ol>
+
+  <form
+    data-intake-form
+    action="/api/site-lead-preview"
+    method="post"
+    novalidate
+  >
+    <fieldset data-intake-step="1">
+      <legend>1. Contexto do projeto</legend>
+
+      <label for="project-context">
+        Contexto
+      </label>
+
+      <select
+        id="project-context"
+        name="projectContext"
+        required
+        aria-describedby="project-context-error"
+      >
+        <option value="">
+          Selecione um contexto
+        </option>
+        <option value="residencial">
+          Residencial
+        </option>
+        <option value="corporativo_institucional">
+          Corporativo / Institucional
+        </option>
+      </select>
+
+      <p
+        id="project-context-error"
+        class="structured-intake__field-error"
+        data-error-for="project-context"
+        hidden
+      ></p>
+
+      <label for="project-city">
+        Cidade
+      </label>
+
+      <input
+        id="project-city"
+        name="city"
+        type="text"
+        autocomplete="address-level2"
+        required
+        aria-describedby="project-city-error"
+      />
+
+      <p
+        id="project-city-error"
+        class="structured-intake__field-error"
+        data-error-for="project-city"
+        hidden
+      ></p>
+
+      <div class="structured-intake__controls">
+        <button type="button" data-next-step>
+          Continuar
+        </button>
+      </div>
+    </fieldset>
+
+    <fieldset data-intake-step="2" hidden>
+      <legend>2. Necessidade / escopo</legend>
+
+      <label for="project-need">
+        Descreva brevemente o que você precisa
+      </label>
+
+      <textarea
+        id="project-need"
+        name="projectNeed"
+        rows="5"
+        required
+        aria-describedby="project-need-error"
+      ></textarea>
+
+      <p
+        id="project-need-error"
+        class="structured-intake__field-error"
+        data-error-for="project-need"
+        hidden
+      ></p>
+
+      <div class="structured-intake__controls">
+        <button type="button" data-previous-step>
+          Voltar
+        </button>
+        <button type="button" data-next-step>
+          Continuar
+        </button>
+      </div>
+    </fieldset>
+
+    <fieldset data-intake-step="3" hidden>
+      <legend>3. Seus dados</legend>
+
+      <label for="contact-name">
+        Nome
+      </label>
+
+      <input
+        id="contact-name"
+        name="name"
+        type="text"
+        autocomplete="name"
+        required
+        aria-describedby="contact-name-error"
+      />
+
+      <p
+        id="contact-name-error"
+        class="structured-intake__field-error"
+        data-error-for="contact-name"
+        hidden
+      ></p>
+
+      <label for="contact-email">
+        E-mail
+      </label>
+
+      <input
+        id="contact-email"
+        name="email"
+        type="email"
+        autocomplete="email"
+        aria-describedby="contact-channel-error"
+      />
+
+      <label for="contact-phone">
+        Telefone
+      </label>
+
+      <input
+        id="contact-phone"
+        name="phone"
+        type="tel"
+        autocomplete="tel"
+        aria-describedby="contact-channel-error"
+      />
+
+      <p
+        id="contact-channel-error"
+        class="structured-intake__field-error"
+        data-contact-channel-error
+        hidden
+      ></p>
+
+      <div class="structured-intake__consent">
+        <input
+          id="project-consent"
+          name="consent"
+          type="checkbox"
+          required
+          aria-describedby="project-consent-error"
+        />
+
+        <label for="project-consent">
+          Concordo com o envio destas informações conforme a
+          <a href="/politica-de-privacidade">
+            Política de Privacidade
+          </a>.
+        </label>
+      </div>
+
+      <p
+        id="project-consent-error"
+        class="structured-intake__field-error"
+        data-error-for="project-consent"
+        hidden
+      ></p>
+
+      <div class="structured-intake__controls">
+        <button type="button" data-previous-step>
+          Voltar
+        </button>
+
+        <button type="submit">
+          Enviar contexto do projeto
+        </button>
+      </div>
+    </fieldset>
+
+    <p
+      class="structured-intake__submission-error"
+      role="alert"
+      tabindex="-1"
+      data-submission-error
+      hidden
+    >
+      Não foi possível enviar as informações.
+      Revise os dados e tente novamente.
+    </p>
+  </form>
+
+  <div
+    class="structured-intake__success"
+    role="status"
+    tabindex="-1"
+    data-intake-success
+    hidden
+  >
+    <h3>Informações recebidas</h3>
+    <p>
+      Recebemos as informações enviadas pelo formulário.
+    </p>
+  </div>
+</section>
+
+<script>
+  import {
+    normalizeConversionOrigin,
+  } from "../../conversion/origin.ts";
+
+  const intake = document.querySelector(
+    "[data-structured-intake]",
+  );
+
+  if (intake instanceof HTMLElement) {
+    const form = intake.querySelector(
+      "[data-intake-form]",
+    );
+
+    if (form instanceof HTMLFormElement) {
+      const searchParams =
+        new URL(window.location.href)
+          .searchParams;
+
+      const contextFromUrl =
+        searchParams.get("context");
+
+      const conversionOrigin =
+        normalizeConversionOrigin({
+          source:
+            searchParams.get(
+              "source",
+            ),
+          pageRef:
+            searchParams.get(
+              "pageRef",
+            ),
+        });
+
+      if (
+        conversionOrigin.source &&
+        conversionOrigin.pageRef
+      ) {
+        intake.dataset.conversionSource =
+          conversionOrigin.source;
+
+        intake.dataset.conversionPage =
+          conversionOrigin.pageRef;
+      }
+
+      const contextControl =
+        form.elements.namedItem(
+          "projectContext",
+        );
+
+      if (
+        contextControl instanceof HTMLSelectElement &&
+        (
+          contextFromUrl === "residencial" ||
+          contextFromUrl ===
+            "corporativo_institucional"
+        )
+      ) {
+        contextControl.value = contextFromUrl;
+        intake.dataset.initialContext =
+          contextFromUrl;
+      }
+
+      const steps = Array.from(
+        form.querySelectorAll("[data-intake-step]"),
+      ).filter(
+        (step): step is HTMLFieldSetElement =>
+          step instanceof HTMLFieldSetElement,
+      );
+
+      const progressItems = Array.from(
+        intake.querySelectorAll("[data-progress-step]"),
+      );
+
+      const success = intake.querySelector(
+        "[data-intake-success]",
+      );
+
+      const submissionError = form.querySelector(
+        "[data-submission-error]",
+      );
+
+      let currentStep = 0;
+      let composedPayload:
+        Record<string, unknown> | undefined;
+
+      form.addEventListener("input", () => {
+        composedPayload = undefined;
+      });
+
+      const clearFieldError = (
+        control: HTMLInputElement |
+          HTMLSelectElement |
+          HTMLTextAreaElement,
+      ) => {
+        control.removeAttribute("aria-invalid");
+
+        const error = form.querySelector(
+          `[data-error-for="${control.id}"]`,
+        );
+
+        if (error instanceof HTMLElement) {
+          error.textContent = "";
+          error.hidden = true;
+        }
+      };
+
+      const setFieldError = (
+        control: HTMLInputElement |
+          HTMLSelectElement |
+          HTMLTextAreaElement,
+        message: string,
+      ) => {
+        control.setAttribute("aria-invalid", "true");
+
+        const error = form.querySelector(
+          `[data-error-for="${control.id}"]`,
+        );
+
+        if (error instanceof HTMLElement) {
+          error.textContent = message;
+          error.hidden = false;
+        }
+
+        control.focus();
+      };
+
+      const showStep = (index: number) => {
+        currentStep = index;
+
+        steps.forEach((step, stepIndex) => {
+          step.hidden = stepIndex !== index;
+        });
+
+        progressItems.forEach(
+          (item, stepIndex) => {
+            if (stepIndex === index) {
+              item.setAttribute(
+                "aria-current",
+                "step",
+              );
+            } else {
+              item.removeAttribute("aria-current");
+            }
+          },
+        );
+
+        const firstControl =
+          steps[index]?.querySelector(
+            "input, select, textarea",
+          );
+
+        if (firstControl instanceof HTMLElement) {
+          firstControl.focus();
+        }
+      };
+
+      const validateStep = (
+        index: number,
+      ): boolean => {
+        if (index === 0) {
+          const context = form.elements.namedItem(
+            "projectContext",
+          );
+
+          if (context instanceof HTMLSelectElement) {
+            clearFieldError(context);
+
+            if (!context.value) {
+              setFieldError(
+                context,
+                "Selecione o contexto do projeto.",
+              );
+              return false;
+            }
+          }
+
+          const city = form.elements.namedItem("city");
+
+          if (city instanceof HTMLInputElement) {
+            clearFieldError(city);
+
+            if (!city.value.trim()) {
+              setFieldError(
+                city,
+                "Informe a cidade.",
+              );
+              return false;
+            }
+          }
+        }
+
+        if (index === 1) {
+          const need = form.elements.namedItem(
+            "projectNeed",
+          );
+
+          if (
+            need instanceof HTMLTextAreaElement
+          ) {
+            clearFieldError(need);
+
+            if (!need.value.trim()) {
+              setFieldError(
+                need,
+                "Descreva brevemente a necessidade do projeto.",
+              );
+              return false;
+            }
+          }
+        }
+
+        if (index === 2) {
+          const name = form.elements.namedItem("name");
+          const email = form.elements.namedItem("email");
+          const phone = form.elements.namedItem("phone");
+          const consent =
+            form.elements.namedItem("consent");
+
+          if (name instanceof HTMLInputElement) {
+            clearFieldError(name);
+
+            if (!name.value.trim()) {
+              setFieldError(
+                name,
+                "Informe seu nome.",
+              );
+              return false;
+            }
+          }
+
+          const contactError = form.querySelector(
+            "[data-contact-channel-error]",
+          );
+
+          if (
+            email instanceof HTMLInputElement &&
+            phone instanceof HTMLInputElement &&
+            contactError instanceof HTMLElement
+          ) {
+            email.removeAttribute("aria-invalid");
+            phone.removeAttribute("aria-invalid");
+            contactError.textContent = "";
+            contactError.hidden = true;
+
+            if (
+              !email.value.trim() &&
+              !phone.value.trim()
+            ) {
+              email.setAttribute(
+                "aria-invalid",
+                "true",
+              );
+              phone.setAttribute(
+                "aria-invalid",
+                "true",
+              );
+              contactError.textContent =
+                "Informe pelo menos um contato: e-mail ou telefone.";
+              contactError.hidden = false;
+              email.focus();
+              return false;
+            }
+
+            if (
+              email.value.trim() &&
+              !email.validity.valid
+            ) {
+              email.setAttribute(
+                "aria-invalid",
+                "true",
+              );
+              contactError.textContent =
+                "Informe um endereço de e-mail válido.";
+              contactError.hidden = false;
+              email.focus();
+              return false;
+            }
+          }
+
+          if (
+            consent instanceof HTMLInputElement
+          ) {
+            clearFieldError(consent);
+
+            if (!consent.checked) {
+              setFieldError(
+                consent,
+                "Confirme o consentimento antes de enviar.",
+              );
+              return false;
+            }
+          }
+        }
+
+        return true;
+      };
+
+      form
+        .querySelectorAll("[data-next-step]")
+        .forEach((button) => {
+          button.addEventListener("click", () => {
+            if (
+              validateStep(currentStep) &&
+              currentStep < steps.length - 1
+            ) {
+              showStep(currentStep + 1);
+            }
+          });
+        });
+
+      form
+        .querySelectorAll("[data-previous-step]")
+        .forEach((button) => {
+          button.addEventListener("click", () => {
+            if (currentStep > 0) {
+              showStep(currentStep - 1);
+            }
+          });
+        });
+
+      form.addEventListener(
+        "submit",
+        async (event) => {
+          event.preventDefault();
+
+          if (!validateStep(2)) {
+            return;
+          }
+
+          if (
+            submissionError instanceof HTMLElement
+          ) {
+            submissionError.hidden = true;
+          }
+
+          if (!composedPayload) {
+            const data = new FormData(form);
+
+            composedPayload = {
+              submissionRef: crypto.randomUUID(),
+              consentCapturedAt:
+                new Date().toISOString(),
+              projectContext: String(
+                data.get("projectContext") ?? "",
+              ),
+              projectNeed: String(
+                data.get("projectNeed") ?? "",
+              ),
+              city: String(
+                data.get("city") ?? "",
+              ),
+              name: String(
+                data.get("name") ?? "",
+              ),
+              email: String(
+                data.get("email") ?? "",
+              ),
+              phone: String(
+                data.get("phone") ?? "",
+              ),
+              consent:
+                data.get("consent") === "on",
+              ...conversionOrigin,
+            };
+          }
+
+          const payload = composedPayload;
+
+          try {
+            const response = await fetch(
+              "/api/site-lead-preview",
+              {
+                method: "POST",
+                headers: {
+                  "content-type":
+                    "application/json",
+                },
+                body: JSON.stringify(payload),
+              },
+            );
+
+            if (!response.ok) {
+              throw new Error(
+                "Preview ingress rejected submission.",
+              );
+            }
+
+            window.dispatchEvent(
+              new CustomEvent(
+                "site:lead-submitted",
+                {
+                  detail: {
+                    componentRef:
+                      "structured_intake",
+                    subjectRef:
+                      payload.projectContext,
+                    channelRef:
+                      "site_form",
+                  },
+                },
+              ),
+            );
+
+            form.hidden = true;
+
+            if (success instanceof HTMLElement) {
+              success.hidden = false;
+              success.focus();
+            }
+          } catch {
+            if (
+              submissionError instanceof HTMLElement
+            ) {
+              submissionError.hidden = false;
+              submissionError.focus();
+            }
+          }
+        },
+      );
+    }
+  }
+</script>
+
+<style>
+  .structured-intake {
+    width: calc(100% - (2 * var(--site-layout-gutter)));
+    max-width: var(--site-layout-reading-max);
+    margin-inline: auto;
+    padding-block: var(--site-space-7);
+    color: var(--site-color-text-primary);
+  }
+
+  .structured-intake__header h2 {
+    margin-block: 0 var(--site-space-4);
+  }
+
+  .structured-intake__header p {
+    margin-block: 0;
+  }
+
+  .structured-intake__progress {
+    display: grid;
+    gap: var(--site-space-3);
+    margin-block: var(--site-space-7);
+    padding-inline-start: var(--site-space-5);
+    color: var(--site-color-text-secondary);
+    font-family: var(--site-font-ui);
+    font-size: var(--site-type-ui);
+    font-weight: var(--site-font-weight-ui);
+    line-height: var(--site-leading-ui);
+  }
+
+  .structured-intake__progress
+    [aria-current="step"] {
+    color: var(--site-color-text-primary);
+    font-weight: var(--site-font-weight-ui-strong);
+    text-decoration-line: underline;
+    text-decoration-thickness: 0.12em;
+    text-underline-offset: 0.3em;
+  }
+
+  .structured-intake fieldset {
+    display: grid;
+    gap: var(--site-space-3);
+    margin: 0;
+    border: 1px solid var(--site-color-divider);
+    padding: var(--site-space-5);
+  }
+
+  .structured-intake fieldset[hidden] {
+    display: none;
+  }
+
+  .structured-intake label,
+  .structured-intake legend,
+  .structured-intake input,
+  .structured-intake select,
+  .structured-intake textarea,
+  .structured-intake button,
+  .structured-intake__field-error,
+  .structured-intake__submission-error {
+    font-family: var(--site-font-ui);
+    font-size: var(--site-type-ui);
+    line-height: var(--site-leading-ui);
+  }
+
+  .structured-intake label,
+  .structured-intake legend {
+    font-weight: var(--site-font-weight-ui-strong);
+  }
+
+  .structured-intake legend {
+    padding-inline: var(--site-space-2);
+  }
+
+  .structured-intake input,
+  .structured-intake select,
+  .structured-intake textarea {
+    width: 100%;
+    min-height: 2.75rem;
+    padding: var(--site-space-3);
+    border: 1px solid var(--site-color-required-boundary);
+    border-radius: 0;
+    background: var(--site-color-surface);
+    color: var(--site-color-text-primary);
+    font-weight: var(--site-font-weight-ui);
+  }
+
+  .structured-intake input:focus-visible,
+  .structured-intake select:focus-visible,
+  .structured-intake textarea:focus-visible,
+  .structured-intake button:focus-visible,
+  .structured-intake a:focus-visible {
+    outline: 3px solid var(--site-color-required-boundary);
+    outline-offset: 3px;
+  }
+
+  .structured-intake__controls {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--site-space-3);
+    margin-block-start: var(--site-space-4);
+  }
+
+  .structured-intake button {
+    min-height: 2.75rem;
+    border: 2px solid var(--site-color-required-boundary);
+    border-radius: 0;
+    background: var(--site-color-surface-dark);
+    color: var(--site-color-text-on-dark);
+    padding: var(--site-space-3) var(--site-space-4);
+    font-weight: var(--site-font-weight-ui-strong);
+    cursor: pointer;
+  }
+
+  .structured-intake [data-previous-step] {
+    background: transparent;
+    color: var(--site-color-text-primary);
+  }
+
+  .structured-intake__field-error,
+  .structured-intake__submission-error {
+    margin-block: 0;
+    font-weight: var(--site-font-weight-ui-strong);
+    text-decoration-line: underline;
+    text-decoration-thickness: 0.1em;
+    text-underline-offset: 0.2em;
+  }
+
+  .structured-intake__consent {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    gap: var(--site-space-3);
+    align-items: start;
+    margin-block-start: var(--site-space-3);
+  }
+
+  .structured-intake__consent input {
+    width: auto;
+    min-height: 1.5rem;
+    margin-block-start: var(--site-space-1);
+  }
+
+  .structured-intake__success {
+    border-block: 1px solid var(--site-color-divider);
+    padding-block: var(--site-space-6);
+  }
+
+  .structured-intake__success h3 {
+    margin-block: 0 var(--site-space-3);
+    font-family: var(--site-font-display);
+    font-size: var(--site-type-heading);
+    font-weight: var(--site-font-weight-display);
+    line-height: var(--site-leading-heading);
+  }
+
+  .structured-intake__success p {
+    margin-block: 0;
+    font-family: var(--site-font-text);
+    font-size: var(--site-type-body);
+    line-height: var(--site-leading-body);
+  }
+
+  @media (min-width: 40rem) {
+    .structured-intake__progress {
+      grid-template-columns:
+        repeat(4, minmax(0, 1fr));
+      list-style-position: inside;
+      padding-inline-start: 0;
+    }
+  }
+
+  @media (max-width: 30rem) {
+    .structured-intake {
+      padding-block: var(--site-space-6);
+    }
+
+    .structured-intake fieldset {
+      padding: var(--site-space-4);
+    }
+
+    .structured-intake__controls button {
+      width: 100%;
+    }
+  }
+</style>

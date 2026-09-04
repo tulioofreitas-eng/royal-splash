@@ -1,0 +1,74 @@
+<section
+  class="segment-router site-primitive-section site-primitive-datum-top site-primitive-datum-bottom"
+  aria-labelledby="segment-router-heading"
+  data-segment-router
+>
+  <div class="segment-router__intro">
+    <h2 id="segment-router-heading" class="site-primitive-section-title">
+      Escolha seu contexto
+    </h2>
+    <p class="site-primitive-body site-primitive-supporting site-primitive-reading">
+      Siga pela experiência que corresponde ao contexto do seu projeto.
+    </p>
+  </div>
+
+  <div class="segment-router__options">
+    <article class="site-primitive-datum-top">
+      <h3 class="site-primitive-subtitle">Residencial</h3>
+      <p class="site-primitive-body site-primitive-supporting">
+        Explore a jornada destinada a necessidades em contexto residencial.
+      </p>
+      <a class="site-primitive-action site-primitive-action--tertiary" href="/servicos">
+        Explorar Residencial
+      </a>
+    </article>
+
+    <article class="site-primitive-datum-top">
+      <h3 class="site-primitive-subtitle">Corporativo / Institucional</h3>
+      <p class="site-primitive-body site-primitive-supporting">
+        Explore a jornada destinada a contextos corporativos ou institucionais.
+      </p>
+      <a class="site-primitive-action site-primitive-action--tertiary" href="/corporativo">
+        Explorar Corporativo / Institucional
+      </a>
+    </article>
+  </div>
+</section>
+
+<style>
+  .segment-router {
+    display: grid;
+    gap: var(--site-space-6);
+  }
+
+  .segment-router__intro .site-primitive-section-title {
+    margin-block: 0 var(--site-space-5);
+  }
+
+  .segment-router__intro p {
+    margin-block: 0;
+  }
+
+  .segment-router__options {
+    display: grid;
+    gap: var(--site-space-6);
+  }
+
+  .segment-router article {
+    padding-block-start: var(--site-space-5);
+  }
+
+  .segment-router article .site-primitive-subtitle {
+    margin-block: 0 var(--site-space-3);
+  }
+
+  .segment-router article p {
+    margin-block: 0 var(--site-space-4);
+  }
+
+  @media (min-width: 48rem) {
+    .segment-router__options {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  }
+</style>

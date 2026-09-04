@@ -1,215 +1,202 @@
 ---
 import '../../styles/global.css';
+import LandingLayout from '../../layouts/LandingLayout.astro';
 import GTMHead from '../../components/GTMHead.astro';
 import GTMBody from '../../components/GTMBody.astro';
 import LPHeader from '../../components/LPHeader.astro';
 import LPFooter from '../../components/LPFooter.astro';
 import BotaoWhatsapp from '../../components/BotaoWhatsapp.astro';
-import FormularioGHL from '../../components/FormularioGHL.astro';
+import LazerWhatsAppForm from '../../components/lp/LazerWhatsAppForm.astro';
 import Icon from '../../components/Icon.astro';
-import GoogleReviews from '../../components/GoogleReviews.astro';
 import GaleriaZoom from '../../components/GaleriaZoom.astro';
 import { Image } from 'astro:assets';
 import servicoLazer from '../../assets/servico-lazer.jpg';
-import obra1 from '../../assets/obra-1.jpg';
-import obra2 from '../../assets/obra-2.jpg';
-import obra3 from '../../assets/obra-3.jpg';
-import obra4 from '../../assets/obra-4.jpg';
-import obra5 from '../../assets/obra-5.jpg';
-import obra6 from '../../assets/obra-6.jpg';
-import obra7 from '../../assets/obra-7.jpg';
-import obra8 from '../../assets/obra-8.jpg';
 import lazerGeral from '../../assets/lazer-geral.jpg';
 import lazerGourmet from '../../assets/lazer-gourmet.jpg';
 import lazerDeck from '../../assets/lazer-deck.jpg';
 import lazerNoturno from '../../assets/lazer-noturno.jpg';
-
-const jsonLd = {
-  '@context': 'https://schema.org',
-  '@type': 'LocalBusiness',
-  name: 'Royal Splash',
-  image: 'https://www.royalsplash.com.br/logo.png',
-  telephone: '+5521982590643',
-  email: 'contato@royalsplash.com.br',
-  areaServed: { '@type': 'State', name: 'Rio de Janeiro' },
-  address: { '@type': 'PostalAddress', addressRegion: 'RJ', addressCountry: 'BR' },
-  description: 'Construção de áreas de lazer completas de alto padrão no estado do Rio de Janeiro.',
-};
 ---
 
-<html lang="pt-BR">
-  <head>
-    <GTMHead />
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>Áreas de Lazer de Alto Padrão no Rio de Janeiro — Royal Splash</title>
-    <meta name="description" content="Projetamos e construímos áreas de lazer completas — piscina, deck, área gourmet e paisagismo. Atendimento em todo o Rio de Janeiro." />
-    <meta name="robots" content="noindex, nofollow" />
-    <link rel="icon" type="image/x-icon" href="/favicon.ico" />
-    <script type="application/ld+json" set:html={JSON.stringify(jsonLd)} />
-  </head>
-  <body class="bg-marca text-white">
-    <GTMBody />
+<LandingLayout title="Áreas de Lazer de Alto Padrão — Royal Splash" description="Projetamos e construímos áreas de lazer completas — piscina, deck, área gourmet e paisagismo." robots="noindex, nofollow" visualMode="brand" bodyClass="site-brand-lp-lazer site-primitive-page">
+  <GTMHead slot="head" />
+  <link slot="head" rel="icon" type="image/x-icon" href="/favicon.ico" />
+  <GTMBody slot="body-start" />
+  <LPHeader slot="header" visualMode="brand" />
 
-    <LPHeader />
+  <section class="lazer-hero site-primitive-surface--dark">
+    <Image src={servicoLazer} alt="Área de lazer de alto padrão" widths={[390, 640, 768, 1024, 1280, 1536, 1792, 2400]} sizes="100vw" priority class="lazer-hero__image" />
+    <div class="lazer-hero__veil"></div>
+    <div class="lazer-hero__content">
+      <h1 class="site-primitive-page-title">Sua área de lazer completa, do projeto à entrega</h1>
+      <p class="site-primitive-body">Piscina, deck, área gourmet e paisagismo integrados em um só projeto.</p>
+      <div class="site-primitive-actions"><a href="#orcamento" class="site-primitive-action site-primitive-action--primary">Solicitar orçamento exclusivo</a></div>
+    </div>
+  </section>
 
-    <section class="relative">
-      <div class="absolute inset-0">
-        <Image src={servicoLazer} alt="Área de lazer de alto padrão Royal Splash, Rio de Janeiro" class="w-full h-full object-cover" />
-        <div class="absolute inset-0 bg-marca/80"></div>
-      </div>
-      <div class="relative max-w-3xl mx-auto text-center px-6 py-14 md:py-20">
-        <h1 class="text-3xl md:text-5xl font-semibold mb-4 leading-tight">
-          Sua área de lazer completa, do projeto à entrega
-        </h1>
-        <p class="text-base md:text-lg text-slate-300 mb-6 max-w-xl mx-auto">
-          Piscina, deck, área gourmet e paisagismo integrados em um só projeto. Atendimento premium em todo o Rio de Janeiro.
-        </p>
-        <a href="#orcamento" class="inline-block bg-ouro hover:opacity-90 text-marca font-semibold px-8 py-4 rounded-full transition-opacity">
-          Solicitar orçamento exclusivo
-        </a>
-      </div>
-    </section>
-
-    <GoogleReviews />
-
-    <section class="py-16 px-6">
-      <div class="max-w-5xl mx-auto grid md:grid-cols-2 gap-12 items-center">
-        <div>
-          <h2 class="text-3xl font-semibold mb-4">Excelência em <span class="text-piscina">cada detalhe</span></h2>
-          <p class="text-slate-400 mb-4">
-            Uma área de lazer de verdade vai além da piscina: deck, área gourmet, paisagismo e iluminação integrados formam um espaço pensado pra viver, receber e relaxar.
-          </p>
-          <p class="text-slate-400 mb-6">
-            Cuidamos de todo o projeto — arquitetura, execução e acabamento — com o mesmo padrão de excelência em cada etapa.
-          </p>
-          <ul class="space-y-3">
-            <li class="flex items-center gap-3 text-slate-300"><Icon name="check" class="w-5 h-5 text-ouro shrink-0" /> Projeto integrado (piscina, deck, gourmet)</li>
-            <li class="flex items-center gap-3 text-slate-300"><Icon name="check" class="w-5 h-5 text-ouro shrink-0" /> Paisagismo e iluminação sob medida</li>
-            <li class="flex items-center gap-3 text-slate-300"><Icon name="check" class="w-5 h-5 text-ouro shrink-0" /> Execução própria, sem terceirização</li>
-          </ul>
+  <section class="lazer-narrative site-primitive-surface--light site-primitive-datum-bottom">
+    <div class="site-primitive-section site-primitive-section--entry lazer-narrative__layout">
+      <div class="lazer-narrative__copy">
+        <h2 class="site-primitive-display">Excelência em cada detalhe</h2>
+        <div class="site-primitive-reading">
+          <p class="site-primitive-body site-primitive-supporting">Uma área de lazer de verdade vai além da piscina: deck, área gourmet, paisagismo e iluminação integrados formam um espaço pensado pra viver, receber e relaxar.</p>
+          <p class="site-primitive-body site-primitive-supporting">Cuidamos de todo o projeto — arquitetura, execução e acabamento — com o mesmo padrão de excelência em cada etapa.</p>
         </div>
+        <ul class="lazer-narrative__scope">
+          <li><Icon name="check" class="lazer-narrative__icon" /> Projeto integrado (piscina, deck, gourmet)</li>
+          <li><Icon name="check" class="lazer-narrative__icon" /> Paisagismo e iluminação sob medida</li>
+        </ul>
+      </div>
+      <div class="lazer-gallery">
         <GaleriaZoom imagens={[
-  { src: lazerGeral, alt: 'Área de lazer completa Royal Splash, Rio de Janeiro' },
-  { src: lazerGourmet, alt: 'Área gourmet integrada Royal Splash, RJ' },
-  { src: lazerDeck, alt: 'Deck e paisagismo Royal Splash' },
-  { src: lazerNoturno, alt: 'Área de lazer à noite Royal Splash, Rio de Janeiro' },
-]} />
+          { src: lazerGeral, alt: 'Área de lazer completa' },
+          { src: lazerGourmet, alt: 'Área gourmet integrada' },
+          { src: lazerDeck, alt: 'Deck e paisagismo' },
+          { src: lazerNoturno, alt: 'Área de lazer à noite' },
+        ]} />
       </div>
-    </section>
+    </div>
+  </section>
 
-    <section class="py-16 px-6 bg-marca-suave">
-      <div class="max-w-5xl mx-auto">
-        <h2 class="text-3xl font-semibold text-center mb-12">Nossos Serviços</h2>
-        <div class="grid md:grid-cols-3 gap-6">
-          <div class="bg-marca border border-ouro/30 rounded-2xl p-6">
-            <div class="w-14 h-14 rounded-full bg-ouro/10 flex items-center justify-center mb-4 text-ouro"><Icon name="box" /></div>
-            <h3 class="text-xl font-semibold mb-2">Projeto Integrado</h3>
-            <p class="text-slate-400">Piscina, deck e área gourmet planejados como um único espaço.</p>
-          </div>
-          <div class="bg-marca border border-white/10 rounded-2xl p-6">
-            <div class="w-14 h-14 rounded-full bg-ouro/10 flex items-center justify-center mb-4 text-ouro"><Icon name="wrench" /></div>
-            <h3 class="text-xl font-semibold mb-2">Execução Premium</h3>
-            <p class="text-slate-400">Deck, paisagismo e iluminação com equipe própria, sem terceirização.</p>
-          </div>
-          <div class="bg-marca border border-white/10 rounded-2xl p-6">
-            <div class="w-14 h-14 rounded-full bg-ouro/10 flex items-center justify-center mb-4 text-ouro"><Icon name="shield" /></div>
-            <h3 class="text-xl font-semibold mb-2">Garantia Pós-obra</h3>
-            <p class="text-slate-400">Acompanhamento após a entrega, com suporte técnico.</p>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <section class="py-16 px-6">
-      <div class="max-w-5xl mx-auto text-center">
-        <h2 class="text-3xl font-semibold mb-12">Por que a Royal Splash?</h2>
-        <div class="grid grid-cols-2 md:grid-cols-4 gap-8">
+    <section class="lazer-services site-primitive-surface--muted site-primitive-datum-bottom">
+    <div class="site-primitive-section">
+      <h2 class="site-primitive-section-title">Nossos Serviços</h2>
+      <div class="lazer-services__list">
+        <article class="lazer-service">
+          <Icon name="box" class="lazer-service__icon" />
           <div>
-            <div class="w-14 h-14 rounded-full bg-ouro/10 flex items-center justify-center mb-3 mx-auto text-ouro"><Icon name="users" /></div>
-            <h4 class="font-semibold mb-1">Atendimento Premium</h4>
-            <p class="text-sm text-slate-400">Consultoria exclusiva do primeiro contato à entrega.</p>
+            <h3 class="site-primitive-subtitle">Projeto Integrado</h3>
+            <p class="site-primitive-body site-primitive-supporting">Piscina, deck e área gourmet planejados como um conjunto.</p>
           </div>
+        </article>
+        <article class="lazer-service">
+          <Icon name="sun" class="lazer-service__icon" />
           <div>
-            <div class="w-14 h-14 rounded-full bg-ouro/10 flex items-center justify-center mb-3 mx-auto text-ouro"><Icon name="shield" /></div>
-            <h4 class="font-semibold mb-1">Equipe Qualificada</h4>
-            <p class="text-sm text-slate-400">Profissionais treinados em alto padrão.</p>
+            <h3 class="site-primitive-subtitle">Paisagismo e Iluminação</h3>
+            <p class="site-primitive-body site-primitive-supporting">Integração dos elementos externos ao ambiente de lazer.</p>
           </div>
+        </article>
+      </div>
+    </div>
+  </section>
+
+    <section class="lazer-trust site-primitive-surface--light site-primitive-datum-bottom">
+    <div class="site-primitive-section">
+      <h2 class="site-primitive-section-title">Por que a Royal Splash?</h2>
+      <div class="lazer-trust__list">
+        <article class="lazer-trust__entry">
+          <Icon name="users" class="lazer-trust__icon" />
           <div>
-            <div class="w-14 h-14 rounded-full bg-ouro/10 flex items-center justify-center mb-3 mx-auto text-ouro"><Icon name="cpu" /></div>
-            <h4 class="font-semibold mb-1">Tecnologia de Ponta</h4>
-            <p class="text-sm text-slate-400">Automação, aquecimento e iluminação de última geração.</p>
+            <h3 class="site-primitive-subtitle">Atendimento Premium</h3>
+            <p class="site-primitive-body site-primitive-supporting">Consultoria exclusiva do primeiro contato à entrega.</p>
           </div>
+        </article>
+        <article class="lazer-trust__entry">
+          <Icon name="cpu" class="lazer-trust__icon" />
           <div>
-            <div class="w-14 h-14 rounded-full bg-ouro/10 flex items-center justify-center mb-3 mx-auto text-ouro"><Icon name="clock" /></div>
-            <h4 class="font-semibold mb-1">Prazos Cumpridos</h4>
-            <p class="text-sm text-slate-400">Compromisso rigoroso com cronograma e qualidade.</p>
+            <h3 class="site-primitive-subtitle">Conforto e Tecnologia</h3>
+            <p class="site-primitive-body site-primitive-supporting">Automação, aquecimento e iluminação integrados ao projeto conforme a necessidade de cada espaço.</p>
           </div>
-        </div>
+        </article>
       </div>
-    </section>
+    </div>
+  </section>
 
-    <section class="py-16 px-6 bg-marca-suave">
-      <div class="max-w-5xl mx-auto">
-        <h2 class="text-3xl font-semibold text-center mb-10">Projetos que falam por si</h2>
-        <GaleriaZoom
-          colunas="grid-cols-2 md:grid-cols-4"
-          imagens={[
-            { src: obra1, alt: 'Obra Royal Splash, Rio de Janeiro' },
-            { src: obra2, alt: 'Obra Royal Splash, Rio de Janeiro' },
-            { src: obra3, alt: 'Obra Royal Splash, Rio de Janeiro' },
-            { src: obra4, alt: 'Obra Royal Splash, Rio de Janeiro' },
-            { src: obra5, alt: 'Obra Royal Splash, Rio de Janeiro' },
-            { src: obra6, alt: 'Obra Royal Splash, Rio de Janeiro' },
-            { src: obra7, alt: 'Obra Royal Splash, Rio de Janeiro' },
-            { src: obra8, alt: 'Obra Royal Splash, Rio de Janeiro' },
-          ]}
-        />
+  <section class="lazer-faq site-primitive-surface--soft site-primitive-datum-bottom">
+    <div class="site-primitive-section lazer-faq__layout">
+      <div class="lazer-faq__heading"><h2 class="site-primitive-display">Perguntas frequentes</h2></div>
+      <div class="lazer-faq__disclosures">
+        {[
+          { pergunta: 'O que está incluso no projeto de área de lazer?', resposta: 'Piscina, deck, área gourmet, paisagismo e iluminação são planejados como um único projeto integrado — você recebe a visualização completa antes de aprovar.' },
+          { pergunta: 'Preciso ter piscina pra contratar a área de lazer completa?', resposta: 'Não. Também executamos deck, área gourmet e paisagismo separadamente, mesmo em espaços que já têm piscina pronta.' },
+          { pergunta: 'Vocês cuidam do paisagismo também?', resposta: 'Sim. Paisagismo e iluminação fazem parte do projeto integrado, pensados junto com a arquitetura de todo o espaço.' },
+          { pergunta: 'É possível fazer em etapas, respeitando o orçamento?', resposta: 'Sim. Planejamos o projeto completo, mas a execução pode ser dividida em etapas, de acordo com sua prioridade e orçamento.' },
+          { pergunta: 'Como solicitar uma avaliação e orçamento?', resposta: 'Preencha o formulário desta página para compartilhar seu contexto e receber o contato da equipe Royal Splash.' },
+        ].map((item) => (
+          <details class="lazer-faq__item">
+            <summary class="site-primitive-subtitle">
+              {item.pergunta}
+              <span aria-hidden="true">+</span>
+            </summary>
+            <p class="site-primitive-body site-primitive-supporting">{item.resposta}</p>
+          </details>
+        ))}
       </div>
-    </section>
+    </div>
+  </section>
 
-    <!-- FAQ -->
-    <section class="py-16 px-6">
-      <div class="max-w-3xl mx-auto">
-        <h2 class="text-3xl font-semibold text-center mb-10">Perguntas frequentes</h2>
-        <div class="space-y-4">
-          {[
-            { pergunta: 'O que está incluso no projeto de área de lazer?', resposta: 'Piscina, deck, área gourmet, paisagismo e iluminação são planejados como um único projeto integrado — você recebe a visualização completa antes de aprovar.' },
-            { pergunta: 'Preciso ter piscina pra contratar a área de lazer completa?', resposta: 'Não. Também executamos deck, área gourmet e paisagismo separadamente, mesmo em espaços que já têm piscina pronta.' },
-            { pergunta: 'Quanto tempo demora a obra completa?', resposta: 'Depende do escopo — piscina, deck, gourmet e acabamentos —, mas o prazo é definido em contrato antes do início e cumprido.' },
-            { pergunta: 'Vocês cuidam do paisagismo também?', resposta: 'Sim. Paisagismo e iluminação fazem parte do projeto integrado, pensados junto com a arquitetura de todo o espaço.' },
-            { pergunta: 'É possível fazer em etapas, respeitando o orçamento?', resposta: 'Sim. Planejamos o projeto completo, mas a execução pode ser dividida em etapas, de acordo com sua prioridade e orçamento.' },
-          ].map((item) => (
-            <details class="bg-marca-suave border border-white/10 rounded-2xl p-6 group">
-              <summary class="font-semibold cursor-pointer list-none flex items-center justify-between gap-4">
-                {item.pergunta}
-                <span class="text-ouro shrink-0 group-open:rotate-45 transition-transform">+</span>
-              </summary>
-              <p class="text-slate-400 mt-3">{item.resposta}</p>
-            </details>
-          ))}
-        </div>
-      </div>
-    </section>
+  <section class="lazer-cta site-primitive-surface--dark">
+    <div class="site-primitive-section"><h2 class="site-primitive-display">Pronto para transformar sua área de lazer?</h2><div class="site-primitive-actions"><a href="#orcamento" class="site-primitive-action site-primitive-action--primary">Falar com um especialista</a></div></div>
+  </section>
 
-    <section class="py-16 px-6 bg-marca-suave text-center border-y border-ouro/20">
-      <h2 class="text-3xl md:text-4xl font-semibold mb-6 max-w-2xl mx-auto">
-        Pronto para criar sua área de lazer dos sonhos?
-      </h2>
-      <a href="#orcamento" class="inline-block bg-ouro hover:opacity-90 text-marca font-semibold px-8 py-4 rounded-full transition-opacity">
-        Falar com um especialista
-      </a>
-    </section>
+  <section id="orcamento" class="site-primitive-section lazer-form">
+    <div class="site-primitive-reading lazer-form__heading"><h2 class="site-primitive-section-title">Solicite seu Orçamento</h2><p class="site-primitive-body site-primitive-supporting">Compartilhe o contexto que já souber e abra uma conversa estruturada com a equipe Royal Splash pelo WhatsApp.</p></div>
+    <LazerWhatsAppForm />
+  </section>
 
-    <section id="orcamento" class="py-16 px-6">
-      <div class="max-w-xl mx-auto text-center mb-10">
-        <h2 class="text-3xl font-semibold mb-3">Solicite seu Orçamento</h2>
-        <p class="text-slate-400">Preencha os dados abaixo e nossa equipe entrará em contato para entender seu projeto em detalhes.</p>
-      </div>
-      <FormularioGHL />
-    </section>
+  <LPFooter slot="footer" visualMode="brand" />
+  <BotaoWhatsapp slot="body-end" />
+</LandingLayout>
 
-    <LPFooter />
-    <BotaoWhatsapp />
-  </body>
-</html>
+<style>
+  .lazer-hero { position: relative; display: grid; min-height: max(40rem, 88svh); isolation: isolate; overflow: hidden; }
+  .lazer-hero__image, .lazer-hero__veil { position: absolute; inset: 0; width: 100%; height: 100%; }
+  .lazer-hero__image { z-index: -2; object-fit: cover; object-position: center; }
+  .lazer-hero__veil { z-index: -1; background: color-mix(in srgb, var(--site-color-surface-dark) 72%, transparent); }
+  .lazer-hero__content { align-self: end; width: min(calc(100% - (2 * var(--site-layout-gutter))), var(--site-layout-content-max)); margin-inline: auto; padding-block: var(--site-space-8); }
+  .lazer-hero h1 { max-width: 18ch; margin: 0; }
+  .lazer-hero p { max-width: 38rem; margin: var(--site-space-5) 0 0; color: var(--site-color-text-on-dark); }
+  .lazer-hero .site-primitive-actions { margin-block-start: var(--site-space-6); }
+  .lazer-narrative__layout { display: grid; grid-template-columns: minmax(18rem, 0.85fr) minmax(0, 1.15fr); gap: var(--site-space-8); align-items: center; }
+  .lazer-narrative h2, .lazer-narrative p { margin-block-start: 0; }
+  .lazer-narrative__scope { display: grid; gap: var(--site-space-3); margin: var(--site-space-6) 0 0; padding: var(--site-space-5) 0 0; border-block-start: 1px solid var(--site-color-divider); list-style: none; }
+  .lazer-narrative__scope li { display: flex; gap: var(--site-space-3); align-items: center; }
+  :global(.lazer-narrative__icon) { width: 1.25rem; height: 1.25rem; flex: none; }
+  .lazer-gallery { min-width: 0; }
+  
+  .lazer-services h2, .lazer-services h3, .lazer-trust h2, .lazer-trust h3, .lazer-faq h2, .lazer-form h2 { margin-block-start: 0; }
+  .lazer-services h2, .lazer-trust h2 { margin-block-end: var(--site-space-6); }
+  .lazer-services .site-primitive-supporting { color: var(--site-color-text-primary); }
+  
+  
+  .lazer-services__list { max-width: var(--site-layout-reading-max); border-block: 1px solid var(--site-color-divider); }
+  .lazer-service { display: grid; grid-template-columns: auto minmax(0, 1fr); gap: var(--site-space-4); padding-block: var(--site-space-6); }
+  .lazer-service + .lazer-service { border-block-start: 1px solid var(--site-color-divider); }
+  .lazer-service p, .lazer-trust p, .lazer-form p { margin-block-end: 0; }
+  :global(.lazer-service__icon), :global(.lazer-trust__icon) { width: 1.5rem; height: 1.5rem; }
+  .lazer-trust__list { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); max-width: 60rem; }
+  .lazer-trust__entry { display: grid; grid-template-columns: auto minmax(0, 1fr); gap: var(--site-space-4); padding-block: var(--site-space-5); border-block-start: 1px solid var(--site-color-divider); }
+  .lazer-trust__entry + .lazer-trust__entry { margin-inline-start: var(--site-space-7); }
+  
+  
+  .lazer-faq__layout { display: grid; grid-template-columns: minmax(14rem, 0.7fr) minmax(0, 1.3fr); align-items: center; gap: var(--site-space-8); }
+  
+  .lazer-faq h2 { margin: 0; }
+  .lazer-faq__disclosures { border-block-start: 1px solid var(--site-color-divider); }
+  .lazer-faq__item { border-block-end: 1px solid var(--site-color-divider); }
+  .lazer-faq__item summary { display: flex; gap: var(--site-space-5); align-items: center; justify-content: space-between; padding-block: var(--site-space-5); cursor: pointer; list-style: none; }
+  .lazer-faq__item summary::-webkit-details-marker { display: none; }
+  .lazer-faq__item summary span { flex: none; font-family: var(--site-font-family-body); transition: transform 160ms ease; }
+  .lazer-faq__item[open] summary span { transform: rotate(45deg); }
+  .lazer-faq__item p { margin: calc(-1 * var(--site-space-2)) 0 var(--site-space-5); }
+  .lazer-cta .site-primitive-section { display: block; }
+  .lazer-cta h2 { max-width: 19ch; margin: 0; }
+  .lazer-cta .site-primitive-actions { margin-block-start: var(--site-space-6); }
+  .lazer-form { padding-block-end: calc(var(--site-space-8) + 4.5rem); }
+  .lazer-form__heading { margin: 0 auto var(--site-space-7); text-align: center; }
+  .lazer-form__heading h2, .lazer-form__heading p { margin-block-start: 0; }
+  @media (max-width: 52rem) {
+    .lazer-narrative__layout, .lazer-faq__layout { grid-template-columns: 1fr; gap: var(--site-space-7); }
+    .lazer-gallery { width: min(100%, 38rem); margin-inline: auto; }
+    .lazer-faq__heading { position: static; }
+
+  }
+  @media (max-width: 42rem) {
+    .lazer-hero { min-height: calc(100svh + 5rem); }
+    .lazer-hero__content { align-self: center; }
+    .lazer-trust__list, .lazer-faq__layout { grid-template-columns: 1fr; }
+    .lazer-faq__layout { align-items: stretch; gap: var(--site-space-5); }
+    .lazer-faq h2 { max-width: none; }
+    .lazer-trust__entry + .lazer-trust__entry { margin-inline-start: 0; }
+    .lazer-form { padding-block-end: calc(var(--site-space-7) + 5rem); }
+  }
+</style>

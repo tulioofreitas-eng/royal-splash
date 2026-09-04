@@ -1,107 +1,155 @@
 ---
-import '../styles/global.css';
-import Header from '../components/Header.astro';
-import Footer from '../components/Footer.astro';
-import BotaoWhatsapp from '../components/BotaoWhatsapp.astro';
-import { Image } from 'astro:assets';
-import sobreEquipe from '../assets/sobre-equipe.jpg';
-import GTMHead from '../components/GTMHead.astro';
-import GTMBody from '../components/GTMBody.astro';
+import SiteHeader from "../components/site/SiteHeader.astro";
+import SiteLayout from "../layouts/SiteLayout.astro";
+import media from "../assets/sobre-equipe.jpg";
+import "../styles/complete-experience.css";
+
+const practice = [
+  ["01", "Projeto", "Entendimento técnico de como a água se integra à arquitetura, com materiais e sistemas adequados ao contexto."],
+  ["02", "Execução", "Construção acompanhada em suas fases, com atenção ao detalhe e presença técnica no canteiro."],
+  ["03", "Relacionamento", "Conversa clara com cliente e arquiteto sobre escopo, cronograma, responsabilidades e próximos passos."],
+];
 ---
 
-<html lang="pt-BR">
-  <head>
-    <GTMHead />
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>Sobre — Royal Splash</title>
-    <meta name="description" content="Mais de 20 anos de experiência em engenharia e construção. Conheça a Royal Splash, o braço de piscinas e áreas de lazer de alto padrão do grupo." />
-  <link rel="icon" type="image/x-icon" href="/favicon.ico" />
-<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-<link rel="icon" type="image/png" sizes="96x96" href="/favicon-96x96.png" />
-<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
-<link rel="manifest" href="/site.webmanifest" />
-  </head>
-  <body class="bg-marca text-white pt-20">
-    <GTMBody />
+<SiteLayout title="A Royal — Royal Splash" robots="noindex, nofollow" bodyClass="site-primitive-page experience-page" visualMode="brand">
+  <SiteHeader slot="header" visualMode="brand" />
 
-    <Header />
+  <section class="experience-entry" aria-labelledby="about-heading" data-about-block="entry">
+    <p class="experience-kicker">A Royal</p>
+    <h1 id="about-heading">Engenharia de água para espaços que permanecem.</h1>
+    <p class="experience-lead">Piscinas, lazer, sauna, proteção estrutural e acabamentos coordenados como parte da arquitetura residencial, corporativa e institucional.</p>
+  </section>
 
-    <section class="pt-16 pb-16 px-6 text-center">
-      <span class="text-sm uppercase tracking-widest text-piscina">Quem somos</span>
-      <h1 class="text-4xl md:text-6xl font-semibold mt-3 mb-4">Sobre a Royal Splash</h1>
-      <p class="text-lg text-slate-400 max-w-2xl mx-auto">
-        Excelência em cada detalhe — do primeiro traço do projeto à primeira mergulhada.
-      </p>
-    </section>
+  <section class="experience-section about-context" aria-labelledby="contexts-heading" data-about-block="photo-context">
+    <div>
+      <p class="experience-kicker">Contextos de trabalho</p>
+      <h2 id="contexts-heading">Residencial e coletivo pedem leituras diferentes.</h2>
+      <p>No residencial, piscina, sauna e lazer se integram ao projeto de habitar. Em espaços corporativos e institucionais, escala, circulação e intensidade de uso orientam a solução.</p>
+      <p>Cada contexto recebe uma leitura técnica específica, sem perder a relação entre água, arquitetura e execução.</p>
+    </div>
+    <div class="experience-media">
+      <img src={media.src} alt="Equipe Royal Splash em contexto de trabalho" />
+      <span class="experience-media__veil"></span>
+      <p class="experience-media__label">Royal Splash • Equipe</p>
+    </div>
+  </section>
 
-    <section class="py-12 px-6">
-      <div class="max-w-5xl mx-auto grid md:grid-cols-2 gap-16 items-center">
-        <div class="aspect-[3/4] rounded-2xl overflow-hidden border border-white/10">
-          <Image src={sobreEquipe} alt="Equipe Royal Splash em reunião de projeto" class="w-full h-full object-cover" />
-        </div>
-        <div>
-          <h2 class="text-2xl md:text-3xl font-semibold mb-4">Nossa história</h2>
-          <p class="text-slate-400 mb-4">A Royal Splash nasce de uma bagagem que poucos no mercado têm: mais de 20 anos do nosso grupo projetando, construindo e executando obras de alto padrão. Ao longo dessas duas décadas, acumulamos algo que não se improvisa — domínio técnico, equipe própria e um olhar obsessivo pelo acabamento.</p>
-          <p class="text-slate-400 mb-4">Foi dessa experiência em engenharia e construção que surgiu a Royal Splash: o braço dedicado a transformar quintais, coberturas e áreas externas em verdadeiros refúgios de lazer. Piscinas de borda infinita, spas, saunas e áreas gourmet — cada projeto carrega o mesmo rigor de quem já entregou centenas de obras.</p>
-          <p class="text-slate-400">Hoje atuamos do Rio de Janeiro ao litoral de Santa Catarina, levando o mesmo padrão de excelência para residências e grandes empreendimentos. Do primeiro traço à primeira mergulhada, tudo passa pela nossa equipe — porque acreditamos que o que importa não se terceiriza.</p>
-        </div>
-      </div>
-    </section>
+  <section class="experience-section" aria-labelledby="practice-heading" data-about-block="practice">
+    <div class="experience-section__intro about-editorial-pair">
+      <p class="experience-kicker">Prática e identidade</p>
+      <h2 id="practice-heading">Engenharia, execução e integração.</h2>
+      <p>A Royal Splash trabalha na intersecção entre projeto, execução e relacionamento.</p>
+    </div>
+    <div class="experience-grid about-practice-grid">
+      {practice.map(([number, heading, body]) => (
+        <article class="experience-card">
+          <span>{number}</span>
+          <h3>{heading}</h3>
+          <p>{body}</p>
+        </article>
+      ))}
+    </div>
+  </section>
 
-    <section class="py-16 px-6 border-t border-white/10">
-      <div class="max-w-5xl mx-auto grid grid-cols-2 md:grid-cols-4 gap-8 text-center">
-        <div>
-          <div class="text-4xl font-bold mb-2" style="color:#C9A96A;">20+</div>
-          <p class="text-slate-400">Anos de experiência do grupo</p>
-        </div>
-        <div>
-          <div class="text-4xl font-bold mb-2" style="color:#C9A96A;">500+</div>
-          <p class="text-slate-400">Piscinas e projetos entregues</p>
-        </div>
-        <div>
-          <div class="text-4xl font-bold mb-2" style="color:#C9A96A;">2</div>
-          <p class="text-slate-400">Estados atendidos</p>
-        </div>
-        <div>
-          <div class="text-4xl font-bold mb-2" style="color:#C9A96A;">100%</div>
-          <p class="text-slate-400">Projeto e execução próprios</p>
+  <section class="experience-section about-identity" aria-labelledby="identity-heading" data-about-block="identity">
+    <div class="about-identity__content about-editorial-pair">
+      <p class="experience-kicker">Identidade</p>
+      <h2 id="identity-heading">A prática aparece no trabalho.</h2>
+      <div class="about-identity__support">
+        <p>Fotografia de projetos, capacidades técnicas concretas, documentação de escopo e contato direto mostram como a Royal atua hoje.</p>
+        <div class="experience-links">
+          <a class="site-primitive-action site-primitive-action--tertiary" href="/projetos">Ver Acervo</a>
+          <a class="site-primitive-action site-primitive-action--tertiary" href="/metodo-royal">Ver Método Royal</a>
         </div>
       </div>
-    </section>
+    </div>
+  </section>
 
-    <section class="py-16 px-6 border-t border-white/10">
-      <div class="max-w-5xl mx-auto">
-        <div class="text-center mb-12">
-          <h2 class="text-3xl md:text-4xl font-semibold">O que nos move</h2>
-        </div>
-        <div class="grid gap-8 md:grid-cols-3">
-          <div class="bg-marca-suave border border-white/10 rounded-2xl p-8">
-            <h3 class="text-lg font-semibold mb-2">Excelência</h3>
-            <p class="text-slate-400">Acabamento impecável em cada detalhe. Não entregamos nada que não colocaríamos na nossa própria casa.</p>
-          </div>
-          <div class="bg-marca-suave border border-white/10 rounded-2xl p-8">
-            <h3 class="text-lg font-semibold mb-2">Transparência</h3>
-            <p class="text-slate-400">Projeto detalhado, cronograma claro e comunicação honesta do começo ao fim da obra.</p>
-          </div>
-          <div class="bg-marca-suave border border-white/10 rounded-2xl p-8">
-            <h3 class="text-lg font-semibold mb-2">Compromisso</h3>
-            <p class="text-slate-400">Uma equipe só, do projeto à entrega. Assumimos a responsabilidade por tudo que construímos.</p>
-          </div>
-        </div>
-      </div>
-    </section>
+  <section class="experience-conversion" data-about-block="conversion">
+    <p class="experience-kicker">Contato direto</p>
+    <h2>Pronto para conversar?</h2>
+    <p>Escolha o canal que funciona para você.</p>
+    <a class="site-primitive-action site-primitive-action--primary" href="https://wa.me/5521982590643" target="_blank" rel="noopener noreferrer">Conversar no WhatsApp</a>
+  </section>
+</SiteLayout>
 
-    <section class="py-24 px-6 text-center border-t border-white/10">
-      <h2 class="text-3xl md:text-4xl font-semibold mb-4">Vamos conversar sobre o seu projeto?</h2>
-      <p class="text-slate-400 mb-8">Fale com a gente e descubra o que a Royal Splash pode fazer pelo seu espaço.</p>
-      <a href="https://wa.me/5521982590643" target="_blank" class="inline-block bg-piscina hover:opacity-90 text-white font-medium px-8 py-4 rounded-full transition-opacity">
-        Falar no WhatsApp
-      </a>
-    </section>
+<style>
+  .about-context {
+    display: grid;
+    gap: 2rem;
+  }
 
-    <Footer />
-    <BotaoWhatsapp />
+  .about-context h2 {
+    max-width: 14ch;
+    margin: 0.3rem 0 1.5rem;
+    font: 500 clamp(2.5rem, 5vw, 4rem) / 0.98 var(--site-font-display);
+  }
 
-  </body>
-</html>
+  .about-context > div:first-child > p:not(.experience-kicker) {
+    max-width: 38rem;
+    color: var(--site-color-text-secondary);
+  }
+
+  .about-identity__support > p {
+    max-width: 38rem;
+    margin: 0;
+    color: var(--site-color-text-secondary);
+  }
+
+  .about-editorial-pair {
+    display: grid;
+  }
+
+  @media (min-width: 48rem) {
+    .about-practice-grid > :last-child {
+      grid-column: 1 / -1;
+    }
+
+    .about-context {
+      grid-template-columns: 0.85fr 1.15fr;
+      align-items: center;
+    }
+
+    .about-editorial-pair {
+      grid-template-columns: minmax(0, 1fr) minmax(18rem, 0.72fr);
+      column-gap: clamp(2rem, 6vw, 7rem);
+      row-gap: 0.75rem;
+      align-items: end;
+    }
+
+    .about-editorial-pair > .experience-kicker {
+      grid-column: 1 / -1;
+      margin-bottom: 0;
+    }
+
+    .about-editorial-pair > h2 {
+      grid-column: 1;
+    }
+
+    .about-identity__content > h2 {
+      margin-bottom: 0.35rem;
+    }
+
+    .about-editorial-pair > p,
+    .about-editorial-pair > .about-identity__support {
+      grid-column: 2;
+      padding-bottom: 0.35rem;
+    }
+
+    .about-identity__content > .about-identity__support {
+      padding-bottom: 0;
+    }
+
+  }
+
+  @media (min-width: 64rem) {
+    .about-practice-grid {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+
+    .about-practice-grid > :last-child {
+      grid-column: auto;
+    }
+
+  }
+</style>

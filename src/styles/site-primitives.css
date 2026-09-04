@@ -1,0 +1,228 @@
+/*
+ * ROYAL SPLASH — SHARED SITE VISUAL PRIMITIVES
+ *
+ * SYSTEM CAPABILITY:
+ * - reusable Site visual primitive layer consuming approved semantic roles
+ *
+ * BRAND_SPECIFIC:
+ * - Royal visual expression is inherited through approved Site semantics
+ *
+ * SITE_SPECIFIC:
+ * - class API, numeric implementation, responsive mechanics, and states
+ *
+ * CANDIDATE_REUSABLE:
+ * - shared primitive availability without implicit consumer migration
+ *
+ * THIS FILE IS NOT BRAND SOURCE OF TRUTH.
+ */
+
+body:is([data-template-family="site"], [data-template-family="landing"])[data-site-visual="brand"].site-primitive-page {
+  margin: 0;
+  background: var(--site-color-page-background);
+  color: var(--site-color-text-primary);
+  font-family: var(--site-font-text);
+  font-size: var(--site-type-body);
+  font-weight: var(--site-font-weight-text);
+  line-height: var(--site-leading-body);
+}
+
+body:is([data-template-family="site"], [data-template-family="landing"])[data-site-visual="brand"].site-primitive-page *,
+body:is([data-template-family="site"], [data-template-family="landing"])[data-site-visual="brand"].site-primitive-page *::before,
+body:is([data-template-family="site"], [data-template-family="landing"])[data-site-visual="brand"].site-primitive-page *::after {
+  box-sizing: border-box;
+}
+
+body:is([data-template-family="site"], [data-template-family="landing"])[data-site-visual="brand"] .site-primitive-display,
+body:is([data-template-family="site"], [data-template-family="landing"])[data-site-visual="brand"] .site-primitive-page-title {
+  font-family: var(--site-font-display);
+  font-weight: var(--site-font-weight-display);
+  line-height: var(--site-leading-display);
+}
+
+body:is([data-template-family="site"], [data-template-family="landing"])[data-site-visual="brand"] .site-primitive-display {
+  font-size: var(--site-type-display-lg);
+}
+
+body:is([data-template-family="site"], [data-template-family="landing"])[data-site-visual="brand"] .site-primitive-page-title {
+  font-size: var(--site-type-display-xl);
+}
+
+body:is([data-template-family="site"], [data-template-family="landing"])[data-site-visual="brand"] .site-primitive-section-title {
+  font-family: var(--site-font-text);
+  font-size: var(--site-type-heading);
+  font-weight: var(--site-font-weight-ui-strong);
+  line-height: var(--site-leading-heading);
+}
+
+body:is([data-template-family="site"], [data-template-family="landing"])[data-site-visual="brand"] .site-primitive-subtitle {
+  font-family: var(--site-font-text);
+  font-size: var(--site-type-body-lg);
+  font-weight: var(--site-font-weight-ui-strong);
+  line-height: var(--site-leading-heading);
+}
+
+body:is([data-template-family="site"], [data-template-family="landing"])[data-site-visual="brand"] .site-primitive-body {
+  font-family: var(--site-font-text);
+  font-size: var(--site-type-body);
+  font-weight: var(--site-font-weight-text);
+  line-height: var(--site-leading-body);
+}
+
+body:is([data-template-family="site"], [data-template-family="landing"])[data-site-visual="brand"] .site-primitive-supporting {
+  color: var(--site-color-text-secondary);
+}
+
+body:is([data-template-family="site"], [data-template-family="landing"])[data-site-visual="brand"] .site-primitive-eyebrow {
+  font-family: var(--site-font-ui);
+  font-size: var(--site-type-ui);
+  font-weight: var(--site-font-weight-ui-strong);
+  line-height: var(--site-leading-ui);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+body:is([data-template-family="site"], [data-template-family="landing"])[data-site-visual="brand"] .site-primitive-ui,
+body:is([data-template-family="site"], [data-template-family="landing"])[data-site-visual="brand"] .site-primitive-technical {
+  font-family: var(--site-font-ui);
+  font-size: var(--site-type-ui);
+  font-weight: var(--site-font-weight-ui);
+  line-height: var(--site-leading-ui);
+}
+
+body:is([data-template-family="site"], [data-template-family="landing"])[data-site-visual="brand"] .site-primitive-section {
+  width: calc(100% - (2 * var(--site-layout-gutter)));
+  max-width: var(--site-layout-content-max);
+  margin-inline: auto;
+  padding-block: var(--site-space-7);
+}
+
+body:is([data-template-family="site"], [data-template-family="landing"])[data-site-visual="brand"] .site-primitive-section--entry {
+  padding-block-start: clamp(2rem, 4vw, 3rem);
+  padding-block-end: var(--site-space-8);
+}
+
+body:is([data-template-family="site"], [data-template-family="landing"])[data-site-visual="brand"] .site-primitive-reading {
+  width: 100%;
+  max-width: var(--site-layout-reading-max);
+}
+
+body:is([data-template-family="site"], [data-template-family="landing"])[data-site-visual="brand"] .site-primitive-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--site-space-4) var(--site-space-5);
+  align-items: center;
+  margin-block-start: var(--site-space-6);
+}
+
+body:is([data-template-family="site"], [data-template-family="landing"])[data-site-visual="brand"] .site-primitive-surface--light {
+  background: var(--site-color-surface);
+  color: var(--site-color-text-primary);
+}
+
+body:is([data-template-family="site"], [data-template-family="landing"])[data-site-visual="brand"] .site-primitive-surface--soft {
+  background: var(--site-color-page-background);
+  color: var(--site-color-text-primary);
+}
+
+body:is([data-template-family="site"], [data-template-family="landing"])[data-site-visual="brand"] .site-primitive-surface--muted {
+  background: var(--site-color-surface-muted);
+  color: var(--site-color-text-primary);
+}
+
+body:is([data-template-family="site"], [data-template-family="landing"])[data-site-visual="brand"] .site-primitive-surface--dark {
+  background: var(--site-color-surface-dark);
+  color: var(--site-color-text-on-dark);
+}
+
+body:is([data-template-family="site"], [data-template-family="landing"])[data-site-visual="brand"] .site-primitive-datum-top {
+  border-block-start: 1px solid var(--site-color-divider);
+}
+
+body:is([data-template-family="site"], [data-template-family="landing"])[data-site-visual="brand"] .site-primitive-datum-bottom {
+  border-block-end: 1px solid var(--site-color-divider);
+}
+
+body:is([data-template-family="site"], [data-template-family="landing"])[data-site-visual="brand"] .site-primitive-action {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--site-space-2);
+  padding: var(--site-space-3) var(--site-space-4);
+  font-family: var(--site-font-ui);
+  font-size: var(--site-type-ui);
+  font-weight: var(--site-font-weight-ui-strong);
+  line-height: var(--site-leading-ui);
+  text-decoration: none;
+  cursor: pointer;
+}
+
+body:is([data-template-family="site"], [data-template-family="landing"])[data-site-visual="brand"] .site-primitive-action--primary {
+  border: 2px solid var(--site-color-accent-on-dark);
+  background: var(--site-color-surface-dark);
+  color: var(--site-color-text-on-dark);
+}
+
+body:is([data-template-family="site"], [data-template-family="landing"])[data-site-visual="brand"] .site-primitive-action--secondary {
+  border: 2px solid var(--site-color-required-boundary);
+  background: transparent;
+  color: var(--site-color-text-primary);
+}
+
+body:is([data-template-family="site"], [data-template-family="landing"])[data-site-visual="brand"] .site-primitive-surface--dark .site-primitive-action--secondary {
+  border-color: var(--site-color-text-on-dark);
+  color: var(--site-color-text-on-dark);
+}
+
+body:is([data-template-family="site"], [data-template-family="landing"])[data-site-visual="brand"] .site-primitive-action--tertiary {
+  padding-inline: 0;
+  color: var(--site-color-text-primary);
+  text-decoration-line: underline;
+  text-decoration-thickness: 0.1em;
+  text-underline-offset: 0.25em;
+}
+
+body:is([data-template-family="site"], [data-template-family="landing"])[data-site-visual="brand"] .site-primitive-surface--dark .site-primitive-action--tertiary {
+  color: var(--site-color-text-on-dark);
+}
+
+body:is([data-template-family="site"], [data-template-family="landing"])[data-site-visual="brand"] .site-primitive-action:hover {
+  text-decoration-line: underline;
+  text-decoration-thickness: 0.14em;
+  text-underline-offset: 0.25em;
+}
+
+body:is([data-template-family="site"], [data-template-family="landing"])[data-site-visual="brand"] .site-primitive-action:active {
+  text-decoration-thickness: 0.18em;
+}
+
+body:is([data-template-family="site"], [data-template-family="landing"])[data-site-visual="brand"] .site-primitive-action:focus-visible {
+  outline: 3px solid var(--site-color-required-boundary);
+  outline-offset: 3px;
+}
+
+body:is([data-template-family="site"], [data-template-family="landing"])[data-site-visual="brand"] .site-primitive-action--primary:focus-visible,
+body:is([data-template-family="site"], [data-template-family="landing"])[data-site-visual="brand"] .site-primitive-surface--dark .site-primitive-action:focus-visible {
+  outline-color: var(--site-color-accent-on-dark);
+}
+
+body:is([data-template-family="site"], [data-template-family="landing"])[data-site-visual="brand"] .site-primitive-action:disabled,
+body:is([data-template-family="site"], [data-template-family="landing"])[data-site-visual="brand"] .site-primitive-action[aria-disabled="true"] {
+  opacity: 0.55;
+  cursor: not-allowed;
+  text-decoration-line: line-through;
+}
+
+body:is([data-template-family="site"], [data-template-family="landing"])[data-site-visual="brand"] .site-primitive-action[aria-disabled="true"] {
+  pointer-events: none;
+}
+
+@media (max-width: 30rem) {
+  body:is([data-template-family="site"], [data-template-family="landing"])[data-site-visual="brand"] .site-primitive-section {
+    padding-block: var(--site-space-6);
+  }
+
+  body:is([data-template-family="site"], [data-template-family="landing"])[data-site-visual="brand"] .site-primitive-section--entry {
+    padding-block-start: var(--site-space-7);
+    padding-block-end: var(--site-space-7);
+  }
+}

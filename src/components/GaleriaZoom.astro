@@ -4,18 +4,37 @@ interface Props {
   colunas?: string;
 }
 const { imagens, colunas = 'grid-cols-2' } = Astro.props;
-import { Image } from 'astro:assets';
+import { Image, getImage } from 'astro:assets';
+
+const lightboxSources = await Promise.all(
+  imagens.map(async (img) => {
+    if (typeof img.src === 'string') {
+      return img.src;
+    }
+
+    const lightboxImage = await getImage({
+      src: img.src,
+      width: img.src.width,
+      height: img.src.height,
+    });
+
+    return lightboxImage.src;
+  }),
+);
 ---
 <div class={`grid ${colunas} gap-3`}>
   {imagens.map((img, i) => (
-    <button type="button" class="galeria-zoom-item aspect-square rounded-xl overflow-hidden border border-white/10 group" data-index={i}>
-      <Image src={img.src} alt={img.alt} class="w-full h-full object-cover transition-transform duration-300 group-hover:scale-110" />
+    <button type="button" class="galeria-zoom-item aspect-square rounded-xl overflow-hidden border border-white/10 group" data-index={i} data-lightbox-src={lightboxSources[i]}>
+      <Image src={img.src} alt={img.alt} widths={[320, 480, 640, 960, 1280]} sizes="(min-width: 1072px) 427px, (min-width: 768px) calc(44.8vw - 3.36rem), calc(89.6vw - 3.58rem)" class="w-full h-full object-cover transition-transform duration-300 group-hover:scale-110" />
     </button>
   ))}
 </div>
 
-<div id="lightbox" class="fixed inset-0 bg-black/90 z-50 hidden items-center justify-center p-6" onclick="this.classList.add('hidden'); this.classList.remove('flex')">
-  <img id="lightbox-img" src="" alt="" class="max-w-full max-h-full rounded-lg" />
+<div id="lightbox" class="fixed inset-0 bg-black/90 z-[9999] hidden items-center justify-center p-4 md:p-8" onclick="if(event.target === this) closeLightbox()">
+  <button type="button" class="absolute top-4 right-4 text-white p-2 rounded-full hover:bg-white/10 transition-colors" onclick="closeLightbox()" aria-label="Fechar galeria">
+    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>
+  </button>
+  <img id="lightbox-img" src="" alt="" class="max-w-full max-h-[90vh] object-contain rounded-lg" />
 </div>
 
 <script>
@@ -23,13 +42,31 @@ import { Image } from 'astro:assets';
   const lightbox = document.getElementById('lightbox')!;
   const lightboxImg = document.getElementById('lightbox-img') as HTMLImageElement;
 
+  function closeLightbox() {
+    lightbox.classList.add('hidden');
+    lightbox.classList.remove('flex');
+  }
+
   items.forEach((item) => {
     item.addEventListener('click', () => {
       const img = item.querySelector('img') as HTMLImageElement;
-      lightboxImg.src = img.src;
+      const lightboxSrc = item.getAttribute('data-lightbox-src');
+
+      if (!lightboxSrc) return;
+
+      lightboxImg.src = lightboxSrc;
       lightboxImg.alt = img.alt;
       lightbox.classList.remove('hidden');
       lightbox.classList.add('flex');
     });
   });
+
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape' && !lightbox.classList.contains('hidden')) {
+      closeLightbox();
+    }
+  });
+
+  // Attach to window so onclick works
+  (window as any).closeLightbox = closeLightbox;
 </script>
