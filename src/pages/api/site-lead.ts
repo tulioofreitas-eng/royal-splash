@@ -3,6 +3,7 @@ export const prerender = false;
 import type { APIRoute } from "astro";
 import {
   SITE_LEAD_SCHEMA_VERSION,
+  type SiteLeadIngressPort,
 } from "../../domains/leads/contracts.ts";
 import {
   AtlasPayloadValidationError,
@@ -52,26 +53,33 @@ export const POST: APIRoute = async ({ request }) => {
     const lead = normalizeSiteLeadRequest(body);
     const environment = getCurrentEnvironmentContract();
     const adapter = resolveLeadProvider(environment, {
-      mock: () => new InMemoryLeadIngressAdapter(),
+      mock: () => new InMemoryLeadIngressAdapter() as SiteLeadIngressPort,
       production: () =>
         new AtlasSiteOriginAdapter(
           getAtlasSiteOriginConfig(environment),
         ),
     });
 
-    await adapter.submit(lead);
+    const receipt = await adapter.submit(lead);
+
+    if ("mock" in receipt) {
+      return jsonResponse(
+        {
+          ok: true,
+          mock: true,
+          schemaVersion: SITE_LEAD_SCHEMA_VERSION,
+        },
+        200,
+      );
+    }
 
     return jsonResponse(
       {
         ok: true,
-        ...(environment.leadProvider === "mock"
-          ? {
-              mock: true,
-              schemaVersion: SITE_LEAD_SCHEMA_VERSION,
-            }
-          : {}),
+        caseId: receipt.caseId,
+        replay: receipt.replay,
       },
-      environment.leadProvider === "mock" ? 200 : 201,
+      receipt.replay ? 200 : 201,
     );
   } catch (error) {
     if (error instanceof InvalidSiteLeadSubmissionError) {

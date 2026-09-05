@@ -1,8 +1,10 @@
 ---
 import ConversionOrigin from "../components/runtime/ConversionOrigin.astro";
+import GrowthAttribution from "../components/runtime/GrowthAttribution.astro";
 import MainContent from "../components/runtime/MainContent.astro";
 import SemanticAnalytics from "../components/runtime/SemanticAnalytics.astro";
 import SkipLink from "../components/runtime/SkipLink.astro";
+import WhatsAppClickAnalytics from "../components/runtime/WhatsAppClickAnalytics.astro";
 import SiteFooter from "../components/site/SiteFooter.astro";
 import PersistentWhatsApp from "../components/site/PersistentWhatsApp.astro";
 import { getCurrentSeoRobots } from "../seo/runtime.ts";
@@ -60,7 +62,9 @@ const effectiveRobots =
       <PersistentWhatsApp />
     </aside>
     <ConversionOrigin />
+    <GrowthAttribution />
     <SemanticAnalytics />
+    <WhatsAppClickAnalytics />
     <slot name="body-end" />
   </body>
 </html>

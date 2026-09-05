@@ -46,6 +46,54 @@ export interface SiteLeadAcquisitionContext {
   pageRef?: string;
 }
 
+export const GROWTH_MEDIUM_ALLOW = [
+  "paid_search",
+  "paid_social",
+  "organic_search",
+  "organic_social",
+  "referral",
+  "direct",
+] as const;
+
+export const GROWTH_SOURCE_ALLOW = [
+  "google",
+  "meta",
+  "instagram",
+  "facebook",
+  "bing",
+  "linkedin",
+  "youtube",
+  "tiktok",
+  "direct",
+] as const;
+
+export type GrowthMedium =
+  (typeof GROWTH_MEDIUM_ALLOW)[number];
+
+export type GrowthSource =
+  (typeof GROWTH_SOURCE_ALLOW)[number];
+
+export interface GrowthFirstTouch {
+  campaignRef?: string;
+  medium?: GrowthMedium;
+  source?: GrowthSource;
+  landingPageRef?: string;
+  referrerHost?: string;
+  capturedAt: string;
+}
+
+export interface GrowthSubmissionTouch {
+  campaignRef?: string;
+  medium?: GrowthMedium;
+  source?: GrowthSource;
+  pageRef?: string;
+}
+
+export interface GrowthAttribution {
+  firstTouch?: GrowthFirstTouch;
+  submissionTouch?: GrowthSubmissionTouch;
+}
+
 export interface SiteLeadConsent {
   state: LeadConsentState;
   policyRef?: string;
@@ -60,9 +108,23 @@ export interface SiteLeadIngress {
   interest?: SiteLeadInterest;
   message?: string;
   acquisition: SiteLeadAcquisitionContext;
+  attribution?: GrowthAttribution;
   consent: SiteLeadConsent;
 }
 
+export interface SiteLeadCaptureReceipt {
+  caseId: string;
+  replay: boolean;
+}
+
+export interface SiteLeadMockReceipt {
+  mock: true;
+}
+
+export type SiteLeadIngressReceipt =
+  | SiteLeadCaptureReceipt
+  | SiteLeadMockReceipt;
+
 export interface SiteLeadIngressPort {
-  submit(lead: SiteLeadIngress): Promise<void>;
+  submit(lead: SiteLeadIngress): Promise<SiteLeadIngressReceipt>;
 }

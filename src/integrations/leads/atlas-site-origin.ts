@@ -1,4 +1,5 @@
 import type {
+  SiteLeadCaptureReceipt,
   SiteLeadIngress,
   SiteLeadIngressPort,
 } from "../../domains/leads/contracts.ts";
@@ -217,6 +218,15 @@ function fallbackErrorForStatus(status: number): AtlasSiteOriginError {
   });
 }
 
+function unexpectedResponseError(): AtlasSiteOriginError {
+  return new AtlasSiteOriginError({
+    resultCode: "UNEXPECTED_RESPONSE",
+    visitorCode: "submission_failed",
+    visitorStatus: 502,
+    retryable: false,
+  });
+}
+
 function boundedRetryDelay(
   response: Response | undefined,
   nowMs: number,
@@ -271,7 +281,9 @@ export class AtlasSiteOriginAdapter implements SiteLeadIngressPort {
     this.log = dependencies.log ?? defaultLog;
   }
 
-  async submit(lead: SiteLeadIngress): Promise<void> {
+  async submit(
+    lead: SiteLeadIngress,
+  ): Promise<SiteLeadCaptureReceipt> {
     const startedAt = this.now();
     const payload = mapSiteLeadToAtlasPayload(
       lead,
@@ -313,20 +325,27 @@ export class AtlasSiteOriginAdapter implements SiteLeadIngressPort {
 
       if (response.status === 200 || response.status === 201) {
         const body = await responseJson(response);
+        const caseId = safeCaseId(body);
+        const replay = replayFrom(body);
+
+        if (!caseId || replay === undefined) {
+          const error = unexpectedResponseError();
+          this.logFailure(payload, error, startedAt);
+          throw error;
+        }
+
         this.log({
           submissionRef: payload.submission.ref,
           channel: payload.submission.channel,
           ...(payload.submission.pageRef
             ? { pageRef: payload.submission.pageRef }
             : {}),
-          resultCode: response.status === 201 ? "CREATED" : "REPLAY",
-          ...(safeCaseId(body) ? { caseId: safeCaseId(body) } : {}),
-          ...(replayFrom(body) !== undefined
-            ? { replay: replayFrom(body) }
-            : {}),
+          resultCode: replay ? "REPLAY" : "CREATED",
+          caseId,
+          replay,
           duration: Math.max(0, this.now() - startedAt),
         });
-        return;
+        return { caseId, replay };
       }
 
       if (attempt === 0 && isRetryableStatus(response.status)) {
@@ -349,6 +368,10 @@ export class AtlasSiteOriginAdapter implements SiteLeadIngressPort {
       this.logFailure(payload, error, startedAt);
       throw error;
     }
+
+    const error = unexpectedResponseError();
+    this.logFailure(payload, error, startedAt);
+    throw error;
   }
 
   private logFailure(

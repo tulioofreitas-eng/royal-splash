@@ -62,10 +62,13 @@ test("normalized domain, port and in-memory adapter keep the provider boundary",
   assert.match(sources.contracts, /export interface SiteLeadIngress\s*{/);
   assert.match(
     sources.contracts,
-    /export interface SiteLeadIngressPort\s*{[\s\S]*?submit\(lead:\s*SiteLeadIngress\):\s*Promise<void>;/,
+    /export interface SiteLeadIngressPort\s*{[\s\S]*?submit\(lead:\s*SiteLeadIngress\):\s*Promise<SiteLeadIngressReceipt>;/,
   );
   assert.match(sources.adapter, /implements\s+SiteLeadIngressPort/);
-  assert.match(sources.adapter, /submit\(lead:\s*SiteLeadIngress\):\s*Promise<void>/);
+  assert.match(
+    sources.adapter,
+    /submit\([\s\S]*?lead:\s*SiteLeadIngress,[\s\S]*?\):\s*Promise<SiteLeadIngressReceipt>/,
+  );
 
   const lead = {
     schemaVersion: SITE_LEAD_SCHEMA_VERSION,

@@ -1,0 +1,44 @@
+<script>
+  interface WhatsAppAnalyticsWindow extends Window {
+    __royalWhatsAppClickAnalyticsInstalled?: boolean;
+  }
+
+  const analyticsWindow = window as WhatsAppAnalyticsWindow;
+
+  if (!analyticsWindow.__royalWhatsAppClickAnalyticsInstalled) {
+    analyticsWindow.__royalWhatsAppClickAnalyticsInstalled = true;
+
+    const recordWhatsAppClick = () => {
+      fetch("/api/whatsapp-click", {
+        method: "POST",
+        headers: { "content-type": "application/json" },
+        body: JSON.stringify({ pagina: window.location.pathname }),
+        keepalive: true,
+      }).catch(() => {});
+    };
+
+    document.addEventListener(
+      "click",
+      (event) => {
+        if (!(event.target instanceof Element)) return;
+
+        const anchor = event.target.closest<HTMLAnchorElement>("a[href]");
+        if (!anchor) return;
+
+        try {
+          if (new URL(anchor.href).hostname === "wa.me") {
+            recordWhatsAppClick();
+          }
+        } catch {
+          // An invalid href is not a trackable WhatsApp handoff.
+        }
+      },
+      { capture: true },
+    );
+
+    window.addEventListener(
+      "site:whatsapp-handoff-initiated",
+      recordWhatsAppClick,
+    );
+  }
+</script>

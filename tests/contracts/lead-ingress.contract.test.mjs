@@ -98,7 +98,7 @@ test("lead ingress port defines delivery boundary without owning provider implem
 
   assert.match(
     source,
-    /\bsubmit\(lead:\s*SiteLeadIngress\):\s*Promise<void>;/,
+    /\bsubmit\(lead:\s*SiteLeadIngress\):\s*Promise<SiteLeadIngressReceipt>;/,
   );
 });
 
