@@ -33,9 +33,10 @@ test("in-memory adapter accepts normalized Site lead ingress", async () => {
   const adapter = new InMemoryLeadIngressAdapter();
   const lead = createLead();
 
-  await adapter.submit(lead);
+  const receipt = await adapter.submit(lead);
 
   assert.deepEqual(adapter.getSubmittedLeads(), [lead]);
+  assert.deepEqual(receipt, { mock: true });
 });
 
 test("in-memory adapter preserves submission order", async () => {
@@ -99,7 +100,7 @@ test("adapter explicitly implements the SiteLeadIngressPort boundary", async () 
 
   assert.match(
     source,
-    /submit\(lead:\s*SiteLeadIngress\):\s*Promise<void>/,
+    /submit\([\s\S]*?lead:\s*SiteLeadIngress,[\s\S]*?\):\s*Promise<SiteLeadIngressReceipt>/,
   );
 });
 

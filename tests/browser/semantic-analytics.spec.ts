@@ -228,6 +228,17 @@ test.describe(
       page,
     }) => {
       const siteLeadRequests: string[] = [];
+      await page.route("**/api/site-lead", (route) =>
+        route.fulfill({
+          status: 201,
+          contentType: "application/json",
+          body: JSON.stringify({
+            ok: true,
+            caseId: "case-browser-success",
+            replay: false,
+          }),
+        }),
+      );
       page.on("request", (request) => {
         if (request.url().includes("/api/site-lead") && request.method() === "POST") {
           siteLeadRequests.push(request.url());

@@ -18,12 +18,12 @@ test("Home hero CTA row entrance uses opacity-only animation, never visibility-h
 test("ProjectStartForm dispatches site:lead-submitted only after confirmed Atlas success, without PII", async () => {
   const source = await readFile("src/components/site/ProjectStartForm.astro", "utf8");
 
-  const okCheckIndex = source.indexOf('if (!response.ok) throw new Error("Submission failed");');
+  const caseIdGuardIndex = source.indexOf('typeof caseId !== "string"');
   const dispatchIndex = source.indexOf('new CustomEvent("site:lead-submitted"');
   const fallbackIndex = source.indexOf("[data-whatsapp-fallback]");
   const catchIndex = source.indexOf("} catch (e) {");
 
-  assert.ok(okCheckIndex !== -1, "response.ok guard must exist");
+  assert.ok(caseIdGuardIndex !== -1, "validated caseId guard must exist");
   assert.ok(dispatchIndex !== -1, "site:lead-submitted dispatch must exist");
   assert.ok(catchIndex !== -1, "catch block must exist");
 
@@ -31,8 +31,8 @@ test("ProjectStartForm dispatches site:lead-submitted only after confirmed Atlas
   // inside the try block (before the catch), so a thrown/failed request
   // never reaches it.
   assert.ok(
-    dispatchIndex > okCheckIndex,
-    "dispatch must be placed after the response.ok success guard",
+    dispatchIndex > caseIdGuardIndex,
+    "dispatch must be placed after the caseId receipt guard",
   );
   assert.ok(
     dispatchIndex < catchIndex,
@@ -46,6 +46,10 @@ test("ProjectStartForm dispatches site:lead-submitted only after confirmed Atlas
   // Only one POST to the Atlas seam (no parallel/duplicate submission path).
   const fetchOccurrences = source.split('fetch("/api/site-lead"').length - 1;
   assert.equal(fetchOccurrences, 1);
+  assert.match(source, /typeof replay !== "boolean"/);
+  assert.match(source, /controller\.abort\(\), 8_000/);
+  assert.match(source, /persistentWhatsApp\.href = whatsappUrl/);
+  assert.match(source, /composedSubmission\.fingerprint !== fingerprint/);
 
   const detail = source.slice(dispatchIndex, fallbackIndex);
   assert.match(detail, /componentRef:\s*"project_start_form"/);

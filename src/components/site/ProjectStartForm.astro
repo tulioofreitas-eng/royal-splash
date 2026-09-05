@@ -73,7 +73,7 @@
 
       <div class="project-start__consent">
         <input id="project-consent" name="consentimento" type="checkbox" aria-describedby="project-consent-error" required />
-                <label for="project-consent">Autorizo o envio destas informações à Royal Splash, que serão registradas (Intake) para recebimento, análise e resposta ao meu projeto. O e-mail e/ou telefone fornecidos poderão ser usados para esse retorno. Continuar pelo WhatsApp após o envio é opcional. Concordo com a <a href="/politica-de-privacidade" target="_blank" rel="noopener noreferrer">Política de Privacidade</a>.</label>
+                <label for="project-consent">Li e concordo com a <a href="/politica-de-privacidade" target="_blank" rel="noopener noreferrer">Política de Privacidade</a> e autorizo o uso dos meus dados para análise e atendimento da minha solicitação.</label>
         <p id="project-consent-error" class="project-start__error" data-error-for="consentimento"></p>
       </div>
 
@@ -100,6 +100,11 @@
 </section>
 
 <script>
+  import {
+    composeGrowthAttribution,
+    getBrowserGrowthAttributionRuntime,
+    observeSubmissionTouch,
+  } from "../../growth/attribution.ts";
   import { buildProjectWhatsAppUrl, composeProjectMessage, type ProjectContext } from "../../utils/whatsapp-composer.ts";
 
   interface FormAnalyticsWindow extends Window { __projectFormAnalyticsEvents?: Array<Record<string, unknown>> }
@@ -126,6 +131,9 @@
     };
     let started = false;
     let lastMessage = "";
+    let composedSubmission:
+      | { fingerprint: string; payload: Record<string, unknown> }
+      | undefined;
 
     const setError = (name: string, message = "") => {
       const field = fields[name as keyof typeof fields];
@@ -188,6 +196,9 @@
 
       const context: ProjectContext = { nome: fields.nome.value, tipoProjeto: fields.tipo.value as ProjectContext["tipoProjeto"], escala: fields.escala.value, prazo: fields.prazo.value as ProjectContext["prazo"], questao: fields.questao.value };
       lastMessage = composeProjectMessage(context);
+      const whatsappUrl = buildProjectWhatsAppUrl(context);
+      const persistentWhatsApp = document.querySelector<HTMLAnchorElement>("[data-persistent-whatsapp]");
+      if (persistentWhatsApp) persistentWhatsApp.href = whatsappUrl;
       
       let mappedContext = fields.tipo.value;
       if (mappedContext === "corporativo") mappedContext = "corporativo_institucional";
@@ -198,9 +209,21 @@
       if (fields.questao.value) projectNeedParts.push(`Questão: ${fields.questao.value}`);
       const projectNeed = projectNeedParts.join(". ") || "Não especificado";
 
-      const payload = {
-        submissionRef: crypto.randomUUID(),
-        consentCapturedAt: new Date().toISOString(),
+      const now = new Date();
+      const currentUrl = new URL(window.location.href);
+      const growthRuntime = getBrowserGrowthAttributionRuntime(window);
+      growthRuntime.observe({
+        url: currentUrl,
+        referrer: document.referrer,
+        now,
+      });
+      const firstTouch = growthRuntime.persistAfterConsent(now);
+      const submissionTouch = observeSubmissionTouch(currentUrl);
+      const attribution = composeGrowthAttribution(
+        firstTouch,
+        submissionTouch,
+      );
+      const logicalSubmission = {
         projectContext: mappedContext,
         projectNeed: projectNeed,
         city: fields.cidade.value,
@@ -208,17 +231,60 @@
         email: fields.email.value || undefined,
         phone: fields.telefone.value || undefined,
         consent: fields.consentimento.checked,
-        pageRef: "/inicie-seu-projeto",
+        pageRef: currentUrl.pathname,
+        ...(attribution ? { attribution } : {}),
       };
+      const fingerprint = JSON.stringify(logicalSubmission);
+
+      if (
+        !composedSubmission ||
+        composedSubmission.fingerprint !== fingerprint
+      ) {
+        composedSubmission = {
+          fingerprint,
+          payload: {
+            submissionRef: crypto.randomUUID(),
+            consentCapturedAt: now.toISOString(),
+            ...logicalSubmission,
+          },
+        };
+      }
+
+      const payload = composedSubmission.payload;
+      const controller = new AbortController();
+      const deadline = window.setTimeout(() => controller.abort(), 8_000);
 
       try {
         const response = await fetch("/api/site-lead", {
           method: "POST",
           headers: { "content-type": "application/json" },
-          body: JSON.stringify(payload)
+          body: JSON.stringify(payload),
+          signal: controller.signal,
         });
-        
-        if (!response.ok) throw new Error("Submission failed");
+        const receipt = await response.json().catch(() => undefined);
+        const caseId =
+          receipt &&
+          typeof receipt === "object" &&
+          "caseId" in receipt
+            ? receipt.caseId
+            : undefined;
+        const replay =
+          receipt &&
+          typeof receipt === "object" &&
+          "replay" in receipt
+            ? receipt.replay
+            : undefined;
+
+        if (
+          !response.ok ||
+          typeof caseId !== "string" ||
+          caseId.length < 1 ||
+          caseId.length > 128 ||
+          !/^[A-Za-z0-9_.:-]+$/.test(caseId) ||
+          typeof replay !== "boolean"
+        ) {
+          throw new Error("Submission failed");
+        }
 
         window.dispatchEvent(
           new CustomEvent("site:lead-submitted", {
@@ -237,7 +303,7 @@
           const waBtn = fallback.querySelector("[data-open-whatsapp]");
           if (waBtn) {
             waBtn.addEventListener("click", () => {
-              window.open(buildProjectWhatsAppUrl(context), "_blank", "noopener,noreferrer");
+              window.open(whatsappUrl, "_blank", "noopener,noreferrer");
             });
           }
         }
@@ -247,6 +313,8 @@
           summary.hidden = false;
           summary.textContent = "Não foi possível enviar as informações no momento. Tente novamente ou use os canais diretos.";
         }
+      } finally {
+        window.clearTimeout(deadline);
       }
     });
     document.querySelector<HTMLButtonElement>("[data-copy-context]")?.addEventListener("click", async () => {

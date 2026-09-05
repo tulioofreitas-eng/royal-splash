@@ -1,6 +1,8 @@
 ---
+import GrowthAttribution from "../components/runtime/GrowthAttribution.astro";
 import MainContent from "../components/runtime/MainContent.astro";
 import SkipLink from "../components/runtime/SkipLink.astro";
+import WhatsAppClickAnalytics from "../components/runtime/WhatsAppClickAnalytics.astro";
 import { getCurrentSeoRobots } from "../seo/runtime.ts";
 import "../styles/site-system.css";
 import "../styles/lp-mobile-convergence.css";
@@ -51,6 +53,8 @@ const effectiveRobots =
       <slot />
     </MainContent>
     <slot name="footer" />
+    <GrowthAttribution />
+    <WhatsAppClickAnalytics />
     <slot name="body-end" />
   </body>
 </html>

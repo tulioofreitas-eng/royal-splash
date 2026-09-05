@@ -1,5 +1,6 @@
 import type {
   SiteLeadIngress,
+  SiteLeadIngressReceipt,
   SiteLeadIngressPort,
 } from "../../domains/leads/contracts.ts";
 
@@ -16,8 +17,11 @@ export class InMemoryLeadIngressAdapter
 {
   private readonly submittedLeads: SiteLeadIngress[] = [];
 
-  async submit(lead: SiteLeadIngress): Promise<void> {
+  async submit(
+    lead: SiteLeadIngress,
+  ): Promise<SiteLeadIngressReceipt> {
     this.submittedLeads.push(lead);
+    return { mock: true };
   }
 
   getSubmittedLeads(): SiteLeadIngress[] {

@@ -1,0 +1,17 @@
+<script>
+  import {
+    getBrowserGrowthAttributionRuntime,
+  } from "../../growth/attribution.ts";
+
+  const runtime = getBrowserGrowthAttributionRuntime(window);
+
+  const observeCurrentPage = () => {
+    runtime.observe({
+      url: new URL(window.location.href),
+      referrer: document.referrer,
+    });
+  };
+
+  observeCurrentPage();
+  document.addEventListener("astro:page-load", observeCurrentPage);
+</script>

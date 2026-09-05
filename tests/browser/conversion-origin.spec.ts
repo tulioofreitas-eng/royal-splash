@@ -141,7 +141,7 @@ test.describe(
         await page.getByLabel("07 E-mail", { exact: true }).fill("origem@example.com");
         await page
           .getByLabel(
-            /Autorizo o envio destas informações/,
+            /Li e concordo com a Política de Privacidade/,
           )
           .check();
 

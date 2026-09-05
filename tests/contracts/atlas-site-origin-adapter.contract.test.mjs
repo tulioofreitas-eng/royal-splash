@@ -64,7 +64,7 @@ test("POSTs JSON with byte-identical idempotency key and submission ref", async 
     }),
   );
 
-  await adapter.submit(createLead());
+  const receipt = await adapter.submit(createLead());
 
   assert.equal(calls.length, 1);
   assert.equal(calls[0].url, CONFIG.endpoint);
@@ -76,6 +76,7 @@ test("POSTs JSON with byte-identical idempotency key and submission ref", async 
     calls[0].init.headers["idempotency-key"],
     body.submission.ref,
   );
+  assert.deepEqual(receipt, { caseId: "case-123", replay: false });
 });
 
 test("200 replay is ordinary success", async () => {
@@ -92,9 +93,10 @@ test("200 replay is ordinary success", async () => {
     ),
   );
 
-  await adapter.submit(createLead());
+  const receipt = await adapter.submit(createLead());
   assert.equal(logs[0].resultCode, "REPLAY");
   assert.equal(logs[0].replay, true);
+  assert.deepEqual(receipt, { caseId: "case-replay", replay: true });
 });
 
 for (const [status, code] of [
@@ -130,7 +132,10 @@ test("429 retries once, honors bounded Retry-After, and preserves payload/ref", 
               status: 429,
               headers: { "retry-after": "5" },
             })
-          : new Response(JSON.stringify({ replay: true }), { status: 200 });
+          : new Response(
+              JSON.stringify({ caseId: "case-replay", replay: true }),
+              { status: 200 },
+            );
       },
       { sleep: async (delay) => delays.push(delay) },
     ),
@@ -190,6 +195,40 @@ test("public Atlas error mapping is exhaustive and visitor-safe", () => {
     assert.equal(error.message, "Site lead delivery failed.");
     assert.equal(error.message.includes(code), false);
   }
+});
+
+for (const [label, body] of [
+  ["missing caseId", { replay: false }],
+  ["invalid caseId", { caseId: "case/id", replay: false }],
+  ["missing replay", { caseId: "case-123" }],
+]) {
+  test(`2xx ${label} is rejected as an unexpected response`, async () => {
+    const adapter = new AtlasSiteOriginAdapter(
+      CONFIG,
+      dependencies(async () =>
+        new Response(JSON.stringify(body), { status: 201 })),
+    );
+
+    await assert.rejects(
+      () => adapter.submit(createLead()),
+      (error) => {
+        assert.equal(error instanceof AtlasSiteOriginError, true);
+        assert.equal(error.resultCode, "UNEXPECTED_RESPONSE");
+        assert.equal(error.visitorCode, "submission_failed");
+        return true;
+      },
+    );
+  });
+}
+
+test("malformed 2xx response never becomes a capture receipt", async () => {
+  const adapter = new AtlasSiteOriginAdapter(
+    CONFIG,
+    dependencies(async () =>
+      new Response("not-json", { status: 200 })),
+  );
+
+  await assert.rejects(() => adapter.submit(createLead()), AtlasSiteOriginError);
 });
 
 test("logs only allowlisted non-PII fields and never leaks credentials", async () => {

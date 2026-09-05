@@ -1,6 +1,11 @@
 import type {
+  GrowthAttribution,
   SiteLeadIngress,
 } from "../../domains/leads/contracts.ts";
+import {
+  InvalidGrowthAttributionError,
+  normalizeGrowthAttribution,
+} from "../../growth/attribution.ts";
 
 export const ATLAS_SITE_INTAKE_SCHEMA_VERSION =
   "atlas-site-intake.v1" as const;
@@ -23,6 +28,9 @@ export interface AtlasSiteIntakePayload {
     email?: string;
     phone?: string;
   };
+  location?: {
+    city?: string;
+  };
   request: {
     description: string;
   };
@@ -31,6 +39,7 @@ export interface AtlasSiteIntakePayload {
     policyRef: string;
     capturedAt: string;
   };
+  attribution?: GrowthAttribution;
 }
 
 export type AtlasPayloadValidationReason =
@@ -40,9 +49,11 @@ export type AtlasPayloadValidationReason =
   | "invalid_contact"
   | "invalid_email"
   | "invalid_phone"
+  | "invalid_location"
   | "missing_request"
   | "invalid_consent"
-  | "stale_consent";
+  | "stale_consent"
+  | "invalid_attribution";
 
 export class AtlasPayloadValidationError extends Error {
   readonly reason: AtlasPayloadValidationReason;
@@ -60,25 +71,15 @@ function normalized(value: string | undefined): string | undefined {
 }
 
 function isValidEmail(value: string): boolean {
-  const separatorIndex = value.indexOf("@");
-
-  return (
-    value.length <= 320 &&
-    !/\s/.test(value) &&
-    separatorIndex > 0 &&
-    separatorIndex === value.lastIndexOf("@") &&
-    separatorIndex < value.length - 1
-  );
+  return value.length <= 320 && /^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(value);
 }
 
 function descriptionFor(lead: SiteLeadIngress): string | undefined {
   const description = normalized(lead.interest?.description);
   const message = normalized(lead.message);
-  const city = normalized(lead.city);
   const parts = [
     description,
     message ? `Mensagem: ${message}` : undefined,
-    city ? `Cidade: ${city}` : undefined,
   ].filter((part): part is string => Boolean(part));
 
   return parts.length > 0 ? parts.join("\n") : undefined;
@@ -133,7 +134,7 @@ export function mapSiteLeadToAtlasPayload(
     phone &&
     (
       phone.length < 7 ||
-      phone.length > 32 ||
+      phone.length > 40 ||
       !PHONE_PATTERN.test(phone)
     )
   ) {
@@ -142,8 +143,14 @@ export function mapSiteLeadToAtlasPayload(
 
   const description = descriptionFor(lead);
 
-  if (!description) {
+  if (!description || description.length > 4_000) {
     throw new AtlasPayloadValidationError("missing_request");
+  }
+
+  const city = normalized(lead.city);
+
+  if (city && city.length > 120) {
+    throw new AtlasPayloadValidationError("invalid_location");
   }
 
   if (lead.consent.state !== "granted") {
@@ -168,6 +175,21 @@ export function mapSiteLeadToAtlasPayload(
     throw new AtlasPayloadValidationError("stale_consent");
   }
 
+  let attribution: GrowthAttribution | undefined;
+
+  try {
+    attribution = normalizeGrowthAttribution(
+      lead.attribution,
+      now,
+    );
+  } catch (error) {
+    if (error instanceof InvalidGrowthAttributionError) {
+      throw new AtlasPayloadValidationError("invalid_attribution");
+    }
+
+    throw error;
+  }
+
   return {
     schemaVersion: ATLAS_SITE_INTAKE_SCHEMA_VERSION,
     submission: {
@@ -180,6 +202,7 @@ export function mapSiteLeadToAtlasPayload(
       ...(email ? { email } : {}),
       ...(phone ? { phone } : {}),
     },
+    ...(city ? { location: { city } } : {}),
     request: {
       description,
     },
@@ -188,5 +211,6 @@ export function mapSiteLeadToAtlasPayload(
       policyRef,
       capturedAt,
     },
+    ...(attribution ? { attribution } : {}),
   };
 }

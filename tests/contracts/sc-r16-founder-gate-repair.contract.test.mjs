@@ -15,7 +15,7 @@ test("new-site privacy route uses the shared Royal shell and minimum local data 
   assert.match(privacy, /SiteLayout/);
   assert.match(privacy, /SiteHeader/);
   assert.match(privacy, /robots="noindex, nofollow"/);
-  assert.match(privacy, /O preenchimento permanece local/);
+  assert.match(privacy, /sistemas internos e corporativos da Royal Splash/);
   assert.match(privacy, /Você pode revisar, alterar ou não enviar a mensagem/);
   assert.doesNotMatch(privacy, /components\/(Header|Footer|BotaoWhatsapp|GTM)/);
 });

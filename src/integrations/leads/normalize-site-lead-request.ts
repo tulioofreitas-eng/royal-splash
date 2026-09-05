@@ -1,11 +1,17 @@
 import {
   normalizeConversionOrigin,
+  normalizeConversionPageRef,
 } from "../../conversion/origin.ts";
 import {
   SITE_LEAD_SCHEMA_VERSION,
   ROYAL_PRIVACY_R1,
+  type GrowthAttribution,
   type SiteLeadIngress,
 } from "../../domains/leads/contracts.ts";
+import {
+  InvalidGrowthAttributionError,
+  normalizeGrowthAttribution,
+} from "../../growth/attribution.ts";
 
 export interface SiteLeadRequestPayload {
   submissionRef?: unknown;
@@ -19,6 +25,7 @@ export interface SiteLeadRequestPayload {
   consent?: unknown;
   source?: unknown;
   pageRef?: unknown;
+  attribution?: unknown;
 }
 
 export class InvalidSiteLeadSubmissionError extends Error {
@@ -95,6 +102,20 @@ export function normalizeSiteLeadRequest(
     source: body.source,
     pageRef: body.pageRef,
   });
+  const pageRef =
+    normalizeConversionPageRef(body.pageRef) ??
+    "/inicie-seu-projeto";
+  let attribution: GrowthAttribution | undefined;
+
+  try {
+    attribution = normalizeGrowthAttribution(body.attribution);
+  } catch (error) {
+    if (error instanceof InvalidGrowthAttributionError) {
+      throw new InvalidSiteLeadSubmissionError();
+    }
+
+    throw error;
+  }
 
   return {
     schemaVersion: SITE_LEAD_SCHEMA_VERSION,
@@ -114,9 +135,9 @@ export function normalizeSiteLeadRequest(
       ...(conversionOrigin.source
         ? { source: conversionOrigin.source }
         : {}),
-      pageRef:
-        conversionOrigin.pageRef ?? "/inicie-seu-projeto",
+      pageRef,
     },
+    ...(attribution ? { attribution } : {}),
     consent: {
       state: "granted",
       policyRef: ROYAL_PRIVACY_R1,
