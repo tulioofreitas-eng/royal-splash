@@ -1,14 +1,33 @@
 <script>
   interface WhatsAppAnalyticsWindow extends Window {
     __royalWhatsAppClickAnalyticsInstalled?: boolean;
+    __royalWhatsAppClickEventLastEmittedAt?: number;
+    dataLayer?: unknown[];
   }
 
   const analyticsWindow = window as WhatsAppAnalyticsWindow;
 
+  // Same physical handoff can reach recordWhatsAppClick via two independent
+  // observers (raw wa.me anchor click and the LP forms' custom event). This
+  // window keeps a single logical handoff from emitting whatsapp_click twice.
+  const DUPLICATE_EVENT_WINDOW_MS = 500;
+
   if (!analyticsWindow.__royalWhatsAppClickAnalyticsInstalled) {
     analyticsWindow.__royalWhatsAppClickAnalyticsInstalled = true;
 
+    const emitWhatsAppClickEvent = () => {
+      const now = Date.now();
+      const last = analyticsWindow.__royalWhatsAppClickEventLastEmittedAt;
+      if (last !== undefined && now - last < DUPLICATE_EVENT_WINDOW_MS) return;
+      analyticsWindow.__royalWhatsAppClickEventLastEmittedAt = now;
+
+      analyticsWindow.dataLayer = analyticsWindow.dataLayer || [];
+      analyticsWindow.dataLayer.push({ event: "whatsapp_click" });
+    };
+
     const recordWhatsAppClick = () => {
+      emitWhatsAppClickEvent();
+
       fetch("/api/whatsapp-click", {
         method: "POST",
         headers: { "content-type": "application/json" },
