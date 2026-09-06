@@ -40,7 +40,7 @@ const protectedFingerprints = {
   "src/styles/site-brand.css": "bdf56bcc5fcc3efb7dad7cda3a62bcc391963149e92f1c060a065207b1635090",
   "src/styles/site-primitives.css": "904be08e1f769ee5d1defa3bd0e041982355a6efdbec154672a68231c3c3a9ee",
   "src/components/FormularioGHL.astro": "2fb923c34600558a8d03bad47a446b18ea7b274919630fc1924ef2c116933e17",
-  "src/components/BotaoWhatsapp.astro": "b17f5fadb21f5c3bdc6665fb34b9db7fb67693e01784189d1a34d1f80ecc7d2b",
+  "src/components/BotaoWhatsapp.astro": "4e2b8db201fd41d56f70e9fb187eb27a7e6835949fc66d7092f943bed6f7c584",
   "src/styles/global.css": "25a3bef8e20689038a0881fe3946a124e5e71cd7eed113ac0a3832bae4b0f3b7",
   "src/components/site/StructuredIntake.astro": "f4fa2c93a28bdb307530374885c17078eb56a1f08850d6410938067b5e2b4ce1",
   "src/pages/api/lead.ts": "e319eb440bf41ff668e3836a321d0535844ce8cbb20cf0df8db1d18137852230",

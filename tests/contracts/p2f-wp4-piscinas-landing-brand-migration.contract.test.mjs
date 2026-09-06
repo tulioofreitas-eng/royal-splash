@@ -39,7 +39,7 @@ const sharedProductionFingerprints = {
   "src/components/LPHeader.astro": "2c34178a5be4199471d5c8b071ce0368da1d7f075a8abc7a4736ce83cf152171",
   "src/components/LPFooter.astro": "4d67b1db7e6d246e3d031f6086218d971efc03ec90f23d7cf6b1cb3d5d408749",
   "src/components/FormularioGHL.astro": "2fb923c34600558a8d03bad47a446b18ea7b274919630fc1924ef2c116933e17",
-  "src/components/BotaoWhatsapp.astro": "b17f5fadb21f5c3bdc6665fb34b9db7fb67693e01784189d1a34d1f80ecc7d2b",
+  "src/components/BotaoWhatsapp.astro": "4e2b8db201fd41d56f70e9fb187eb27a7e6835949fc66d7092f943bed6f7c584",
   "src/components/GTMHead.astro": "185bd5e9defe59a60056e2a52661a6761deac4d24c5949d8034feec3e79765d1",
   "src/components/GTMBody.astro": "2058af65086794bdbc805d784ac1eeecf954004b7fce89dd466c4d9f16d9fb30",
   "src/styles/site-brand.css": "bdf56bcc5fcc3efb7dad7cda3a62bcc391963149e92f1c060a065207b1635090",

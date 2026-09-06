@@ -63,7 +63,29 @@
   const btnCancelar = document.getElementById('wa-cancelar')!;
   const btnEnviar = document.getElementById('wa-enviar')!;
 
+  interface WhatsAppEventWindow extends Window {
+    __royalWhatsAppClickEventLastEmittedAt?: number;
+    dataLayer?: unknown[];
+  }
+
+  // Shares the same window-level guard as WhatsAppClickAnalytics.astro so a
+  // single handoff never emits whatsapp_click twice to GTM.
+  const DUPLICATE_EVENT_WINDOW_MS = 500;
+
+  function emitWhatsAppClickEvent() {
+    const w = window as WhatsAppEventWindow;
+    const now = Date.now();
+    const last = w.__royalWhatsAppClickEventLastEmittedAt;
+    if (last !== undefined && now - last < DUPLICATE_EVENT_WINDOW_MS) return;
+    w.__royalWhatsAppClickEventLastEmittedAt = now;
+
+    w.dataLayer = w.dataLayer || [];
+    w.dataLayer.push({ event: 'whatsapp_click' });
+  }
+
   function registrarClique() {
+    emitWhatsAppClickEvent();
+
     fetch('/api/whatsapp-click', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },

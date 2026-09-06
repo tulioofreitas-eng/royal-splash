@@ -41,7 +41,7 @@ const frozenSources = {
   "src/components/LPFooter.astro": "4d67b1db7e6d246e3d031f6086218d971efc03ec90f23d7cf6b1cb3d5d408749",
   "src/components/GaleriaZoom.astro": "e1ce05442f569a8bea3f3613124b95f4a096b8a51d44d646f7035f9e78191520",
   "src/components/FormularioGHL.astro": "2fb923c34600558a8d03bad47a446b18ea7b274919630fc1924ef2c116933e17",
-  "src/components/BotaoWhatsapp.astro": "b17f5fadb21f5c3bdc6665fb34b9db7fb67693e01784189d1a34d1f80ecc7d2b",
+  "src/components/BotaoWhatsapp.astro": "4e2b8db201fd41d56f70e9fb187eb27a7e6835949fc66d7092f943bed6f7c584",
   "src/styles/site-brand.css": "bdf56bcc5fcc3efb7dad7cda3a62bcc391963149e92f1c060a065207b1635090",
   "src/styles/site-primitives.css": "904be08e1f769ee5d1defa3bd0e041982355a6efdbec154672a68231c3c3a9ee",
   "src/styles/global.css": "25a3bef8e20689038a0881fe3946a124e5e71cd7eed113ac0a3832bae4b0f3b7",
