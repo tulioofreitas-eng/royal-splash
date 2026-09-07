@@ -1,6 +1,6 @@
 import assert from "node:assert/strict";
 import { createHash } from "node:crypto";
-import { access, readFile } from "node:fs/promises";
+import { readFile } from "node:fs/promises";
 import path from "node:path";
 import test from "node:test";
 
@@ -36,7 +36,7 @@ function normalizedControlledRouteText(source) {
 const frozenSources = {
   "src/pages/lp/piscinas.astro": "9a630509dbb638947483cac88bc91a51bb76df46fda8d55c21d06ecc54dd09f5",
   "src/pages/lp/sauna.astro": "f7a1d6aa0432df64ef10e7dc24063a8b6d15b02e8eb4514d29d5a4dfe1b21dce",
-  "src/layouts/LandingLayout.astro": "7be577f229ec119b3f7669b2b5a326e7909f95c3769c53187568f9a2ff7fbd7b",
+  "src/layouts/LandingLayout.astro": "2e657686fe4de1e6daa9ba963ffa76e8813ecdc9d395f7d888e964fc2ef0b4fb",
   "src/components/LPHeader.astro": "2c34178a5be4199471d5c8b071ce0368da1d7f075a8abc7a4736ce83cf152171",
   "src/components/LPFooter.astro": "4d67b1db7e6d246e3d031f6086218d971efc03ec90f23d7cf6b1cb3d5d408749",
   "src/components/GaleriaZoom.astro": "e1ce05442f569a8bea3f3613124b95f4a096b8a51d44d646f7035f9e78191520",
@@ -68,7 +68,16 @@ test("Sauna and Lazer are the explicit authorized WP3 media-rich Brand consumers
   ]) assert.match(source, pattern);
   assert.doesNotMatch(source, /<main\b/);
   assert.doesNotMatch(source, /\b(?:text|bg|color)-(?:piscina|marca|marca-suave|ouro)\b|--color-|Poppins|#[0-9a-f]{3,8}\b|gradient|glow|metallic/i);
-  await assert.rejects(access(path.join(ROOT, "src/pages/lp/reparo-subaquatico.astro")));
+  const reparoSubaquatico = await read("src/pages/lp/reparo-subaquatico.astro");
+  for (const pattern of [
+    /import LandingLayout from '\.\.\/\.\.\/layouts\/LandingLayout\.astro'/,
+    /visualMode="brand"/,
+    /bodyClass="[^"]*site-primitive-page[^"]*"/,
+    /<LPHeader slot="header" visualMode="brand"/,
+    /<LPFooter slot="footer" visualMode="brand"/,
+  ]) assert.match(reparoSubaquatico, pattern);
+  assert.doesNotMatch(reparoSubaquatico, /<main\b/);
+  assert.doesNotMatch(reparoSubaquatico, /\b(?:text|bg|color)-(?:piscina|marca|marca-suave|ouro)\b|--color-|Poppins|#[0-9a-f]{3,8}\b|gradient|glow|metallic/i);
 });
 
 test("Lazer preserves metadata, tracking, conversion providers, and CTAs", async () => {

@@ -3,6 +3,7 @@ export const prerender = false;
 import type { APIRoute } from "astro";
 import { resolveLeadProvider } from "../../safety/lead-provider.ts";
 import { getCurrentEnvironmentContract } from "../../safety/runtime.ts";
+import { normalizeWhatsAppClickPage } from "../../growth/whatsapp-click.ts";
 
 // Royal Splash — mesmo id fixo já usado em /api/lead
 const EMPRESA_ID = "1f7b165c-0918-4090-a5a7-107560a05c55";
@@ -19,10 +20,7 @@ export const POST: APIRoute = async ({ request }) => {
     let pagina: string | null = null;
     try {
       const corpo = await request.json();
-      pagina =
-        typeof corpo?.pagina === "string"
-          ? corpo.pagina.slice(0, 255)
-          : null;
+      pagina = normalizeWhatsAppClickPage(corpo?.pagina);
     } catch {
       // corpo vazio/ inválido — segue sem página, não é motivo pra falhar
     }

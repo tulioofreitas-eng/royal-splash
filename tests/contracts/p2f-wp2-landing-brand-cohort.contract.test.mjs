@@ -1,6 +1,6 @@
 import assert from "node:assert/strict";
 import { createHash } from "node:crypto";
-import { access, readFile } from "node:fs/promises";
+import { readFile } from "node:fs/promises";
 import path from "node:path";
 import test from "node:test";
 
@@ -34,7 +34,7 @@ function normalizedControlledRouteText(source) {
 const protectedFingerprints = {
   "src/pages/lp/piscinas.astro": "9a630509dbb638947483cac88bc91a51bb76df46fda8d55c21d06ecc54dd09f5",
   "src/pages/lp/fibra.astro": "0f31f82486450503f92b186b1ad37fcd64ba4bd24e11f05f3fb7a7e8daeb6b1c",
-  "src/layouts/LandingLayout.astro": "7be577f229ec119b3f7669b2b5a326e7909f95c3769c53187568f9a2ff7fbd7b",
+  "src/layouts/LandingLayout.astro": "2e657686fe4de1e6daa9ba963ffa76e8813ecdc9d395f7d888e964fc2ef0b4fb",
   "src/components/LPHeader.astro": "2c34178a5be4199471d5c8b071ce0368da1d7f075a8abc7a4736ce83cf152171",
   "src/components/LPFooter.astro": "4d67b1db7e6d246e3d031f6086218d971efc03ec90f23d7cf6b1cb3d5d408749",
   "src/styles/site-brand.css": "bdf56bcc5fcc3efb7dad7cda3a62bcc391963149e92f1c060a065207b1635090",
@@ -65,7 +65,9 @@ test("WP2 landing cohort has exactly the authorized migration state", async () =
   const piscinas = await read("src/pages/lp/piscinas.astro");
   assert.match(piscinas, /import LandingLayout/);
   assert.match(piscinas, /visualMode="brand"/);
-  await assert.rejects(access(path.join(ROOT, "src/pages/lp/reparo-subaquatico.astro")));
+  const reparoSubaquatico = await read("src/pages/lp/reparo-subaquatico.astro");
+  assert.match(reparoSubaquatico, /import LandingLayout/);
+  assert.match(reparoSubaquatico, /visualMode="brand"/);
 });
 
 test("vazamento preserves controlled copy without introducing claims or proof", async () => {

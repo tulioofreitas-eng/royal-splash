@@ -35,7 +35,7 @@ function normalizedControlledRouteText(source) {
 }
 
 const sharedProductionFingerprints = {
-  "src/layouts/LandingLayout.astro": "7be577f229ec119b3f7669b2b5a326e7909f95c3769c53187568f9a2ff7fbd7b",
+  "src/layouts/LandingLayout.astro": "2e657686fe4de1e6daa9ba963ffa76e8813ecdc9d395f7d888e964fc2ef0b4fb",
   "src/components/LPHeader.astro": "2c34178a5be4199471d5c8b071ce0368da1d7f075a8abc7a4736ce83cf152171",
   "src/components/LPFooter.astro": "4d67b1db7e6d246e3d031f6086218d971efc03ec90f23d7cf6b1cb3d5d408749",
   "src/components/FormularioGHL.astro": "2fb923c34600558a8d03bad47a446b18ea7b274919630fc1924ef2c116933e17",
@@ -45,7 +45,7 @@ const sharedProductionFingerprints = {
   "src/styles/site-brand.css": "bdf56bcc5fcc3efb7dad7cda3a62bcc391963149e92f1c060a065207b1635090",
   "src/styles/site-primitives.css": "904be08e1f769ee5d1defa3bd0e041982355a6efdbec154672a68231c3c3a9ee",
   "src/styles/global.css": "25a3bef8e20689038a0881fe3946a124e5e71cd7eed113ac0a3832bae4b0f3b7",
-  "src/pages/api/whatsapp-click.ts": "f9599ca8648190ec46d5a8058b57c1b0571a6a492cbf4063c5ae604f19c8f7ad",
+  "src/pages/api/whatsapp-click.ts": "10a9a554782378c946cf795dc915647d242c83d9119115afd9f4e397d2e10970",
 };
 
 test("Piscinas is the explicit WP4 Landing Brand consumer", async () => {

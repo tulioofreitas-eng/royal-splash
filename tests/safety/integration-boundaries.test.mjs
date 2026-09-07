@@ -174,14 +174,8 @@ test("whatsapp-click preserves pre-T1-S0 best-effort Production semantics", () =
 
   assert.match(
     source,
-    /typeof corpo\?\.pagina === "string"/,
-    "pagina must only accept string input",
-  );
-
-  assert.match(
-    source,
-    /corpo\.pagina\.slice\(0, 255\)/,
-    "pagina must preserve the historical 255-character limit",
+    /pagina = normalizeWhatsAppClickPage\(corpo\?\.pagina\);/,
+    "RC01 accepts only reviewed public paths; arbitrary strings cannot enter pagina",
   );
 
   assert.match(

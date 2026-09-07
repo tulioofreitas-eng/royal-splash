@@ -8,6 +8,7 @@ import WhatsAppClickAnalytics from "../components/runtime/WhatsAppClickAnalytics
 import SiteFooter from "../components/site/SiteFooter.astro";
 import PersistentWhatsApp from "../components/site/PersistentWhatsApp.astro";
 import { getCurrentSeoRobots } from "../seo/runtime.ts";
+import { getRoyalCanonicalUrl, getRoyalRouteRobots } from "../seo/royal-policy.ts";
 import "../styles/site-system.css";
 
 type SiteVisualMode = "functional" | "brand";
@@ -25,13 +26,13 @@ const {
   title,
   description,
   lang = "pt-BR",
-  robots,
   bodyClass,
   visualMode = "functional",
 } = Astro.props;
 
-const effectiveRobots =
-  getCurrentSeoRobots(robots);
+// The reviewed RC01 route policy supersedes historical per-page robots props.
+const effectiveRobots = getCurrentSeoRobots(getRoyalRouteRobots(Astro.url.pathname));
+const canonicalUrl = getRoyalCanonicalUrl(Astro.url.pathname);
 ---
 
 <!doctype html>
@@ -42,6 +43,7 @@ const effectiveRobots =
     <title>{title}</title>
     {description && <meta name="description" content={description} />}
     {effectiveRobots && <meta name="robots" content={effectiveRobots} />}
+    {canonicalUrl && <link rel="canonical" href={canonicalUrl} />}
     <slot name="head" />
   </head>
   <body
