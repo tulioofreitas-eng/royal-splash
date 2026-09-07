@@ -84,8 +84,8 @@ test("protected WP1 and P2E surfaces retain base fingerprints", async () => {
   for (const [file, fingerprint] of Object.entries(parity)) assert.equal(sha(await read(file)), fingerprint, `${file} drifted`);
 });
 
-test("held LP remains absent and Brand CSS stays explicitly scoped", async () => {
-  await assert.rejects(access(path.join(ROOT, "src/pages/lp/reparo-subaquatico.astro")));
+test("reparo-subaquatico LP is authorized and Brand CSS stays explicitly scoped", async () => {
+  await access(path.join(ROOT, "src/pages/lp/reparo-subaquatico.astro"));
   const css = `${await read("src/styles/site-brand.css")}\n${await read("src/styles/site-primitives.css")}`;
   assert.match(css, /data-template-family="landing"/);
   assert.match(css, /data-site-visual="brand"/);

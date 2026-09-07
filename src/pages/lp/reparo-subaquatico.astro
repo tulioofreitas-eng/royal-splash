@@ -1,0 +1,222 @@
+---
+import '../../styles/global.css';
+import LandingLayout from '../../layouts/LandingLayout.astro';
+import GTMHead from '../../components/GTMHead.astro';
+import GTMBody from '../../components/GTMBody.astro';
+import LPHeader from '../../components/LPHeader.astro';
+import LPFooter from '../../components/LPFooter.astro';
+import BotaoWhatsapp from '../../components/BotaoWhatsapp.astro';
+import ReparoSubaquaticoWhatsAppForm from '../../components/lp/ReparoSubaquaticoWhatsAppForm.astro';
+import Icon from '../../components/Icon.astro';
+import { Image } from 'astro:assets';
+import corpRevestimento from '../../assets/corp-revestimento.jpg';
+import reparoSubaquaticoHero from '../../assets/reparo-subaquatico-hero.png';
+---
+
+<LandingLayout title="Reparo Subaquático de Piscinas — Royal Splash" description="Substituição de revestimentos e reparos subaquáticos sem esvaziar a piscina. Para clubes, hotéis, academias, condomínios e residências no Rio de Janeiro." robots="noindex, nofollow" visualMode="brand" bodyClass="site-brand-lp-reparo-subaquatico site-primitive-page">
+  <GTMHead slot="head" />
+  <link slot="head" rel="icon" type="image/x-icon" href="/favicon.ico" />
+  <GTMBody slot="body-start" />
+  <LPHeader slot="header" visualMode="brand" />
+
+  <!-- Hero -->
+  <section class="reparo-subaquatico-hero site-primitive-surface--dark">
+    <Image src={reparoSubaquaticoHero} alt="Mergulhador realizando reparo subaquático de revestimento em parede de azulejos de piscina" widths={[390, 640, 768, 1024, 1280, 1536, 1792, 2400]} sizes="100vw" priority class="reparo-subaquatico-hero__image" />
+    <div class="reparo-subaquatico-hero__veil"></div>
+    <div class="reparo-subaquatico-hero__content">
+      <h1 class="site-primitive-page-title">Reparo Subaquático de Piscinas</h1>
+      <p class="site-primitive-body">Troque revestimentos e faça reparos com a piscina cheia. Intervenção subaquática localizada, sem paralisação total da operação, para clubes, hotéis, academias, condomínios e residências no Rio de Janeiro.</p>
+      <div class="site-primitive-actions">
+        <a href="#orcamento" class="site-primitive-action site-primitive-action--primary">Solicitar avaliação técnica</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Narrative -->
+  <section class="reparo-subaquatico-narrative site-primitive-surface--light site-primitive-datum-bottom">
+    <div class="site-primitive-section site-primitive-section--entry reparo-subaquatico-narrative__layout">
+      <div class="reparo-subaquatico-narrative__copy">
+        <h2 class="site-primitive-display">Reparo sem esvaziar a piscina</h2>
+        <div class="site-primitive-reading">
+          <p class="site-primitive-body site-primitive-supporting">O reparo subaquático permite substituir ou reinstalar revestimentos e azulejos danificados ou soltos com a piscina cheia. A equipe atua submersa, de forma localizada e orquestrada, reduzindo a necessidade de paralisação total e favorecendo um retorno mais rápido ao uso.</p>
+        </div>
+        <ul class="reparo-subaquatico-narrative__scope">
+          <li><Icon name="check" class="reparo-subaquatico-narrative__icon" /> Substituição e reinstalação de revestimentos e azulejos</li>
+          <li><Icon name="check" class="reparo-subaquatico-narrative__icon" /> Intervenção localizada, sem esvaziamento total da piscina</li>
+        </ul>
+      </div>
+      <div class="reparo-subaquatico-narrative__media">
+        <Image src={corpRevestimento} alt="Detalhe da substituição submersa de revestimento em execução" widths={[400, 640, 800, 1200]} class="reparo-subaquatico-narrative__image" />
+      </div>
+    </div>
+  </section>
+
+  <!-- Serviços -->
+  <section class="reparo-subaquatico-services site-primitive-surface--muted site-primitive-datum-bottom">
+    <div class="site-primitive-section">
+      <h2 class="site-primitive-section-title">Nossos Serviços</h2>
+      <div class="reparo-subaquatico-services__list">
+        <article class="reparo-subaquatico-service">
+          <Icon name="wrench" class="reparo-subaquatico-service__icon" />
+          <div>
+            <h3 class="site-primitive-subtitle">Reparo e Troca Subaquática de Revestimentos</h3>
+            <p class="site-primitive-body site-primitive-supporting">Substituição e reinstalação de revestimentos e azulejos danificados ou soltos, executada com a piscina cheia por meio de técnica subaquática.</p>
+          </div>
+        </article>
+        <article class="reparo-subaquatico-service">
+          <Icon name="droplet" class="reparo-subaquatico-service__icon" />
+          <div>
+            <h3 class="site-primitive-subtitle">Manutenção Subaquática Complementar</h3>
+            <p class="site-primitive-body site-primitive-supporting">Intervenções localizadas em rejunte, ralos e outros componentes que comportem reparo subaquático, conforme avaliação técnica de cada piscina.</p>
+          </div>
+        </article>
+        <article class="reparo-subaquatico-service">
+          <Icon name="clock" class="reparo-subaquatico-service__icon" />
+          <div>
+            <h3 class="site-primitive-subtitle">Redução da Interrupção Operacional</h3>
+            <p class="site-primitive-body site-primitive-supporting">Execução localizada e orquestrada, pensada para reduzir a paralisação total da piscina e permitir um retorno mais rápido ao uso do espaço.</p>
+          </div>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <!-- Para quem -->
+  <section class="reparo-subaquatico-trust site-primitive-surface--light site-primitive-datum-bottom">
+    <div class="site-primitive-section">
+      <h2 class="site-primitive-section-title">Para quem é o reparo subaquático?</h2>
+      <div class="reparo-subaquatico-trust__list">
+        <article class="reparo-subaquatico-trust__entry">
+          <Icon name="users" class="reparo-subaquatico-trust__icon" />
+          <div>
+            <h3 class="site-primitive-subtitle">Clubes, academias e hotéis</h3>
+            <p class="site-primitive-body site-primitive-supporting">Piscinas de uso coletivo que não podem ficar fora de operação por muito tempo encontram no reparo subaquático uma alternativa à interrupção completa.</p>
+          </div>
+        </article>
+        <article class="reparo-subaquatico-trust__entry">
+          <Icon name="shield" class="reparo-subaquatico-trust__icon" />
+          <div>
+            <h3 class="site-primitive-subtitle">Condomínios, resorts e escolas</h3>
+            <p class="site-primitive-body site-primitive-supporting">Intervenção pontual em vez do esvaziamento total, reduzindo o impacto para moradores, hóspedes e alunos.</p>
+          </div>
+        </article>
+        <article class="reparo-subaquatico-trust__entry">
+          <Icon name="droplet" class="reparo-subaquatico-trust__icon" />
+          <div>
+            <h3 class="site-primitive-subtitle">Residências</h3>
+            <p class="site-primitive-body site-primitive-supporting">Também atende piscinas residenciais, especialmente quando repor e tratar um grande volume de água tem custo ou logística relevantes.</p>
+          </div>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <!-- FAQ -->
+  <section class="reparo-subaquatico-faq site-primitive-surface--soft site-primitive-datum-bottom">
+    <div class="site-primitive-section reparo-subaquatico-faq__layout">
+      <h2 class="site-primitive-display">Perguntas frequentes</h2>
+      <div class="reparo-subaquatico-faq__list">
+        {[
+          { pergunta: 'O que é o reparo subaquático de piscinas?', resposta: 'É a substituição ou reinstalação de revestimentos e azulejos, entre outros reparos, executados com a piscina cheia por uma equipe que atua submersa, sem exigir o esvaziamento total da piscina.' },
+          { pergunta: 'A piscina precisa ficar totalmente fora de uso durante o reparo?', resposta: 'Não necessariamente. A intervenção é localizada e programada, o que reduz a paralisação total e favorece um retorno mais rápido ao uso, conforme a avaliação de cada caso.' },
+          { pergunta: 'O reparo subaquático também resolve vazamentos?', resposta: 'O foco desta solução é a substituição e o reparo de revestimentos e componentes. Para investigação e reparo de vazamentos, a Royal Splash conta com uma avaliação técnica dedicada a esse diagnóstico.' },
+          { pergunta: 'Quais estabelecimentos podem usar esse serviço?', resposta: 'Clubes, hotéis, academias, condomínios, resorts, escolas e residências no estado do Rio de Janeiro, especialmente onde evitar o esvaziamento total tem valor prático ou operacional.' },
+          { pergunta: 'Como solicitar uma avaliação técnica?', resposta: 'Preencha o formulário desta página com o contexto da sua piscina e abra uma conversa com a equipe Royal Splash pelo WhatsApp.' },
+        ].map((item) => (
+          <details class="reparo-subaquatico-faq__item">
+            <summary class="site-primitive-subtitle">
+              {item.pergunta}
+              <span aria-hidden="true">+</span>
+            </summary>
+            <p class="site-primitive-body site-primitive-supporting">{item.resposta}</p>
+          </details>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA banner -->
+  <section class="reparo-subaquatico-cta site-primitive-surface--dark">
+    <div class="site-primitive-section">
+      <h2 class="site-primitive-display">Repare sua piscina sem precisar esvaziá-la</h2>
+      <div class="site-primitive-actions">
+        <a href="#orcamento" class="site-primitive-action site-primitive-action--primary">Falar com um especialista</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Formulário -->
+  <section id="orcamento" class="site-primitive-section reparo-subaquatico-form">
+    <div class="site-primitive-reading reparo-subaquatico-form__heading">
+      <h2 class="site-primitive-section-title">Solicite sua Avaliação Técnica</h2>
+      <p class="site-primitive-body site-primitive-supporting">Compartilhe o contexto que já souber e abra uma conversa estruturada com a equipe Royal Splash pelo WhatsApp.</p>
+    </div>
+    <ReparoSubaquaticoWhatsAppForm />
+  </section>
+
+  <LPFooter slot="footer" visualMode="brand" />
+  <BotaoWhatsapp slot="body-end" />
+</LandingLayout>
+
+<style>
+  .reparo-subaquatico-narrative__layout { display: grid; grid-template-columns: minmax(18rem, 0.85fr) minmax(0, 1.15fr); gap: var(--site-space-8); align-items: center; }
+  .reparo-subaquatico-narrative h2, .reparo-subaquatico-narrative p { margin-block-start: 0; }
+  .reparo-subaquatico-narrative h2 { margin-block-end: var(--site-space-5); }
+  .reparo-subaquatico-narrative__scope { display: grid; gap: var(--site-space-3); margin: var(--site-space-6) 0 0; padding: var(--site-space-5) 0 0; border-block-start: 1px solid var(--site-color-divider); list-style: none; }
+  .reparo-subaquatico-narrative__scope li { display: flex; gap: var(--site-space-3); align-items: center; }
+  :global(.reparo-subaquatico-narrative__icon) { width: 1.25rem; height: 1.25rem; flex: none; color: var(--site-color-text-primary); }
+  .reparo-subaquatico-narrative__media { min-width: 0; }
+  .reparo-subaquatico-narrative__image { display: block; width: 100%; height: auto; aspect-ratio: 4 / 3; object-fit: cover; border-radius: var(--site-radius-md, 0.5rem); }
+
+  .reparo-subaquatico-hero { position: relative; display: grid; min-height: max(40rem, 85svh); isolation: isolate; overflow: hidden; }
+  .reparo-subaquatico-hero__image, .reparo-subaquatico-hero__veil { position: absolute; inset: 0; width: 100%; height: 100%; }
+  .reparo-subaquatico-hero__image { z-index: -2; object-fit: cover; object-position: center 42%; }
+  .reparo-subaquatico-hero__veil { z-index: -1; background: color-mix(in srgb, var(--site-color-surface-dark) 74%, transparent); }
+  .reparo-subaquatico-hero__content { align-self: end; width: min(calc(100% - (2 * var(--site-layout-gutter))), var(--site-layout-content-max)); margin-inline: auto; padding-block-start: var(--site-space-8); padding-block-end: calc(var(--site-space-8) + var(--site-space-5)); }
+  .reparo-subaquatico-hero h1 { max-width: 18ch; margin: 0; }
+  .reparo-subaquatico-hero p { max-width: 40rem; margin: var(--site-space-5) 0 0; color: var(--site-color-text-on-dark); }
+
+  .reparo-subaquatico-services h2, .reparo-subaquatico-services h3, .reparo-subaquatico-trust h2, .reparo-subaquatico-trust h3, .reparo-subaquatico-faq h2, .reparo-subaquatico-form h2 { margin-block-start: 0; }
+  .reparo-subaquatico-services h2, .reparo-subaquatico-trust h2 { margin-block-end: var(--site-space-6); }
+  .reparo-subaquatico-services .site-primitive-supporting { color: var(--site-color-text-primary); }
+  .reparo-subaquatico-services__list { max-width: var(--site-layout-reading-max); border-block: 1px solid var(--site-color-divider); }
+  .reparo-subaquatico-service { display: grid; grid-template-columns: auto minmax(0, 1fr); gap: var(--site-space-4); padding-block: var(--site-space-6); }
+  .reparo-subaquatico-service + .reparo-subaquatico-service { border-block-start: 1px solid var(--site-color-divider); }
+  :global(.reparo-subaquatico-service__icon), :global(.reparo-subaquatico-trust__icon) { width: 1.5rem; height: 1.5rem; flex: none; color: var(--site-color-text-primary); }
+  .reparo-subaquatico-service p, .reparo-subaquatico-trust p, .reparo-subaquatico-form p { margin-block-end: 0; }
+
+  .reparo-subaquatico-trust__list { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); max-width: 72rem; }
+  .reparo-subaquatico-trust__entry { display: grid; grid-template-columns: auto minmax(0, 1fr); gap: var(--site-space-4); padding-block: var(--site-space-5); border-block-start: 1px solid var(--site-color-divider); }
+  .reparo-subaquatico-trust__entry + .reparo-subaquatico-trust__entry { margin-inline-start: var(--site-space-7); }
+
+  .reparo-subaquatico-faq__layout { display: grid; grid-template-columns: minmax(14rem, 0.7fr) minmax(0, 1.3fr); align-items: center; gap: var(--site-space-8); }
+  .reparo-subaquatico-faq h2 { max-width: 12ch; margin-block-end: 0; }
+  .reparo-subaquatico-faq__list { border-block-start: 1px solid var(--site-color-divider); }
+  .reparo-subaquatico-faq__item { border-block-end: 1px solid var(--site-color-divider); }
+  .reparo-subaquatico-faq__item summary { display: flex; justify-content: space-between; gap: var(--site-space-4); padding-block: var(--site-space-5); cursor: pointer; list-style: none; }
+  .reparo-subaquatico-faq__item summary::-webkit-details-marker { display: none; }
+  .reparo-subaquatico-faq__item summary span { color: var(--site-color-text-primary); transition: transform 160ms ease; }
+  .reparo-subaquatico-faq__item[open] summary span { transform: rotate(45deg); }
+  .reparo-subaquatico-faq__item p { margin: 0; padding: 0 0 var(--site-space-5); }
+
+  .reparo-subaquatico-cta .site-primitive-section { display: block; }
+  .reparo-subaquatico-cta h2 { max-width: 28ch; margin: 0; }
+  .reparo-subaquatico-cta .site-primitive-actions { margin-block-start: var(--site-space-6); }
+
+  .reparo-subaquatico-form { padding-block-end: calc(var(--site-space-8) + 4.5rem); }
+  .reparo-subaquatico-form__heading { margin: 0 auto var(--site-space-7); text-align: center; }
+
+  @media (max-width: 52rem) {
+    .reparo-subaquatico-narrative__layout { grid-template-columns: 1fr; gap: var(--site-space-7); }
+    .reparo-subaquatico-narrative__media { width: min(100%, 38rem); margin-inline: auto; }
+    .reparo-subaquatico-trust__list, .reparo-subaquatico-faq__layout { grid-template-columns: 1fr; }
+    .reparo-subaquatico-faq__layout { align-items: stretch; gap: var(--site-space-5); }
+    .reparo-subaquatico-faq h2 { max-width: none; }
+    .reparo-subaquatico-trust__entry + .reparo-subaquatico-trust__entry { margin-inline-start: 0; margin-block-start: var(--site-space-5); }
+  }
+  @media (max-width: 30rem) {
+    .reparo-subaquatico-hero { min-height: calc(100svh + 2rem); }
+    .reparo-subaquatico-hero__content { align-self: center; padding-block: var(--site-space-7); }
+    .reparo-subaquatico-form { padding-block-end: calc(var(--site-space-7) + 5rem); }
+  }
+</style>

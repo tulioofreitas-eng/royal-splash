@@ -282,3 +282,40 @@ export function buildCorporativoWhatsAppUrl(
 ): string {
   return `https://wa.me/${ROYAL_WHATSAPP_NUMBER}?text=${encodeURIComponent(composeCorporativoProjectMessage(context))}`;
 }
+
+export interface ReparoSubaquaticoProjectContext {
+  nome: string;
+  necessidade?: string;
+  prazo?: ProjectContext["prazo"];
+}
+
+export function composeReparoSubaquaticoProjectMessage(
+  context: ReparoSubaquaticoProjectContext,
+): string {
+  const lines = [
+    "Olá Royal,",
+    "",
+    "Gostaria de conversar sobre um reparo subaquático de piscina.",
+    "",
+    `Nome: ${context.nome.trim()}`,
+    "Interesse: Reparo Subaquático de Piscinas",
+    "Origem: Página Reparo Subaquático da Royal Splash",
+  ];
+
+  if (context.necessidade?.trim()) {
+    lines.push(`Contexto ou necessidade: ${context.necessidade.trim()}`);
+  }
+
+  if (context.prazo && timelineLabels[context.prazo]) {
+    lines.push(`Prazo: ${timelineLabels[context.prazo]}`);
+  }
+
+  lines.push("", "Fico à disposição para conversar sobre a avaliação e os próximos passos.");
+  return lines.join("\n");
+}
+
+export function buildReparoSubaquaticoWhatsAppUrl(
+  context: ReparoSubaquaticoProjectContext,
+): string {
+  return `https://wa.me/${ROYAL_WHATSAPP_NUMBER}?text=${encodeURIComponent(composeReparoSubaquaticoProjectMessage(context))}`;
+}
