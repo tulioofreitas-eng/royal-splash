@@ -28,7 +28,11 @@ import reformaDepois from '../../assets/reforma-depois.jpg';
     <Image src={servicoReforma} alt="Reforma de piscina de alto padrão" widths={[390, 640, 768, 1024, 1280, 1536, 1792, 2400]} sizes="100vw" priority class="reforma-hero__image" />
     <div class="reforma-hero__veil"></div>
     <div class="reforma-hero__content">
-      <h1 class="site-primitive-page-title">Reforma de piscinas em todo o estado do <span class="reforma-hero__geo">Rio de Janeiro</span></h1>
+      <h1 class="site-primitive-page-title">
+        <span class="reforma-hero__line">Reforma de piscinas</span>
+        <span class="reforma-hero__line">em todo o estado do</span>
+        <span class="reforma-hero__line reforma-hero__geo">Rio de Janeiro</span>
+      </h1>
       <p class="site-primitive-body">Novos revestimentos, iluminação, aquecimento e automação para renovar piscinas existentes em todo o Rio de Janeiro.</p>
       <div class="site-primitive-actions">
         <a href="#orcamento" class="site-primitive-action site-primitive-action--primary">Solicitar avaliação</a>
@@ -170,8 +174,9 @@ import reformaDepois from '../../assets/reforma-depois.jpg';
   .reforma-hero__image { z-index: -2; object-fit: cover; object-position: center 58%; }
   .reforma-hero__veil { z-index: -1; background: color-mix(in srgb, var(--site-color-surface-dark) 72%, transparent); }
   .reforma-hero__content { align-self: end; width: min(calc(100% - (2 * var(--site-layout-gutter))), var(--site-layout-content-max)); margin-inline: auto; padding-block: var(--site-space-8); }
-  .reforma-hero h1 { max-width: 20ch; margin: 0; }
-  .reforma-hero__geo { display: block; white-space: nowrap; }
+  .reforma-hero h1 { margin: 0; }
+  .reforma-hero__line { display: block; }
+  .reforma-hero__geo { white-space: nowrap; }
   .reforma-hero p { max-width: 42rem; margin: var(--site-space-5) 0 0; color: var(--site-color-text-on-dark); }
   .reforma-services h2, .reforma-services h3, .reforma-trust h2, .reforma-trust h3, .reforma-faq h2, .reforma-form h2 { margin-block-start: 0; }
   :global(.reforma-service__icon), :global(.reforma-trust__icon) { width: 1.5rem; height: 1.5rem; flex: none; color: var(--site-color-text-primary); }
