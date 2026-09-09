@@ -1,0 +1,196 @@
+---
+import '../../styles/global.css';
+import LandingLayout from '../../layouts/LandingLayout.astro';
+import GTMHead from '../../components/GTMHead.astro';
+import GTMBody from '../../components/GTMBody.astro';
+import LPHeader from '../../components/LPHeader.astro';
+import LPFooter from '../../components/LPFooter.astro';
+import BotaoWhatsapp from '../../components/BotaoWhatsapp.astro';
+import VazamentoWhatsAppForm from '../../components/lp/VazamentoWhatsAppForm.astro';
+import Icon from '../../components/Icon.astro';
+import { Image, getImage } from 'astro:assets';
+import heroVazamentoPanoramico from '../../assets/vazamento-hero-panoramico.png';
+import imgInvestigacao from '../../assets/vazamento-investigacao-original.png';
+import imgTestePressao from '../../assets/vazamento-teste-pressao.png';
+import imgInspecao from '../../assets/vazamento-inspecao-localizada.png';
+import imgReparoLocal from '../../assets/vazamento-reparo-localizado.png';
+import imgReparoCTA from '../../assets/vazamento-reparo-original.png';
+
+const desktopHero = await getImage({ src: heroVazamentoPanoramico, format: 'webp', width: 2400 });
+const mobileHero = await getImage({ src: imgInvestigacao, format: 'webp', width: 800 });
+import GaleriaZoom from '../../components/GaleriaZoom.astro';
+---
+
+<LandingLayout title="Detecção de Vazamento em Piscinas no Rio de Janeiro — Royal Splash" description="Detectamos e reparamos vazamentos em piscinas em todo o estado do Rio de Janeiro. Investigação técnica e reparo com pagamento em até 12x." robots="noindex, nofollow" visualMode="brand" bodyClass="site-brand-lp-vazamento-rj site-primitive-page">
+  <GTMHead slot="head" />
+  <link slot="head" rel="icon" type="image/x-icon" href="/favicon.ico" />
+  <GTMBody slot="body-start" />
+  <LPHeader slot="header" visualMode="brand" />
+
+  <section class="vazamento-rj-hero site-primitive-surface--dark">
+    <picture class="vazamento-rj-hero__image-wrapper">
+      <source media="(max-width: 52rem)" srcset={mobileHero.src} />
+      <img src={desktopHero.src} alt="Detecção de vazamento em piscina" class="vazamento-rj-hero__image" />
+    </picture>
+    <div class="vazamento-rj-hero__veil"></div>
+    <div class="vazamento-rj-hero__content">
+      <h1 class="site-primitive-page-title">
+        <span class="vazamento-rj-hero__line">Vazamento em piscinas</span>
+        <span class="vazamento-rj-hero__line">em todo o estado do</span>
+        <span class="vazamento-rj-hero__line vazamento-rj-hero__geo">Rio de Janeiro</span>
+      </h1>
+      <p class="site-primitive-body">Investigação técnica para identificar a origem da perda de água e definir a intervenção adequada.</p>
+      <div class="site-primitive-actions">
+        <a href="#avaliacao" class="site-primitive-action site-primitive-action--primary">Solicitar avaliação</a>
+      </div>
+    </div>
+  </section>
+
+  <section id="diagnostico" class="vazamento-rj-narrative site-primitive-surface--light site-primitive-datum-bottom">
+    <div class="site-primitive-section site-primitive-section--entry vazamento-rj-narrative__layout">
+      <div class="vazamento-rj-narrative__copy">
+        <h2 class="site-primitive-display">Investigação antes da intervenção</h2>
+        <div class="site-primitive-reading">
+          <p class="site-primitive-body site-primitive-supporting">Cada sinal de perda de água precisa ser avaliado de acordo com as características da piscina. A investigação técnica ajuda a identificar indícios e possíveis fontes do problema antes da definição da intervenção mais adequada.</p>
+        </div>
+        <ul class="vazamento-rj-narrative__scope">
+          <li><Icon name="check" class="vazamento-rj-narrative__icon" /> Investigação completa para identificar indícios</li>
+          <li><Icon name="check" class="vazamento-rj-narrative__icon" /> Intervenção definida de acordo com cada situação</li>
+        </ul>
+      </div>
+      <div class="vazamento-rj-gallery">
+        <GaleriaZoom imagens={[
+          { src: imgInvestigacao, alt: 'Investigação da estrutura' },
+          { src: imgTestePressao, alt: 'Teste de pressão' },
+          { src: imgInspecao, alt: 'Inspeção localizada' },
+          { src: imgReparoLocal, alt: 'Reparo localizado' },
+        ]} />
+      </div>
+    </div>
+  </section>
+
+  <section id="estrutura-tubulacao" class="vazamento-rj-services site-primitive-surface--muted site-primitive-datum-bottom">
+    <div class="site-primitive-section">
+      <h2 class="site-primitive-section-title">Avaliação de Estrutura e Tubulação</h2>
+      <div class="vazamento-rj-services__list">
+        <article class="vazamento-rj-service">
+          <Icon name="droplet" class="vazamento-rj-service__icon" />
+          <div>
+            <h3 class="site-primitive-subtitle">Investigação e Diagnóstico</h3>
+            <p class="site-primitive-body site-primitive-supporting">Avaliação técnica para identificar indícios e possíveis fontes de perda de água na estrutura, tubulação ou revestimento.</p>
+          </div>
+        </article>
+        <article class="vazamento-rj-service">
+          <Icon name="wrench" class="vazamento-rj-service__icon" />
+          <div>
+            <h3 class="site-primitive-subtitle">Análise da Condição Existente</h3>
+            <p class="site-primitive-body site-primitive-supporting">Avaliação de indícios estruturais, linhas hidráulicas e acabamentos para delimitar a área e a natureza do problema.</p>
+          </div>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <section id="reparo" class="vazamento-rj-trust site-primitive-surface--light site-primitive-datum-bottom">
+    <div class="site-primitive-section">
+      <h2 class="site-primitive-section-title">Reparo Adequado ao Diagnóstico</h2>
+      <div class="vazamento-rj-trust__list">
+        <article class="vazamento-rj-trust__entry">
+          <Icon name="wrench" class="vazamento-rj-trust__icon" />
+          <div>
+            <h3 class="site-primitive-subtitle">Intervenção Técnica</h3>
+            <p class="site-primitive-body site-primitive-supporting">A Royal Splash executa a correção definida após investigação, seja em estrutura, tubulação ou acabamento.</p>
+          </div>
+        </article>
+        <article class="vazamento-rj-trust__entry">
+          <Icon name="check" class="vazamento-rj-trust__icon" />
+          <div>
+            <h3 class="site-primitive-subtitle">Solução Integrada</h3>
+            <p class="site-primitive-body site-primitive-supporting">Do diagnóstico inicial até a conclusão do reparo, você tem uma solução completa e orientada por evidências técnicas.</p>
+          </div>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <section id="pagamento" class="vazamento-rj-financing site-primitive-surface--soft site-primitive-datum-bottom">
+    <div class="site-primitive-section">
+      <h2 class="site-primitive-section-title">Pagamento no cartão em até 12x</h2>
+      <div class="vazamento-rj-financing__content">
+        <p class="site-primitive-body">O serviço pode ser pago no cartão de crédito em até 12x.</p>
+        <p class="vazamento-rj-financing__disclaimer"><small>*Parcelamento sujeito às condições da operadora do cartão e às condições vigentes no momento do pagamento.</small></p>
+      </div>
+    </div>
+  </section>
+
+  <section id="avaliacao" class="site-primitive-section vazamento-rj-form">
+    <div class="site-primitive-reading vazamento-rj-form__heading">
+      <h2 class="site-primitive-section-title">Solicite sua Avaliação</h2>
+      <p class="site-primitive-body site-primitive-supporting">Compartilhe o contexto da perda de água observada e abra uma conversa estruturada com a equipe Royal Splash pelo WhatsApp. Atendemos em todo o estado do Rio de Janeiro.</p>
+    </div>
+    <VazamentoWhatsAppForm />
+  </section>
+
+  <LPFooter slot="footer" visualMode="brand" />
+  <BotaoWhatsapp slot="body-end" />
+</LandingLayout>
+
+<style>
+  .vazamento-rj-hero { position: relative; display: grid; min-height: max(40rem, 85svh); isolation: isolate; overflow: hidden; }
+  .vazamento-rj-hero__image, .vazamento-rj-hero__veil { position: absolute; inset: 0; width: 100%; height: 100%; }
+  .vazamento-rj-hero__image-wrapper { position: absolute; inset: 0; width: 100%; height: 100%; z-index: -2; }
+  .vazamento-rj-hero__image { object-fit: cover; object-position: center; width: 100%; height: 100%; z-index: -2; }
+  .vazamento-rj-hero__veil { z-index: -1; background: color-mix(in srgb, var(--site-color-surface-dark) 72%, transparent); }
+  .vazamento-rj-hero__content { align-self: center; width: min(calc(100% - (2 * var(--site-layout-gutter))), var(--site-layout-content-max)); margin-inline: auto; padding-block-start: 0; padding-block-end: var(--site-space-8); }
+  .vazamento-rj-hero h1 { margin: 0; max-width: 22ch; font-size: 3.5rem; line-height: 1.15; }
+  .vazamento-rj-hero__line { display: block; }
+  .vazamento-rj-hero__geo { white-space: nowrap; }
+  .vazamento-rj-hero p { max-width: 42rem; margin: var(--site-space-5) 0 0; color: var(--site-color-text-on-dark); }
+  .vazamento-rj-hero .site-primitive-actions { margin-block-start: var(--site-space-6); }
+
+  .vazamento-rj-narrative__layout { display: grid; grid-template-columns: minmax(18rem, 0.85fr) minmax(0, 1.15fr); gap: var(--site-space-8); align-items: center; }
+  .vazamento-rj-narrative h2 { margin-block-start: 0; margin-block-end: var(--site-space-4); }
+  .vazamento-rj-narrative p { margin-block-start: 0; }
+  .vazamento-rj-narrative__scope { display: grid; gap: var(--site-space-3); margin: var(--site-space-6) 0 0; padding: var(--site-space-5) 0 0; border-block-start: 1px solid var(--site-color-divider); list-style: none; }
+  .vazamento-rj-narrative__scope li { display: flex; gap: var(--site-space-3); align-items: center; }
+  :global(.vazamento-rj-narrative__icon) { width: 1.25rem; height: 1.25rem; flex: none; color: var(--site-color-text-primary); }
+  .vazamento-rj-gallery { min-width: 0; }
+
+  .vazamento-rj-services h2, .vazamento-rj-services h3, .vazamento-rj-trust h2, .vazamento-rj-trust h3, .vazamento-rj-financing h2, .vazamento-rj-form h2 { margin-block-start: 0; }
+  .vazamento-rj-services h2, .vazamento-rj-trust h2, .vazamento-rj-financing h2 { margin-block-end: var(--site-space-6); }
+  .vazamento-rj-services .site-primitive-supporting { color: var(--site-color-text-primary); }
+
+  .vazamento-rj-services__list { max-width: var(--site-layout-reading-max); border-block: 1px solid var(--site-color-divider); }
+  .vazamento-rj-service { display: grid; grid-template-columns: auto minmax(0, 1fr); gap: var(--site-space-4); padding-block: var(--site-space-6); }
+  .vazamento-rj-service + .vazamento-rj-service { border-block-start: 1px solid var(--site-color-divider); }
+  .vazamento-rj-service p, .vazamento-rj-trust p, .vazamento-rj-form p { margin-block-end: 0; }
+  :global(.vazamento-rj-service__icon), :global(.vazamento-rj-trust__icon) { width: 1.5rem !important; height: 1.5rem !important; flex: none; min-width: 1.5rem; max-width: 1.5rem; }
+
+  .vazamento-rj-trust__list { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); max-width: 60rem; }
+  .vazamento-rj-trust__entry { display: grid; grid-template-columns: auto minmax(0, 1fr); gap: var(--site-space-4); padding-block: var(--site-space-5); border-block-start: 1px solid var(--site-color-divider); }
+  .vazamento-rj-trust__entry + .vazamento-rj-trust__entry { margin-inline-start: var(--site-space-7); }
+
+  .vazamento-rj-form { padding-block-end: calc(var(--site-space-8) + 4.5rem); }
+  .vazamento-rj-form__heading { margin: 0 auto var(--site-space-7); text-align: center; }
+
+  .vazamento-rj-financing__content { max-width: var(--site-layout-reading-max); }
+  .vazamento-rj-financing p { margin-block-end: 0; }
+  .vazamento-rj-financing__disclaimer { display: block; margin-block-start: var(--site-space-4); color: var(--site-color-text-secondary); }
+
+  @media (max-width: 52rem) {
+    .vazamento-rj-narrative__layout { grid-template-columns: 1fr; gap: var(--site-space-7); }
+    .vazamento-rj-gallery { width: min(100%, 38rem); margin-inline: auto; }
+    .vazamento-rj-hero__content { text-align: center; padding-block: var(--site-space-7); }
+    .vazamento-rj-hero h1, .vazamento-rj-hero p { margin-inline: auto; }
+    .vazamento-rj-hero .site-primitive-actions { justify-content: center; }
+    .vazamento-rj-services h2, .vazamento-rj-trust h2, .vazamento-rj-financing h2 { text-align: center; }
+    .vazamento-rj-trust__list { grid-template-columns: 1fr; }
+    .vazamento-rj-trust__entry + .vazamento-rj-trust__entry { margin-inline-start: 0; }
+  }
+
+  @media (max-width: 30rem) {
+    .vazamento-rj-hero { min-height: calc(100svh + 2rem); }
+    .vazamento-rj-hero__image { object-position: 75% center; }
+    .vazamento-rj-form { padding-block-end: calc(var(--site-space-7) + 5rem); }
+  }
+</style>
