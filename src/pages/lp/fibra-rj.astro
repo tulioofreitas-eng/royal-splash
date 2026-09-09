@@ -185,7 +185,8 @@ import fibraDetalhe from '../../assets/fibra-detalhe.jpg';
 <style>
 
   .fibra-rj-narrative__layout { display: grid; grid-template-columns: minmax(18rem, 0.85fr) minmax(0, 1.15fr); gap: var(--site-space-8); align-items: center; }
-  .fibra-rj-narrative h2, .fibra-rj-narrative p { margin-block-start: 0; }
+  .fibra-rj-narrative h2 { margin-block-start: 0; margin-block-end: var(--site-space-4); }
+  .fibra-rj-narrative p { margin-block-start: 0; }
   .fibra-rj-narrative__scope { display: grid; gap: var(--site-space-3); margin: var(--site-space-6) 0 0; padding: var(--site-space-5) 0 0; border-block-start: 1px solid var(--site-color-divider); list-style: none; }
   .fibra-rj-narrative__scope li { display: flex; gap: var(--site-space-3); align-items: center; }
   :global(.fibra-rj-narrative__icon) { width: 1.25rem; height: 1.25rem; flex: none; color: var(--site-color-text-primary); }
@@ -196,7 +197,7 @@ import fibraDetalhe from '../../assets/fibra-detalhe.jpg';
   .fibra-rj-hero__image { z-index: -2; object-fit: cover; object-position: center 58%; }
   .fibra-rj-hero__veil { z-index: -1; background: color-mix(in srgb, var(--site-color-surface-dark) 72%, transparent); }
   .fibra-rj-hero__content { align-self: end; width: min(calc(100% - (2 * var(--site-layout-gutter))), var(--site-layout-content-max)); margin-inline: auto; padding-block: var(--site-space-8); }
-  .fibra-rj-hero h1 { margin: 0; }
+  .fibra-rj-hero h1 { margin: 0; max-width: 30ch; font-size: 2.5rem; line-height: 1.2; }
   .fibra-rj-hero__line { display: block; }
   .fibra-rj-hero__geo { white-space: nowrap; }
   .fibra-rj-hero p { max-width: 42rem; margin: var(--site-space-5) 0 0; color: var(--site-color-text-on-dark); }
