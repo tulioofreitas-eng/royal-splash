@@ -1,0 +1,259 @@
+---
+import '../../styles/global.css';
+import LandingLayout from '../../layouts/LandingLayout.astro';
+import GTMHead from '../../components/GTMHead.astro';
+import GTMBody from '../../components/GTMBody.astro';
+import LPHeader from '../../components/LPHeader.astro';
+import LPFooter from '../../components/LPFooter.astro';
+import BotaoWhatsapp from '../../components/BotaoWhatsapp.astro';
+import FibraWhatsAppForm from '../../components/lp/FibraWhatsAppForm.astro';
+import Icon from '../../components/Icon.astro';
+import { Image } from 'astro:assets';
+import fibraDepois from '../../assets/fibra-depois.jpg';
+import GaleriaZoom from '../../components/GaleriaZoom.astro';
+import fibraAntes from '../../assets/fibra-antes.jpg';
+import fibraAplicacao from '../../assets/fibra-aplicacao.jpg';
+import fibraDetalhe from '../../assets/fibra-detalhe.jpg';
+
+---
+
+<LandingLayout title="Restauração de Piscinas de Fibra no Rio de Janeiro — Royal Splash" description="Restauração de piscinas de fibra em todo o estado do Rio de Janeiro. Recuperação de cor, acabamento e condição com avaliação de trincas e desgaste." robots="noindex, nofollow" visualMode="brand" bodyClass="site-brand-lp-fibra-rj site-primitive-page">
+  <GTMHead slot="head" />
+  <link slot="head" rel="icon" type="image/x-icon" href="/favicon.ico" />
+  <GTMBody slot="body-start" />
+  <LPHeader slot="header" visualMode="brand" />
+
+  <section class="fibra-rj-hero site-primitive-surface--dark">
+    <Image src={fibraDepois} alt="Piscina de fibra revitalizada em área residencial no Rio de Janeiro" widths={[390, 640, 768, 1024, 1280, 1536, 1792, 2400]} sizes="100vw" priority class="fibra-rj-hero__image" />
+    <div class="fibra-rj-hero__veil"></div>
+    <div class="fibra-rj-hero__content">
+      <h1 class="site-primitive-page-title">
+        <span class="fibra-rj-hero__line">Restauração de piscinas de fibra</span>
+        <span class="fibra-rj-hero__line">em todo o estado do</span>
+        <span class="fibra-rj-hero__line fibra-rj-hero__geo">Rio de Janeiro</span>
+      </h1>
+      <p class="site-primitive-body">Recuperação de cor, acabamento e condição da piscina, com avaliação de trincas, rachaduras, desbotamento e desgaste.</p>
+      <div class="site-primitive-actions">
+        <a href="#avaliacao" class="site-primitive-action site-primitive-action--primary">Solicitar avaliação</a>
+      </div>
+    </div>
+  </section>
+
+
+  <!-- Narrative -->
+  <section class="fibra-rj-narrative site-primitive-surface--light site-primitive-datum-bottom">
+    <div class="site-primitive-section site-primitive-section--entry fibra-rj-narrative__layout">
+      <div class="fibra-rj-narrative__copy">
+        <h2 class="site-primitive-display">Revitalizando piscinas de fibra</h2>
+        <div class="site-primitive-reading">
+          <p class="site-primitive-body site-primitive-supporting">A restauração de piscinas de fibra recupera a aparência, o acabamento e a funcionalidade de uma estrutura existente. Avaliamos cada piscina individualmente para definir a abordagem adequada e devolver vida visual e proteção à sua piscina em todo o estado do Rio de Janeiro.</p>
+        </div>
+        <ul class="fibra-rj-narrative__scope">
+          <li><Icon name="check" class="fibra-rj-narrative__icon" /> Recuperação de cor, textura e brilho</li>
+          <li><Icon name="check" class="fibra-rj-narrative__icon" /> Avaliação e reparo de trincas e desgaste</li>
+        </ul>
+      </div>
+      <div class="fibra-rj-gallery">
+        <GaleriaZoom imagens={[
+          { src: fibraAntes, alt: 'Piscina de fibra antes da restauração' },
+          { src: fibraAplicacao, alt: 'Processo de aplicação de acabamento' },
+          { src: fibraDetalhe, alt: 'Detalhe do acabamento restaurado' },
+          { src: fibraDepois, alt: 'Piscina de fibra revitalizada' },
+        ]} />
+      </div>
+    </div>
+  </section>
+
+  <section id="restauracao" class="fibra-rj-services site-primitive-surface--muted site-primitive-datum-bottom">
+    <div class="site-primitive-section">
+      <h2 class="site-primitive-section-title">Restauração de Piscinas de Fibra</h2>
+      <div class="fibra-rj-services__list">
+        <article class="fibra-rj-service">
+          <Icon name="wrench" class="fibra-rj-service__icon" />
+          <div>
+            <h3 class="site-primitive-subtitle">Recuperação de Condição</h3>
+            <p class="site-primitive-body site-primitive-supporting">Avaliação da piscina existente, identificação de sinais de desgaste e definição da abordagem adequada para recuperação.</p>
+          </div>
+        </article>
+        <article class="fibra-rj-service">
+          <Icon name="refresh" class="fibra-rj-service__icon" />
+          <div>
+            <h3 class="site-primitive-subtitle">Pintura e Revitalização</h3>
+            <p class="site-primitive-body site-primitive-supporting">Renovação da aparência e do acabamento em piscinas com desbotamento, desgaste ou perda de brilho.</p>
+          </div>
+        </article>
+        <article id="trincas-acabamento" class="fibra-rj-service">
+          <Icon name="alert-circle" class="fibra-rj-service__icon" />
+          <div>
+            <h3 class="site-primitive-subtitle">Avaliação de Trincas e Acabamento</h3>
+            <p class="site-primitive-body site-primitive-supporting">Identificação de trincas, fissuras e deterioração de acabamento. A condição existente é avaliada antes de definir o escopo de reparo.</p>
+          </div>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <section id="pu-gelcoat" class="fibra-rj-method site-primitive-surface--light site-primitive-datum-bottom">
+    <div class="site-primitive-section">
+      <h2 class="site-primitive-section-title">Soluções em PU e Gel Coat</h2>
+      <div class="fibra-rj-method__content">
+        <p class="site-primitive-body">A Royal Splash trabalha com soluções em PU (poliuretano) e Gel Coat para restauração de piscinas de fibra. Cada piscina é avaliada individualmente para determinar a abordagem técnica mais adequada, considerando o estado existente, o tipo de desgaste e as necessidades específicas da restauração.</p>
+        <p class="site-primitive-body">Ambas as soluções oferecem durabilidade, resistência a raios UV e proteção química da água. A escolha entre PU ou Gel Coat é definida após avaliação detalhada da condição da sua piscina.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="fibra-rj-trust site-primitive-surface--soft site-primitive-datum-bottom">
+    <div class="site-primitive-section">
+      <h2 class="site-primitive-section-title">Por que a Royal Splash?</h2>
+      <div class="fibra-rj-trust__list">
+        <article class="fibra-rj-trust__entry">
+          <Icon name="users" class="fibra-rj-trust__icon" />
+          <div>
+            <h3 class="site-primitive-subtitle">Atendimento Premium</h3>
+            <p class="site-primitive-body site-primitive-supporting">Consultoria exclusiva do primeiro contato à entrega. Atendemos em todo o estado do Rio de Janeiro com a mesma excelência.</p>
+          </div>
+        </article>
+        <article class="fibra-rj-trust__entry">
+          <Icon name="check" class="fibra-rj-trust__icon" />
+          <div>
+            <h3 class="site-primitive-subtitle">Avaliação Individual</h3>
+            <p class="site-primitive-body site-primitive-supporting">Cada piscina é avaliada antes da recomendação de abordagem. Não há soluções genéricas — apenas soluções técnicas adequadas.</p>
+          </div>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <section class="fibra-rj-faq site-primitive-surface--muted site-primitive-datum-bottom">
+    <div class="site-primitive-section fibra-rj-faq__layout">
+      <h2 class="site-primitive-display">Perguntas frequentes</h2>
+      <div class="fibra-rj-faq__list">
+        {[
+          { pergunta: 'Quais sinais indicam que uma piscina de fibra precisa de restauração?', resposta: 'Desbotamento, perda de brilho, trincas, fissuras e desgaste geral são sinais de que a piscina deve ser avaliada.' },
+          { pergunta: 'Vocês restauram piscinas com trincas e fissuras?', resposta: 'Sim. A Royal Splash realiza reparo e recuperação de piscinas com trincas. A condição existente precisa ser avaliada para definir o escopo adequado.' },
+          { pergunta: 'É possível recuperar uma piscina de fibra desbotada?', resposta: 'Sim. O desbotamento é um dos principais sinais que motivam a restauração. A avaliação define a melhor abordagem para a recuperação.' },
+          { pergunta: 'Como é escolhido entre PU ou Gel Coat?', resposta: 'A escolha entre PU e Gel Coat é feita após avaliação detalhada da condição da piscina, do tipo de desgaste e das necessidades específicas.' },
+          { pergunta: 'Atende todo o estado do Rio de Janeiro?', resposta: 'Sim. A Royal Splash atende restauração de piscinas de fibra em todo o estado do Rio de Janeiro, da capital ao interior.' },
+          { pergunta: 'Como solicitar uma avaliação?', resposta: 'Preencha o formulário desta página com seu nome e contexto para abrir uma conversa estruturada com a equipe Royal Splash pelo WhatsApp.' },
+        ].map((item) => (
+          <details class="fibra-rj-faq__item">
+            <summary class="site-primitive-subtitle">
+              {item.pergunta}
+              <span aria-hidden="true">+</span>
+            </summary>
+            <p class="site-primitive-body site-primitive-supporting">{item.resposta}</p>
+          </details>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <section class="fibra-rj-cta site-primitive-surface--dark">
+    <div class="site-primitive-section">
+      <h2 class="site-primitive-display">Sua piscina de fibra merece uma nova vida?</h2>
+      <div class="site-primitive-actions">
+        <a href="#avaliacao" class="site-primitive-action site-primitive-action--primary">Falar com um especialista</a>
+      </div>
+    </div>
+  </section>
+
+  <section id="financiamento" class="fibra-rj-financing site-primitive-surface--light site-primitive-datum-bottom">
+    <div class="site-primitive-section">
+      <h2 class="site-primitive-section-title">Financiamento em até 60x</h2>
+      <div class="fibra-rj-financing__content">
+        <p class="site-primitive-body">A Royal Splash oferece opções de pagamento parcelado via boleto, em até 60 meses, conforme análise de crédito, perfil do cliente, valor e características da obra.</p>
+        <p class="site-primitive-body">A entrada, o valor financiável, o prazo e as condições financeiras são definidos caso a caso. As operações podem ser realizadas diretamente pela Royal Splash ou estruturadas com parceiros financeiros.</p>
+        <p class="site-primitive-body">Disponível para pessoas físicas e jurídicas, sujeito à análise e aprovação de crédito e à apresentação da documentação necessária.</p>
+        <p class="fibra-rj-financing__disclaimer"><small>*Condições, entrada, limite financiável, prazo, encargos e eventual atualização monetária são definidos conforme a análise da operação e as condições vigentes no momento da contratação.</small></p>
+      </div>
+    </div>
+  </section>
+
+  <section id="avaliacao" class="site-primitive-section fibra-rj-form">
+    <div class="site-primitive-reading fibra-rj-form__heading">
+      <h2 class="site-primitive-section-title">Solicite sua Avaliação</h2>
+      <p class="site-primitive-body site-primitive-supporting">Compartilhe o contexto que já souber e abra uma conversa estruturada com a equipe Royal Splash pelo WhatsApp. Atendemos todo o estado do Rio de Janeiro.</p>
+    </div>
+    <FibraWhatsAppForm />
+  </section>
+
+  <LPFooter slot="footer" visualMode="brand" />
+  <BotaoWhatsapp slot="body-end" />
+</LandingLayout>
+
+<style>
+
+  .fibra-rj-narrative__layout { display: grid; grid-template-columns: minmax(18rem, 0.85fr) minmax(0, 1.15fr); gap: var(--site-space-8); align-items: center; }
+  .fibra-rj-narrative h2, .fibra-rj-narrative p { margin-block-start: 0; }
+  .fibra-rj-narrative__scope { display: grid; gap: var(--site-space-3); margin: var(--site-space-6) 0 0; padding: var(--site-space-5) 0 0; border-block-start: 1px solid var(--site-color-divider); list-style: none; }
+  .fibra-rj-narrative__scope li { display: flex; gap: var(--site-space-3); align-items: center; }
+  :global(.fibra-rj-narrative__icon) { width: 1.25rem; height: 1.25rem; flex: none; color: var(--site-color-text-primary); }
+  .fibra-rj-gallery { min-width: 0; }
+
+  .fibra-rj-hero { position: relative; display: grid; min-height: max(40rem, 85svh); isolation: isolate; overflow: hidden; }
+  .fibra-rj-hero__image, .fibra-rj-hero__veil { position: absolute; inset: 0; width: 100%; height: 100%; }
+  .fibra-rj-hero__image { z-index: -2; object-fit: cover; object-position: center 58%; }
+  .fibra-rj-hero__veil { z-index: -1; background: color-mix(in srgb, var(--site-color-surface-dark) 72%, transparent); }
+  .fibra-rj-hero__content { align-self: end; width: min(calc(100% - (2 * var(--site-layout-gutter))), var(--site-layout-content-max)); margin-inline: auto; padding-block: var(--site-space-8); }
+  .fibra-rj-hero h1 { margin: 0; }
+  .fibra-rj-hero__line { display: block; }
+  .fibra-rj-hero__geo { white-space: nowrap; }
+  .fibra-rj-hero p { max-width: 42rem; margin: var(--site-space-5) 0 0; color: var(--site-color-text-on-dark); }
+
+  .fibra-rj-services h2, .fibra-rj-services h3, .fibra-rj-method h2, .fibra-rj-trust h2, .fibra-rj-trust h3, .fibra-rj-faq h2, .fibra-rj-financing h2, .fibra-rj-form h2 { margin-block-start: 0; }
+  :global(.fibra-rj-service__icon), :global(.fibra-rj-trust__icon) { width: 1.5rem; height: 1.5rem; flex: none; color: var(--site-color-text-primary); }
+  .fibra-rj-services h2, .fibra-rj-method h2, .fibra-rj-trust h2, .fibra-rj-financing h2 { margin-block-end: var(--site-space-6); }
+  .fibra-rj-services .site-primitive-supporting { color: var(--site-color-text-primary); }
+  .fibra-rj-services__list { max-width: var(--site-layout-reading-max); border-block: 1px solid var(--site-color-divider); }
+  .fibra-rj-service { display: grid; grid-template-columns: auto minmax(0, 1fr); gap: var(--site-space-4); padding-block: var(--site-space-6); }
+  .fibra-rj-service + .fibra-rj-service { border-block-start: 1px solid var(--site-color-divider); }
+  .fibra-rj-service p, .fibra-rj-trust p, .fibra-rj-form p { margin-block-end: 0; }
+
+  .fibra-rj-method__content { max-width: var(--site-layout-reading-max); }
+  .fibra-rj-method p { margin-block-end: var(--site-space-4); }
+
+  .fibra-rj-trust__list { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); max-width: 60rem; }
+  .fibra-rj-trust__entry { display: grid; grid-template-columns: auto minmax(0, 1fr); gap: var(--site-space-4); padding-block: var(--site-space-5); border-block-start: 1px solid var(--site-color-divider); }
+  .fibra-rj-trust__entry + .fibra-rj-trust__entry { margin-inline-start: var(--site-space-7); }
+
+  .fibra-rj-faq__layout { display: grid; grid-template-columns: minmax(14rem, 0.7fr) minmax(0, 1.3fr); align-items: center; gap: var(--site-space-8); }
+  .fibra-rj-faq h2 { max-width: 12ch; margin-block-end: 0; }
+  .fibra-rj-faq__list { border-block-start: 1px solid var(--site-color-divider); }
+  .fibra-rj-faq__item { border-block-end: 1px solid var(--site-color-divider); }
+  .fibra-rj-faq__item summary { display: flex; justify-content: space-between; gap: var(--site-space-4); padding-block: var(--site-space-5); cursor: pointer; list-style: none; }
+  .fibra-rj-faq__item summary::-webkit-details-marker { display: none; }
+  .fibra-rj-faq__item summary span { color: var(--site-color-text-primary); transition: transform 160ms ease; }
+  .fibra-rj-faq__item[open] summary span { transform: rotate(45deg); }
+  .fibra-rj-faq__item p { margin: 0; padding: 0 0 var(--site-space-5); }
+
+  .fibra-rj-cta .site-primitive-section { display: block; }
+  .fibra-rj-cta h2 { max-width: 28ch; margin: 0; }
+  .fibra-rj-cta .site-primitive-actions { margin-block-start: var(--site-space-6); }
+
+  .fibra-rj-form { padding-block-end: calc(var(--site-space-8) + 4.5rem); }
+  .fibra-rj-form__heading { margin: 0 auto var(--site-space-7); text-align: center; }
+
+  .fibra-rj-financing__content { max-width: var(--site-layout-reading-max); }
+  .fibra-rj-financing p { margin-block-end: 0; }
+  .fibra-rj-financing__disclaimer { display: block; margin-block-start: var(--site-space-4); color: var(--site-color-text-secondary); }
+
+  @media (max-width: 52rem) {
+    .fibra-rj-narrative__layout { grid-template-columns: 1fr; gap: var(--site-space-7); }
+    .fibra-rj-gallery { width: min(100%, 38rem); margin-inline: auto; }
+    .fibra-rj-hero__content { text-align: center; }
+    .fibra-rj-hero h1, .fibra-rj-hero p { margin-inline: auto; }
+    .fibra-rj-hero .site-primitive-actions { justify-content: center; }
+    .fibra-rj-services h2, .fibra-rj-method h2, .fibra-rj-trust h2, .fibra-rj-faq h2 { text-align: center; }
+    .fibra-rj-trust__list, .fibra-rj-faq__layout { grid-template-columns: 1fr; }
+    .fibra-rj-trust__entry + .fibra-rj-trust__entry { margin-inline-start: 0; }
+    .fibra-rj-faq__layout { align-items: stretch; gap: var(--site-space-5); }
+    .fibra-rj-faq h2 { max-width: none; }
+  }
+
+  @media (max-width: 30rem) {
+    .fibra-rj-hero { min-height: calc(100svh + 2rem); }
+    .fibra-rj-hero__content { align-self: center; padding-block: var(--site-space-7); }
+    .fibra-rj-form { padding-block-end: calc(var(--site-space-7) + 5rem); }
+  }
+</style>
