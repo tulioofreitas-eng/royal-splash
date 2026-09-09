@@ -26,6 +26,12 @@ export interface ReformaProjectContext {
   prazo?: ProjectContext["prazo"];
 }
 
+export interface PiscinasRJProjectContext {
+  nome: string;
+  projeto?: string;
+  prazo?: ProjectContext["prazo"];
+}
+
 const projectTypeLabels = {
   residencial: "Residencial",
   corporativo: "Corporativo / Institucional",
@@ -139,6 +145,33 @@ export function buildReformaWhatsAppUrl(
   context: ReformaProjectContext,
 ): string {
   return `https://wa.me/${ROYAL_WHATSAPP_NUMBER}?text=${encodeURIComponent(composeReformaProjectMessage(context))}`;
+}
+
+export function composePiscinasRJProjectMessage(
+  context: PiscinasRJProjectContext,
+): string {
+  const lines = [
+    "Olá Royal,",
+    "",
+    "Gostaria de conversar sobre a construção de uma piscina no Rio de Janeiro.",
+    "",
+    `Nome: ${context.nome.trim()}`,
+    "Interesse: Construção de piscinas",
+    "Localização: Rio de Janeiro",
+  ];
+
+  const projeto = context.projeto?.trim();
+  if (projeto) lines.push(`Projeto ou necessidade: ${projeto}`);
+  if (context.prazo) lines.push(`Prazo: ${timelineLabels[context.prazo]}`);
+
+  lines.push("", "Fico à disposição para conversar sobre a avaliação e os próximos passos.");
+  return lines.join("\n");
+}
+
+export function buildPiscinasRJWhatsAppUrl(
+  context: PiscinasRJProjectContext,
+): string {
+  return `https://wa.me/${ROYAL_WHATSAPP_NUMBER}?text=${encodeURIComponent(composePiscinasRJProjectMessage(context))}`;
 }
 
 export interface LazerProjectContext {
