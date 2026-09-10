@@ -115,6 +115,7 @@ export interface SiteLeadIngress {
 export interface SiteLeadCaptureReceipt {
   caseId: string;
   replay: boolean;
+  protocol?: string;
 }
 
 export interface SiteLeadMockReceipt {

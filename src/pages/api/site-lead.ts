@@ -76,8 +76,8 @@ export const POST: APIRoute = async ({ request }) => {
     return jsonResponse(
       {
         ok: true,
-        caseId: receipt.caseId,
         replay: receipt.replay,
+        ...(receipt.protocol ? { protocol: receipt.protocol } : {}),
       },
       receipt.replay ? 200 : 201,
     );

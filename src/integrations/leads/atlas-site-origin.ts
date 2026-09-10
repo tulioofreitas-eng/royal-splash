@@ -189,6 +189,25 @@ function replayFrom(body: unknown): boolean | undefined {
   return typeof replay === "boolean" ? replay : undefined;
 }
 
+function safeProtocol(body: unknown): string | undefined {
+  if (!body || typeof body !== "object") {
+    return undefined;
+  }
+
+  const protocol = (body as Record<string, unknown>).protocol;
+
+  if (
+    typeof protocol === "string" &&
+    protocol.length >= 1 &&
+    protocol.length <= 128 &&
+    /^[A-Za-z0-9_\-.]+$/.test(protocol)
+  ) {
+    return protocol;
+  }
+
+  return undefined;
+}
+
 function fallbackErrorForStatus(status: number): AtlasSiteOriginError {
   if (status === 401) {
     return mapAtlasPublicError("UNAUTHORIZED_CALLER");
@@ -327,6 +346,7 @@ export class AtlasSiteOriginAdapter implements SiteLeadIngressPort {
         const body = await responseJson(response);
         const caseId = safeCaseId(body);
         const replay = replayFrom(body);
+        const protocol = safeProtocol(body);
 
         if (!caseId || replay === undefined) {
           const error = unexpectedResponseError();
@@ -345,7 +365,7 @@ export class AtlasSiteOriginAdapter implements SiteLeadIngressPort {
           replay,
           duration: Math.max(0, this.now() - startedAt),
         });
-        return { caseId, replay };
+        return { caseId, replay, ...(protocol ? { protocol } : {}) };
       }
 
       if (attempt === 0 && isRetryableStatus(response.status)) {
