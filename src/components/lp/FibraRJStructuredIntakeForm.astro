@@ -257,7 +257,9 @@
         const consentCapturedAt = new Date().toISOString();
 
         // Capture attribution
-        const firstTouch = (window as any).__royalGrowthAttribution?.readPersisted?.();
+        const runtime = (window as any).__royalGrowthAttribution;
+        runtime?.persistAfterConsent?.();
+        const firstTouch = runtime?.readPersisted?.();
         const submissionTouch = observeSubmissionTouch(new URL(window.location.href));
 
         const prazo = fields.prazo.value.trim();
