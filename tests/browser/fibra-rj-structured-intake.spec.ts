@@ -851,8 +851,8 @@ test.describe("Fibra RJ — Form Behavior", () => {
   });
 
   test("sessionStorage failure fallback: in-memory dedup works", async ({ page }) => {
-    let apiCallCount = 0;
-    let emittedRefs: string[] = [];
+    let attemptCount = 0;
+    let capturedSubmissionRefs: string[] = [];
 
     await page.addInitScript(() => {
       const w = window as any;
@@ -882,21 +882,30 @@ test.describe("Fibra RJ — Form Behavior", () => {
 
     await page.route("/api/site-lead", async (route) => {
       const body = route.request().postDataJSON();
-      apiCallCount++;
       const ref = body.submissionRef;
-      emittedRefs.push(ref);
+      capturedSubmissionRefs.push(ref);
+      attemptCount++;
 
-      // All requests return 201 for this test
-      await route.fulfill({
-        status: 201,
-        contentType: "application/json",
-        body: JSON.stringify({
-          ok: true,
-          replay: false,
-          protocol: "RS-TEST-FIBRA-001",
-          caseId: "case-123",
-        }),
-      });
+      if (attemptCount === 1) {
+        // First attempt: 503 Service Unavailable
+        await route.fulfill({
+          status: 503,
+          contentType: "application/json",
+          body: JSON.stringify({ ok: false, error: "Service unavailable" }),
+        });
+      } else {
+        // Second attempt: 201 success (retry with same submissionRef)
+        await route.fulfill({
+          status: 201,
+          contentType: "application/json",
+          body: JSON.stringify({
+            ok: true,
+            replay: false,
+            protocol: "RS-TEST-FIBRA-001",
+            caseId: "case-123",
+          }),
+        });
+      }
     });
 
     await page.goto("/lp/fibra-rj");
@@ -907,31 +916,53 @@ test.describe("Fibra RJ — Form Behavior", () => {
 
     const submitBtn = page.locator('button[type="submit"]:has-text("Enviar solicitação")');
 
-    // Submit with blocked sessionStorage
+    // First submit attempt
     await submitBtn.click();
+
+    // Error state should appear
+    const errorState = page.locator("[data-error-state]");
+    await expect(errorState).toBeVisible({ timeout: 10000 });
+
+    // Retry with same submissionRef
+    const retryBtn = errorState.locator('[data-retry-btn]');
+    await retryBtn.click();
+
+    // Success should appear on retry
     const successState = page.locator("[data-success-state]");
     await expect(successState).toBeVisible({ timeout: 10000 });
 
     await page.waitForTimeout(300);
 
-    // Verify submission succeeded despite sessionStorage failure
+    // Verify sessionStorage was truly blocked
+    const storageBlocked = await page.evaluate(() => {
+      try {
+        sessionStorage.getItem("test");
+        return false;
+      } catch {
+        return true;
+      }
+    });
+    expect(storageBlocked).toBe(true);
+
+    // Verify both API calls used the SAME submissionRef
+    expect(capturedSubmissionRefs.length).toBe(2);
+    expect(capturedSubmissionRefs[0]).toBe(capturedSubmissionRefs[1]);
+
+    // Verify intake_created was emitted only ONCE despite two API calls with same submissionRef
     const events = await page.evaluate(() => {
       return (window as any).__capturedDataLayer || [];
     });
     const intakeCreatedEvents = events.filter((e: any) => e.event === "intake_created");
 
-    // Even though sessionStorage.setItem was blocked, the in-memory fallback
-    // allowed the submission to complete and emit intake_created
+    // CRITICAL: Only one intake_created despite same submissionRef evaluated twice
+    // This proves the in-memory dedup fallback is working and required
     expect(intakeCreatedEvents.length).toBe(1);
-    expect(apiCallCount).toBe(1);
-
-    // The ref was successfully generated (in-memory fallback worked)
-    expect(emittedRefs.length).toBe(1);
-    expect(emittedRefs[0]).toBeDefined();
+    expect(attemptCount).toBe(2);
   });
 
   test("WhatsApp continuation does not POST again or emit intake_created", async ({ page }) => {
     let postCount = 0;
+    let capturedSubmissionRef = "";
 
     await page.addInitScript(() => {
       const w = window as any;
@@ -942,10 +973,23 @@ test.describe("Fibra RJ — Form Behavior", () => {
         (window as any).__capturedDataLayer.push(...args);
         return originalPush.apply(this, args);
       };
+
+      // Capture window.open calls to intercept WhatsApp URL
+      w.__capturedWhatsAppUrl = "";
+      const originalOpen = w.open;
+      w.open = function(url: string, ...args: any[]) {
+        if (url.includes("wa.me")) {
+          w.__capturedWhatsAppUrl = url;
+        }
+        // Don't actually open the popup in test
+        return null;
+      };
     });
 
     await page.route("/api/site-lead", async (route) => {
       postCount++;
+      const body = route.request().postDataJSON();
+      capturedSubmissionRef = body.submissionRef;
       await route.fulfill({
         status: 201,
         contentType: "application/json",
@@ -953,14 +997,9 @@ test.describe("Fibra RJ — Form Behavior", () => {
           ok: true,
           replay: false,
           protocol: "RS-TEST-FIBRA-001",
-          caseId: "case-123",
+          caseId: "CASE-INTERNAL-SHOULD-NOT-LEAK",
         }),
       });
-    });
-
-    // Prevent actual WhatsApp navigation
-    await page.route("https://wa.me/**", async (route) => {
-      await route.abort();
     });
 
     await page.goto("/lp/fibra-rj");
@@ -997,6 +1036,24 @@ test.describe("Fibra RJ — Form Behavior", () => {
     });
     const finalIntakeCreatedCount = finalEvents.filter((e: any) => e.event === "intake_created").length;
     expect(finalIntakeCreatedCount).toBe(1);
+
+    // Verify WhatsApp URL was captured
+    const capturedWhatsAppUrl = await page.evaluate(() => {
+      return (window as any).__capturedWhatsAppUrl || "";
+    });
+    expect(capturedWhatsAppUrl).toBeTruthy();
+
+    // Decode URL to inspect content
+    const decodedUrl = decodeURIComponent(capturedWhatsAppUrl);
+
+    // Assert that internal IDs are NOT in the URL/message
+    expect(decodedUrl).not.toContain("CASE-INTERNAL-SHOULD-NOT-LEAK");
+    expect(decodedUrl).not.toContain(capturedSubmissionRef);
+    expect(decodedUrl.toLowerCase()).not.toContain("caseid");
+    expect(decodedUrl.toLowerCase()).not.toContain("submissionref");
+
+    // Verify protocol IS included (allowed public data)
+    expect(decodedUrl).toContain("RS-TEST-FIBRA-001");
   });
 
   test("WhatsApp button includes protocol but no sensitive data", async ({ page }) => {
