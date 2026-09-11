@@ -7,6 +7,7 @@ import LPHeader from '../../components/LPHeader.astro';
 import LPFooter from '../../components/LPFooter.astro';
 import BotaoWhatsapp from '../../components/BotaoWhatsapp.astro';
 import FibraRJStructuredIntakeForm from '../../components/lp/FibraRJStructuredIntakeForm.astro';
+import GrowthAttribution from '../../components/runtime/GrowthAttribution.astro';
 import Icon from '../../components/Icon.astro';
 import { Image } from 'astro:assets';
 import fibraDepois from '../../assets/fibra-depois.jpg';
@@ -21,6 +22,7 @@ import fibraDetalhe from '../../assets/fibra-detalhe.jpg';
   <GTMHead slot="head" />
   <link slot="head" rel="icon" type="image/x-icon" href="/favicon.ico" />
   <GTMBody slot="body-start" />
+  <GrowthAttribution />
   <LPHeader slot="header" visualMode="brand" />
 
   <section class="fibra-rj-hero site-primitive-surface--dark">
