@@ -518,6 +518,99 @@ test.describe("Fibra RJ — API Response Scenarios", () => {
   });
 });
 
+test.describe("Fibra RJ — In-Memory Conversion Dedup Fallback", () => {
+  test("in-memory dedup proves Set is actually required with two successful emissions", async ({ page }) => {
+    // Capture dataLayer events
+    await page.addInitScript(() => {
+      const w = window as any;
+      w.dataLayer = w.dataLayer || [];
+      const originalPush = w.dataLayer.push;
+      w.dataLayer.push = function(...args: any[]) {
+        (window as any).__capturedDataLayer = (window as any).__capturedDataLayer || [];
+        (window as any).__capturedDataLayer.push(...args);
+        return originalPush.apply(this, args);
+      };
+
+      // Block sessionStorage.getItem and sessionStorage.setItem
+      Object.defineProperty(window, 'sessionStorage', {
+        get() {
+          const handler = {
+            getItem() { throw new Error("sessionStorage.getItem blocked"); },
+            setItem() { throw new Error("sessionStorage.setItem blocked"); },
+            removeItem() { throw new Error("sessionStorage.removeItem blocked"); },
+            clear() { throw new Error("sessionStorage.clear blocked"); },
+            key() { throw new Error("sessionStorage.key blocked"); },
+            length: 0,
+          };
+          return handler;
+        }
+      });
+    });
+
+    // Navigate to page
+    await page.goto("/lp/fibra-rj");
+
+    // Verify sessionStorage is indeed blocked
+    const storageBlocked = await page.evaluate(() => {
+      try {
+        sessionStorage.getItem("test");
+        return false;
+      } catch {
+        return true;
+      }
+    });
+    expect(storageBlocked).toBe(true);
+
+    // Verify the dedup function is exposed and accessible
+    const funcExists = await page.evaluate(() => {
+      return typeof (window as any).__emitIntakeCreatedOnce === "function";
+    });
+    expect(funcExists).toBe(true);
+
+    // Call the dedup helper twice with same submissionRef
+    const testRef = "TEST-DEDUP-PROOF-001";
+
+    // First emission: should succeed (not emitted yet, so intake_created fires)
+    await page.evaluate((ref) => {
+      const emitFn = (window as any).__emitIntakeCreatedOnce;
+      if (emitFn) emitFn(ref);
+    }, testRef);
+
+    await page.waitForTimeout(100);
+
+    // Verify first emission happened
+    const firstEmissionEvents = await page.evaluate(() => {
+      return (window as any).__capturedDataLayer || [];
+    });
+    const firstEmissionCount = firstEmissionEvents.filter((e: any) => e.event === "intake_created").length;
+    expect(firstEmissionCount).toBe(1);
+
+    // Second emission: should be blocked by in-memory Set
+    // This call should find the ref already marked as emitted and return early
+    await page.evaluate((ref) => {
+      const emitFn = (window as any).__emitIntakeCreatedOnce;
+      if (emitFn) emitFn(ref);
+    }, testRef);
+
+    await page.waitForTimeout(100);
+
+    // Verify only ONE intake_created despite two calls with same submissionRef
+    const finalEvents = await page.evaluate(() => {
+      return (window as any).__capturedDataLayer || [];
+    });
+    const finalEmissionCount = finalEvents.filter((e: any) => e.event === "intake_created").length;
+
+    // CRITICAL: Only one intake_created despite same submissionRef evaluated twice
+    // This proves the in-memory Set is actually required when sessionStorage is unavailable
+    expect(finalEmissionCount).toBe(1);
+
+    // PROOF: Verify that the in-memory Set was required
+    // If the dedup logic was removed, both calls would emit, giving count = 2
+    expect(firstEmissionCount).toBe(1);
+    expect(finalEmissionCount).toBe(1);
+  });
+});
+
 test.describe("Fibra RJ — Analytics & PII Protection", () => {
   test("intake_created event fires exactly once per successful submission", async ({ page }) => {
     const capturedEvents: any[] = [];

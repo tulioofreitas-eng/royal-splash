@@ -87,6 +87,10 @@
 
 <script>
   import { observeFirstTouch, observeSubmissionTouch } from "../../growth/attribution.ts";
+  import { emitIntakeCreatedOnce } from "../../growth/emitIntakeCreatedOnce.ts";
+
+  // Expose for testing
+  (window as any).__emitIntakeCreatedOnce = emitIntakeCreatedOnce;
 
   const form = document.querySelector<HTMLFormElement>("[data-fibra-intake-form]");
 
@@ -113,29 +117,8 @@
     let pendingSubmissionRef: string | null = null;
     let lastReceipt: { caseId: string; protocol?: string; replay: boolean } | null = null;
     let submissionInProgress = false;
-    const emittedRefs = new Set<string>();
 
     const FETCH_TIMEOUT_MS = 10000;
-
-    const getConversionEmittedKey = (ref: string): string => `intake_created_emitted_${ref}`;
-
-    const hasConversionBeenEmitted = (ref: string): boolean => {
-      if (emittedRefs.has(ref)) return true;
-      try {
-        return sessionStorage.getItem(getConversionEmittedKey(ref)) === "true";
-      } catch {
-        return false;
-      }
-    };
-
-    const markConversionAsEmitted = (ref: string): void => {
-      emittedRefs.add(ref);
-      try {
-        sessionStorage.setItem(getConversionEmittedKey(ref), "true");
-      } catch {
-        // Silently fail if sessionStorage is unavailable; in-memory Set provides fallback
-      }
-    };
 
     const setError = (fieldName: string, message = "") => {
       const field = fields[fieldName as keyof typeof fields];
@@ -190,22 +173,6 @@
       return `RS-fibra-rj-${crypto.randomUUID()}`;
     };
 
-    const emitIntakeCreatedEvent = (submissionRef: string) => {
-      if (hasConversionBeenEmitted(submissionRef)) return;
-
-      const w = window as any;
-      w.dataLayer = w.dataLayer || [];
-      w.dataLayer.push({
-        event: "intake_created",
-        service_intent: "FIBERGLASS_POOL_RESTORATION",
-        acquisition_geography: "RJ",
-        experiment_id: "HV-RJ-FIBERGLASS-RESTORATION",
-        entry_surface: "/lp/fibra-rj"
-      });
-
-      markConversionAsEmitted(submissionRef);
-    };
-
     const showSuccess = (receipt: { caseId: string; protocol?: string; replay: boolean }, submissionRef: string) => {
       lastReceipt = receipt;
       form.hidden = true;
@@ -223,7 +190,7 @@
         }
       }
 
-      emitIntakeCreatedEvent(submissionRef);
+      emitIntakeCreatedOnce(submissionRef);
       successState?.focus();
     };
 
