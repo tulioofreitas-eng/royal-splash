@@ -1,6 +1,26 @@
 import { test, expect } from "@playwright/test";
 
 test.describe("Fibra RJ Structured Intake Form", () => {
+  test.beforeEach(async ({ page }) => {
+    // Mock successful API response
+    await page.route("/api/site-lead", async (route) => {
+      const request = route.request();
+      if (request.method() === "POST") {
+        await route.fulfill({
+          status: 201,
+          contentType: "application/json",
+          body: JSON.stringify({
+            ok: true,
+            protocol: "FIBRA-2026-09-11-001",
+            submissionRef: "site.fibra-12345678-1234-4123-8123-123456789abc",
+          }),
+        });
+      } else {
+        await route.continue();
+      }
+    });
+  });
+
   test("page loads and form is visible", async ({ page }) => {
     await page.goto("/lp/fibra-rj");
     const form = await page.locator("[data-fibra-intake-form]");
@@ -138,11 +158,7 @@ test.describe("Fibra RJ Structured Intake Form", () => {
     await expect(successState).toBeVisible({ timeout: 10000 });
 
     const protocolLine = successState.locator("[data-protocol-line]");
-    const protocolText = await protocolLine.textContent();
-
-    if (apiResponses.length > 0 && apiResponses[0].body?.protocol) {
-      expect(protocolText).toContainText("Protocolo:");
-    }
+    await expect(protocolLine).toContainText("Protocolo:");
   });
 
   test("no console errors", async ({ page }) => {
@@ -196,12 +212,17 @@ test.describe("Fibra RJ Structured Intake Form", () => {
   test("Fibra-specific copy is present", async ({ page }) => {
     await page.goto("/lp/fibra-rj");
 
-    // Check for restoration-specific content
-    await expect(page.locator("h1")).toContainText("Restauração de piscinas");
+    // Check for restoration-specific content - use role-based selector to avoid ambiguity
+    await expect(
+      page.getByRole("heading", {
+        name: /Restauração de piscinas de fibra/i,
+        level: 1,
+      })
+    ).toBeVisible();
     await expect(
       page.getByText(
         /Recuperação de cor, textura e brilho|desbotamento|trincas/i
-      )
+      ).first()
     ).toBeVisible();
   });
 
@@ -316,10 +337,11 @@ test.describe("Fibra Regression — No Breaking Changes", () => {
   test("page layout is intact", async ({ page }) => {
     await page.goto("/lp/fibra-rj");
 
-    // Check for key LP sections
+    // Check for key LP sections - use level 1 for main heading
     await expect(
       page.getByRole("heading", {
         name: /Restauração de piscinas de fibra/i,
+        level: 1,
       })
     ).toBeVisible();
     await expect(
