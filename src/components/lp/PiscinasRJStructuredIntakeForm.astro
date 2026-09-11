@@ -1,0 +1,526 @@
+---
+// Piscinas-RJ structured Intake form → Atlas integration
+// Mirrors canonical Reforma pattern for Construction service intent
+---
+
+<form class="piscinas-rj-intake-form" data-piscinas-rj-intake-form novalidate>
+  <div class="piscinas-rj-intake-form__summary" data-error-summary role="alert" tabindex="-1" hidden></div>
+
+  <!-- Nome -->
+  <div class="piscinas-rj-intake-form__field">
+    <label for="piscinas-rj-nome">Nome <small>Obrigatório</small></label>
+    <p id="piscinas-rj-nome-help">Como você prefere ser chamado?</p>
+    <input id="piscinas-rj-nome" name="nome" type="text" minlength="2" maxlength="100" autocomplete="name" aria-describedby="piscinas-rj-nome-help piscinas-rj-nome-error" required />
+    <p id="piscinas-rj-nome-error" class="piscinas-rj-intake-form__error" data-error-for="nome"></p>
+  </div>
+
+  <!-- Telefone -->
+  <div class="piscinas-rj-intake-form__field">
+    <label for="piscinas-rj-telefone">Telefone / WhatsApp <small>Obrigatório</small></label>
+    <p id="piscinas-rj-telefone-help">Com DDD. Exemplo: (21) 98765-4321</p>
+    <input id="piscinas-rj-telefone" name="telefone" type="tel" placeholder="(00) 00000-0000" autocomplete="tel" aria-describedby="piscinas-rj-telefone-help piscinas-rj-telefone-error" required />
+    <p id="piscinas-rj-telefone-error" class="piscinas-rj-intake-form__error" data-error-for="telefone"></p>
+  </div>
+
+  <!-- Cidade -->
+  <div class="piscinas-rj-intake-form__field">
+    <label for="piscinas-rj-cidade">Cidade <small>Obrigatório</small></label>
+    <p id="piscinas-rj-cidade-help">Município no Rio de Janeiro onde fica o projeto.</p>
+    <input id="piscinas-rj-cidade" name="cidade" type="text" maxlength="120" autocomplete="address-level2" aria-describedby="piscinas-rj-cidade-help piscinas-rj-cidade-error" required />
+    <p id="piscinas-rj-cidade-error" class="piscinas-rj-intake-form__error" data-error-for="cidade"></p>
+  </div>
+
+  <!-- Contexto/necessidade -->
+  <div class="piscinas-rj-intake-form__field">
+    <label for="piscinas-rj-necessidade">Contexto ou necessidade do projeto <small>Opcional</small></label>
+    <p id="piscinas-rj-necessidade-help">Conte brevemente o que já sabe sobre o espaço ou o projeto de piscina desejado.</p>
+    <textarea id="piscinas-rj-necessidade" name="necessidade" maxlength="200" rows="4" aria-describedby="piscinas-rj-necessidade-help piscinas-rj-necessidade-count"></textarea>
+    <output id="piscinas-rj-necessidade-count" for="piscinas-rj-necessidade">0 / 200 caracteres</output>
+  </div>
+
+  <!-- Prazo -->
+  <div class="piscinas-rj-intake-form__field">
+    <label for="piscinas-rj-prazo">Prazo <small>Opcional</small></label>
+    <p id="piscinas-rj-prazo-help">Quando espera começar?</p>
+    <select id="piscinas-rj-prazo" name="prazo" aria-describedby="piscinas-rj-prazo-help">
+      <option value="">Selecione se já souber</option>
+      <option value="urgente">Urgente (próximas semanas)</option>
+      <option value="proximos_meses">Próximos meses</option>
+      <option value="aberto">Aberto (sem prazo definido)</option>
+    </select>
+  </div>
+
+  <!-- Consentimento -->
+  <div class="piscinas-rj-intake-form__consent">
+    <input id="piscinas-rj-consentimento" name="consentimento" type="checkbox" aria-describedby="piscinas-rj-consentimento-error" required />
+    <label for="piscinas-rj-consentimento">
+      Autorizo o envio destas informações para a Royal Splash processar minha solicitação. Li a <a href="/politica-de-privacidade" target="_blank" rel="noopener noreferrer">Política de Privacidade</a>.
+    </label>
+    <p id="piscinas-rj-consentimento-error" class="piscinas-rj-intake-form__error" data-error-for="consentimento"></p>
+  </div>
+
+  <button class="site-primitive-action site-primitive-action--primary" type="submit" data-submit-btn>Enviar solicitação</button>
+</form>
+
+<!-- Success state -->
+<div class="piscinas-rj-intake-form__success" data-success-state role="status" tabindex="-1" hidden>
+  <div class="piscinas-rj-intake-form__success-content">
+    <p class="piscinas-rj-intake-form__success-title">Solicitação recebida!</p>
+    <p class="piscinas-rj-intake-form__success-subtitle" data-protocol-line></p>
+    <p class="piscinas-rj-intake-form__success-body">Recebemos seus dados e nossa equipe poderá dar continuidade ao atendimento.</p>
+
+    <div class="piscinas-rj-intake-form__success-actions">
+      <button type="button" class="site-primitive-action site-primitive-action--primary" data-whatsapp-continue>Continuar pelo WhatsApp</button>
+      <button type="button" class="site-primitive-action site-primitive-action--tertiary" data-close-success>Prefiro aguardar o contato</button>
+    </div>
+  </div>
+</div>
+
+<!-- Error state -->
+<div class="piscinas-rj-intake-form__error-state" data-error-state role="alert" tabindex="-1" hidden>
+  <div class="piscinas-rj-intake-form__error-content">
+    <p class="piscinas-rj-intake-form__error-title">Não foi possível enviar a solicitação</p>
+    <p class="piscinas-rj-intake-form__error-body" data-error-message>Tente novamente mais tarde.</p>
+    <button type="button" class="site-primitive-action site-primitive-action--secondary" data-retry-btn>Tentar novamente</button>
+  </div>
+</div>
+
+<script>
+  import { observeFirstTouch, observeSubmissionTouch } from "../../growth/attribution.ts";
+
+  const form = document.querySelector<HTMLFormElement>("[data-piscinas-rj-intake-form]");
+
+  if (form) {
+    const fields = {
+      nome: form.elements.namedItem("nome") as HTMLInputElement,
+      telefone: form.elements.namedItem("telefone") as HTMLInputElement,
+      cidade: form.elements.namedItem("cidade") as HTMLInputElement,
+      necessidade: form.elements.namedItem("necessidade") as HTMLTextAreaElement,
+      prazo: form.elements.namedItem("prazo") as HTMLSelectElement,
+      consentimento: form.elements.namedItem("consentimento") as HTMLInputElement,
+    };
+
+    const submitBtn = form.querySelector<HTMLButtonElement>("[data-submit-btn]");
+    const successState = document.querySelector<HTMLElement>("[data-success-state]");
+    const errorState = document.querySelector<HTMLElement>("[data-error-state]");
+    const errorSummary = form.querySelector<HTMLElement>("[data-error-summary]");
+    const protocolLine = successState?.querySelector<HTMLElement>("[data-protocol-line]");
+    const whatsappContinueBtn = successState?.querySelector<HTMLButtonElement>("[data-whatsapp-continue]");
+    const closeSuccessBtn = successState?.querySelector<HTMLButtonElement>("[data-close-success]");
+    const retryBtn = errorState?.querySelector<HTMLButtonElement>("[data-retry-btn]");
+    const errorMessage = errorState?.querySelector<HTMLElement>("[data-error-message]");
+
+    let pendingSubmissionRef: string | null = null;
+    let lastReceipt: { caseId: string; protocol?: string; replay: boolean } | null = null;
+
+    const getConversionEmittedKey = (ref: string): string => `intake_created_emitted_${ref}`;
+
+    const hasConversionBeenEmitted = (ref: string): boolean => {
+      try {
+        return sessionStorage.getItem(getConversionEmittedKey(ref)) === "true";
+      } catch {
+        return false;
+      }
+    };
+
+    const markConversionAsEmitted = (ref: string): void => {
+      try {
+        sessionStorage.setItem(getConversionEmittedKey(ref), "true");
+      } catch {
+        // Silently fail if sessionStorage is unavailable
+      }
+    };
+
+    const setError = (fieldName: string, message = "") => {
+      const field = fields[fieldName as keyof typeof fields];
+      const target = form.querySelector<HTMLElement>(`[data-error-for="${fieldName}"]`);
+      if (field) field.setAttribute("aria-invalid", message ? "true" : "false");
+      if (target) target.textContent = message;
+    };
+
+    const clearErrors = () => {
+      Object.keys(fields).forEach(key => setError(key, ""));
+      if (errorSummary) errorSummary.hidden = true;
+    };
+
+    const validate = (): boolean => {
+      clearErrors();
+      const errors: Array<{ field: string; message: string }> = [];
+
+      const nome = fields.nome.value.trim();
+      if (!nome) errors.push({ field: "nome", message: "Informe seu nome." });
+      else if (nome.length < 2) errors.push({ field: "nome", message: "O nome deve ter pelo menos 2 caracteres." });
+
+      const telefone = fields.telefone.value.trim();
+      if (!telefone) errors.push({ field: "telefone", message: "Informe seu telefone." });
+      else if (!/^\(?\d{2}\)?\s*9?\d{4}-?\d{4}$/.test(telefone.replace(/\s/g, ""))) {
+        errors.push({ field: "telefone", message: "Formato de telefone inválido." });
+      }
+
+      const cidade = fields.cidade.value.trim();
+      if (!cidade) errors.push({ field: "cidade", message: "Informe a cidade." });
+
+      if (!fields.consentimento.checked) {
+        errors.push({ field: "consentimento", message: "Confirme o consentimento antes de continuar." });
+      }
+
+      errors.forEach(({ field, message }) => setError(field, message));
+      if (errorSummary) {
+        errorSummary.hidden = errors.length === 0;
+        errorSummary.textContent = errors.length ? `Revise ${errors.length === 1 ? "o campo indicado" : "os campos indicados"}.` : "";
+      }
+      if (errors.length && fields[errors[0].field as keyof typeof fields]) {
+        fields[errors[0].field as keyof typeof fields].focus();
+      }
+      return errors.length === 0;
+    };
+
+    fields.necessidade.addEventListener("input", () => {
+      const count = document.getElementById("piscinas-rj-necessidade-count");
+      if (count) count.textContent = `${fields.necessidade.value.length} / ${fields.necessidade.maxLength} caracteres`;
+    });
+
+    const generateSubmissionRef = (): string => {
+      return `RS-piscinas-rj-${crypto.randomUUID()}`;
+    };
+
+    const emitIntakeCreatedEvent = (submissionRef: string) => {
+      if (hasConversionBeenEmitted(submissionRef)) return;
+
+      const w = window as any;
+      w.dataLayer = w.dataLayer || [];
+      w.dataLayer.push({
+        event: "intake_created",
+        service_intent: "POOL_CONSTRUCTION",
+        acquisition_geography: "RJ",
+        experiment_id: "HV-RJ-POOL-CONSTRUCTION",
+        entry_surface: "/lp/piscinas-rj"
+      });
+
+      markConversionAsEmitted(submissionRef);
+    };
+
+    const showSuccess = (receipt: { caseId: string; protocol?: string; replay: boolean }, submissionRef: string) => {
+      lastReceipt = receipt;
+      form.hidden = true;
+      if (errorState) errorState.hidden = true;
+      if (successState) successState.hidden = false;
+
+      if (protocolLine) {
+        if (receipt.protocol) {
+          protocolLine.innerHTML = `Protocolo: <strong>${receipt.protocol}</strong>`;
+        } else {
+          protocolLine.innerHTML = "";
+        }
+      }
+
+      emitIntakeCreatedEvent(submissionRef);
+      successState?.focus();
+    };
+
+    const showError = (message: string) => {
+      form.hidden = true;
+      if (successState) successState.hidden = true;
+      if (errorState) {
+        errorState.hidden = false;
+        if (errorMessage) errorMessage.textContent = message;
+        errorState.focus();
+      }
+    };
+
+    const submitIntake = async () => {
+      if (!pendingSubmissionRef) {
+        pendingSubmissionRef = generateSubmissionRef();
+      }
+
+      if (submitBtn) {
+        submitBtn.disabled = true;
+        submitBtn.textContent = "Enviando...";
+      }
+
+      try {
+        const consentCapturedAt = new Date().toISOString();
+
+        // Capture attribution
+        const firstTouch = (window as any).__royalGrowthAttribution?.readPersisted?.();
+        const submissionTouch = observeSubmissionTouch(new URL(window.location.href));
+
+        const payload: any = {
+          submissionRef: pendingSubmissionRef,
+          consentCapturedAt,
+          projectContext: "residencial",
+          projectNeed: fields.necessidade.value.trim(),
+          city: fields.cidade.value.trim(),
+          name: fields.nome.value.trim(),
+          phone: fields.telefone.value.trim(),
+          consent: true,
+          source: "site",
+          pageRef: "/lp/piscinas-rj"
+        };
+
+        if (firstTouch || submissionTouch) {
+          payload.attribution = {};
+          if (firstTouch) payload.attribution.firstTouch = firstTouch;
+          if (submissionTouch) payload.attribution.submissionTouch = submissionTouch;
+        }
+
+        const response = await fetch("/api/site-lead", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(payload)
+        });
+
+        const receipt = await response.json();
+
+        if (!response.ok) {
+          if (response.status === 400) {
+            showError("Dados inválidos. Revise o formulário.");
+          } else if (response.status === 503) {
+            showError("Serviço temporariamente indisponível. Tente novamente mais tarde.");
+          } else {
+            showError("Não foi possível processar a solicitação. Tente novamente.");
+          }
+          return;
+        }
+
+        if (!receipt.ok) {
+          showError("Não foi possível registrar a solicitação. Tente novamente.");
+          return;
+        }
+
+        showSuccess({
+          caseId: receipt.caseId || "",
+          protocol: receipt.protocol,
+          replay: receipt.replay === true
+        }, pendingSubmissionRef || "");
+
+      } catch (error) {
+        console.error("Form submission error:", error);
+        showError("Erro na conexão. Tente novamente.");
+      } finally {
+        if (submitBtn) {
+          submitBtn.disabled = false;
+          submitBtn.textContent = "Enviar solicitação";
+        }
+      }
+    };
+
+    form.addEventListener("submit", async (e) => {
+      e.preventDefault();
+      if (!validate()) return;
+      await submitIntake();
+    });
+
+    retryBtn?.addEventListener("click", async () => {
+      if (errorState) errorState.hidden = true;
+      form.hidden = false;
+      await submitIntake();
+    });
+
+    whatsappContinueBtn?.addEventListener("click", () => {
+      if (!lastReceipt) return;
+
+      const WHATSAPP_NUMBER = "5521982590643";
+      const message = [
+        "Olá, Royal Splash.",
+        "",
+        "Acabei de enviar uma solicitação de avaliação para construção de piscina pelo site.",
+        lastReceipt.protocol ? `Protocolo: ${lastReceipt.protocol}` : "",
+        "",
+        "Gostaria de continuar o atendimento pelo WhatsApp."
+      ].filter(Boolean).join("\n");
+
+      const url = `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(message)}`;
+      window.open(url, "_blank");
+    });
+
+    closeSuccessBtn?.addEventListener("click", () => {
+      if (successState) {
+        successState.hidden = true;
+        form.hidden = false;
+        form.reset();
+        pendingSubmissionRef = null;
+        lastReceipt = null;
+      }
+    });
+  }
+</script>
+
+<style>
+  .piscinas-rj-intake-form {
+    width: min(100%, var(--site-layout-reading-max));
+    margin-inline: auto;
+  }
+
+  .piscinas-rj-intake-form > button {
+    display: block;
+    margin-inline: auto;
+  }
+
+  .piscinas-rj-intake-form__field {
+    margin-block-end: var(--site-space-6);
+  }
+
+  .piscinas-rj-intake-form__field label {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: var(--site-space-4);
+    font-weight: var(--site-font-weight-ui-strong);
+  }
+
+  .piscinas-rj-intake-form__field label small {
+    color: var(--site-color-text-secondary);
+    font-weight: var(--site-font-weight-ui);
+  }
+
+  .piscinas-rj-intake-form__field > p:not(.piscinas-rj-intake-form__error) {
+    margin: var(--site-space-2) 0 var(--site-space-3);
+    color: var(--site-color-text-secondary);
+  }
+
+  .piscinas-rj-intake-form input[type="text"],
+  .piscinas-rj-intake-form input[type="tel"],
+  .piscinas-rj-intake-form select,
+  .piscinas-rj-intake-form textarea {
+    width: 100%;
+    min-height: 3.25rem;
+    border: 1px solid var(--site-color-divider);
+    border-radius: 0;
+    padding: 0.8rem 1rem;
+    background: var(--site-color-surface);
+    color: var(--site-color-text-primary);
+    font: inherit;
+  }
+
+  .piscinas-rj-intake-form textarea {
+    min-height: 7rem;
+    resize: vertical;
+  }
+
+  .piscinas-rj-intake-form output {
+    display: block;
+    margin-block-start: var(--site-space-2);
+    color: var(--site-color-text-secondary);
+    font-size: 0.8rem;
+    text-align: right;
+  }
+
+  .piscinas-rj-intake-form__consent {
+    display: grid;
+    grid-template-columns: 1.5rem minmax(0, 1fr);
+    gap: var(--site-space-3);
+    margin-block: var(--site-space-7) var(--site-space-6);
+  }
+
+  .piscinas-rj-intake-form__consent input {
+    width: 1.35rem;
+    height: 1.35rem;
+    margin: 0.15rem 0 0;
+  }
+
+  .piscinas-rj-intake-form__consent a {
+    color: inherit;
+    text-decoration: dotted underline;
+    text-decoration-color: var(--site-color-accent-on-dark);
+    text-decoration-thickness: 1px;
+    text-underline-offset: 0.2em;
+    transition: text-decoration-color 160ms ease;
+  }
+
+  .piscinas-rj-intake-form__consent a:hover {
+    text-decoration-color: var(--site-color-accent-on-dark);
+    text-decoration-style: solid;
+  }
+
+  .piscinas-rj-intake-form__consent a:focus-visible {
+    outline: 3px solid var(--site-color-required-boundary);
+    outline-offset: 3px;
+  }
+
+  .piscinas-rj-intake-form__consent .piscinas-rj-intake-form__error {
+    grid-column: 2;
+  }
+
+  .piscinas-rj-intake-form__error {
+    min-height: 1.25rem;
+    margin: var(--site-space-2) 0 0;
+    color: var(--site-color-required-boundary);
+    font-weight: var(--site-font-weight-ui-strong);
+  }
+
+  .piscinas-rj-intake-form__summary {
+    margin-block-end: var(--site-space-5);
+    border-inline-start: 3px solid var(--site-color-required-boundary);
+    padding: var(--site-space-4);
+    background: var(--site-color-surface-muted);
+  }
+
+  .piscinas-rj-intake-form__success,
+  .piscinas-rj-intake-form__error-state {
+    width: min(100%, var(--site-layout-reading-max));
+    margin-inline: auto;
+    margin-block-start: var(--site-space-7);
+    border-block-start: 3px solid var(--site-color-accent-on-dark);
+    padding: var(--site-space-6);
+    background: var(--site-color-surface-muted);
+  }
+
+  .piscinas-rj-intake-form__error-state {
+    border-block-start-color: var(--site-color-required-boundary);
+  }
+
+  .piscinas-rj-intake-form__success-title,
+  .piscinas-rj-intake-form__error-title {
+    margin-block-start: 0;
+    font-weight: 600;
+    font-size: 1.1rem;
+  }
+
+  .piscinas-rj-intake-form__success-subtitle {
+    margin-block: var(--site-space-3);
+    font-weight: 500;
+    color: var(--site-color-text-secondary);
+  }
+
+  .piscinas-rj-intake-form__success-body,
+  .piscinas-rj-intake-form__error-body {
+    margin-block-end: var(--site-space-4);
+    color: var(--site-color-text-primary);
+  }
+
+  .piscinas-rj-intake-form__success-actions {
+    display: flex;
+    flex-direction: column;
+    gap: var(--site-space-3);
+    margin-block-start: var(--site-space-6);
+  }
+
+  .piscinas-rj-intake-form__success-actions button {
+    width: 100%;
+  }
+
+  .piscinas-rj-intake-form :is(input, select, textarea, button, a):focus-visible {
+    outline: 3px solid var(--site-color-required-boundary);
+    outline-offset: 3px;
+  }
+
+  .piscinas-rj-intake-form [aria-invalid="true"] {
+    border: 2px solid var(--site-color-required-boundary);
+  }
+
+  @media (max-width: 30rem) {
+    .piscinas-rj-intake-form .site-primitive-action {
+      width: 100%;
+    }
+
+    .piscinas-rj-intake-form__success,
+    .piscinas-rj-intake-form__error-state {
+      padding: var(--site-space-5);
+    }
+
+    .piscinas-rj-intake-form__success-actions {
+      flex-direction: column;
+    }
+  }
+</style>
