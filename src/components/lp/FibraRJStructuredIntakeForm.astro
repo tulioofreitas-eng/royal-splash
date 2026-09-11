@@ -1,0 +1,526 @@
+---
+// Fibra-RJ structured Intake form → Atlas integration
+// Canonical restoration of fiberglass pools
+---
+
+<form class="fibra-intake-form" data-fibra-intake-form novalidate>
+  <div class="fibra-intake-form__summary" data-error-summary role="alert" tabindex="-1" hidden></div>
+
+  <!-- Nome -->
+  <div class="fibra-intake-form__field">
+    <label for="fibra-nome">Nome <small>Obrigatório</small></label>
+    <p id="fibra-nome-help">Como você prefere ser chamado?</p>
+    <input id="fibra-nome" name="nome" type="text" minlength="2" maxlength="100" autocomplete="name" aria-describedby="fibra-nome-help fibra-nome-error" required />
+    <p id="fibra-nome-error" class="fibra-intake-form__error" data-error-for="nome"></p>
+  </div>
+
+  <!-- Telefone -->
+  <div class="fibra-intake-form__field">
+    <label for="fibra-telefone">Telefone / WhatsApp <small>Obrigatório</small></label>
+    <p id="fibra-telefone-help">Com DDD. Exemplo: (21) 98765-4321</p>
+    <input id="fibra-telefone" name="telefone" type="tel" placeholder="(00) 00000-0000" autocomplete="tel" aria-describedby="fibra-telefone-help fibra-telefone-error" required />
+    <p id="fibra-telefone-error" class="fibra-intake-form__error" data-error-for="telefone"></p>
+  </div>
+
+  <!-- Cidade -->
+  <div class="fibra-intake-form__field">
+    <label for="fibra-cidade">Cidade <small>Obrigatório</small></label>
+    <p id="fibra-cidade-help">Município no Rio de Janeiro onde fica a piscina.</p>
+    <input id="fibra-cidade" name="cidade" type="text" maxlength="120" autocomplete="address-level2" aria-describedby="fibra-cidade-help fibra-cidade-error" required />
+    <p id="fibra-cidade-error" class="fibra-intake-form__error" data-error-for="cidade"></p>
+  </div>
+
+  <!-- Condição/necessidade -->
+  <div class="fibra-intake-form__field">
+    <label for="fibra-necessidade">Condição ou necessidade da restauração <small>Opcional</small></label>
+    <p id="fibra-necessidade-help">Conte brevemente o que observa na piscina, como desbotamento, trincas, ou desgaste.</p>
+    <textarea id="fibra-necessidade" name="necessidade" maxlength="200" rows="4" aria-describedby="fibra-necessidade-help fibra-necessidade-count"></textarea>
+    <output id="fibra-necessidade-count" for="fibra-necessidade">0 / 200 caracteres</output>
+  </div>
+
+  <!-- Prazo -->
+  <div class="fibra-intake-form__field">
+    <label for="fibra-prazo">Prazo <small>Opcional</small></label>
+    <p id="fibra-prazo-help">Quando espera iniciar a avaliação ou restauração?</p>
+    <select id="fibra-prazo" name="prazo" aria-describedby="fibra-prazo-help">
+      <option value="">Selecione se já souber</option>
+      <option value="urgente">Urgente (próximas semanas)</option>
+      <option value="proximos_meses">Próximos meses</option>
+      <option value="aberto">Aberto (sem prazo definido)</option>
+    </select>
+  </div>
+
+  <!-- Consentimento -->
+  <div class="fibra-intake-form__consent">
+    <input id="fibra-consentimento" name="consentimento" type="checkbox" aria-describedby="fibra-consentimento-error" required />
+    <label for="fibra-consentimento">
+      Autorizo o envio destas informações para a Royal Splash processar minha solicitação. Li a <a href="/politica-de-privacidade" target="_blank" rel="noopener noreferrer">Política de Privacidade</a>.
+    </label>
+    <p id="fibra-consentimento-error" class="fibra-intake-form__error" data-error-for="consentimento"></p>
+  </div>
+
+  <button class="site-primitive-action site-primitive-action--primary" type="submit" data-submit-btn>Enviar solicitação</button>
+</form>
+
+<!-- Success state -->
+<div class="fibra-intake-form__success" data-success-state role="status" tabindex="-1" hidden>
+  <div class="fibra-intake-form__success-content">
+    <p class="fibra-intake-form__success-title">Solicitação recebida!</p>
+    <p class="fibra-intake-form__success-subtitle" data-protocol-line></p>
+    <p class="fibra-intake-form__success-body">Recebemos seus dados e nossa equipe poderá dar continuidade ao atendimento.</p>
+
+    <div class="fibra-intake-form__success-actions">
+      <button type="button" class="site-primitive-action site-primitive-action--primary" data-whatsapp-continue>Continuar pelo WhatsApp</button>
+      <button type="button" class="site-primitive-action site-primitive-action--tertiary" data-close-success>Prefiro aguardar o contato</button>
+    </div>
+  </div>
+</div>
+
+<!-- Error state -->
+<div class="fibra-intake-form__error-state" data-error-state role="alert" tabindex="-1" hidden>
+  <div class="fibra-intake-form__error-content">
+    <p class="fibra-intake-form__error-title">Não foi possível enviar a solicitação</p>
+    <p class="fibra-intake-form__error-body" data-error-message>Tente novamente mais tarde.</p>
+    <button type="button" class="site-primitive-action site-primitive-action--secondary" data-retry-btn>Tentar novamente</button>
+  </div>
+</div>
+
+<script>
+  import { observeFirstTouch, observeSubmissionTouch } from "../../growth/attribution.ts";
+
+  const form = document.querySelector<HTMLFormElement>("[data-fibra-intake-form]");
+
+  if (form) {
+    const fields = {
+      nome: form.elements.namedItem("nome") as HTMLInputElement,
+      telefone: form.elements.namedItem("telefone") as HTMLInputElement,
+      cidade: form.elements.namedItem("cidade") as HTMLInputElement,
+      necessidade: form.elements.namedItem("necessidade") as HTMLTextAreaElement,
+      prazo: form.elements.namedItem("prazo") as HTMLSelectElement,
+      consentimento: form.elements.namedItem("consentimento") as HTMLInputElement,
+    };
+
+    const submitBtn = form.querySelector<HTMLButtonElement>("[data-submit-btn]");
+    const successState = document.querySelector<HTMLElement>("[data-success-state]");
+    const errorState = document.querySelector<HTMLElement>("[data-error-state]");
+    const errorSummary = form.querySelector<HTMLElement>("[data-error-summary]");
+    const protocolLine = successState?.querySelector<HTMLElement>("[data-protocol-line]");
+    const whatsappContinueBtn = successState?.querySelector<HTMLButtonElement>("[data-whatsapp-continue]");
+    const closeSuccessBtn = successState?.querySelector<HTMLButtonElement>("[data-close-success]");
+    const retryBtn = errorState?.querySelector<HTMLButtonElement>("[data-retry-btn]");
+    const errorMessage = errorState?.querySelector<HTMLElement>("[data-error-message]");
+
+    let pendingSubmissionRef: string | null = null;
+    let lastReceipt: { caseId: string; protocol?: string; replay: boolean } | null = null;
+
+    const getConversionEmittedKey = (ref: string): string => `intake_created_emitted_${ref}`;
+
+    const hasConversionBeenEmitted = (ref: string): boolean => {
+      try {
+        return sessionStorage.getItem(getConversionEmittedKey(ref)) === "true";
+      } catch {
+        return false;
+      }
+    };
+
+    const markConversionAsEmitted = (ref: string): void => {
+      try {
+        sessionStorage.setItem(getConversionEmittedKey(ref), "true");
+      } catch {
+        // Silently fail if sessionStorage is unavailable
+      }
+    };
+
+    const setError = (fieldName: string, message = "") => {
+      const field = fields[fieldName as keyof typeof fields];
+      const target = form.querySelector<HTMLElement>(`[data-error-for="${fieldName}"]`);
+      if (field) field.setAttribute("aria-invalid", message ? "true" : "false");
+      if (target) target.textContent = message;
+    };
+
+    const clearErrors = () => {
+      Object.keys(fields).forEach(key => setError(key, ""));
+      if (errorSummary) errorSummary.hidden = true;
+    };
+
+    const validate = (): boolean => {
+      clearErrors();
+      const errors: Array<{ field: string; message: string }> = [];
+
+      const nome = fields.nome.value.trim();
+      if (!nome) errors.push({ field: "nome", message: "Informe seu nome." });
+      else if (nome.length < 2) errors.push({ field: "nome", message: "O nome deve ter pelo menos 2 caracteres." });
+
+      const telefone = fields.telefone.value.trim();
+      if (!telefone) errors.push({ field: "telefone", message: "Informe seu telefone." });
+      else if (!/^\(?\d{2}\)?\s*9?\d{4}-?\d{4}$/.test(telefone.replace(/\s/g, ""))) {
+        errors.push({ field: "telefone", message: "Formato de telefone inválido." });
+      }
+
+      const cidade = fields.cidade.value.trim();
+      if (!cidade) errors.push({ field: "cidade", message: "Informe a cidade." });
+
+      if (!fields.consentimento.checked) {
+        errors.push({ field: "consentimento", message: "Confirme o consentimento antes de continuar." });
+      }
+
+      errors.forEach(({ field, message }) => setError(field, message));
+      if (errorSummary) {
+        errorSummary.hidden = errors.length === 0;
+        errorSummary.textContent = errors.length ? `Revise ${errors.length === 1 ? "o campo indicado" : "os campos indicados"}.` : "";
+      }
+      if (errors.length && fields[errors[0].field as keyof typeof fields]) {
+        fields[errors[0].field as keyof typeof fields].focus();
+      }
+      return errors.length === 0;
+    };
+
+    fields.necessidade.addEventListener("input", () => {
+      const count = document.getElementById("fibra-necessidade-count");
+      if (count) count.textContent = `${fields.necessidade.value.length} / ${fields.necessidade.maxLength} caracteres`;
+    });
+
+    const generateSubmissionRef = (): string => {
+      return `RS-fibra-rj-${crypto.randomUUID()}`;
+    };
+
+    const emitIntakeCreatedEvent = (submissionRef: string) => {
+      if (hasConversionBeenEmitted(submissionRef)) return;
+
+      const w = window as any;
+      w.dataLayer = w.dataLayer || [];
+      w.dataLayer.push({
+        event: "intake_created",
+        service_intent: "FIBERGLASS_POOL_RESTORATION",
+        acquisition_geography: "RJ",
+        experiment_id: "HV-RJ-FIBERGLASS-RESTORATION",
+        entry_surface: "/lp/fibra-rj"
+      });
+
+      markConversionAsEmitted(submissionRef);
+    };
+
+    const showSuccess = (receipt: { caseId: string; protocol?: string; replay: boolean }, submissionRef: string) => {
+      lastReceipt = receipt;
+      form.hidden = true;
+      if (errorState) errorState.hidden = true;
+      if (successState) successState.hidden = false;
+
+      if (protocolLine) {
+        if (receipt.protocol) {
+          protocolLine.innerHTML = `Protocolo: <strong>${receipt.protocol}</strong>`;
+        } else {
+          protocolLine.innerHTML = "";
+        }
+      }
+
+      emitIntakeCreatedEvent(submissionRef);
+      successState?.focus();
+    };
+
+    const showError = (message: string) => {
+      form.hidden = true;
+      if (successState) successState.hidden = true;
+      if (errorState) {
+        errorState.hidden = false;
+        if (errorMessage) errorMessage.textContent = message;
+        errorState.focus();
+      }
+    };
+
+    const submitIntake = async () => {
+      if (!pendingSubmissionRef) {
+        pendingSubmissionRef = generateSubmissionRef();
+      }
+
+      if (submitBtn) {
+        submitBtn.disabled = true;
+        submitBtn.textContent = "Enviando...";
+      }
+
+      try {
+        const consentCapturedAt = new Date().toISOString();
+
+        // Capture attribution
+        const firstTouch = (window as any).__royalGrowthAttribution?.readPersisted?.();
+        const submissionTouch = observeSubmissionTouch(new URL(window.location.href));
+
+        const payload: any = {
+          submissionRef: pendingSubmissionRef,
+          consentCapturedAt,
+          projectContext: "residencial",
+          projectNeed: fields.necessidade.value.trim(),
+          city: fields.cidade.value.trim(),
+          name: fields.nome.value.trim(),
+          phone: fields.telefone.value.trim(),
+          consent: true,
+          source: "site",
+          pageRef: "/lp/fibra-rj"
+        };
+
+        if (firstTouch || submissionTouch) {
+          payload.attribution = {};
+          if (firstTouch) payload.attribution.firstTouch = firstTouch;
+          if (submissionTouch) payload.attribution.submissionTouch = submissionTouch;
+        }
+
+        const response = await fetch("/api/site-lead", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(payload)
+        });
+
+        const receipt = await response.json();
+
+        if (!response.ok) {
+          if (response.status === 400) {
+            showError("Dados inválidos. Revise o formulário.");
+          } else if (response.status === 503) {
+            showError("Serviço temporariamente indisponível. Tente novamente mais tarde.");
+          } else {
+            showError("Não foi possível processar a solicitação. Tente novamente.");
+          }
+          return;
+        }
+
+        if (!receipt.ok) {
+          showError("Não foi possível registrar a solicitação. Tente novamente.");
+          return;
+        }
+
+        showSuccess({
+          caseId: receipt.caseId || "",
+          protocol: receipt.protocol,
+          replay: receipt.replay === true
+        }, pendingSubmissionRef || "");
+
+      } catch (error) {
+        console.error("Form submission error:", error);
+        showError("Erro na conexão. Tente novamente.");
+      } finally {
+        if (submitBtn) {
+          submitBtn.disabled = false;
+          submitBtn.textContent = "Enviar solicitação";
+        }
+      }
+    };
+
+    form.addEventListener("submit", async (e) => {
+      e.preventDefault();
+      if (!validate()) return;
+      await submitIntake();
+    });
+
+    retryBtn?.addEventListener("click", async () => {
+      if (errorState) errorState.hidden = true;
+      form.hidden = false;
+      await submitIntake();
+    });
+
+    whatsappContinueBtn?.addEventListener("click", () => {
+      if (!lastReceipt) return;
+
+      const WHATSAPP_NUMBER = "5521982590643";
+      const message = [
+        "Olá, Royal Splash.",
+        "",
+        "Acabei de enviar uma solicitação de avaliação para restauração de piscina de fibra pelo site.",
+        lastReceipt.protocol ? `Protocolo: ${lastReceipt.protocol}` : "",
+        "",
+        "Gostaria de continuar o atendimento pelo WhatsApp."
+      ].filter(Boolean).join("\n");
+
+      const url = `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(message)}`;
+      window.open(url, "_blank");
+    });
+
+    closeSuccessBtn?.addEventListener("click", () => {
+      if (successState) {
+        successState.hidden = true;
+        form.hidden = false;
+        form.reset();
+        pendingSubmissionRef = null;
+        lastReceipt = null;
+      }
+    });
+  }
+</script>
+
+<style>
+  .fibra-intake-form {
+    width: min(100%, var(--site-layout-reading-max));
+    margin-inline: auto;
+  }
+
+  .fibra-intake-form > button {
+    display: block;
+    margin-inline: auto;
+  }
+
+  .fibra-intake-form__field {
+    margin-block-end: var(--site-space-6);
+  }
+
+  .fibra-intake-form__field label {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: var(--site-space-4);
+    font-weight: var(--site-font-weight-ui-strong);
+  }
+
+  .fibra-intake-form__field label small {
+    color: var(--site-color-text-secondary);
+    font-weight: var(--site-font-weight-ui);
+  }
+
+  .fibra-intake-form__field > p:not(.fibra-intake-form__error) {
+    margin: var(--site-space-2) 0 var(--site-space-3);
+    color: var(--site-color-text-secondary);
+  }
+
+  .fibra-intake-form input[type="text"],
+  .fibra-intake-form input[type="tel"],
+  .fibra-intake-form select,
+  .fibra-intake-form textarea {
+    width: 100%;
+    min-height: 3.25rem;
+    border: 1px solid var(--site-color-divider);
+    border-radius: 0;
+    padding: 0.8rem 1rem;
+    background: var(--site-color-surface);
+    color: var(--site-color-text-primary);
+    font: inherit;
+  }
+
+  .fibra-intake-form textarea {
+    min-height: 7rem;
+    resize: vertical;
+  }
+
+  .fibra-intake-form output {
+    display: block;
+    margin-block-start: var(--site-space-2);
+    color: var(--site-color-text-secondary);
+    font-size: 0.8rem;
+    text-align: right;
+  }
+
+  .fibra-intake-form__consent {
+    display: grid;
+    grid-template-columns: 1.5rem minmax(0, 1fr);
+    gap: var(--site-space-3);
+    margin-block: var(--site-space-7) var(--site-space-6);
+  }
+
+  .fibra-intake-form__consent input {
+    width: 1.35rem;
+    height: 1.35rem;
+    margin: 0.15rem 0 0;
+  }
+
+  .fibra-intake-form__consent a {
+    color: inherit;
+    text-decoration: dotted underline;
+    text-decoration-color: var(--site-color-accent-on-dark);
+    text-decoration-thickness: 1px;
+    text-underline-offset: 0.2em;
+    transition: text-decoration-color 160ms ease;
+  }
+
+  .fibra-intake-form__consent a:hover {
+    text-decoration-color: var(--site-color-accent-on-dark);
+    text-decoration-style: solid;
+  }
+
+  .fibra-intake-form__consent a:focus-visible {
+    outline: 3px solid var(--site-color-required-boundary);
+    outline-offset: 3px;
+  }
+
+  .fibra-intake-form__consent .fibra-intake-form__error {
+    grid-column: 2;
+  }
+
+  .fibra-intake-form__error {
+    min-height: 1.25rem;
+    margin: var(--site-space-2) 0 0;
+    color: var(--site-color-required-boundary);
+    font-weight: var(--site-font-weight-ui-strong);
+  }
+
+  .fibra-intake-form__summary {
+    margin-block-end: var(--site-space-5);
+    border-inline-start: 3px solid var(--site-color-required-boundary);
+    padding: var(--site-space-4);
+    background: var(--site-color-surface-muted);
+  }
+
+  .fibra-intake-form__success,
+  .fibra-intake-form__error-state {
+    width: min(100%, var(--site-layout-reading-max));
+    margin-inline: auto;
+    margin-block-start: var(--site-space-7);
+    border-block-start: 3px solid var(--site-color-accent-on-dark);
+    padding: var(--site-space-6);
+    background: var(--site-color-surface-muted);
+  }
+
+  .fibra-intake-form__error-state {
+    border-block-start-color: var(--site-color-required-boundary);
+  }
+
+  .fibra-intake-form__success-title,
+  .fibra-intake-form__error-title {
+    margin-block-start: 0;
+    font-weight: 600;
+    font-size: 1.1rem;
+  }
+
+  .fibra-intake-form__success-subtitle {
+    margin-block: var(--site-space-3);
+    font-weight: 500;
+    color: var(--site-color-text-secondary);
+  }
+
+  .fibra-intake-form__success-body,
+  .fibra-intake-form__error-body {
+    margin-block-end: var(--site-space-4);
+    color: var(--site-color-text-primary);
+  }
+
+  .fibra-intake-form__success-actions {
+    display: flex;
+    flex-direction: column;
+    gap: var(--site-space-3);
+    margin-block-start: var(--site-space-6);
+  }
+
+  .fibra-intake-form__success-actions button {
+    width: 100%;
+  }
+
+  .fibra-intake-form :is(input, select, textarea, button, a):focus-visible {
+    outline: 3px solid var(--site-color-required-boundary);
+    outline-offset: 3px;
+  }
+
+  .fibra-intake-form [aria-invalid="true"] {
+    border: 2px solid var(--site-color-required-boundary);
+  }
+
+  @media (max-width: 30rem) {
+    .fibra-intake-form .site-primitive-action {
+      width: 100%;
+    }
+
+    .fibra-intake-form__success,
+    .fibra-intake-form__error-state {
+      padding: var(--site-space-5);
+    }
+
+    .fibra-intake-form__success-actions {
+      flex-direction: column;
+    }
+  }
+</style>

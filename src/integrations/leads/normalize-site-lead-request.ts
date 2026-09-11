@@ -120,6 +120,7 @@ export function normalizeSiteLeadRequest(
   const serviceRefByPage: Record<string, string> = {
     "/lp/reforma-rj": "MAJOR_RENOVATION",
     "/lp/piscinas-rj": "POOL_CONSTRUCTION",
+    "/lp/fibra-rj": "FIBERGLASS_POOL_RESTORATION",
   };
 
   const serviceRef = serviceRefByPage[body.pageRef as string];
