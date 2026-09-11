@@ -117,6 +117,13 @@ export function normalizeSiteLeadRequest(
     throw error;
   }
 
+  const serviceRefByPage: Record<string, string> = {
+    "/lp/reforma-rj": "MAJOR_RENOVATION",
+    "/lp/piscinas-rj": "POOL_CONSTRUCTION",
+  };
+
+  const serviceRef = serviceRefByPage[body.pageRef as string];
+
   return {
     schemaVersion: SITE_LEAD_SCHEMA_VERSION,
     submissionRef,
@@ -127,6 +134,7 @@ export function normalizeSiteLeadRequest(
     },
     city,
     interest: {
+      ...(serviceRef ? { serviceRef } : {}),
       description:
         `Contexto: ${context}. Necessidade: ${projectNeed}`,
     },
