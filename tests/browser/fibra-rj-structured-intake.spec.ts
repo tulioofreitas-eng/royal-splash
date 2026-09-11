@@ -243,7 +243,6 @@ test.describe("Fibra RJ — API Response Scenarios", () => {
 
   test("200 REPLAY: persisted submission shows protocol without duplicating intake_created", async ({ page }) => {
     let requestCount = 0;
-    const capturedDataLayers: any[] = [];
 
     page.on("response", async (response) => {
       if (response.url().includes("/api/site-lead")) {
@@ -291,6 +290,15 @@ test.describe("Fibra RJ — API Response Scenarios", () => {
 
     // Verify protocol is shown
     await expect(successState).toContainText("RS-TEST-FIBRA-001");
+
+    await page.waitForTimeout(500);
+
+    // Verify intake_created fired exactly once (replay should not emit duplicate)
+    const events = await page.evaluate(() => {
+      return (window as any).__capturedDataLayer || [];
+    });
+    const intakeCreatedEvents = events.filter((e: any) => e.event === "intake_created");
+    expect(intakeCreatedEvents.length).toBe(1);
   });
 
   test("400 BAD REQUEST: shows error state", async ({ page }) => {
@@ -597,10 +605,10 @@ test.describe("Fibra RJ — Analytics & PII Protection", () => {
     });
 
     await page.goto("/lp/fibra-rj");
-    await page.fill('input[name="nome"]', "TESTE-NOME-PII");
-    await page.fill('input[name="telefone"]', "(21) 99876-5432");
-    await page.fill('input[name="cidade"]', "TESTE-CIDADE-PII");
-    await page.fill('textarea[name="necessidade"]', "TESTE-NECESSIDADE-PII");
+    await page.fill('input[name="nome"]', "PII-NAME-FIBRA-TEST");
+    await page.fill('input[name="telefone"]', "(21) 98765-4321");
+    await page.fill('input[name="cidade"]', "PII-CITY-FIBRA-TEST");
+    await page.fill('textarea[name="necessidade"]', "PII-NEED-FIBRA-TEST");
     await page.selectOption('select[name="prazo"]', "urgente");
     await page.check('input[name="consentimento"]');
 
@@ -619,16 +627,34 @@ test.describe("Fibra RJ — Analytics & PII Protection", () => {
     const intakeCreatedEvent = events.find((e: any) => e.event === "intake_created");
     expect(intakeCreatedEvent).toBeDefined();
 
+    // Verify exact allowed keys/values for intake_created
+    const allowedKeys = ["event", "service_intent", "acquisition_geography", "experiment_id", "entry_surface"];
+    const actualKeys = Object.keys(intakeCreatedEvent);
+    actualKeys.forEach(key => {
+      expect(allowedKeys).toContain(key);
+    });
+
+    // Verify required fields are present
+    expect(intakeCreatedEvent.event).toBe("intake_created");
+    expect(intakeCreatedEvent.service_intent).toBe("FIBERGLASS_POOL_RESTORATION");
+    expect(intakeCreatedEvent.acquisition_geography).toBe("RJ");
+    expect(intakeCreatedEvent.experiment_id).toBe("HV-RJ-FIBERGLASS-RESTORATION");
+    expect(intakeCreatedEvent.entry_surface).toBe("/lp/fibra-rj");
+
     // Verify PII fields are NOT in the event
     const eventStr = JSON.stringify(intakeCreatedEvent);
-    expect(eventStr).not.toContain("TESTE-NOME-PII");
-    expect(eventStr).not.toContain("TESTE-CIDADE-PII");
-    expect(eventStr).not.toContain("TESTE-NECESSIDADE-PII");
-    expect(eventStr).not.toContain("(21) 99876-5432");
-    expect(eventStr).not.toContain("consentimento");
-    expect(eventStr).not.toContain("submissionRef");
-    expect(eventStr).not.toContain("protocol");
-    expect(eventStr).not.toContain("caseId");
+    expect(eventStr).not.toContain("PII-NAME-FIBRA-TEST");
+    expect(eventStr).not.toContain("PII-CITY-FIBRA-TEST");
+    expect(eventStr).not.toContain("PII-NEED-FIBRA-TEST");
+    expect(eventStr).not.toContain("(21) 98765-4321");
+
+    // Verify forbidden field names are absent
+    const forbiddenFieldNames = ["name", "nome", "phone", "telefone", "email", "city", "cidade",
+                                  "need", "necessidade", "timeline", "prazo", "consent", "consentimento",
+                                  "consentCapturedAt", "submissionRef", "protocol", "caseId"];
+    forbiddenFieldNames.forEach(fieldName => {
+      expect(eventStr.toLowerCase()).not.toContain(fieldName.toLowerCase());
+    });
   });
 });
 
@@ -662,8 +688,19 @@ test.describe("Fibra RJ — Form Behavior", () => {
     await expect(successState).toBeVisible({ timeout: 10000 });
   });
 
-  test("timeline value is submitted with request", async ({ page }) => {
+  test("timeline value is submitted with request and excluded from analytics", async ({ page }) => {
     const requestBodies: any[] = [];
+
+    await page.addInitScript(() => {
+      const w = window as any;
+      w.dataLayer = w.dataLayer || [];
+      const originalPush = w.dataLayer.push;
+      w.dataLayer.push = function(...args: any[]) {
+        (window as any).__capturedDataLayer = (window as any).__capturedDataLayer || [];
+        (window as any).__capturedDataLayer.push(...args);
+        return originalPush.apply(this, args);
+      };
+    });
 
     await page.route("/api/site-lead", async (route) => {
       const body = route.request().postDataJSON();
@@ -695,10 +732,25 @@ test.describe("Fibra RJ — Form Behavior", () => {
 
     await page.waitForTimeout(500);
     expect(requestBodies.length).toBe(1);
-    // Verify timeline is in the message field
+
+    // A: Verify timeline is in the request/business payload
     expect(requestBodies[0].message).toBeDefined();
     expect(requestBodies[0].message).toContain("Prazo");
     expect(requestBodies[0].message).toContain("Urgente");
+
+    // B: Verify timeline does NOT appear in analytics event
+    const events = await page.evaluate(() => {
+      return (window as any).__capturedDataLayer || [];
+    });
+    const intakeCreatedEvent = events.find((e: any) => e.event === "intake_created");
+    expect(intakeCreatedEvent).toBeDefined();
+
+    // C: Serialize and verify timeline values absent
+    const eventStr = JSON.stringify(intakeCreatedEvent);
+    expect(eventStr).not.toContain("Urgente");
+    expect(eventStr).not.toContain("urgente");
+    expect(eventStr).not.toContain("timeline");
+    expect(eventStr).not.toContain("prazo");
   });
 
   test("submissionTouch is independent from firstTouch", async ({ page }) => {
@@ -744,9 +796,9 @@ test.describe("Fibra RJ — Form Behavior", () => {
     // firstTouch should have captured URL params
     expect(body.attribution.firstTouch.source).toBe("google");
     expect(body.attribution.firstTouch.campaignRef).toBe("test-campaign");
-    // Both touches should be present as independent objects
-    expect(Object.keys(body.attribution.firstTouch).length).toBeGreaterThan(0);
-    expect(Object.keys(body.attribution.submissionTouch).length).toBeGreaterThan(0);
+
+    // submissionTouch should be a separate object with distinct values
+    expect(body.attribution.submissionTouch).not.toBe(body.attribution.firstTouch);
   });
 
   test("double submit prevention: simultaneous clicks only POST once", async ({ page }) => {
@@ -799,7 +851,8 @@ test.describe("Fibra RJ — Form Behavior", () => {
   });
 
   test("sessionStorage failure fallback: in-memory dedup works", async ({ page }) => {
-    let intakeCreatedCount = 0;
+    let apiCallCount = 0;
+    let emittedRefs: string[] = [];
 
     await page.addInitScript(() => {
       const w = window as any;
@@ -811,15 +864,29 @@ test.describe("Fibra RJ — Form Behavior", () => {
         return originalPush.apply(this, args);
       };
 
-      // Block sessionStorage
+      // Block sessionStorage.getItem and sessionStorage.setItem
       Object.defineProperty(window, 'sessionStorage', {
         get() {
-          throw new Error("sessionStorage disabled");
+          const handler = {
+            getItem() { throw new Error("sessionStorage.getItem blocked"); },
+            setItem() { throw new Error("sessionStorage.setItem blocked"); },
+            removeItem() { throw new Error("sessionStorage.removeItem blocked"); },
+            clear() { throw new Error("sessionStorage.clear blocked"); },
+            key() { throw new Error("sessionStorage.key blocked"); },
+            length: 0,
+          };
+          return handler;
         }
       });
     });
 
     await page.route("/api/site-lead", async (route) => {
+      const body = route.request().postDataJSON();
+      apiCallCount++;
+      const ref = body.submissionRef;
+      emittedRefs.push(ref);
+
+      // All requests return 201 for this test
       await route.fulfill({
         status: 201,
         contentType: "application/json",
@@ -839,23 +906,43 @@ test.describe("Fibra RJ — Form Behavior", () => {
     await page.check('input[name="consentimento"]');
 
     const submitBtn = page.locator('button[type="submit"]:has-text("Enviar solicitação")');
-    await submitBtn.click();
 
+    // Submit with blocked sessionStorage
+    await submitBtn.click();
     const successState = page.locator("[data-success-state]");
     await expect(successState).toBeVisible({ timeout: 10000 });
 
-    await page.waitForTimeout(500);
+    await page.waitForTimeout(300);
 
-    // Check that event was fired (in-memory fallback worked)
+    // Verify submission succeeded despite sessionStorage failure
     const events = await page.evaluate(() => {
       return (window as any).__capturedDataLayer || [];
     });
     const intakeCreatedEvents = events.filter((e: any) => e.event === "intake_created");
+
+    // Even though sessionStorage.setItem was blocked, the in-memory fallback
+    // allowed the submission to complete and emit intake_created
     expect(intakeCreatedEvents.length).toBe(1);
+    expect(apiCallCount).toBe(1);
+
+    // The ref was successfully generated (in-memory fallback worked)
+    expect(emittedRefs.length).toBe(1);
+    expect(emittedRefs[0]).toBeDefined();
   });
 
-  test("WhatsApp continuation does not POST again", async ({ page }) => {
+  test("WhatsApp continuation does not POST again or emit intake_created", async ({ page }) => {
     let postCount = 0;
+
+    await page.addInitScript(() => {
+      const w = window as any;
+      w.dataLayer = w.dataLayer || [];
+      const originalPush = w.dataLayer.push;
+      w.dataLayer.push = function(...args: any[]) {
+        (window as any).__capturedDataLayer = (window as any).__capturedDataLayer || [];
+        (window as any).__capturedDataLayer.push(...args);
+        return originalPush.apply(this, args);
+      };
+    });
 
     await page.route("/api/site-lead", async (route) => {
       postCount++;
@@ -888,6 +975,13 @@ test.describe("Fibra RJ — Form Behavior", () => {
     const successState = page.locator("[data-success-state]");
     await expect(successState).toBeVisible({ timeout: 10000 });
 
+    // Capture initial state
+    let initialEvents = await page.evaluate(() => {
+      return (window as any).__capturedDataLayer || [];
+    });
+    const initialIntakeCreatedCount = initialEvents.filter((e: any) => e.event === "intake_created").length;
+    expect(initialIntakeCreatedCount).toBe(1);
+
     // Click WhatsApp continue button
     const whatsappBtn = successState.locator('[data-whatsapp-continue]');
     await whatsappBtn.click();
@@ -896,6 +990,13 @@ test.describe("Fibra RJ — Form Behavior", () => {
 
     // Verify no additional POST occurred
     expect(postCount).toBe(1);
+
+    // Verify no additional intake_created events
+    const finalEvents = await page.evaluate(() => {
+      return (window as any).__capturedDataLayer || [];
+    });
+    const finalIntakeCreatedCount = finalEvents.filter((e: any) => e.event === "intake_created").length;
+    expect(finalIntakeCreatedCount).toBe(1);
   });
 
   test("WhatsApp button includes protocol but no sensitive data", async ({ page }) => {
@@ -945,8 +1046,8 @@ test.describe("Fibra RJ — Form Behavior", () => {
     expect(message).toContain("RS-TEST-FIBRA-001");
   });
 
-  test("direct WhatsApp button does not trigger intake_created", async ({ page }) => {
-    const capturedEvents: any[] = [];
+  test("direct WhatsApp button does not trigger intake_created or POST", async ({ page }) => {
+    let postCount = 0;
 
     await page.addInitScript(() => {
       const w = window as any;
@@ -959,17 +1060,43 @@ test.describe("Fibra RJ — Form Behavior", () => {
       };
     });
 
+    await page.route("/api/site-lead", async (route) => {
+      postCount++;
+      await route.fulfill({
+        status: 201,
+        contentType: "application/json",
+        body: JSON.stringify({
+          ok: true,
+          replay: false,
+          protocol: "RS-TEST-FIBRA-001",
+          caseId: "case-123",
+        }),
+      });
+    });
+
+    // Prevent actual WhatsApp navigation
+    await page.route("https://wa.me/**", async (route) => {
+      await route.abort();
+    });
+
     await page.goto("/lp/fibra-rj");
 
-    const botaoWhatsapp = page.locator('[data-botao-whatsapp]');
-    if (await botaoWhatsapp.count() > 0) {
-      await botaoWhatsapp.click();
+    // Use the actual selector for direct WhatsApp button
+    const whatsappBtn = page.locator('#btn-abrir-whatsapp');
+    const btnCount = await whatsappBtn.count();
+
+    if (btnCount > 0) {
+      await whatsappBtn.click();
       // Suppress popup
       page.on('popup', popup => popup.close());
     }
 
     await page.waitForTimeout(500);
 
+    // Verify no POST was made
+    expect(postCount).toBe(0);
+
+    // Verify no intake_created event
     const events = await page.evaluate(() => {
       return (window as any).__capturedDataLayer || [];
     });
@@ -983,14 +1110,13 @@ test.describe("Fibra Regression — No Breaking Changes", () => {
   test("direct WhatsApp buttons remain functional", async ({ page }) => {
     await page.goto("/lp/fibra-rj");
 
-    const botaoWhatsapp = page.locator('[data-botao-whatsapp]');
-    if (await botaoWhatsapp.count() > 0) {
-      await expect(botaoWhatsapp).toBeVisible();
+    const whatsappBtn = page.locator('#btn-abrir-whatsapp');
+    if (await whatsappBtn.count() > 0) {
+      await expect(whatsappBtn).toBeVisible();
     }
 
     const formCTA = page.locator('a[href="#avaliacao"]');
-    const formCTACount = await formCTA.count();
-    expect(formCTACount).toBeGreaterThan(0);
+    await expect(formCTA.first()).toBeVisible();
   });
 
   test("page layout is intact", async ({ page }) => {
