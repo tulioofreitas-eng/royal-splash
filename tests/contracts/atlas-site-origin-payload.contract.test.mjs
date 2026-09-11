@@ -74,6 +74,7 @@ test("maps valid Royal ingress to the closed Atlas v1 payload", () => {
       city: "Rio de Janeiro",
     },
     request: {
+      serviceRefs: ["royal-internal-service"],
       description:
         "Contexto: Residencial. Necessidade: Reforma.\n" +
         "Mensagem: Preferência por contato à tarde.",
@@ -109,7 +110,6 @@ test("emits no Royal-only or closed-schema forbidden fields", () => {
   for (const forbiddenKey of [
     "message",
     "ingressChannel",
-    "serviceRefs",
     "serviceRef",
     "empresaId",
     "tenantId",
@@ -206,3 +206,64 @@ for (const [label, overrides, reason] of [
     );
   });
 }
+
+test("maps /lp/reforma-rj to major_renovation serviceRef", () => {
+  const lead = createLead({
+    interest: {
+      serviceRef: "major_renovation",
+      description: "Contexto: Residencial. Necessidade: Reforma.",
+    },
+    acquisition: {
+      ingressChannel: "site_form",
+      pageRef: "/lp/reforma-rj",
+    },
+  });
+  const payload = mapSiteLeadToAtlasPayload(lead, NOW);
+
+  assert.deepEqual(payload.request.serviceRefs, ["major_renovation"]);
+});
+
+test("maps /lp/piscinas-rj to pool_construction serviceRef", () => {
+  const lead = createLead({
+    interest: {
+      serviceRef: "pool_construction",
+      description: "Contexto: Residencial. Necessidade: Construção de piscina.",
+    },
+    acquisition: {
+      ingressChannel: "site_form",
+      pageRef: "/lp/piscinas-rj",
+    },
+  });
+  const payload = mapSiteLeadToAtlasPayload(lead, NOW);
+
+  assert.deepEqual(payload.request.serviceRefs, ["pool_construction"]);
+});
+
+test("maps /lp/fibra-rj to fiberglass_pool_restoration serviceRef", () => {
+  const lead = createLead({
+    interest: {
+      serviceRef: "fiberglass_pool_restoration",
+      description: "Contexto: Residencial. Necessidade: Restauração de piscina de fibra.",
+    },
+    acquisition: {
+      ingressChannel: "site_form",
+      pageRef: "/lp/fibra-rj",
+    },
+  });
+  const payload = mapSiteLeadToAtlasPayload(lead, NOW);
+
+  assert.deepEqual(payload.request.serviceRefs, ["fiberglass_pool_restoration"]);
+});
+
+test("accepts optional projectNeed when serviceRef is present", () => {
+  const lead = createLead({
+    interest: {
+      serviceRef: "fiberglass_pool_restoration",
+      description: "Contexto: Residencial",
+    },
+  });
+  const payload = mapSiteLeadToAtlasPayload(lead, NOW);
+
+  assert.equal(payload.request.serviceRefs[0], "fiberglass_pool_restoration");
+  assert.equal(payload.request.description.includes("Contexto: Residencial"), true);
+});

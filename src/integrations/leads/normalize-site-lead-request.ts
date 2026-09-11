@@ -25,6 +25,7 @@ export interface SiteLeadRequestPayload {
   consent?: unknown;
   source?: unknown;
   pageRef?: unknown;
+  message?: unknown;
   attribution?: unknown;
 }
 
@@ -80,6 +81,7 @@ export function normalizeSiteLeadRequest(
   const name = normalizedText(body.name);
   const email = normalizedText(body.email);
   const phone = normalizedText(body.phone);
+  const message = normalizedText(body.message);
   const context = projectContext
     ? contextLabel(projectContext)
     : undefined;
@@ -89,7 +91,6 @@ export function normalizeSiteLeadRequest(
     !consentCapturedAt ||
     !context ||
     !city ||
-    !projectNeed ||
     !name ||
     (!email && !phone) ||
     (email && !isClearlyValidEmail(email)) ||
@@ -118,12 +119,20 @@ export function normalizeSiteLeadRequest(
   }
 
   const serviceRefByPage: Record<string, string> = {
-    "/lp/reforma-rj": "MAJOR_RENOVATION",
-    "/lp/piscinas-rj": "POOL_CONSTRUCTION",
-    "/lp/fibra-rj": "FIBERGLASS_POOL_RESTORATION",
+    "/lp/reforma-rj": "major_renovation",
+    "/lp/piscinas-rj": "pool_construction",
+    "/lp/fibra-rj": "fiberglass_pool_restoration",
   };
 
   const serviceRef = serviceRefByPage[body.pageRef as string];
+
+  const buildDescription = (context: string, projectNeed: string | undefined): string => {
+    const parts = [`Contexto: ${context}`];
+    if (projectNeed) {
+      parts.push(`Necessidade: ${projectNeed}`);
+    }
+    return parts.join(". ");
+  };
 
   return {
     schemaVersion: SITE_LEAD_SCHEMA_VERSION,
@@ -136,8 +145,7 @@ export function normalizeSiteLeadRequest(
     city,
     interest: {
       ...(serviceRef ? { serviceRef } : {}),
-      description:
-        `Contexto: ${context}. Necessidade: ${projectNeed}`,
+      description: buildDescription(context, projectNeed),
     },
     acquisition: {
       ingressChannel: "site_form",
@@ -146,6 +154,7 @@ export function normalizeSiteLeadRequest(
         : {}),
       pageRef,
     },
+    ...(message ? { message } : {}),
     ...(attribution ? { attribution } : {}),
     consent: {
       state: "granted",

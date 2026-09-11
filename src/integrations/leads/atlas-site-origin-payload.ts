@@ -32,7 +32,8 @@ export interface AtlasSiteIntakePayload {
     city?: string;
   };
   request: {
-    description: string;
+    serviceRefs?: string[];
+    description?: string;
   };
   consent: {
     state: "granted";
@@ -142,8 +143,20 @@ export function mapSiteLeadToAtlasPayload(
   }
 
   const description = descriptionFor(lead);
+  const serviceRef = lead.interest?.serviceRef;
 
-  if (!description || description.length > 4_000) {
+  const serviceRefs = serviceRef
+    ? [serviceRef.toLowerCase()]
+    : undefined;
+
+  if (
+    (!serviceRefs || serviceRefs.length === 0) &&
+    (!description || description.length > 4_000)
+  ) {
+    throw new AtlasPayloadValidationError("missing_request");
+  }
+
+  if (description && description.length > 4_000) {
     throw new AtlasPayloadValidationError("missing_request");
   }
 
@@ -204,7 +217,8 @@ export function mapSiteLeadToAtlasPayload(
     },
     ...(city ? { location: { city } } : {}),
     request: {
-      description,
+      ...(serviceRefs ? { serviceRefs } : {}),
+      ...(description ? { description } : {}),
     },
     consent: {
       state: "granted",

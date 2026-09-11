@@ -112,10 +112,15 @@
 
     let pendingSubmissionRef: string | null = null;
     let lastReceipt: { caseId: string; protocol?: string; replay: boolean } | null = null;
+    let submissionInProgress = false;
+    const emittedRefs = new Set<string>();
+
+    const FETCH_TIMEOUT_MS = 10000;
 
     const getConversionEmittedKey = (ref: string): string => `intake_created_emitted_${ref}`;
 
     const hasConversionBeenEmitted = (ref: string): boolean => {
+      if (emittedRefs.has(ref)) return true;
       try {
         return sessionStorage.getItem(getConversionEmittedKey(ref)) === "true";
       } catch {
@@ -124,10 +129,11 @@
     };
 
     const markConversionAsEmitted = (ref: string): void => {
+      emittedRefs.add(ref);
       try {
         sessionStorage.setItem(getConversionEmittedKey(ref), "true");
       } catch {
-        // Silently fail if sessionStorage is unavailable
+        // Silently fail if sessionStorage is unavailable; in-memory Set provides fallback
       }
     };
 
@@ -207,10 +213,13 @@
       if (successState) successState.hidden = false;
 
       if (protocolLine) {
+        protocolLine.textContent = "";
         if (receipt.protocol) {
-          protocolLine.innerHTML = `Protocolo: <strong>${receipt.protocol}</strong>`;
-        } else {
-          protocolLine.innerHTML = "";
+          const label = document.createTextNode("Protocolo: ");
+          const strong = document.createElement("strong");
+          strong.textContent = receipt.protocol;
+          protocolLine.appendChild(label);
+          protocolLine.appendChild(strong);
         }
       }
 
@@ -229,6 +238,9 @@
     };
 
     const submitIntake = async () => {
+      if (submissionInProgress) return;
+      submissionInProgress = true;
+
       if (!pendingSubmissionRef) {
         pendingSubmissionRef = generateSubmissionRef();
       }
@@ -238,6 +250,9 @@
         submitBtn.textContent = "Enviando...";
       }
 
+      const controller = new AbortController();
+      const timeoutId = setTimeout(() => controller.abort(), FETCH_TIMEOUT_MS);
+
       try {
         const consentCapturedAt = new Date().toISOString();
 
@@ -245,11 +260,24 @@
         const firstTouch = (window as any).__royalGrowthAttribution?.readPersisted?.();
         const submissionTouch = observeSubmissionTouch(new URL(window.location.href));
 
+        const prazo = fields.prazo.value.trim();
+        const prazoParts = [];
+        if (prazo) {
+          const prazolabels: Record<string, string> = {
+            urgente: "Prazo: Urgente (próximas semanas)",
+            proximos_meses: "Prazo: Próximos meses",
+            aberto: "Prazo: Aberto (sem prazo definido)"
+          };
+          if (prazo in prazolabels) {
+            prazoParts.push(prazolabels[prazo]);
+          }
+        }
+
         const payload: any = {
           submissionRef: pendingSubmissionRef,
           consentCapturedAt,
           projectContext: "residencial",
-          projectNeed: fields.necessidade.value.trim(),
+          projectNeed: fields.necessidade.value.trim() || undefined,
           city: fields.cidade.value.trim(),
           name: fields.nome.value.trim(),
           phone: fields.telefone.value.trim(),
@@ -257,6 +285,10 @@
           source: "site",
           pageRef: "/lp/fibra-rj"
         };
+
+        if (prazoParts.length > 0) {
+          payload.message = prazoParts.join("\n");
+        }
 
         if (firstTouch || submissionTouch) {
           payload.attribution = {};
@@ -267,9 +299,11 @@
         const response = await fetch("/api/site-lead", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
-          body: JSON.stringify(payload)
+          body: JSON.stringify(payload),
+          signal: controller.signal
         });
 
+        clearTimeout(timeoutId);
         const receipt = await response.json();
 
         if (!response.ok) {
@@ -295,9 +329,15 @@
         }, pendingSubmissionRef || "");
 
       } catch (error) {
-        console.error("Form submission error:", error);
-        showError("Erro na conexão. Tente novamente.");
+        clearTimeout(timeoutId);
+        if (error instanceof Error && error.name === "AbortError") {
+          showError("Requisição expirou. Tente novamente.");
+        } else {
+          console.error("Form submission error:", error);
+          showError("Erro na conexão. Tente novamente.");
+        }
       } finally {
+        submissionInProgress = false;
         if (submitBtn) {
           submitBtn.disabled = false;
           submitBtn.textContent = "Enviar solicitação";
