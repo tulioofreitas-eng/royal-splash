@@ -218,62 +218,63 @@ for (const [label, overrides, reason] of [
   });
 }
 
-test("uses canonical Atlas serviceRef reforma_alvenaria for /lp/reforma-rj", () => {
-  const lead = createLead({
-    interest: {
-      serviceRef: "major_renovation",
-      description: "Contexto: Residencial. Necessidade: Reforma.",
-    },
-    acquisition: {
-      ingressChannel: "site_form",
-      pageRef: "/lp/reforma-rj",
-    },
+for (const [pageRef, expectedCanonicalCode] of [
+  ["/lp/reforma-rj", "reforma_alvenaria"],
+  ["/lp/piscinas-rj", "construcao"],
+  ["/lp/fibra-rj", "revitalizacao_fibra"],
+]) {
+  test(`normalizer and mapper produce canonical code "${expectedCanonicalCode}" for ${pageRef}`, () => {
+    const rawRequest = {
+      submissionRef: "site.12345678-1234-4123-8123-123456789abc",
+      consentCapturedAt: "2026-09-02T14:59:30.000Z",
+      projectContext: "residencial",
+      projectNeed: "Reforma necessária.",
+      city: "Rio de Janeiro",
+      name: "Pessoa Teste",
+      email: "pessoa@example.com",
+      phone: "+55 (21) 99999-0000",
+      message: "Preferência por contato à tarde.",
+      consent: true,
+      source: "google",
+      pageRef,
+      attribution: {
+        firstTouch: {
+          campaignRef: "growth.launch-01",
+          medium: "paid_search",
+          source: "google",
+          landingPageRef: pageRef,
+          referrerHost: "www.google.com",
+          capturedAt: "2026-09-01T15:00:00.000Z",
+        },
+        submissionTouch: {
+          campaignRef: "growth.submit-02",
+          medium: "organic_social",
+          source: "instagram",
+          pageRef: "/inicie-seu-projeto",
+        },
+      },
+    };
+
+    const normalized = normalizeSiteLeadRequest(rawRequest);
+    assert.equal(
+      normalized.interest.serviceRef,
+      expectedCanonicalCode,
+      `normalizer must map ${pageRef} to ${expectedCanonicalCode}`
+    );
+
+    const atlasPayload = mapSiteLeadToAtlasPayload(normalized, NOW);
+    assert.deepEqual(
+      atlasPayload.request.serviceRefs,
+      [expectedCanonicalCode],
+      `Atlas payload must contain exactly [${expectedCanonicalCode}] for ${pageRef}`
+    );
+
+    assert.ok(
+      ATLAS_CANONICAL_SERVICES[expectedCanonicalCode],
+      `${expectedCanonicalCode} must be registered in ATLAS_CANONICAL_SERVICES`
+    );
   });
-  const payload = mapSiteLeadToAtlasPayload(lead, NOW);
-
-  assert.ok(
-    ATLAS_CANONICAL_SERVICES["reforma_alvenaria"],
-    "reforma_alvenaria must be a valid Atlas serviceRef"
-  );
-});
-
-test("uses canonical Atlas serviceRef construcao for /lp/piscinas-rj", () => {
-  const lead = createLead({
-    interest: {
-      serviceRef: "pool_construction",
-      description: "Contexto: Residencial. Necessidade: Construção de piscina.",
-    },
-    acquisition: {
-      ingressChannel: "site_form",
-      pageRef: "/lp/piscinas-rj",
-    },
-  });
-  const payload = mapSiteLeadToAtlasPayload(lead, NOW);
-
-  assert.ok(
-    ATLAS_CANONICAL_SERVICES["construcao"],
-    "construcao must be a valid Atlas serviceRef"
-  );
-});
-
-test("uses canonical Atlas serviceRef revitalizacao_fibra for /lp/fibra-rj", () => {
-  const lead = createLead({
-    interest: {
-      serviceRef: "fiberglass_pool_restoration",
-      description: "Contexto: Residencial. Necessidade: Restauração de piscina de fibra.",
-    },
-    acquisition: {
-      ingressChannel: "site_form",
-      pageRef: "/lp/fibra-rj",
-    },
-  });
-  const payload = mapSiteLeadToAtlasPayload(lead, NOW);
-
-  assert.ok(
-    ATLAS_CANONICAL_SERVICES["revitalizacao_fibra"],
-    "revitalizacao_fibra must be a valid Atlas serviceRef"
-  );
-});
+}
 
 test("accepts optional projectNeed when serviceRef is present", () => {
   const lead = createLead({
@@ -286,6 +287,65 @@ test("accepts optional projectNeed when serviceRef is present", () => {
 
   assert.equal(payload.request.serviceRefs[0], "fiberglass_pool_restoration");
   assert.equal(payload.request.description.includes("Contexto: Residencial"), true);
+});
+
+// Regression guard: mutation-sensitivity for normalized service mappings
+test("mutation guard: Atlas payload serviceRefs must be independently verified against canonical registry", () => {
+  const testCases = [
+    {
+      pageRef: "/lp/reforma-rj",
+      expectedCanonical: "reforma_alvenaria",
+    },
+    {
+      pageRef: "/lp/piscinas-rj",
+      expectedCanonical: "construcao",
+    },
+    {
+      pageRef: "/lp/fibra-rj",
+      expectedCanonical: "revitalizacao_fibra",
+    },
+  ];
+
+  for (const { pageRef, expectedCanonical } of testCases) {
+    const rawRequest = {
+      submissionRef: "site.mutation-guard-12345678-1234-4123-8123",
+      consentCapturedAt: "2026-09-02T14:59:30.000Z",
+      projectContext: "residencial",
+      projectNeed: "Test mutation sensitivity.",
+      city: "Rio de Janeiro",
+      name: "Teste Mutação",
+      email: "mutacao@example.com",
+      consent: true,
+      pageRef,
+      attribution: {
+        submissionTouch: {
+          medium: "direct",
+          pageRef,
+        },
+      },
+    };
+
+    const normalized = normalizeSiteLeadRequest(rawRequest);
+    const atlasPayload = mapSiteLeadToAtlasPayload(normalized, NOW);
+
+    assert.ok(
+      atlasPayload.request.serviceRefs && atlasPayload.request.serviceRefs.length > 0,
+      `${pageRef}: Atlas payload must have serviceRefs`
+    );
+
+    const emittedRef = atlasPayload.request.serviceRefs[0];
+
+    assert.equal(
+      emittedRef,
+      expectedCanonical,
+      `${pageRef}: emitted serviceRef "${emittedRef}" must equal expected "${expectedCanonical}"`
+    );
+
+    assert.ok(
+      ATLAS_CANONICAL_SERVICES[emittedRef],
+      `${pageRef}: emitted serviceRef "${emittedRef}" must be in ATLAS_CANONICAL_SERVICES registry`
+    );
+  }
 });
 
 // Regression guard: canonical Atlas service registry codes
