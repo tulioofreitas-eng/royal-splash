@@ -545,11 +545,17 @@ test.describe("Vazamento-RJ Structured Intake Form", () => {
     const consentInput = form.locator('input[name="consentimento"]');
 
     let postCount = 0;
+    let resolveFirstRequest: (() => void) | null = null;
+    const firstRequestPending = new Promise<void>(resolve => {
+      resolveFirstRequest = resolve;
+    });
 
     await page.route("/api/site-lead", async route => {
       postCount++;
-      // Add delay to simulate slow response
-      await new Promise(resolve => setTimeout(resolve, 300));
+      // Keep first request deliberately pending until we trigger the second submit attempt
+      if (postCount === 1) {
+        await firstRequestPending;
+      }
       route.fulfill({
         status: 201,
         contentType: "application/json",
@@ -566,28 +572,61 @@ test.describe("Vazamento-RJ Structured Intake Form", () => {
     await cidadeInput.fill("Rio de Janeiro");
     await consentInput.check();
 
+    // Set up submit event counter on the form
+    await page.evaluate(() => {
+      const form = document.querySelector<HTMLFormElement>("[data-vazamento-intake-form]");
+      if (form) {
+        (window as any).__formSubmitCount = 0;
+        form.addEventListener("submit", () => {
+          (window as any).__formSubmitCount++;
+        });
+      }
+    });
+
+    // Use form.requestSubmit() twice to trigger two genuine submit events
+    // while the first request is still in flight
+    await page.evaluate(() => {
+      const form = document.querySelector<HTMLFormElement>("[data-vazamento-intake-form]");
+      if (form) {
+        form.requestSubmit();
+        setTimeout(() => {
+          form.requestSubmit();
+        }, 5);
+      }
+    });
+
+    // Wait for button to become disabled (indicating first request started)
     const submitBtn = form.locator('button[type="submit"]');
-
-    // First click initiates submission
-    await submitBtn.click();
-
-    // Button becomes disabled immediately
     await expect(submitBtn).toBeDisabled();
 
-    // Second click attempt (on disabled button) — just try to click it
-    // The handler prevents the form from being submitted again
-    try {
-      await submitBtn.click({ timeout: 100 });
-    } catch {
-      // Expected to timeout or fail since button is disabled
+    // Verify two submit events were captured
+    const submitEventCount = await page.evaluate(() => (window as any).__formSubmitCount || 0);
+    expect(submitEventCount).toBe(2);
+
+    // At this point: 2 submit events fired, but only 1 POST request should exist
+    expect(postCount).toBe(1);
+
+    // Button disabled proves submissionInProgress guard is active
+    expect(await submitBtn.isDisabled()).toBe(true);
+
+    // Now release the first request
+    if (resolveFirstRequest) {
+      resolveFirstRequest();
     }
 
     // Wait for success state to appear
     const successState = page.locator("[data-success-state]");
     await expect(successState).not.toHaveAttribute("hidden", { timeout: 5000 });
 
-    // Verify only one POST was sent despite double-click attempt
+    // Final verification: still only one POST despite two submit events
     expect(postCount).toBe(1);
+
+    // Verify intake_created fired exactly once
+    const intakeCreatedEvents = await page.evaluate(() => {
+      const w = window as any;
+      return (w.dataLayer || []).filter((event: any) => event.event === "intake_created").length;
+    });
+    expect(intakeCreatedEvents).toBe(1);
   });
 
   test("behavioral: intake_created fires exactly once", async ({ page }) => {
