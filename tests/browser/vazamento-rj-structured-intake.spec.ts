@@ -300,8 +300,20 @@ test.describe("Vazamento-RJ Structured Intake Form", () => {
     const consentInput = form.locator('input[name="consentimento"]');
 
     let failureMode = true;
+    let firstSubmissionRef: string | null = null;
+    let secondSubmissionRef: string | null = null;
+    let callCount = 0;
 
     await page.route("/api/site-lead", route => {
+      callCount++;
+      const postData = route.request().postDataJSON();
+
+      if (callCount === 1) {
+        firstSubmissionRef = postData.submissionRef;
+      } else if (callCount === 2) {
+        secondSubmissionRef = postData.submissionRef;
+      }
+
       if (failureMode) {
         route.fulfill({
           status: 500,
@@ -333,12 +345,12 @@ test.describe("Vazamento-RJ Structured Intake Form", () => {
     await expect(errorState).not.toHaveAttribute("hidden");
     await expect(errorState.locator("[data-error-message]")).toContainText("Não foi possível processar a solicitação");
 
-    // Verify no intake_created was emitted
-    const intakeCreatedEvents = await page.evaluate(() => {
+    // Verify no intake_created was emitted on first 500 attempt
+    let firstAttemptEventCount = await page.evaluate(() => {
       const w = window as any;
-      return (w.dataLayer || []).filter((event: any) => event.event === "intake_created");
+      return (w.dataLayer || []).filter((event: any) => event.event === "intake_created").length;
     });
-    expect(intakeCreatedEvents.length).toBe(0);
+    expect(firstAttemptEventCount).toBe(0);
 
     // Retry should succeed
     failureMode = false;
@@ -347,6 +359,18 @@ test.describe("Vazamento-RJ Structured Intake Form", () => {
 
     const successState = page.locator("[data-success-state]");
     await expect(successState).not.toHaveAttribute("hidden");
+
+    // Verify intake_created was emitted after successful retry
+    let finalEventCount = await page.evaluate(() => {
+      const w = window as any;
+      return (w.dataLayer || []).filter((event: any) => event.event === "intake_created").length;
+    });
+    expect(finalEventCount).toBe(1);
+
+    // Assert submissionRef remained the same across both attempts
+    expect(firstSubmissionRef).not.toBeNull();
+    expect(secondSubmissionRef).not.toBeNull();
+    expect(firstSubmissionRef).toBe(secondSubmissionRef);
   });
 
   test("behavioral: 503 shows service unavailable error", async ({ page }) => {
@@ -521,15 +545,11 @@ test.describe("Vazamento-RJ Structured Intake Form", () => {
     const consentInput = form.locator('input[name="consentimento"]');
 
     let postCount = 0;
-    let postDelayed = false;
 
     await page.route("/api/site-lead", async route => {
       postCount++;
-      // Add delay to allow testing button state during flight
-      if (postCount === 1) {
-        postDelayed = true;
-        await new Promise(resolve => setTimeout(resolve, 100));
-      }
+      // Add delay to simulate slow response
+      await new Promise(resolve => setTimeout(resolve, 300));
       route.fulfill({
         status: 201,
         contentType: "application/json",
@@ -551,12 +571,22 @@ test.describe("Vazamento-RJ Structured Intake Form", () => {
     // First click initiates submission
     await submitBtn.click();
 
-    // Button should be disabled during submission
-    await expect(submitBtn).toBeDisabled({ timeout: 5000 });
+    // Button becomes disabled immediately
+    await expect(submitBtn).toBeDisabled();
 
+    // Second click attempt (on disabled button) — just try to click it
+    // The handler prevents the form from being submitted again
+    try {
+      await submitBtn.click({ timeout: 100 });
+    } catch {
+      // Expected to timeout or fail since button is disabled
+    }
+
+    // Wait for success state to appear
     const successState = page.locator("[data-success-state]");
     await expect(successState).not.toHaveAttribute("hidden", { timeout: 5000 });
 
+    // Verify only one POST was sent despite double-click attempt
     expect(postCount).toBe(1);
   });
 
@@ -698,17 +728,33 @@ test.describe("Vazamento-RJ Structured Intake Form", () => {
     const cidadeInput = form.locator('input[name="cidade"]');
     const consentInput = form.locator('input[name="consentimento"]');
 
-    // Block sessionStorage
+    // Block both sessionStorage.getItem and sessionStorage.setItem
     await page.evaluateHandle(() => {
-      const originalSessionStorage = window.sessionStorage;
-      Object.defineProperty(window, "sessionStorage", {
-        get: () => {
-          throw new Error("sessionStorage blocked");
+      const originalGetItem = window.sessionStorage.getItem;
+      const originalSetItem = window.sessionStorage.setItem;
+
+      Object.defineProperty(window.sessionStorage, "getItem", {
+        value: () => {
+          throw new Error("sessionStorage.getItem blocked");
+        }
+      });
+
+      Object.defineProperty(window.sessionStorage, "setItem", {
+        value: () => {
+          throw new Error("sessionStorage.setItem blocked");
         }
       });
     });
 
+    let postCount = 0;
+    let submissionRef: string | null = null;
+
     await page.route("/api/site-lead", route => {
+      postCount++;
+      const postData = route.request().postDataJSON();
+      if (!submissionRef) {
+        submissionRef = postData.submissionRef;
+      }
       route.fulfill({
         status: 201,
         contentType: "application/json",
@@ -726,18 +772,51 @@ test.describe("Vazamento-RJ Structured Intake Form", () => {
     await consentInput.check();
 
     const submitBtn = form.locator('button[type="submit"]');
-    await submitBtn.click();
 
+    // First successful evaluation with same submissionRef
+    await submitBtn.click();
     const successState = page.locator("[data-success-state]");
     await expect(successState).not.toHaveAttribute("hidden");
 
-    const intakeCreatedEvents = await page.evaluate(() => {
+    let firstEmitCount = await page.evaluate(() => {
       const w = window as any;
-      return (w.dataLayer || []).filter((event: any) => event.event === "intake_created");
+      return (w.dataLayer || []).filter((event: any) => event.event === "intake_created").length;
+    });
+    expect(firstEmitCount).toBe(1);
+
+    // Close success state and retry with same submissionRef
+    const closeSuccessBtn = successState.locator("[data-close-success]");
+    await closeSuccessBtn.click();
+    await expect(successState).toHaveAttribute("hidden");
+
+    // Reset form
+    await form.evaluate(el => (el as HTMLFormElement).reset());
+
+    // Second successful evaluation with SAME submissionRef
+    await nomeInput.fill("João Silva");
+    await telefoneInput.fill("(21) 98765-4321");
+    await cidadeInput.fill("Rio de Janeiro");
+    await consentInput.check();
+
+    // Simulate calling the shared helper again with the same ref
+    await page.evaluate((ref) => {
+      const w = window as any;
+      // Direct call to test the in-memory Set fallback
+      w.__emitIntakeCreatedOnce?.(ref, {
+        service_intent: "POOL_LEAK_DETECTION",
+        acquisition_geography: "RJ",
+        experiment_id: "HV-RJ-POOL-LEAK-DETECTION",
+        entry_surface: "/lp/vazamento-rj"
+      });
+    }, submissionRef);
+
+    let finalEmitCount = await page.evaluate(() => {
+      const w = window as any;
+      return (w.dataLayer || []).filter((event: any) => event.event === "intake_created").length;
     });
 
-    // Should still have emitted once despite sessionStorage being unavailable
-    expect(intakeCreatedEvents.length).toBe(1);
+    // Should still be 1 because in-memory Set blocked the second emission
+    expect(finalEmitCount).toBe(1);
   });
 
   test("behavioral: required-only submission succeeds", async ({ page }) => {

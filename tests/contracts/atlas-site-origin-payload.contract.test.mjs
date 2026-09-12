@@ -18,6 +18,7 @@ const ATLAS_CANONICAL_SERVICES = {
   reforma_alvenaria: true,
   construcao: true,
   revitalizacao_fibra: true,
+  vazamento: true,
 };
 
 function createLead(overrides = {}) {
@@ -222,6 +223,7 @@ for (const [pageRef, expectedCanonicalCode] of [
   ["/lp/reforma-rj", "reforma_alvenaria"],
   ["/lp/piscinas-rj", "construcao"],
   ["/lp/fibra-rj", "revitalizacao_fibra"],
+  ["/lp/vazamento-rj", "vazamento"],
 ]) {
   test(`normalizer and mapper produce canonical code "${expectedCanonicalCode}" for ${pageRef}`, () => {
     const rawRequest = {
@@ -304,6 +306,10 @@ test("mutation guard: Atlas payload serviceRefs must be independently verified a
       pageRef: "/lp/fibra-rj",
       expectedCanonical: "revitalizacao_fibra",
     },
+    {
+      pageRef: "/lp/vazamento-rj",
+      expectedCanonical: "vazamento",
+    },
   ];
 
   for (const { pageRef, expectedCanonical } of testCases) {
@@ -354,6 +360,7 @@ test("regression guard: Atlas canonical service codes are defined", () => {
     "construcao",
     "reforma_alvenaria",
     "revitalizacao_fibra",
+    "vazamento",
   ]);
 
   // Verify each code is a valid identifier
