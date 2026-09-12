@@ -87,6 +87,10 @@
 
 <script>
   import { observeFirstTouch, observeSubmissionTouch } from "../../growth/attribution.ts";
+  import { emitIntakeCreatedOnce } from "../../growth/emitIntakeCreatedOnce.ts";
+
+  // Expose for testing
+  (window as any).__emitIntakeCreatedOnce = emitIntakeCreatedOnce;
 
   const form = document.querySelector<HTMLFormElement>("[data-vazamento-intake-form]");
 
@@ -169,43 +173,6 @@
       return `RS-vazamento-rj-${crypto.randomUUID()}`;
     };
 
-    const emitIntakeCreated = (submissionRef: string): void => {
-      const emittedRefs = new Set<string>();
-      const getConversionEmittedKey = (ref: string): string => `intake_created_emitted_${ref}`;
-
-      const hasConversionBeenEmitted = (ref: string): boolean => {
-        if (emittedRefs.has(ref)) return true;
-        try {
-          return sessionStorage.getItem(getConversionEmittedKey(ref)) === "true";
-        } catch {
-          return false;
-        }
-      };
-
-      const markConversionAsEmitted = (ref: string): void => {
-        emittedRefs.add(ref);
-        try {
-          sessionStorage.setItem(getConversionEmittedKey(ref), "true");
-        } catch {
-          // Silently fail if sessionStorage is unavailable; in-memory Set provides fallback
-        }
-      };
-
-      if (hasConversionBeenEmitted(submissionRef)) return;
-
-      const w = window as any;
-      w.dataLayer = w.dataLayer || [];
-      w.dataLayer.push({
-        event: "intake_created",
-        service_intent: "POOL_LEAK_DETECTION",
-        acquisition_geography: "RJ",
-        experiment_id: "HV-RJ-POOL-LEAK-DETECTION",
-        entry_surface: "/lp/vazamento-rj"
-      });
-
-      markConversionAsEmitted(submissionRef);
-    };
-
     const showSuccess = (receipt: { caseId: string; protocol?: string; replay: boolean }, submissionRef: string) => {
       lastReceipt = receipt;
       form.hidden = true;
@@ -223,7 +190,12 @@
         }
       }
 
-      emitIntakeCreated(submissionRef);
+      emitIntakeCreatedOnce(submissionRef, {
+        service_intent: "POOL_LEAK_DETECTION",
+        acquisition_geography: "RJ",
+        experiment_id: "HV-RJ-POOL-LEAK-DETECTION",
+        entry_surface: "/lp/vazamento-rj"
+      });
       successState?.focus();
     };
 

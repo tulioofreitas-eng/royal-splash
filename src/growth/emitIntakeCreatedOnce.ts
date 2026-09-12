@@ -25,17 +25,21 @@ const markConversionAsEmitted = (ref: string): void => {
   }
 };
 
-export const emitIntakeCreatedOnce = (submissionRef: string): void => {
+interface IntakeCreatedEvent {
+  service_intent: string;
+  acquisition_geography: string;
+  experiment_id: string;
+  entry_surface: string;
+}
+
+export const emitIntakeCreatedOnce = (submissionRef: string, event: IntakeCreatedEvent): void => {
   if (hasConversionBeenEmitted(submissionRef)) return;
 
   const w = window as any;
   w.dataLayer = w.dataLayer || [];
   w.dataLayer.push({
     event: "intake_created",
-    service_intent: "FIBERGLASS_POOL_RESTORATION",
-    acquisition_geography: "RJ",
-    experiment_id: "HV-RJ-FIBERGLASS-RESTORATION",
-    entry_surface: "/lp/fibra-rj"
+    ...event
   });
 
   markConversionAsEmitted(submissionRef);

@@ -190,7 +190,12 @@
         }
       }
 
-      emitIntakeCreatedOnce(submissionRef);
+      emitIntakeCreatedOnce(submissionRef, {
+        service_intent: "FIBERGLASS_POOL_RESTORATION",
+        acquisition_geography: "RJ",
+        experiment_id: "HV-RJ-FIBERGLASS-RESTORATION",
+        entry_surface: "/lp/fibra-rj"
+      });
       successState?.focus();
     };
 
