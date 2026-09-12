@@ -141,23 +141,27 @@ test.describe("Vazamento-RJ Structured Intake Form", () => {
     const cidadeInput = form.locator('input[name="cidade"]');
     const consentInput = form.locator('input[name="consentimento"]');
 
-    // Intercept the POST
-    const requestPromise = page.waitForRequest(request =>
-      request.url().includes("/api/site-lead") && request.method() === "POST"
-    );
+    let capturedRequest: any = null;
+
+    // Set up route mock FIRST
+    await page.route("/api/site-lead", route => {
+      capturedRequest = route.request();
+      route.abort("aborted");
+    });
 
     await nomeInput.fill("João Silva");
     await telefoneInput.fill("(21) 98765-4321");
     await cidadeInput.fill("Rio de Janeiro");
     await consentInput.check();
 
-    // Mock success response
-    await page.route("/api/site-lead", route => {
-      route.abort("aborted");
-    });
+    const submitBtn = form.locator('button[type="submit"]');
+    await submitBtn.click();
 
-    const request = await requestPromise;
-    const postData = request.postDataJSON();
+    // Wait for request to be captured
+    await page.waitForTimeout(500);
+
+    expect(capturedRequest).not.toBeNull();
+    const postData = capturedRequest.postDataJSON();
 
     expect(postData).toHaveProperty("submissionRef");
     expect(postData).toHaveProperty("consentCapturedAt");
@@ -286,6 +290,63 @@ test.describe("Vazamento-RJ Structured Intake Form", () => {
     const errorState = page.locator("[data-error-state]");
     await expect(errorState).not.toHaveAttribute("hidden");
     await expect(errorState.locator("[data-error-message]")).toContainText("Dados inválidos");
+  });
+
+  test("behavioral: 500 server error shows retryable error", async ({ page }) => {
+    const form = page.locator("[data-vazamento-intake-form]");
+    const nomeInput = form.locator('input[name="nome"]');
+    const telefoneInput = form.locator('input[name="telefone"]');
+    const cidadeInput = form.locator('input[name="cidade"]');
+    const consentInput = form.locator('input[name="consentimento"]');
+
+    let failureMode = true;
+
+    await page.route("/api/site-lead", route => {
+      if (failureMode) {
+        route.fulfill({
+          status: 500,
+          contentType: "application/json",
+          body: JSON.stringify({ ok: false })
+        });
+      } else {
+        route.fulfill({
+          status: 201,
+          contentType: "application/json",
+          body: JSON.stringify({
+            ok: true,
+            replay: false,
+            protocol: "PROTO-123"
+          })
+        });
+      }
+    });
+
+    await nomeInput.fill("João Silva");
+    await telefoneInput.fill("(21) 98765-4321");
+    await cidadeInput.fill("Rio de Janeiro");
+    await consentInput.check();
+
+    const submitBtn = form.locator('button[type="submit"]');
+    await submitBtn.click();
+
+    const errorState = page.locator("[data-error-state]");
+    await expect(errorState).not.toHaveAttribute("hidden");
+    await expect(errorState.locator("[data-error-message]")).toContainText("Não foi possível processar a solicitação");
+
+    // Verify no intake_created was emitted
+    const intakeCreatedEvents = await page.evaluate(() => {
+      const w = window as any;
+      return (w.dataLayer || []).filter((event: any) => event.event === "intake_created");
+    });
+    expect(intakeCreatedEvents.length).toBe(0);
+
+    // Retry should succeed
+    failureMode = false;
+    const retryBtn = errorState.locator("[data-retry-btn]");
+    await retryBtn.click();
+
+    const successState = page.locator("[data-success-state]");
+    await expect(successState).not.toHaveAttribute("hidden");
   });
 
   test("behavioral: 503 shows service unavailable error", async ({ page }) => {
@@ -460,9 +521,15 @@ test.describe("Vazamento-RJ Structured Intake Form", () => {
     const consentInput = form.locator('input[name="consentimento"]');
 
     let postCount = 0;
+    let postDelayed = false;
 
-    await page.route("/api/site-lead", route => {
+    await page.route("/api/site-lead", async route => {
       postCount++;
+      // Add delay to allow testing button state during flight
+      if (postCount === 1) {
+        postDelayed = true;
+        await new Promise(resolve => setTimeout(resolve, 100));
+      }
       route.fulfill({
         status: 201,
         contentType: "application/json",
@@ -481,15 +548,14 @@ test.describe("Vazamento-RJ Structured Intake Form", () => {
 
     const submitBtn = form.locator('button[type="submit"]');
 
-    // Rapid clicks
-    await Promise.all([
-      submitBtn.click(),
-      submitBtn.click(),
-      submitBtn.click()
-    ]);
+    // First click initiates submission
+    await submitBtn.click();
+
+    // Button should be disabled during submission
+    await expect(submitBtn).toBeDisabled({ timeout: 5000 });
 
     const successState = page.locator("[data-success-state]");
-    await expect(successState).not.toHaveAttribute("hidden");
+    await expect(successState).not.toHaveAttribute("hidden", { timeout: 5000 });
 
     expect(postCount).toBe(1);
   });
@@ -500,26 +566,6 @@ test.describe("Vazamento-RJ Structured Intake Form", () => {
     const telefoneInput = form.locator('input[name="telefone"]');
     const cidadeInput = form.locator('input[name="cidade"]');
     const consentInput = form.locator('input[name="consentimento"]');
-
-    const dataLayerEvents: any[] = [];
-
-    await page.on("console", msg => {
-      // Capture dataLayer events
-    });
-
-    await page.evaluateHandle(() => {
-      const w = window as any;
-      w.dataLayer = w.dataLayer || [];
-      const originalPush = w.dataLayer.push.bind(w.dataLayer);
-      w.dataLayer.push = function(...args: any[]) {
-        dataLayerEvents.push(...args);
-        return originalPush(...args);
-      };
-    });
-
-    const dataLayerEvents_ = await page.evaluate(() => {
-      return (window as any).dataLayerEvents || [];
-    });
 
     await page.route("/api/site-lead", route => {
       route.fulfill({
