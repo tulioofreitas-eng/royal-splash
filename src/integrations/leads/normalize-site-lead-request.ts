@@ -122,6 +122,7 @@ export function normalizeSiteLeadRequest(
     "/lp/reforma-rj": "reforma_alvenaria",
     "/lp/piscinas-rj": "construcao",
     "/lp/fibra-rj": "revitalizacao_fibra",
+    "/lp/vazamento-rj": "vazamento",
   };
 
   const serviceRef = serviceRefByPage[body.pageRef as string];

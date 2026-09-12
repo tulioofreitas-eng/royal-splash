@@ -6,7 +6,8 @@ import GTMBody from '../../components/GTMBody.astro';
 import LPHeader from '../../components/LPHeader.astro';
 import LPFooter from '../../components/LPFooter.astro';
 import BotaoWhatsapp from '../../components/BotaoWhatsapp.astro';
-import VazamentoWhatsAppForm from '../../components/lp/VazamentoWhatsAppForm.astro';
+import VazamentoRJStructuredIntakeForm from '../../components/lp/VazamentoRJStructuredIntakeForm.astro';
+import GrowthAttribution from '../../components/runtime/GrowthAttribution.astro';
 import Icon from '../../components/Icon.astro';
 import { Image, getImage } from 'astro:assets';
 import heroVazamentoPanoramico from '../../assets/vazamento-hero-panoramico.png';
@@ -25,6 +26,7 @@ import GaleriaZoom from '../../components/GaleriaZoom.astro';
   <GTMHead slot="head" />
   <link slot="head" rel="icon" type="image/x-icon" href="/favicon.ico" />
   <GTMBody slot="body-start" />
+  <GrowthAttribution />
   <LPHeader slot="header" visualMode="brand" />
 
   <section class="vazamento-rj-hero site-primitive-surface--dark">
@@ -126,9 +128,9 @@ import GaleriaZoom from '../../components/GaleriaZoom.astro';
   <section id="avaliacao" class="site-primitive-section vazamento-rj-form">
     <div class="site-primitive-reading vazamento-rj-form__heading">
       <h2 class="site-primitive-section-title">Solicite sua Avaliação</h2>
-      <p class="site-primitive-body site-primitive-supporting">Compartilhe o contexto da perda de água observada e abra uma conversa estruturada com a equipe Royal Splash pelo WhatsApp. Atendemos em todo o estado do Rio de Janeiro.</p>
+      <p class="site-primitive-body site-primitive-supporting">Compartilhe o contexto da perda de água observada. Após receber sua solicitação, nossa equipe entrará em contato para agendar a investigação técnica. Atendemos em todo o estado do Rio de Janeiro.</p>
     </div>
-    <VazamentoWhatsAppForm />
+    <VazamentoRJStructuredIntakeForm />
   </section>
 
   <LPFooter slot="footer" visualMode="brand" />
