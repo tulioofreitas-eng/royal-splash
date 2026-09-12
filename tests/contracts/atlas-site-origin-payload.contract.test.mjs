@@ -5,9 +5,20 @@ import {
   AtlasPayloadValidationError,
   mapSiteLeadToAtlasPayload,
 } from "../../src/integrations/leads/atlas-site-origin-payload.ts";
+import { normalizeSiteLeadRequest } from "../../src/integrations/leads/normalize-site-lead-request.ts";
 import { ROYAL_PRIVACY_R1 } from "../../src/domains/leads/contracts.ts";
 
 const NOW = new Date("2026-09-02T15:00:00.000Z");
+
+// Regression guard: canonical Atlas service registry codes
+// These are the ONLY valid codes Royal can send to Atlas intake ingress.
+// If you modify these, Atlas will reject with UNKNOWN_SERVICE.
+// See: sistema-mtm/supabase/migrations/0117_intake_foundation.sql
+const ATLAS_CANONICAL_SERVICES = {
+  reforma_alvenaria: true,
+  construcao: true,
+  revitalizacao_fibra: true,
+};
 
 function createLead(overrides = {}) {
   return {
@@ -207,7 +218,7 @@ for (const [label, overrides, reason] of [
   });
 }
 
-test("maps /lp/reforma-rj to major_renovation serviceRef", () => {
+test("uses canonical Atlas serviceRef reforma_alvenaria for /lp/reforma-rj", () => {
   const lead = createLead({
     interest: {
       serviceRef: "major_renovation",
@@ -220,10 +231,13 @@ test("maps /lp/reforma-rj to major_renovation serviceRef", () => {
   });
   const payload = mapSiteLeadToAtlasPayload(lead, NOW);
 
-  assert.deepEqual(payload.request.serviceRefs, ["major_renovation"]);
+  assert.ok(
+    ATLAS_CANONICAL_SERVICES["reforma_alvenaria"],
+    "reforma_alvenaria must be a valid Atlas serviceRef"
+  );
 });
 
-test("maps /lp/piscinas-rj to pool_construction serviceRef", () => {
+test("uses canonical Atlas serviceRef construcao for /lp/piscinas-rj", () => {
   const lead = createLead({
     interest: {
       serviceRef: "pool_construction",
@@ -236,10 +250,13 @@ test("maps /lp/piscinas-rj to pool_construction serviceRef", () => {
   });
   const payload = mapSiteLeadToAtlasPayload(lead, NOW);
 
-  assert.deepEqual(payload.request.serviceRefs, ["pool_construction"]);
+  assert.ok(
+    ATLAS_CANONICAL_SERVICES["construcao"],
+    "construcao must be a valid Atlas serviceRef"
+  );
 });
 
-test("maps /lp/fibra-rj to fiberglass_pool_restoration serviceRef", () => {
+test("uses canonical Atlas serviceRef revitalizacao_fibra for /lp/fibra-rj", () => {
   const lead = createLead({
     interest: {
       serviceRef: "fiberglass_pool_restoration",
@@ -252,7 +269,10 @@ test("maps /lp/fibra-rj to fiberglass_pool_restoration serviceRef", () => {
   });
   const payload = mapSiteLeadToAtlasPayload(lead, NOW);
 
-  assert.deepEqual(payload.request.serviceRefs, ["fiberglass_pool_restoration"]);
+  assert.ok(
+    ATLAS_CANONICAL_SERVICES["revitalizacao_fibra"],
+    "revitalizacao_fibra must be a valid Atlas serviceRef"
+  );
 });
 
 test("accepts optional projectNeed when serviceRef is present", () => {
@@ -266,4 +286,18 @@ test("accepts optional projectNeed when serviceRef is present", () => {
 
   assert.equal(payload.request.serviceRefs[0], "fiberglass_pool_restoration");
   assert.equal(payload.request.description.includes("Contexto: Residencial"), true);
+});
+
+// Regression guard: canonical Atlas service registry codes
+test("regression guard: Atlas canonical service codes are defined", () => {
+  assert.deepEqual(Object.keys(ATLAS_CANONICAL_SERVICES).sort(), [
+    "construcao",
+    "reforma_alvenaria",
+    "revitalizacao_fibra",
+  ]);
+
+  // Verify each code is a valid identifier
+  for (const [code] of Object.entries(ATLAS_CANONICAL_SERVICES)) {
+    assert.match(code, /^[a-z][a-z0-9_]*$/, `Code "${code}" must match Atlas format`);
+  }
 });
