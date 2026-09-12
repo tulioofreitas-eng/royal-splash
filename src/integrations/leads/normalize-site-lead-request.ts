@@ -5,6 +5,8 @@ import {
 import {
   SITE_LEAD_SCHEMA_VERSION,
   ROYAL_PRIVACY_R1,
+  SITE_LEAD_TIMELINES,
+  type SiteLeadTimeline,
   type GrowthAttribution,
   type SiteLeadIngress,
 } from "../../domains/leads/contracts.ts";
@@ -18,6 +20,7 @@ export interface SiteLeadRequestPayload {
   consentCapturedAt?: unknown;
   projectContext?: unknown;
   projectNeed?: unknown;
+  timeline?: unknown;
   city?: unknown;
   name?: unknown;
   email?: unknown;
@@ -77,6 +80,16 @@ export function normalizeSiteLeadRequest(
   );
   const projectContext = normalizedText(body.projectContext);
   const projectNeed = normalizedText(body.projectNeed);
+  const timelineCandidate = normalizedText(body.timeline);
+  if (
+    timelineCandidate &&
+    !SITE_LEAD_TIMELINES.includes(
+      timelineCandidate as SiteLeadTimeline,
+    )
+  ) {
+    throw new InvalidSiteLeadSubmissionError();
+  }
+  const timeline = timelineCandidate as SiteLeadTimeline | undefined;
   const city = normalizedText(body.city);
   const name = normalizedText(body.name);
   const email = normalizedText(body.email);
@@ -147,6 +160,7 @@ export function normalizeSiteLeadRequest(
     interest: {
       ...(serviceRef ? { serviceRef } : {}),
       description: buildDescription(context, projectNeed),
+      ...(timeline ? { timeline } : {}),
     },
     acquisition: {
       ingressChannel: "site_form",

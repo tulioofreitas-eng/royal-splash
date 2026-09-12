@@ -291,6 +291,88 @@ test("accepts optional projectNeed when serviceRef is present", () => {
   assert.equal(payload.request.description.includes("Contexto: Residencial"), true);
 });
 
+for (const timeline of ["urgente", "proximos_meses", "aberto"]) {
+  test(`preserves canonical prazo "${timeline}" through Royal normalization and Atlas mapping`, () => {
+    const normalized = normalizeSiteLeadRequest({
+      submissionRef: "site.timeline-12345678-1234-4123-8123",
+      consentCapturedAt: "2026-09-02T14:59:30.000Z",
+      projectContext: "residencial",
+      projectNeed: "Reforma necessária.",
+      city: "Rio de Janeiro",
+      name: "Pessoa Timeline",
+      phone: "+55 (21) 99999-0000",
+      consent: true,
+      pageRef: "/lp/reforma-rj",
+      timeline,
+    });
+
+    const payload = mapSiteLeadToAtlasPayload(normalized, NOW);
+
+    assert.equal(normalized.interest.timeline, timeline);
+    assert.equal(payload.request.prazo, timeline);
+    assert.deepEqual(payload.request.serviceRefs, ["reforma_alvenaria"]);
+    assert.equal(payload.consent.state, "granted");
+  });
+}
+
+test("omits prazo when the optional Royal field is empty or absent", () => {
+  const normalized = normalizeSiteLeadRequest({
+    submissionRef: "site.timeline-omitted-12345678-1234-8123",
+    consentCapturedAt: "2026-09-02T14:59:30.000Z",
+    projectContext: "residencial",
+    projectNeed: "Reforma necessária.",
+    city: "Rio de Janeiro",
+    name: "Pessoa Sem Prazo",
+    phone: "+55 (21) 99999-0000",
+    consent: true,
+    pageRef: "/lp/reforma-rj",
+    timeline: "",
+  });
+
+  const payload = mapSiteLeadToAtlasPayload(normalized, NOW);
+
+  assert.equal(normalized.interest.timeline, undefined);
+  assert.equal(Object.hasOwn(payload.request, "prazo"), false);
+});
+
+test("rejects unsupported prazo before it can reach Atlas", () => {
+  assert.throws(
+    () =>
+      normalizeSiteLeadRequest({
+        submissionRef: "site.timeline-invalid-12345678-1234",
+        consentCapturedAt: "2026-09-02T14:59:30.000Z",
+        projectContext: "residencial",
+        projectNeed: "Reforma necessária.",
+        city: "Rio de Janeiro",
+        name: "Pessoa Inválida",
+        phone: "+55 (21) 99999-0000",
+        consent: true,
+        pageRef: "/lp/reforma-rj",
+        timeline: "amanha",
+      }),
+    /Invalid site lead submission/,
+  );
+
+  assert.throws(
+    () =>
+      mapSiteLeadToAtlasPayload(
+        createLead({
+          interest: {
+            serviceRef: "reforma_alvenaria",
+            description: "Contexto: Residencial",
+            timeline: "amanha",
+          },
+        }),
+        NOW,
+      ),
+    (error) => {
+      assert.equal(error instanceof AtlasPayloadValidationError, true);
+      assert.equal(error.reason, "invalid_request");
+      return true;
+    },
+  );
+});
+
 // Regression guard: mutation-sensitivity for normalized service mappings
 test("mutation guard: Atlas payload serviceRefs must be independently verified against canonical registry", () => {
   const testCases = [

@@ -1,7 +1,9 @@
 import type {
   GrowthAttribution,
+  SiteLeadTimeline,
   SiteLeadIngress,
 } from "../../domains/leads/contracts.ts";
+import { SITE_LEAD_TIMELINES } from "../../domains/leads/contracts.ts";
 import {
   InvalidGrowthAttributionError,
   normalizeGrowthAttribution,
@@ -34,6 +36,7 @@ export interface AtlasSiteIntakePayload {
   request: {
     serviceRefs?: string[];
     description?: string;
+    prazo?: SiteLeadTimeline;
   };
   consent: {
     state: "granted";
@@ -50,6 +53,7 @@ export type AtlasPayloadValidationReason =
   | "invalid_contact"
   | "invalid_email"
   | "invalid_phone"
+  | "invalid_request"
   | "invalid_location"
   | "missing_request"
   | "invalid_consent"
@@ -144,6 +148,7 @@ export function mapSiteLeadToAtlasPayload(
 
   const description = descriptionFor(lead);
   const serviceRef = lead.interest?.serviceRef;
+  const timeline = normalized(lead.interest?.timeline);
 
   const serviceRefs = serviceRef
     ? [serviceRef.toLowerCase()]
@@ -158,6 +163,14 @@ export function mapSiteLeadToAtlasPayload(
 
   if (description && description.length > 4_000) {
     throw new AtlasPayloadValidationError("missing_request");
+  }
+
+  if (
+    timeline &&
+    (!SITE_LEAD_TIMELINES.includes(timeline as SiteLeadTimeline) ||
+      timeline.length > 100)
+  ) {
+    throw new AtlasPayloadValidationError("invalid_request");
   }
 
   const city = normalized(lead.city);
@@ -219,6 +232,7 @@ export function mapSiteLeadToAtlasPayload(
     request: {
       ...(serviceRefs ? { serviceRefs } : {}),
       ...(description ? { description } : {}),
+      ...(timeline ? { prazo: timeline as SiteLeadTimeline } : {}),
     },
     consent: {
       state: "granted",

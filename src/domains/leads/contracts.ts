@@ -10,6 +10,13 @@
 
 export const SITE_LEAD_SCHEMA_VERSION = "site-lead.v1" as const;
 export const ROYAL_PRIVACY_R1 = "royal-privacy-r1" as const;
+export const SITE_LEAD_TIMELINES = [
+  "urgente",
+  "proximos_meses",
+  "aberto",
+] as const;
+
+export type SiteLeadTimeline = (typeof SITE_LEAD_TIMELINES)[number];
 
 export const LEAD_INGRESS_CHANNELS = [
   "site_form",
@@ -37,6 +44,7 @@ export interface SiteLeadContact {
 export interface SiteLeadInterest {
   serviceRef?: string;
   description?: string;
+  timeline?: SiteLeadTimeline;
 }
 
 export interface SiteLeadAcquisitionContext {
