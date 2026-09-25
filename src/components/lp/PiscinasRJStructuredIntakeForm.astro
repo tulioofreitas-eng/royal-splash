@@ -50,6 +50,23 @@
     </select>
   </div>
 
+  <!-- Anexos -->
+  <div class="piscinas-rj-intake-form__field">
+    <label for="piscinas-rj-anexos">Fotos ou arquivos do projeto <small>Opcional</small></label>
+    <p id="piscinas-rj-anexos-help">Envie fotos atuais, referências ou PDF. Até 10 arquivos.</p>
+    <input
+      id="piscinas-rj-anexos"
+      name="anexos"
+      type="file"
+      multiple
+      accept=".pdf,.jpg,.jpeg,.png,.webp"
+      data-attachment-input
+      aria-describedby="piscinas-rj-anexos-help piscinas-rj-anexos-error"
+    />
+    <p data-attachment-list aria-live="polite"></p>
+    <p id="piscinas-rj-anexos-error" class="piscinas-rj-intake-form__error" data-attachment-error></p>
+  </div>
+
   <!-- Consentimento -->
   <div class="piscinas-rj-intake-form__consent">
     <input id="piscinas-rj-consentimento" name="consentimento" type="checkbox" aria-describedby="piscinas-rj-consentimento-error" required />
@@ -68,6 +85,7 @@
     <p class="piscinas-rj-intake-form__success-title">Solicitação recebida!</p>
     <p class="piscinas-rj-intake-form__success-subtitle" data-protocol-line></p>
     <p class="piscinas-rj-intake-form__success-body">Recebemos seus dados e nossa equipe poderá dar continuidade ao atendimento.</p>
+    <p class="piscinas-rj-intake-form__success-body" data-attachment-status hidden></p>
 
     <div class="piscinas-rj-intake-form__success-actions">
       <button type="button" class="site-primitive-action site-primitive-action--primary" data-whatsapp-continue>Continuar pelo WhatsApp</button>
@@ -87,6 +105,8 @@
 
 <script>
   import { observeFirstTouch, observeSubmissionTouch } from "../../growth/attribution.ts";
+  import { setupIntakeAttachmentField } from "../../growth/intake-attachments.ts";
+  import { emitIntakeCreatedOnce } from "../../growth/emitIntakeCreatedOnce.ts";
 
   const form = document.querySelector<HTMLFormElement>("[data-piscinas-rj-intake-form]");
 
@@ -100,11 +120,14 @@
       consentimento: form.elements.namedItem("consentimento") as HTMLInputElement,
     };
 
+    const attachments = setupIntakeAttachmentField(form);
+
     const submitBtn = form.querySelector<HTMLButtonElement>("[data-submit-btn]");
     const successState = document.querySelector<HTMLElement>("[data-success-state]");
     const errorState = document.querySelector<HTMLElement>("[data-error-state]");
     const errorSummary = form.querySelector<HTMLElement>("[data-error-summary]");
     const protocolLine = successState?.querySelector<HTMLElement>("[data-protocol-line]");
+    const attachmentStatus = successState?.querySelector<HTMLElement>("[data-attachment-status]");
     const whatsappContinueBtn = successState?.querySelector<HTMLButtonElement>("[data-whatsapp-continue]");
     const closeSuccessBtn = successState?.querySelector<HTMLButtonElement>("[data-close-success]");
     const retryBtn = errorState?.querySelector<HTMLButtonElement>("[data-retry-btn]");
@@ -112,24 +135,6 @@
 
     let pendingSubmissionRef: string | null = null;
     let lastReceipt: { caseId: string; protocol?: string; replay: boolean } | null = null;
-
-    const getConversionEmittedKey = (ref: string): string => `intake_created_emitted_${ref}`;
-
-    const hasConversionBeenEmitted = (ref: string): boolean => {
-      try {
-        return sessionStorage.getItem(getConversionEmittedKey(ref)) === "true";
-      } catch {
-        return false;
-      }
-    };
-
-    const markConversionAsEmitted = (ref: string): void => {
-      try {
-        sessionStorage.setItem(getConversionEmittedKey(ref), "true");
-      } catch {
-        // Silently fail if sessionStorage is unavailable
-      }
-    };
 
     const setError = (fieldName: string, message = "") => {
       const field = fields[fieldName as keyof typeof fields];
@@ -184,37 +189,33 @@
       return `RS-piscinas-rj-${crypto.randomUUID()}`;
     };
 
-    const emitIntakeCreatedEvent = (submissionRef: string) => {
-      if (hasConversionBeenEmitted(submissionRef)) return;
-
-      const w = window as any;
-      w.dataLayer = w.dataLayer || [];
-      w.dataLayer.push({
-        event: "intake_created",
-        service_intent: "POOL_CONSTRUCTION",
-        acquisition_geography: "RJ",
-        experiment_id: "HV-RJ-POOL-CONSTRUCTION",
-        entry_surface: "/lp/piscinas-rj"
-      });
-
-      markConversionAsEmitted(submissionRef);
-    };
-
-    const showSuccess = (receipt: { caseId: string; protocol?: string; replay: boolean }, submissionRef: string) => {
+    const showSuccess = (
+      receipt: { caseId: string; protocol?: string; replay: boolean },
+      attachmentUploadOk: boolean | null,
+    ) => {
       lastReceipt = receipt;
       form.hidden = true;
       if (errorState) errorState.hidden = true;
       if (successState) successState.hidden = false;
 
       if (protocolLine) {
+        protocolLine.textContent = "";
         if (receipt.protocol) {
-          protocolLine.innerHTML = `Protocolo: <strong>${receipt.protocol}</strong>`;
-        } else {
-          protocolLine.innerHTML = "";
+          const label = document.createTextNode("Protocolo: ");
+          const strong = document.createElement("strong");
+          strong.textContent = receipt.protocol;
+          protocolLine.appendChild(label);
+          protocolLine.appendChild(strong);
         }
       }
 
-      emitIntakeCreatedEvent(submissionRef);
+      if (attachmentStatus) {
+        attachmentStatus.hidden = attachmentUploadOk !== false;
+        attachmentStatus.textContent = attachmentUploadOk === false
+          ? "Recebemos a solicitação, mas não foi possível anexar os arquivos. Você pode enviá-los ao continuar pelo WhatsApp."
+          : "";
+      }
+
       successState?.focus();
     };
 
@@ -288,11 +289,37 @@
           return;
         }
 
-        showSuccess({
+        const normalizedReceipt = {
           caseId: receipt.caseId || "",
           protocol: receipt.protocol,
           replay: receipt.replay === true
-        }, pendingSubmissionRef || "");
+        };
+        const hasAttachments = attachments.hasFiles();
+        const submissionRef = pendingSubmissionRef || "";
+
+        if (normalizedReceipt.replay !== true && submissionRef) {
+          emitIntakeCreatedOnce(submissionRef, {
+            service_intent: "POOL_CONSTRUCTION",
+            acquisition_geography: "RJ",
+            experiment_id: "HV-RJ-POOL-CONSTRUCTION",
+            entry_surface: "/lp/piscinas-rj",
+            has_attachments: hasAttachments
+          });
+        }
+
+        let attachmentUploadOk: boolean | null = null;
+        if (hasAttachments) {
+          if (receipt.mock === true) {
+            attachmentUploadOk = true;
+          } else if (normalizedReceipt.caseId && submissionRef) {
+            if (submitBtn) submitBtn.textContent = "Enviando arquivos...";
+            attachmentUploadOk = await attachments.upload(normalizedReceipt.caseId, submissionRef);
+          } else {
+            attachmentUploadOk = false;
+          }
+        }
+
+        showSuccess(normalizedReceipt, attachmentUploadOk);
 
       } catch (error) {
         console.error("Form submission error:", error);
@@ -307,7 +334,7 @@
 
     form.addEventListener("submit", async (e) => {
       e.preventDefault();
-      if (!validate()) return;
+      if (!validate() || !attachments.validate()) return;
       await submitIntake();
     });
 
@@ -339,6 +366,7 @@
         successState.hidden = true;
         form.hidden = false;
         form.reset();
+        attachments.reset();
         pendingSubmissionRef = null;
         lastReceipt = null;
       }
@@ -381,6 +409,7 @@
 
   .piscinas-rj-intake-form input[type="text"],
   .piscinas-rj-intake-form input[type="tel"],
+  .piscinas-rj-intake-form input[type="file"],
   .piscinas-rj-intake-form select,
   .piscinas-rj-intake-form textarea {
     width: 100%;
