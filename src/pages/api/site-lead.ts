@@ -67,6 +67,8 @@ export const POST: APIRoute = async ({ request }) => {
         {
           ok: true,
           mock: true,
+          caseId: "preview-mock",
+          replay: false,
           schemaVersion: SITE_LEAD_SCHEMA_VERSION,
         },
         200,
@@ -76,6 +78,7 @@ export const POST: APIRoute = async ({ request }) => {
     return jsonResponse(
       {
         ok: true,
+        caseId: receipt.caseId,
         replay: receipt.replay,
         ...(receipt.protocol ? { protocol: receipt.protocol } : {}),
       },
