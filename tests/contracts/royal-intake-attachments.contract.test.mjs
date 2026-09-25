@@ -52,3 +52,11 @@ test("attachment routes preserve Royal production-only Atlas safety", () => {
   assert.match(source, /runtime\.isProduction/);
   assert.match(source, /production_only/);
 });
+
+
+test("site lead receipt exposes persisted caseId and safe Preview identity", () => {
+  const source = readFileSync("src/pages/api/site-lead.ts", "utf8");
+  assert.match(source, /caseId: receipt\.caseId/);
+  assert.match(source, /caseId: "preview-mock"/);
+  assert.match(source, /replay: false/);
+});
