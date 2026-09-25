@@ -50,6 +50,23 @@
     </select>
   </div>
 
+  <!-- Anexos -->
+  <div class="fibra-intake-form__field">
+    <label for="fibra-anexos">Fotos ou arquivos do projeto <small>Opcional</small></label>
+    <p id="fibra-anexos-help">Envie fotos atuais, referências ou PDF. Até 10 arquivos.</p>
+    <input
+      id="fibra-anexos"
+      name="anexos"
+      type="file"
+      multiple
+      accept=".pdf,.jpg,.jpeg,.png,.webp"
+      data-attachment-input
+      aria-describedby="fibra-anexos-help fibra-anexos-error"
+    />
+    <p data-attachment-list aria-live="polite"></p>
+    <p id="fibra-anexos-error" class="fibra-intake-form__error" data-attachment-error></p>
+  </div>
+
   <!-- Consentimento -->
   <div class="fibra-intake-form__consent">
     <input id="fibra-consentimento" name="consentimento" type="checkbox" aria-describedby="fibra-consentimento-error" required />
@@ -68,6 +85,7 @@
     <p class="fibra-intake-form__success-title">Solicitação recebida!</p>
     <p class="fibra-intake-form__success-subtitle" data-protocol-line></p>
     <p class="fibra-intake-form__success-body">Recebemos seus dados e nossa equipe poderá dar continuidade ao atendimento.</p>
+    <p class="fibra-intake-form__success-body" data-attachment-status hidden></p>
 
     <div class="fibra-intake-form__success-actions">
       <button type="button" class="site-primitive-action site-primitive-action--primary" data-whatsapp-continue>Continuar pelo WhatsApp</button>
@@ -87,6 +105,7 @@
 
 <script>
   import { observeFirstTouch, observeSubmissionTouch } from "../../growth/attribution.ts";
+  import { setupIntakeAttachmentField } from "../../growth/intake-attachments.ts";
   import { emitIntakeCreatedOnce } from "../../growth/emitIntakeCreatedOnce.ts";
 
   // Expose for testing
@@ -104,11 +123,14 @@
       consentimento: form.elements.namedItem("consentimento") as HTMLInputElement,
     };
 
+    const attachments = setupIntakeAttachmentField(form);
+
     const submitBtn = form.querySelector<HTMLButtonElement>("[data-submit-btn]");
     const successState = document.querySelector<HTMLElement>("[data-success-state]");
     const errorState = document.querySelector<HTMLElement>("[data-error-state]");
     const errorSummary = form.querySelector<HTMLElement>("[data-error-summary]");
     const protocolLine = successState?.querySelector<HTMLElement>("[data-protocol-line]");
+    const attachmentStatus = successState?.querySelector<HTMLElement>("[data-attachment-status]");
     const whatsappContinueBtn = successState?.querySelector<HTMLButtonElement>("[data-whatsapp-continue]");
     const closeSuccessBtn = successState?.querySelector<HTMLButtonElement>("[data-close-success]");
     const retryBtn = errorState?.querySelector<HTMLButtonElement>("[data-retry-btn]");
@@ -173,7 +195,10 @@
       return `RS-fibra-rj-${crypto.randomUUID()}`;
     };
 
-    const showSuccess = (receipt: { caseId: string; protocol?: string; replay: boolean }, submissionRef: string) => {
+    const showSuccess = (
+      receipt: { caseId: string; protocol?: string; replay: boolean },
+      attachmentUploadOk: boolean | null,
+    ) => {
       lastReceipt = receipt;
       form.hidden = true;
       if (errorState) errorState.hidden = true;
@@ -190,12 +215,13 @@
         }
       }
 
-      emitIntakeCreatedOnce(submissionRef, {
-        service_intent: "FIBERGLASS_POOL_RESTORATION",
-        acquisition_geography: "RJ",
-        experiment_id: "HV-RJ-FIBERGLASS-RESTORATION",
-        entry_surface: "/lp/fibra-rj"
-      });
+      if (attachmentStatus) {
+        attachmentStatus.hidden = attachmentUploadOk !== false;
+        attachmentStatus.textContent = attachmentUploadOk === false
+          ? "Recebemos a solicitação, mas não foi possível anexar os arquivos. Você pode enviá-los ao continuar pelo WhatsApp."
+          : "";
+      }
+
       successState?.focus();
     };
 
@@ -296,11 +322,37 @@
           return;
         }
 
-        showSuccess({
+        const normalizedReceipt = {
           caseId: receipt.caseId || "",
           protocol: receipt.protocol,
           replay: receipt.replay === true
-        }, pendingSubmissionRef || "");
+        };
+        const hasAttachments = attachments.hasFiles();
+        const submissionRef = pendingSubmissionRef || "";
+
+        if (normalizedReceipt.replay !== true && submissionRef) {
+          emitIntakeCreatedOnce(submissionRef, {
+            service_intent: "FIBERGLASS_POOL_RESTORATION",
+            acquisition_geography: "RJ",
+            experiment_id: "HV-RJ-FIBERGLASS-RESTORATION",
+            entry_surface: "/lp/fibra-rj",
+            has_attachments: hasAttachments
+          });
+        }
+
+        let attachmentUploadOk: boolean | null = null;
+        if (hasAttachments) {
+          if (receipt.mock === true) {
+            attachmentUploadOk = true;
+          } else if (normalizedReceipt.caseId && submissionRef) {
+            if (submitBtn) submitBtn.textContent = "Enviando arquivos...";
+            attachmentUploadOk = await attachments.upload(normalizedReceipt.caseId, submissionRef);
+          } else {
+            attachmentUploadOk = false;
+          }
+        }
+
+        showSuccess(normalizedReceipt, attachmentUploadOk);
 
       } catch (error) {
         clearTimeout(timeoutId);
@@ -321,7 +373,7 @@
 
     form.addEventListener("submit", async (e) => {
       e.preventDefault();
-      if (!validate()) return;
+      if (!validate() || !attachments.validate()) return;
       await submitIntake();
     });
 
@@ -353,6 +405,7 @@
         successState.hidden = true;
         form.hidden = false;
         form.reset();
+        attachments.reset();
         pendingSubmissionRef = null;
         lastReceipt = null;
       }
@@ -395,6 +448,7 @@
 
   .fibra-intake-form input[type="text"],
   .fibra-intake-form input[type="tel"],
+  .fibra-intake-form input[type="file"],
   .fibra-intake-form select,
   .fibra-intake-form textarea {
     width: 100%;
