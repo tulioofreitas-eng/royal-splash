@@ -1,17 +1,28 @@
 import test from "node:test";
 import assert from "node:assert/strict";
-import { readFileSync, existsSync } from "node:fs";
+import { existsSync, readdirSync, readFileSync, statSync } from "node:fs";
+import { join } from "node:path";
 
-test("/projetos remains fully held: no routes and no primary site links", () => {
+function astroFiles(root) {
+  const out = [];
+  for (const name of readdirSync(root)) {
+    const path = join(root, name);
+    const stat = statSync(path);
+    if (stat.isDirectory()) out.push(...astroFiles(path));
+    else if (path.endsWith(".astro")) out.push(path);
+  }
+  return out;
+}
+
+test("/projetos remains fully held: no routes and no links anywhere in Astro UI", () => {
   assert.equal(existsSync("src/pages/projetos.astro"), false);
   assert.equal(existsSync("src/pages/projetos/[slug].astro"), false);
 
-  for (const path of [
-    "src/components/site/SiteHeader.astro",
-    "src/components/site/SiteFooter.astro",
-    "src/pages/index.astro",
-  ]) {
+  const offenders = [];
+  for (const path of astroFiles("src")) {
     const source = readFileSync(path, "utf8");
-    assert.doesNotMatch(source, /href=["']\/projetos(?:\/|["'])/);
+    if (/href=["']\/projetos(?:\/|["'])/.test(source)) offenders.push(path);
   }
+
+  assert.deepEqual(offenders, []);
 });
