@@ -30,6 +30,7 @@ interface IntakeCreatedEvent {
   acquisition_geography: string;
   experiment_id: string;
   entry_surface: string;
+  has_attachments?: boolean;
 }
 
 export const emitIntakeCreatedOnce = (submissionRef: string, event: IntakeCreatedEvent): void => {
