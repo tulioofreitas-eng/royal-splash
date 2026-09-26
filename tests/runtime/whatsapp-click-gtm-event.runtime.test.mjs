@@ -93,8 +93,14 @@ test("BotaoWhatsapp (floating button, present on all 7 LPs) also emits whatsapp_
 
   assert.match(
     source,
-    /dataLayer\.push\(\{\s*event:\s*'whatsapp_click'\s*\}\)/,
-    "the floating WhatsApp button must emit the same whatsapp_click event",
+    /eventPayload:\s*any\s*=\s*\{\s*event:\s*'whatsapp_click'\s*\}/,
+    "the floating WhatsApp button must build a whatsapp_click event",
+  );
+
+  assert.match(
+    source,
+    /w\.dataLayer\.push\(eventPayload\)/,
+    "the floating WhatsApp button must push the prepared event payload",
   );
 
   assert.match(
@@ -105,8 +111,26 @@ test("BotaoWhatsapp (floating button, present on all 7 LPs) also emits whatsapp_
 
   assert.doesNotMatch(
     source,
-    /dataLayer\.push\(\{[^}]*(nome|telefone|tipo|pagina)/i,
-    "the floating button's dataLayer.push must never carry the modal's name/phone/project-type fields",
+    /eventPayload\.(nome|telefone|email|tipo_projeto)\s*=/i,
+    "the floating button's GTM payload must never carry modal/contact PII",
+  );
+
+  assert.match(
+    source,
+    /eventPayload\.service_intent\s*=\s*serviceIntent/,
+    "business-safe service intent may remain in the GTM event",
+  );
+
+  assert.match(
+    source,
+    /eventPayload\.entry_surface\s*=\s*window\.location\.pathname/,
+    "business-safe entry surface may remain in the GTM event",
+  );
+
+  assert.match(
+    source,
+    /if\s*\(!marketingMeasurementAllowed\(w\)\)\s*return;/,
+    "production GTM delivery must be gated by Marketing consent",
   );
 
   const emitterIndex = source.indexOf("function emitWhatsAppClickEvent");
@@ -122,8 +146,8 @@ test("BotaoWhatsapp (floating button, present on all 7 LPs) also emits whatsapp_
   );
   assert.match(
     registrarBody,
-    /emitWhatsAppClickEvent\(\);/,
-    "registrarClique must call the emitter before the unchanged /api/whatsapp-click POST",
+    /emitWhatsAppClickEvent\(serviceIntent\s*\|\|\s*undefined,\s*ctaSurface\s*\|\|\s*undefined\);/,
+    "registrarClique must call the consent-aware emitter before the unchanged /api/whatsapp-click POST",
   );
 
   assert.match(
@@ -144,7 +168,8 @@ test("BotaoWhatsapp: consent, Atlas and lead-capture code paths are untouched by
     "the qualified-lead /api/lead POST inside the (currently disabled) modal flow must remain untouched",
   );
 
-  const emitCallSites = source.match(/emitWhatsAppClickEvent\(\);/g) ?? [];
+  const emitCallSites =
+    source.match(/emitWhatsAppClickEvent\(serviceIntent\s*\|\|\s*undefined,\s*ctaSurface\s*\|\|\s*undefined\);/g) ?? [];
   assert.equal(
     emitCallSites.length,
     1,

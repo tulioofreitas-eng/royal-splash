@@ -1,0 +1,410 @@
+---
+---
+
+<section
+  class="measurement-consent"
+  data-measurement-consent-banner
+  aria-labelledby="measurement-consent-title"
+  aria-describedby="measurement-consent-description"
+  hidden
+>
+  <div class="measurement-consent__content">
+    <p class="measurement-consent__eyebrow">Privacidade</p>
+    <h2 id="measurement-consent-title">Preferências de medição</h2>
+    <p id="measurement-consent-description">
+      Usamos tecnologias opcionais para medir desempenho e resultados de campanhas.
+      Você pode aceitar tudo, recusar tecnologias opcionais ou escolher as categorias.
+      O envio de uma solicitação funciona independentemente desta escolha.
+    </p>
+
+    <div class="measurement-consent__actions" data-consent-primary-actions>
+      <button type="button" data-consent-accept-all>
+        Aceitar todos
+      </button>
+      <button type="button" data-consent-reject-all>
+        Recusar opcionais
+      </button>
+      <button
+        type="button"
+        class="measurement-consent__secondary"
+        data-consent-customize
+        aria-expanded="false"
+        aria-controls="measurement-consent-customization"
+      >
+        Personalizar
+      </button>
+    </div>
+
+    <div
+      id="measurement-consent-customization"
+      class="measurement-consent__customization"
+      data-consent-customization
+      hidden
+    >
+      <label>
+        <input type="checkbox" data-consent-analytics />
+        <span>
+          <strong>Análise de uso</strong>
+          <small>Mede navegação e desempenho para entendermos como o site é utilizado.</small>
+        </span>
+      </label>
+
+      <label>
+        <input type="checkbox" data-consent-marketing />
+        <span>
+          <strong>Publicidade e conversões</strong>
+          <small>Mede resultados de campanhas e conversões no Google Ads.</small>
+        </span>
+      </label>
+
+      <div class="measurement-consent__custom-actions">
+        <button type="button" data-consent-save>
+          Salvar preferências
+        </button>
+        <button
+          type="button"
+          class="measurement-consent__secondary"
+          data-consent-close
+          hidden
+        >
+          Fechar
+        </button>
+      </div>
+    </div>
+
+    <p class="measurement-consent__policy">
+      Saiba mais na
+      <a href="/politica-de-privacidade">Política de Privacidade</a>.
+    </p>
+  </div>
+</section>
+
+<button
+  type="button"
+  class="measurement-consent-manage"
+  data-consent-manage
+  hidden
+>
+  Preferências de privacidade
+</button>
+
+<script>
+  import {
+    createMeasurementConsentChoice,
+  } from "../../privacy/measurement-consent.ts";
+
+  const banner = document.querySelector<HTMLElement>(
+    "[data-measurement-consent-banner]",
+  );
+  const manageButton = document.querySelector<HTMLButtonElement>(
+    "[data-consent-manage]",
+  );
+
+  const runtime = (window as any).__royalMeasurementConsent;
+
+  if (
+    banner instanceof HTMLElement &&
+    manageButton instanceof HTMLButtonElement &&
+    runtime
+  ) {
+    const customizeButton =
+      banner.querySelector<HTMLButtonElement>(
+        "[data-consent-customize]",
+      );
+    const customization =
+      banner.querySelector<HTMLElement>(
+        "[data-consent-customization]",
+      );
+    const analyticsControl =
+      banner.querySelector<HTMLInputElement>(
+        "[data-consent-analytics]",
+      );
+    const marketingControl =
+      banner.querySelector<HTMLInputElement>(
+        "[data-consent-marketing]",
+      );
+    const closeButton =
+      banner.querySelector<HTMLButtonElement>(
+        "[data-consent-close]",
+      );
+
+    const hasStoredChoice = () =>
+      runtime.hasChoice?.() === true;
+
+    const syncControls = () => {
+      const choice = runtime.get?.();
+
+      if (analyticsControl) {
+        analyticsControl.checked =
+          choice?.analytics === true;
+      }
+
+      if (marketingControl) {
+        marketingControl.checked =
+          choice?.marketing === true;
+      }
+
+      if (closeButton) {
+        closeButton.hidden = !hasStoredChoice();
+      }
+    };
+
+    const closeBanner = () => {
+      banner.hidden = true;
+      manageButton.hidden = false;
+
+      if (customization) {
+        customization.hidden = true;
+      }
+
+      customizeButton?.setAttribute(
+        "aria-expanded",
+        "false",
+      );
+    };
+
+    const openBanner = (showCustomization = false) => {
+      syncControls();
+      banner.hidden = false;
+      manageButton.hidden = true;
+
+      if (customization) {
+        customization.hidden = !showCustomization;
+      }
+
+      customizeButton?.setAttribute(
+        "aria-expanded",
+        String(showCustomization),
+      );
+
+      banner.focus?.();
+    };
+
+    const saveChoice = (
+      analytics: boolean,
+      marketing: boolean,
+    ) => {
+      runtime.update?.(
+        createMeasurementConsentChoice({
+          analytics,
+          marketing,
+        }),
+      );
+
+      closeBanner();
+    };
+
+    banner
+      .querySelector("[data-consent-accept-all]")
+      ?.addEventListener("click", () => {
+        saveChoice(true, true);
+      });
+
+    banner
+      .querySelector("[data-consent-reject-all]")
+      ?.addEventListener("click", () => {
+        saveChoice(false, false);
+      });
+
+    customizeButton?.addEventListener(
+      "click",
+      () => {
+        if (!customization) {
+          return;
+        }
+
+        const nextHidden = !customization.hidden;
+        customization.hidden = nextHidden;
+        customizeButton.setAttribute(
+          "aria-expanded",
+          String(!nextHidden),
+        );
+
+        if (!nextHidden) {
+          syncControls();
+        }
+      },
+    );
+
+    banner
+      .querySelector("[data-consent-save]")
+      ?.addEventListener("click", () => {
+        saveChoice(
+          analyticsControl?.checked === true,
+          marketingControl?.checked === true,
+        );
+      });
+
+    closeButton?.addEventListener(
+      "click",
+      closeBanner,
+    );
+
+    manageButton.addEventListener(
+      "click",
+      () => openBanner(true),
+    );
+
+    window.addEventListener(
+      "royal:measurement-consent-changed",
+      syncControls,
+    );
+
+    if (hasStoredChoice()) {
+      syncControls();
+      manageButton.hidden = false;
+      banner.hidden = true;
+    } else {
+      openBanner(false);
+    }
+  }
+</script>
+
+<style>
+  .measurement-consent[hidden],
+  .measurement-consent-manage[hidden],
+  .measurement-consent__customization[hidden] {
+    display: none;
+  }
+
+  .measurement-consent {
+    position: fixed;
+    inset-inline: 1rem;
+    inset-block-end: 1rem;
+    z-index: 10000;
+    max-width: 48rem;
+    margin-inline: auto;
+    border: 1px solid #d5b238;
+    background: #101820;
+    color: #fff;
+    box-shadow: 0 1rem 3rem rgb(0 0 0 / 28%);
+  }
+
+  .measurement-consent__content {
+    padding: 1.25rem;
+  }
+
+  .measurement-consent__eyebrow {
+    margin: 0 0 0.35rem;
+    color: #d5b238;
+    font: 700 0.75rem/1.2 system-ui, sans-serif;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+
+  .measurement-consent h2 {
+    margin: 0;
+    color: #fff;
+    font: 700 1.25rem/1.25 system-ui, sans-serif;
+  }
+
+  .measurement-consent p,
+  .measurement-consent label,
+  .measurement-consent button,
+  .measurement-consent a,
+  .measurement-consent-manage {
+    font-family: system-ui, sans-serif;
+  }
+
+  .measurement-consent p {
+    margin-block: 0.75rem 0;
+    line-height: 1.5;
+  }
+
+  .measurement-consent__actions,
+  .measurement-consent__custom-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.65rem;
+    margin-block-start: 1rem;
+  }
+
+  .measurement-consent button,
+  .measurement-consent-manage {
+    min-height: 2.75rem;
+    border: 1px solid #d5b238;
+    padding: 0.65rem 1rem;
+    background: #d5b238;
+    color: #101820;
+    font-weight: 700;
+    cursor: pointer;
+  }
+
+  .measurement-consent button:focus-visible,
+  .measurement-consent a:focus-visible,
+  .measurement-consent-manage:focus-visible,
+  .measurement-consent input:focus-visible {
+    outline: 3px solid #fff;
+    outline-offset: 3px;
+  }
+
+  .measurement-consent .measurement-consent__secondary {
+    background: transparent;
+    color: #fff;
+  }
+
+  .measurement-consent__customization {
+    display: grid;
+    gap: 0.8rem;
+    margin-block-start: 1rem;
+    border-block-start: 1px solid rgb(255 255 255 / 22%);
+    padding-block-start: 1rem;
+  }
+
+  .measurement-consent__customization label {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    gap: 0.7rem;
+    align-items: start;
+  }
+
+  .measurement-consent__customization input {
+    width: 1.15rem;
+    height: 1.15rem;
+    margin-block-start: 0.15rem;
+  }
+
+  .measurement-consent__customization strong,
+  .measurement-consent__customization small {
+    display: block;
+  }
+
+  .measurement-consent__customization small {
+    margin-block-start: 0.2rem;
+    color: #d7dde2;
+    line-height: 1.4;
+  }
+
+  .measurement-consent__policy {
+    font-size: 0.875rem;
+  }
+
+  .measurement-consent__policy a {
+    color: #fff;
+    text-decoration-thickness: 0.1em;
+    text-underline-offset: 0.2em;
+  }
+
+  .measurement-consent-manage {
+    position: fixed;
+    inset-inline-start: 1rem;
+    inset-block-end: 1rem;
+    z-index: 9999;
+    border-color: #8f7624;
+    background: #101820;
+    color: #fff;
+    font-size: 0.8rem;
+  }
+
+  @media (max-width: 40rem) {
+    .measurement-consent {
+      inset-inline: 0.65rem;
+      inset-block-end: 0.65rem;
+    }
+
+    .measurement-consent__actions > button,
+    .measurement-consent__custom-actions > button {
+      width: 100%;
+    }
+  }
+</style>

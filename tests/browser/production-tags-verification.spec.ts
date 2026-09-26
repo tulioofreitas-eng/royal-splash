@@ -35,6 +35,17 @@ test.describe("Production Tags Verification", () => {
       waitUntil: "networkidle",
     });
 
+    const consentBanner = page.locator(
+      "[data-measurement-consent-banner]",
+    );
+
+    if (await consentBanner.isVisible().catch(() => false)) {
+      await consentBanner
+        .locator("[data-consent-accept-all]")
+        .click();
+      await page.waitForLoadState("networkidle");
+    }
+
     await page.evaluateHandle(() => {
       (window as any).__allEvents = [];
       const originalPush = (window as any).dataLayer?.push || (() => {});
