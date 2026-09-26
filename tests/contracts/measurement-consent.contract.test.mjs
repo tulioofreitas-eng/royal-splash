@@ -100,13 +100,64 @@ test("GTM bootstrap exposes an explicit category event for tag-level routing", a
     /marketing_consent:\s*choice\.marketing === true/,
   );
 
-  const loadIndex = source.indexOf(
-    "loadContainer();\n            pushConsentCategoryEvent(choice);",
+  const conditionalLoad = source.indexOf(
+    "if (shouldLoadContainer(choice)) {\n            loadContainer();\n          }",
+  );
+  const loadedCategorySync = source.indexOf(
+    "if (loaded) {\n            pushConsentCategoryEvent(choice);\n          }",
   );
 
   assert.notEqual(
-    loadIndex,
+    conditionalLoad,
     -1,
-    "container must be queued before the category event so GTM can route category-specific tags",
+    "the container must still load only after at least one optional category is granted",
   );
+  assert.notEqual(
+    loadedCategorySync,
+    -1,
+    "once GTM is loaded, every preference update must refresh category routing",
+  );
+  assert.ok(
+    conditionalLoad < loadedCategorySync,
+    "container loading must be decided before the category event is queued",
+  );
+});
+
+test("loaded GTM receives a category update when the visitor revokes every optional category", async () => {
+  const source = await read(
+    "../../src/components/GTMHead.astro",
+  );
+
+  const updateStart = source.indexOf(
+    "update: function (value) {",
+  );
+  const updateEnd = source.indexOf(
+    "return true;",
+    updateStart,
+  );
+  const updateSource = source.slice(
+    updateStart,
+    updateEnd,
+  );
+
+  assert.match(
+    updateSource,
+    /if \(loaded\) \{\s*pushConsentCategoryEvent\(choice\);\s*\}/,
+    "a granted -> deny-all update must still publish analytics_consent=false and marketing_consent=false after GTM has loaded",
+  );
+});
+
+test("legacy thank-you page does not load Google measurement before consuming query-string lead data", async () => {
+  const source = await read(
+    "../../src/pages/obrigado.astro",
+  );
+
+  assert.doesNotMatch(
+    source,
+    /GTMHead|GTMBody|googletagmanager/i,
+    "legacy /obrigado must not boot Google measurement while its URL can contain lead contact fields",
+  );
+  assert.match(source, /params\.get\('nome'\)/);
+  assert.match(source, /params\.get\('telefone'\)/);
+  assert.match(source, /params\.get\('email'\)/);
 });
