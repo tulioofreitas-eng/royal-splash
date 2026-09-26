@@ -14,6 +14,17 @@ test.describe("Production Analytics Verification", () => {
       waitUntil: "networkidle",
     });
 
+    const consentBanner = page.locator(
+      "[data-measurement-consent-banner]",
+    );
+
+    if (await consentBanner.isVisible().catch(() => false)) {
+      await consentBanner
+        .locator("[data-consent-accept-all]")
+        .click();
+      await page.waitForLoadState("networkidle");
+    }
+
     // Intercept dataLayer to capture GTM events AFTER page load
     await page.evaluateHandle(() => {
       (window as any).__capturedEvents = [];

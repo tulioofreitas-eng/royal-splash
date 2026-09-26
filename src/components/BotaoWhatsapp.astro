@@ -82,10 +82,21 @@ const { serviceIntent, ctaSurface = "floating_button" } = Astro.props;
 
   interface WhatsAppEventWindow extends Window {
     __royalWhatsAppClickEventLastEmittedAt?: number;
+    __royalMeasurementConsent?: {
+      get?: () => {
+        marketing?: boolean;
+      } | null;
+    };
     dataLayer?: unknown[];
   }
 
   const DUPLICATE_EVENT_WINDOW_MS = 500;
+
+  function marketingMeasurementAllowed(w: WhatsAppEventWindow) {
+    const runtime = w.__royalMeasurementConsent;
+    if (!runtime) return true;
+    return runtime.get?.()?.marketing === true;
+  }
 
   function emitWhatsAppClickEvent(serviceIntent?: string, ctaSurface?: string) {
     const w = window as WhatsAppEventWindow;
@@ -93,6 +104,8 @@ const { serviceIntent, ctaSurface = "floating_button" } = Astro.props;
     const last = w.__royalWhatsAppClickEventLastEmittedAt;
     if (last !== undefined && now - last < DUPLICATE_EVENT_WINDOW_MS) return;
     w.__royalWhatsAppClickEventLastEmittedAt = now;
+
+    if (!marketingMeasurementAllowed(w)) return;
 
     w.dataLayer = w.dataLayer || [];
     const eventPayload: any = { event: 'whatsapp_click' };

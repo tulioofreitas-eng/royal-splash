@@ -11,7 +11,7 @@ import "../styles/complete-experience.css";
     <p class="experience-kicker">Privacidade</p>
     <h1 id="privacy-title">Política de Privacidade</h1>
     <p class="experience-lead">Esta política explica, de forma clara, como a Royal Splash trata informações no site, no fluxo “Inicie seu Projeto” e nas superfícies de campanha.</p>
-    <p class="privacy-page__updated">Última atualização: 11 de setembro de 2026</p>
+    <p class="privacy-page__updated">Última atualização: 25 de setembro de 2026</p>
   </section>
 
   <div class="privacy-page__content" aria-label="Conteúdo da política de privacidade">
@@ -55,17 +55,19 @@ import "../styles/complete-experience.css";
 
     <section aria-labelledby="privacy-cookies">
       <p class="experience-kicker">05 / Cookies e armazenamento local</p>
-      <h2 id="privacy-cookies">Tecnologias similares variam por fluxo.</h2>
-      <p>O fluxo principal “Inicie seu Projeto” não utiliza cookies não essenciais. Ele pode utilizar o armazenamento local do navegador (localStorage) para guardar as informações limitadas de origem descritas na seção 02, somente depois que você concorda com esta política e confirma o envio do formulário, pelo prazo de até 30 dias. Antes desse momento, nenhuma informação de origem é gravada em cookies ou localStorage.</p>
-      <p>Determinadas páginas de campanha utilizam, separadamente, um cookie de curta duração, com expiração aproximada de 300 segundos, relacionado ao fluxo da campanha.</p>
+      <h2 id="privacy-cookies">Preferências e armazenamento são tratados separadamente.</h2>
+      <p>O fluxo principal “Inicie seu Projeto” pode utilizar o armazenamento local do navegador (localStorage) para guardar as informações limitadas de origem descritas na seção 02, somente depois que você concorda com esta política e confirma o envio do formulário, pelo prazo de até 30 dias. Antes desse momento, nenhuma informação de origem é gravada em cookies ou localStorage.</p>
+      <p>Nas superfícies com medição, a Royal Splash também pode guardar no localStorage uma preferência técnica de privacidade contendo apenas a versão da preferência e as escolhas de Análise de uso e Publicidade e conversões. Esse registro não contém nome, telefone, e-mail ou conteúdo do formulário e serve para lembrar sua escolha nas próximas visitas.</p>
+      <p>Determinadas páginas de campanha podem utilizar, separadamente, um cookie de curta duração, com expiração aproximada de 300 segundos, relacionado ao fluxo da campanha. Tecnologias opcionais de medição obedecem às preferências descritas na seção 06.</p>
     </section>
 
     <section aria-labelledby="privacy-measurement">
-      <p class="experience-kicker">06 / Medição</p>
-      <h2 id="privacy-measurement">Medição comportamental com descrição cuidadosa.</h2>
-      <p>A Royal Splash utiliza Google Tag Manager e Google Ads em superfícies nas quais o contêiner está carregado. A configuração publicada inspecionada é o contêiner <code>GTM-TFW2WDRG</code>, versão 4, e mostrou Google tag, Conversion Linker e uma conversão associada à página de obrigado.</p>
-      <p>Os eventos comportamentais do fluxo “Inicie seu Projeto” podem indicar visualização, início do formulário, erros de validação e clique para continuar. O código do repositório não mostra envio explícito desses campos para o GTM, e a configuração publicada inspecionada não mostrou captura explícita de nome, e-mail, telefone ou conteúdo do formulário. Isso descreve a evidência disponível; não constitui garantia de que o GTM não possa receber dados nem de que não haja qualquer rastreamento.</p>
-      <p>A configuração de Consent Mode e o comportamento de consentimento das tags não foram verificados nesta auditoria.</p>
+      <p class="experience-kicker">06 / Medição e preferências</p>
+      <h2 id="privacy-measurement">Análise e publicidade podem ser escolhidas separadamente.</h2>
+      <p>A Royal Splash utiliza Google Tag Manager e Google Ads nas superfícies de campanha em que o contêiner <code>GTM-TFW2WDRG</code> está habilitado. Nessas superfícies, o site estabelece um estado padrão de consentimento antes que o contêiner de medição possa executar.</p>
+      <p>Por padrão, as categorias opcionais começam recusadas. O contêiner de medição não é carregado até que você conceda pelo menos uma categoria. A opção “Análise de uso” controla <code>analytics_storage</code>. A opção “Publicidade e conversões” controla <code>ad_storage</code>, <code>ad_user_data</code> e <code>ad_personalization</code>. As escolhas são independentes e podem ser alteradas posteriormente em “Preferências de privacidade”.</p>
+      <p>Recusar as tecnologias opcionais não impede o envio de uma solicitação. Nos formulários estruturados de campanha, o evento de medição <code>intake_created</code> só pode ser entregue ao Google Tag Manager depois que a solicitação foi registrada com sucesso nos sistemas internos e, em produção, somente quando a categoria “Publicidade e conversões” estiver concedida. O evento de medição não inclui nome, telefone, e-mail ou conteúdo livre do formulário.</p>
+      <p>O consentimento para medição é separado da autorização necessária para a Royal Splash processar os dados enviados no formulário. Aceitar ou recusar medição não substitui, concede nem retira a autorização do formulário.</p>
     </section>
 
     <section aria-labelledby="privacy-purposes">
@@ -118,7 +120,7 @@ import "../styles/complete-experience.css";
       <p class="experience-kicker">12 / Atualizações</p>
       <h2 id="privacy-changes">Esta política pode mudar.</h2>
       <p>Esta política pode ser atualizada periodicamente para refletir mudanças no site, nos fluxos ou nas obrigações aplicáveis. Alterações relevantes poderão ser comunicadas por aviso no site ou por contato direto.</p>
-      <p>Versão atual: 2026-09-11.</p>
+      <p>Versão atual: 2026-09-25.</p>
       <a class="site-primitive-action site-primitive-action--primary" href="/inicie-seu-projeto">Voltar para Inicie seu Projeto</a>
     </section>
   </div>

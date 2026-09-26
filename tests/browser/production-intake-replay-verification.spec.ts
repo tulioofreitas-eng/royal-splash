@@ -50,6 +50,16 @@ test.describe("Production Intake Replay Verification", () => {
       waitUntil: "networkidle",
     });
 
+    const consentBanner = page.locator(
+      "[data-measurement-consent-banner]",
+    );
+
+    if (await consentBanner.isVisible().catch(() => false)) {
+      await consentBanner
+        .locator("[data-consent-reject-all]")
+        .click();
+    }
+
     const form = page.locator("[data-piscinas-rj-intake-form]");
     await expect(form).toBeVisible();
 
