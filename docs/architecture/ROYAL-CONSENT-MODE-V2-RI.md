@@ -118,6 +118,28 @@ Expected required consent types:
 `Google tag — MCC MTM GROUP` must remain aligned to the same Marketing consent
 contract. Do not make it an Analytics prerequisite.
 
+The site now exposes the non-PII GTM event:
+
+```text
+event = royal_measurement_consent
+analytics_consent = true|false
+marketing_consent = true|false
+```
+
+Use this event for **category routing**, not Tag Manager Additional Consent Checks.
+The MCC Ads Google tag should move from `Initialization - All Pages` to a
+custom-event trigger that fires only when:
+
+```text
+event == royal_measurement_consent
+marketing_consent == true
+```
+
+This preserves Google's built-in Consent Mode behavior inside the Ads tag while
+preventing the Ads base tag from being instantiated on an Analytics-only choice.
+The event is emitted after the GTM container is queued, for both saved choices
+and in-page preference updates.
+
 ### Conversion Linker
 
 Review `Vinculador de conversões` under the same Marketing boundary. It must
