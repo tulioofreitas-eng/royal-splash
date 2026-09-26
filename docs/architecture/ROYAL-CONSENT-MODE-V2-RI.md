@@ -209,7 +209,8 @@ Expected:
 For the MCC action:
 
 - Conversion ID: `18470841900`
-- Conversion label: `hsZICLmbriUdEKzcyudE`
+- Conversion label: `hsZICLmbrIUdEKzcyudE`
+- Source of truth: Google Ads API `conversion_action.tag_snippets` for `RS | Intake criado`.
 
 Closure requires browser Network evidence showing the actual Ads conversion
 request corresponding to the accepted Intake, not merely:
