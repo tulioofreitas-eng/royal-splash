@@ -80,3 +80,33 @@ test("production GTM intake delivery requires marketing consent when runtime exi
     /event: "intake_created"/,
   );
 });
+
+
+test("GTM bootstrap exposes an explicit category event for tag-level routing", async () => {
+  const source = await read(
+    "../../src/components/GTMHead.astro",
+  );
+
+  assert.match(
+    source,
+    /event:\s*"royal_measurement_consent"/,
+  );
+  assert.match(
+    source,
+    /analytics_consent:\s*choice\.analytics === true/,
+  );
+  assert.match(
+    source,
+    /marketing_consent:\s*choice\.marketing === true/,
+  );
+
+  const loadIndex = source.indexOf(
+    "loadContainer();\n            pushConsentCategoryEvent(choice);",
+  );
+
+  assert.notEqual(
+    loadIndex,
+    -1,
+    "container must be queued before the category event so GTM can route category-specific tags",
+  );
+});
