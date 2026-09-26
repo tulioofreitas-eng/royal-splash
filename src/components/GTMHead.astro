@@ -169,6 +169,13 @@ const { allowProductionAnalytics } = getCurrentEnvironmentContract();
 
           if (shouldLoadContainer(choice)) {
             loadContainer();
+          }
+
+          // Once GTM has been loaded on this page, keep its category-routing
+          // data model synchronized even when the visitor revokes every
+          // optional category. This prevents stale true DLV values after a
+          // granted -> deny-all transition.
+          if (loaded) {
             pushConsentCategoryEvent(choice);
           }
 
