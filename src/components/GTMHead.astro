@@ -4,9 +4,166 @@ import { getCurrentEnvironmentContract } from "../safety/runtime.ts";
 const { allowProductionAnalytics } = getCurrentEnvironmentContract();
 ---
 {allowProductionAnalytics && (
-  <script is:inline>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
-  new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
-  j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
-  'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
-  })(window,document,'script','dataLayer','GTM-TFW2WDRG');</script>
+  <script is:inline>
+    (function (w, d) {
+      var STORAGE_KEY = "royal_measurement_consent.v1";
+      var VERSION = 1;
+      var GTM_ID = "GTM-TFW2WDRG";
+      var loaded = false;
+
+      w.dataLayer = w.dataLayer || [];
+
+      w.gtag = w.gtag || function () {
+        w.dataLayer.push(arguments);
+      };
+
+      function normalizeChoice(value) {
+        if (
+          !value ||
+          typeof value !== "object" ||
+          value.version !== VERSION ||
+          typeof value.analytics !== "boolean" ||
+          typeof value.marketing !== "boolean"
+        ) {
+          return null;
+        }
+
+        return {
+          version: VERSION,
+          analytics: value.analytics === true,
+          marketing: value.marketing === true,
+        };
+      }
+
+      function readStoredChoice() {
+        try {
+          return normalizeChoice(
+            JSON.parse(w.localStorage.getItem(STORAGE_KEY) || "null"),
+          );
+        } catch (_) {
+          return null;
+        }
+      }
+
+      function persistChoice(choice) {
+        try {
+          w.localStorage.setItem(
+            STORAGE_KEY,
+            JSON.stringify(choice),
+          );
+        } catch (_) {
+          // Storage can be unavailable. The current-page choice still applies.
+        }
+      }
+
+      function googleConsentState(choice) {
+        var analyticsGranted =
+          !!choice && choice.analytics === true;
+        var marketingGranted =
+          !!choice && choice.marketing === true;
+
+        return {
+          analytics_storage:
+            analyticsGranted ? "granted" : "denied",
+          ad_storage:
+            marketingGranted ? "granted" : "denied",
+          ad_user_data:
+            marketingGranted ? "granted" : "denied",
+          ad_personalization:
+            marketingGranted ? "granted" : "denied",
+        };
+      }
+
+      function shouldLoadContainer(choice) {
+        return !!choice && (
+          choice.analytics === true ||
+          choice.marketing === true
+        );
+      }
+
+      function loadContainer() {
+        if (loaded) {
+          return;
+        }
+
+        loaded = true;
+
+        w.dataLayer.push({
+          "gtm.start": new Date().getTime(),
+          event: "gtm.js",
+        });
+
+        var firstScript =
+          d.getElementsByTagName("script")[0];
+        var script = d.createElement("script");
+
+        script.async = true;
+        script.src =
+          "https://www.googletagmanager.com/gtm.js?id=" +
+          GTM_ID;
+
+        firstScript.parentNode.insertBefore(
+          script,
+          firstScript,
+        );
+      }
+
+      var storedChoice = readStoredChoice();
+      var currentChoice = storedChoice;
+
+      // Strict/basic Consent Mode: establish an explicit default before
+      // any Google measurement container can execute.
+      w.gtag(
+        "consent",
+        "default",
+        googleConsentState(storedChoice),
+      );
+
+      w.__royalMeasurementConsent = {
+        version: VERSION,
+
+        hasChoice: function () {
+          return currentChoice !== null;
+        },
+
+        get: function () {
+          return currentChoice;
+        },
+
+        update: function (value) {
+          var choice = normalizeChoice(value);
+
+          if (!choice) {
+            return false;
+          }
+
+          currentChoice = choice;
+          persistChoice(choice);
+
+          w.gtag(
+            "consent",
+            "update",
+            googleConsentState(choice),
+          );
+
+          w.dispatchEvent(
+            new CustomEvent(
+              "royal:measurement-consent-changed",
+              { detail: choice },
+            ),
+          );
+
+          if (shouldLoadContainer(choice)) {
+            loadContainer();
+          }
+
+          return true;
+        },
+      };
+
+      if (shouldLoadContainer(storedChoice)) {
+        loadContainer();
+      }
+    })(window, document);
+  </script>
 )}
