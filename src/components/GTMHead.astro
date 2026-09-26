@@ -81,6 +81,20 @@ const { allowProductionAnalytics } = getCurrentEnvironmentContract();
         );
       }
 
+      function pushConsentCategoryEvent(choice) {
+        if (!choice) {
+          return;
+        }
+
+        w.dataLayer.push({
+          event: "royal_measurement_consent",
+          analytics_consent:
+            choice.analytics === true,
+          marketing_consent:
+            choice.marketing === true,
+        });
+      }
+
       function loadContainer() {
         if (loaded) {
           return;
@@ -155,6 +169,7 @@ const { allowProductionAnalytics } = getCurrentEnvironmentContract();
 
           if (shouldLoadContainer(choice)) {
             loadContainer();
+            pushConsentCategoryEvent(choice);
           }
 
           return true;
@@ -163,6 +178,7 @@ const { allowProductionAnalytics } = getCurrentEnvironmentContract();
 
       if (shouldLoadContainer(storedChoice)) {
         loadContainer();
+        pushConsentCategoryEvent(storedChoice);
       }
     })(window, document);
   </script>
