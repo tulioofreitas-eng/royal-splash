@@ -2,6 +2,11 @@
   interface WhatsAppAnalyticsWindow extends Window {
     __royalWhatsAppClickAnalyticsInstalled?: boolean;
     __royalWhatsAppClickEventLastEmittedAt?: number;
+    __royalMeasurementConsent?: {
+      get?: () => {
+        marketing?: boolean;
+      } | null;
+    };
     dataLayer?: unknown[];
   }
 
@@ -15,11 +20,23 @@
   if (!analyticsWindow.__royalWhatsAppClickAnalyticsInstalled) {
     analyticsWindow.__royalWhatsAppClickAnalyticsInstalled = true;
 
+    const marketingMeasurementAllowed = () => {
+      const runtime =
+        analyticsWindow.__royalMeasurementConsent;
+
+      // Preview/test does not install production measurement consent.
+      if (!runtime) return true;
+
+      return runtime.get?.()?.marketing === true;
+    };
+
     const emitWhatsAppClickEvent = () => {
       const now = Date.now();
       const last = analyticsWindow.__royalWhatsAppClickEventLastEmittedAt;
       if (last !== undefined && now - last < DUPLICATE_EVENT_WINDOW_MS) return;
       analyticsWindow.__royalWhatsAppClickEventLastEmittedAt = now;
+
+      if (!marketingMeasurementAllowed()) return;
 
       analyticsWindow.dataLayer = analyticsWindow.dataLayer || [];
       analyticsWindow.dataLayer.push({ event: "whatsapp_click" });
