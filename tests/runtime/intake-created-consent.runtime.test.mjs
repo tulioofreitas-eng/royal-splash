@@ -47,9 +47,11 @@ test("canonical browser signal remains observable while GTM delivery is blocked 
 
   const dispatched = [];
   const dataLayer = [];
+  const pixelCalls = [];
 
   globalThis.window = {
     dataLayer,
+    oaiq: (...args) => pixelCalls.push(args),
     __royalMeasurementConsent: {
       get: () => ({
         analytics: true,
@@ -73,6 +75,7 @@ test("canonical browser signal remains observable while GTM delivery is blocked 
     "royal:intake-created",
   );
   assert.equal(dataLayer.length, 0);
+  assert.equal(pixelCalls.length, 0);
 });
 
 test("Marketing consent allows exactly one GTM intake_created delivery", () => {
@@ -80,9 +83,11 @@ test("Marketing consent allows exactly one GTM intake_created delivery", () => {
 
   const dispatched = [];
   const dataLayer = [];
+  const pixelCalls = [];
 
   globalThis.window = {
     dataLayer,
+    oaiq: (...args) => pixelCalls.push(args),
     __royalMeasurementConsent: {
       get: () => ({
         analytics: false,
@@ -115,6 +120,13 @@ test("Marketing consent allows exactly one GTM intake_created delivery", () => {
       },
     ],
   );
+  assert.deepEqual(pixelCalls, [
+    [
+      "measure",
+      "lead_created",
+      { type: "customer_action" },
+    ],
+  ]);
 
   const serialized = JSON.stringify(
     dataLayer[0],

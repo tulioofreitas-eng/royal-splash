@@ -1,6 +1,7 @@
 ---
 import GrowthAttribution from "../components/runtime/GrowthAttribution.astro";
 import MainContent from "../components/runtime/MainContent.astro";
+import OpenAIAdsPixel from "../components/runtime/OpenAIAdsPixel.astro";
 import SkipLink from "../components/runtime/SkipLink.astro";
 import WhatsAppClickAnalytics from "../components/runtime/WhatsAppClickAnalytics.astro";
 import { getCurrentSeoRobots } from "../seo/runtime.ts";
@@ -41,6 +42,7 @@ const canonicalUrl = getRoyalCanonicalUrl(Astro.url.pathname);
     {description && <meta name="description" content={description} />}
     {effectiveRobots && <meta name="robots" content={effectiveRobots} />}
     {canonicalUrl && <link rel="canonical" href={canonicalUrl} />}
+    <OpenAIAdsPixel />
     <slot name="head" />
   </head>
   <body
