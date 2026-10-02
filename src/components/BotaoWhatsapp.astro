@@ -34,20 +34,6 @@ const { serviceIntent, ctaSurface = "floating_button" } = Astro.props;
       <label for="wa-telefone" style="display:block; font-size:0.85rem; color:#94a3b8; margin-bottom:4px;">Telefone</label>
       <input type="tel" id="wa-telefone" style="width:100%; background:#0B1D2E; border:1px solid rgba(255,255,255,0.15); border-radius:8px; padding:10px 14px; color:#fff;" placeholder="(00) 00000-0000" />
     </div>
-    <div style="margin-bottom:20px;">
-      <label for="wa-tipo" style="display:block; font-size:0.85rem; color:#94a3b8; margin-bottom:4px;">Tipo de projeto</label>
-      <select id="wa-tipo" style="width:100%; background:#0B1D2E; border:1px solid rgba(255,255,255,0.15); border-radius:8px; padding:10px 14px; color:#fff;">
-        <option value="">Selecione...</option>
-        <option value="Construção de piscina">Construção de piscina</option>
-        <option value="Área de lazer">Área de lazer</option>
-        <option value="Sauna / Spa">Sauna / Spa</option>
-        <option value="Reforma / Revitalização">Reforma / Revitalização</option>
-        <option value="Detecção de vazamento">Detecção de vazamento</option>
-        <option value="Piscina de fibra">Piscina de fibra</option>
-        <option value="Projeto corporativo">Projeto corporativo</option>
-        <option value="Outro">Outro</option>
-      </select>
-    </div>
     <div style="display:flex; align-items:flex-start; gap:10px; margin-bottom:16px;">
   <input type="checkbox" id="wa-consentimento" required style="margin-top:4px; accent-color:#38BDF8; cursor:pointer; flex-shrink:0;" />
   <label for="wa-consentimento" style="font-size:0.8rem; color:#94a3b8; line-height:1.4; cursor:pointer;">
@@ -72,8 +58,10 @@ const { serviceIntent, ctaSurface = "floating_button" } = Astro.props;
     type FibraProjectContext,
     type VazamentoProjectContext,
   } from "../utils/whatsapp-composer.ts";
+  import { observeSubmissionTouch } from "../growth/attribution.ts";
+  import { emitIntakeCreatedOnce } from "../growth/emitIntakeCreatedOnce.ts";
 
-  const MODAL_ATIVO = false;
+  const MODAL_ATIVO = true;
   const NUMERO_WHATSAPP = '5521982590643';
   const botoesAbrir = document.querySelectorAll('#btn-abrir-whatsapp, .abrir-whatsapp-modal');
   const modal = document.getElementById('whatsapp-modal')!;
@@ -132,13 +120,9 @@ const { serviceIntent, ctaSurface = "floating_button" } = Astro.props;
     }).catch(() => {});
   }
 
-  function buildContextualWhatsAppUrl(): string {
+  function buildContextualWhatsAppUrl(userName = "Visitante"): string {
     const btn = document.getElementById('btn-abrir-whatsapp');
     const serviceIntent = btn?.getAttribute('data-service-intent');
-
-    // Usar nome da página para inferir contexto de usuário (como placeholder)
-    const pathname = window.location.pathname;
-    const userName = "Visitante"; // Será preenchido dinamicamente se houver contexto
 
     switch (serviceIntent) {
       case 'MAJOR_RENOVATION': {
@@ -166,7 +150,9 @@ const { serviceIntent, ctaSurface = "floating_button" } = Astro.props;
     btn.addEventListener('click', (e) => {
       e.preventDefault();
 
-      if (!MODAL_ATIVO) {
+      const serviceIntent = btn.getAttribute('data-service-intent');
+
+      if (!MODAL_ATIVO || !serviceIntent) {
         registrarClique();
         const url = buildContextualWhatsAppUrl();
         window.open(url, '_blank');
@@ -174,6 +160,7 @@ const { serviceIntent, ctaSurface = "floating_button" } = Astro.props;
       }
 
       modal.style.display = 'flex';
+      (document.getElementById('wa-nome') as HTMLInputElement | null)?.focus();
     });
   });
 
@@ -185,10 +172,74 @@ const { serviceIntent, ctaSurface = "floating_button" } = Astro.props;
     if (e.target === modal) modal.style.display = 'none';
   });
 
+  const intakeMetadataByIntent: Record<string, {
+    experiment_id: string;
+  }> = {
+    MAJOR_RENOVATION: { experiment_id: "HV-RJ-MAJOR-RENOVATION" },
+    POOL_CONSTRUCTION: { experiment_id: "HV-RJ-POOL-CONSTRUCTION" },
+    FIBERGLASS_POOL_RESTORATION: { experiment_id: "HV-RJ-FIBERGLASS-RESTORATION" },
+    POOL_LEAK_DETECTION: { experiment_id: "HV-RJ-POOL-LEAK-DETECTION" },
+  };
+
+  function submitMinimalWhatsAppIntake(
+    nome: string,
+    telefone: string,
+    serviceIntent: string,
+    pageRef: string,
+  ): void {
+    const submissionRef = `RS-whatsapp-${crypto.randomUUID()}`;
+    const runtime = (window as any).__royalGrowthAttribution;
+    runtime?.persistAfterConsent?.();
+    const firstTouch = runtime?.readPersisted?.();
+    const submissionTouch = observeSubmissionTouch(new URL(window.location.href));
+
+    const payload: any = {
+      submissionRef,
+      consentCapturedAt: new Date().toISOString(),
+      projectContext: "residencial",
+      name: nome,
+      phone: telefone,
+      consent: true,
+      source: "site",
+      pageRef,
+    };
+
+    if (firstTouch || submissionTouch) {
+      payload.attribution = {};
+      if (firstTouch) payload.attribution.firstTouch = firstTouch;
+      if (submissionTouch) payload.attribution.submissionTouch = submissionTouch;
+    }
+
+    fetch('/api/site-lead', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(payload),
+      keepalive: true,
+    })
+      .then(async (response) => {
+        if (!response.ok) return;
+        const receipt = await response.json();
+        if (receipt?.replay === true) return;
+
+        const metadata = intakeMetadataByIntent[serviceIntent];
+        if (!metadata) return;
+
+        emitIntakeCreatedOnce(submissionRef, {
+          service_intent: serviceIntent,
+          acquisition_geography: "RJ",
+          experiment_id: metadata.experiment_id,
+          entry_surface: pageRef,
+          has_attachments: false,
+        });
+      })
+      .catch(() => {
+        // O registro é best-effort e nunca deve bloquear a ida ao WhatsApp.
+      });
+  }
+
   btnEnviar.addEventListener('click', () => {
     const nome = (document.getElementById('wa-nome') as HTMLInputElement).value.trim();
     const telefone = (document.getElementById('wa-telefone') as HTMLInputElement).value.trim();
-    const tipo = (document.getElementById('wa-tipo') as HTMLSelectElement).value;
     const consentimento = (document.getElementById('wa-consentimento') as HTMLInputElement).checked;
 
     if (!consentimento) {
@@ -200,14 +251,16 @@ const { serviceIntent, ctaSurface = "floating_button" } = Astro.props;
       return;
     }
 
-    fetch('/api/lead', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ nome, telefone, tipo_projeto: tipo, origem: 'whatsapp' }),
-    }).catch(() => {});
+    const btn = document.getElementById('btn-abrir-whatsapp');
+    const serviceIntent = btn?.getAttribute('data-service-intent');
+    const pageRef = window.location.pathname;
 
-    const mensagem = `Olá! Me chamo ${nome} (${telefone}). Tenho interesse em: ${tipo || 'um orçamento'}.`;
-    const url = `https://wa.me/${NUMERO_WHATSAPP}?text=${encodeURIComponent(mensagem)}`;
+    if (serviceIntent) {
+      submitMinimalWhatsAppIntake(nome, telefone, serviceIntent, pageRef);
+    }
+
+    registrarClique();
+    const url = buildContextualWhatsAppUrl(nome);
     window.open(url, '_blank');
     modal.style.display = 'none';
   });
