@@ -57,6 +57,7 @@ interface RoyalMeasurementConsentRuntime {
 
 interface IntakeCreatedWindow extends Window {
   dataLayer?: Array<Record<string, unknown>>;
+  oaiq?: (...args: unknown[]) => void;
   __royalMeasurementConsent?: RoyalMeasurementConsentRuntime;
 }
 
@@ -103,6 +104,12 @@ export const emitIntakeCreatedOnce = (
       event: "intake_created",
       ...event,
     });
+
+    w.oaiq?.(
+      "measure",
+      "lead_created",
+      { type: "customer_action" },
+    );
   }
 
   markConversionAsEmitted(submissionRef);
