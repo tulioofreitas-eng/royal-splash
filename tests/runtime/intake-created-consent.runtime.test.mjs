@@ -125,6 +125,7 @@ test("Marketing consent allows exactly one GTM intake_created delivery", () => {
       "measure",
       "lead_created",
       { type: "customer_action" },
+      { event_id: "marketing-granted-ref" },
     ],
   ]);
 
