@@ -1,0 +1,13 @@
+User-agent: OAI-AdsBot
+Allow: /
+Disallow: /api/
+
+User-agent: OAI-SearchBot
+Allow: /
+Disallow: /api/
+
+User-agent: *
+Allow: /
+Disallow: /api/
+
+Sitemap: https://www.royalsplash.com.br/sitemap.xml
