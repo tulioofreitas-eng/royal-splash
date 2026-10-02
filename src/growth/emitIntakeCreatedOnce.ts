@@ -109,6 +109,7 @@ export const emitIntakeCreatedOnce = (
       "measure",
       "lead_created",
       { type: "customer_action" },
+      { event_id: submissionRef },
     );
   }
 
