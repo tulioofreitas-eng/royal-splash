@@ -1,0 +1,61 @@
+---
+import { getCurrentEnvironmentContract } from "../../safety/runtime.ts";
+
+const { allowProductionAnalytics } = getCurrentEnvironmentContract();
+---
+
+{allowProductionAnalytics && (
+  <script is:inline>
+    (function (w, d) {
+      var PIXEL_ID = "G7za354ukz8KMXzFt6Vayr";
+      var initialized = false;
+      var sdkRequested = false;
+
+      function marketingAllowed() {
+        var runtime = w.__royalMeasurementConsent;
+        return runtime?.get?.()?.marketing === true;
+      }
+
+      function ensurePixel() {
+        if (initialized || !marketingAllowed()) {
+          return;
+        }
+
+        if (!w.oaiq) {
+          var q = function () {
+            q.q.push(arguments);
+          };
+          q.q = [];
+          w.oaiq = q;
+        }
+
+        if (!sdkRequested) {
+          sdkRequested = true;
+          var j = d.createElement("script");
+          j.async = true;
+          j.src = "https://bzrcdn.openai.com/sdk/oaiq.min.js";
+          var f = d.getElementsByTagName("script")[0];
+          f.parentNode.insertBefore(j, f);
+        }
+
+        w.oaiq("init", {
+          pixelId: PIXEL_ID,
+          debug: true,
+        });
+
+        initialized = true;
+      }
+
+      ensurePixel();
+
+      w.addEventListener(
+        "royal:measurement-consent-changed",
+        function (event) {
+          if (event?.detail?.marketing === true) {
+            ensurePixel();
+          }
+        },
+      );
+    })(window, document);
+  </script>
+)}
