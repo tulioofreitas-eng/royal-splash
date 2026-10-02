@@ -79,8 +79,6 @@ test.describe("Preview intake endpoint current contract", () => {
     ["multiple email separators", { email: "teste@@example.com" }],
     ["unknown project context", { projectContext: "unknown" }],
     ["missing project context", { projectContext: "" }],
-    ["missing city", { city: "" }],
-    ["whitespace-only city", { city: "   " }],
     ["missing project need", { projectNeed: "" }],
     ["missing name", { name: "" }],
   ] as const) {
@@ -101,6 +99,30 @@ test.describe("Preview intake endpoint current contract", () => {
       });
     });
   }
+
+  test("accepts minimal WhatsApp-style payload without city", async ({ request }) => {
+    const response = await request.post(
+      "/api/site-lead-preview",
+      {
+        data: {
+          ...validServerPayload,
+          city: undefined,
+          email: "",
+          projectNeed: "",
+          pageRef: "/lp/piscinas-rj",
+          source: "site",
+        },
+      },
+    );
+
+    expect(response.status()).toBe(200);
+    expect(await response.json()).toEqual({
+      ok: true,
+      mock: true,
+      schemaVersion: "site-lead.v1",
+      submittedCount: 1,
+    });
+  });
 
   test("rejects a non-JSON content type", async ({
     request,

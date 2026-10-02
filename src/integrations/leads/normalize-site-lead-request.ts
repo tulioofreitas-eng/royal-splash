@@ -103,7 +103,6 @@ export function normalizeSiteLeadRequest(
     !submissionRef ||
     !consentCapturedAt ||
     !context ||
-    !city ||
     !name ||
     (!email && !phone) ||
     (email && !isClearlyValidEmail(email)) ||
@@ -156,7 +155,7 @@ export function normalizeSiteLeadRequest(
       ...(email ? { email } : {}),
       ...(phone ? { phone } : {}),
     },
-    city,
+    ...(city ? { city } : {}),
     interest: {
       ...(serviceRef ? { serviceRef } : {}),
       description: buildDescription(context, projectNeed),
