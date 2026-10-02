@@ -107,6 +107,7 @@
   import { observeFirstTouch, observeSubmissionTouch } from "../../growth/attribution.ts";
   import { setupIntakeAttachmentField } from "../../growth/intake-attachments.ts";
   import { emitIntakeCreatedOnce } from "../../growth/emitIntakeCreatedOnce.ts";
+  import { getMeasurementRequestHeaders } from "../../privacy/measurement-request.ts";
 
   // Expose for testing
   (window as any).__emitIntakeCreatedOnce = emitIntakeCreatedOnce;
@@ -298,7 +299,10 @@
 
         const response = await fetch("/api/site-lead", {
           method: "POST",
-          headers: { "Content-Type": "application/json" },
+          headers: {
+            "Content-Type": "application/json",
+            ...getMeasurementRequestHeaders(window),
+          },
           body: JSON.stringify(payload),
           signal: controller.signal
         });

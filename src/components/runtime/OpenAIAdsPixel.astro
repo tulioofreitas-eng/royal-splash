@@ -38,9 +38,9 @@ const { allowProductionAnalytics } = getCurrentEnvironmentContract();
           f.parentNode.insertBefore(j, f);
         }
 
+        w.oaiq("consent", true);
         w.oaiq("init", {
           pixelId: PIXEL_ID,
-          debug: true,
         });
 
         initialized = true;
@@ -53,7 +53,11 @@ const { allowProductionAnalytics } = getCurrentEnvironmentContract();
         function (event) {
           if (event?.detail?.marketing === true) {
             ensurePixel();
+            w.oaiq?.("consent", true);
+            return;
           }
+
+          w.oaiq?.("consent", false);
         },
       );
     })(window, document);

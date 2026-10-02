@@ -60,6 +60,7 @@ const { serviceIntent, ctaSurface = "floating_button" } = Astro.props;
   } from "../utils/whatsapp-composer.ts";
   import { observeSubmissionTouch } from "../growth/attribution.ts";
   import { emitIntakeCreatedOnce } from "../growth/emitIntakeCreatedOnce.ts";
+  import { getMeasurementRequestHeaders } from "../privacy/measurement-request.ts";
 
   const MODAL_ATIVO = true;
   const NUMERO_WHATSAPP = '5521982590643';
@@ -212,7 +213,10 @@ const { serviceIntent, ctaSurface = "floating_button" } = Astro.props;
 
     fetch('/api/site-lead', {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
+      headers: {
+        'Content-Type': 'application/json',
+        ...getMeasurementRequestHeaders(window),
+      },
       body: JSON.stringify(payload),
       keepalive: true,
     })
