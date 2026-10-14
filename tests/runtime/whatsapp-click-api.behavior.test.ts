@@ -100,6 +100,23 @@ describe("P0 WhatsApp click endpoint behavior with isolated provider doubles", (
     expect(state.inserted).toEqual([]);
   });
 
+  it("preserves all four active RJ landing page references without changing SEO allowlists", async () => {
+    for (const page of [
+      "/lp/fibra-rj",
+      "/lp/vazamento-rj",
+      "/lp/piscinas-rj",
+      "/lp/reforma-rj",
+    ]) {
+      state.inserted.length = 0;
+      const response = await endpoint({ pagina: page });
+      expect(response.status).toBe(200);
+      expect(state.inserted[0]).toMatchObject({
+        table: "cliques_whatsapp",
+        value: { pagina: page },
+      });
+    }
+  });
+
   it("keeps the documented page-only contract for an invalid path", async () => {
     const response = await endpoint({ pagina: "/path-that-is-not-allowed" });
     expect(response.status).toBe(200);
