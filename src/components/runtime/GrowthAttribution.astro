@@ -11,13 +11,23 @@
     };
   }
 
-  // The first touch is observed in memory without writing to persistent
-  // storage. Persistence across full-page navigation requires an explicit
-  // Marketing measurement choice. Do not persist on Analytics-only consent.
-  const persistIfMarketingGranted = () => {
-    const choice = (window as MeasurementWindow).__royalMeasurementConsent?.get?.();
+  const getChoice = () =>
+    (window as MeasurementWindow).__royalMeasurementConsent?.get?.();
+
+  // A new grant can save the current observed touch; a revocation must
+  // physically remove stored attribution and forget in-memory observations.
+  const onMarketingConsentChanged = () => {
+    const choice = getChoice();
     if (choice?.marketing === true) {
+      if (!runtime.getObservedFirstTouch()) {
+        runtime.observe({
+          url: new URL(window.location.href),
+          referrer: document.referrer,
+        });
+      }
       runtime.persistAfterConsent();
+    } else {
+      runtime.revokeMarketingConsent();
     }
   };
 
@@ -26,11 +36,16 @@
       url: new URL(window.location.href),
       referrer: document.referrer,
     });
-    // Restore a previously granted Marketing preference on fresh page load.
-    persistIfMarketingGranted();
+
+    const choice = getChoice();
+    if (choice?.marketing === true) {
+      runtime.persistAfterConsent();
+    } else if (choice?.marketing === false) {
+      runtime.revokeMarketingConsent();
+    }
   };
 
   observeCurrentPage();
   document.addEventListener("astro:page-load", observeCurrentPage);
-  window.addEventListener("royal:measurement-consent-changed", persistIfMarketingGranted);
+  window.addEventListener("royal:measurement-consent-changed", onMarketingConsentChanged);
 </script>
