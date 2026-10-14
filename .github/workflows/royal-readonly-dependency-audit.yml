@@ -1,0 +1,49 @@
+name: Royal Splash read-only dependency audit
+on:
+  push:
+    branches:
+      - audit/royal-dependency-triage-20261014
+permissions:
+  contents: read
+jobs:
+  audit:
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    steps:
+      - name: Checkout unchanged main dependency manifest
+        uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          persist-credentials: false
+      - name: Set up Node 22
+        uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020
+        with:
+          node-version: '22.16.0'
+      - name: npm audit read-only (all versus production tree)
+        shell: bash
+        run: |
+          set -euo pipefail
+          npm audit --json > "$RUNNER_TEMP/audit-all.json" || true
+          npm audit --omit=dev --json > "$RUNNER_TEMP/audit-prod.json" || true
+          node --input-type=module <<'AUDIT'
+          import { readFileSync } from "node:fs";
+          for (const scope of ["all", "prod"]) {
+            const file = `${process.env.RUNNER_TEMP}/audit-${scope}.json`;
+            const report = JSON.parse(readFileSync(file, "utf8"));
+            if (report.error || !report.metadata?.vulnerabilities) {
+              throw new Error(`npm audit failed for ${scope}: ${report.error?.code || "missing_metadata"}`);
+            }
+            const vulnerabilities = Object.entries(report.vulnerabilities || {})
+              .map(([packageName, info]) => ({
+                packageName,
+                severity: info.severity,
+                isDirect: info.isDirect,
+                range: info.range,
+                fixAvailable: info.fixAvailable,
+              }));
+            console.log(JSON.stringify({
+              scope,
+              counts: report.metadata.vulnerabilities,
+              issues: vulnerabilities,
+            }));
+          }
+          AUDIT
