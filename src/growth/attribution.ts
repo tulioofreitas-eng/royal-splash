@@ -29,6 +29,19 @@ interface GrowthFirstTouchStorageRecord {
 export interface GrowthStorage {
   getItem(key: string): string | null;
   setItem(key: string, value: string): void;
+  removeItem?(key: string): void;
+}
+
+/**
+ * Remove persisted advertising attribution on consent withdrawal, expiry or
+ * invalid stored data. Ignore blocked storage without exposing exceptions.
+ */
+export function clearPersistedFirstTouch(storage: GrowthStorage | undefined): void {
+  try {
+    storage?.removeItem?.(GROWTH_FIRST_TOUCH_STORAGE_KEY);
+  } catch {
+    // Browser storage can be unavailable; consent guards still fail closed.
+  }
 }
 
 export interface FirstTouchObservation {
@@ -408,11 +421,13 @@ export function readPersistedFirstTouch(
       !hasOnlyKeys(record, ["version", "firstTouch"]) ||
       record.version !== GROWTH_FIRST_TOUCH_STORAGE_VERSION
     ) {
+      clearPersistedFirstTouch(storage);
       return undefined;
     }
 
     return normalizeFirstTouch(record.firstTouch, now, true);
   } catch {
+    clearPersistedFirstTouch(storage);
     return undefined;
   }
 }
@@ -469,12 +484,22 @@ export interface BrowserGrowthAttributionRuntime {
   getObservedFirstTouch(): GrowthFirstTouch | undefined;
   readPersisted(now?: Date): GrowthFirstTouch | undefined;
   persistAfterConsent(now?: Date): GrowthFirstTouch | undefined;
+  revokeMarketingConsent(): void;
 }
 
 export function createBrowserGrowthAttributionRuntime(
   storage: GrowthStorage | undefined,
+  hasMarketingConsent: () => boolean = () => false,
 ): BrowserGrowthAttributionRuntime {
   let observedFirstTouch: GrowthFirstTouch | undefined;
+
+  function marketingAllowed(): boolean {
+    try {
+      return hasMarketingConsent() === true;
+    } catch {
+      return false;
+    }
+  }
 
   return {
     observe(observation) {
@@ -485,20 +510,35 @@ export function createBrowserGrowthAttributionRuntime(
       return observedFirstTouch;
     },
     readPersisted(now = new Date()) {
+      if (!marketingAllowed()) {
+        clearPersistedFirstTouch(storage);
+        return undefined;
+      }
       return readPersistedFirstTouch(storage, now);
     },
     persistAfterConsent(now = new Date()) {
+      if (!marketingAllowed()) {
+        clearPersistedFirstTouch(storage);
+        return undefined;
+      }
       return persistFirstTouchAfterConsent(
         storage,
         observedFirstTouch,
         now,
       );
     },
+    revokeMarketingConsent() {
+      observedFirstTouch = undefined;
+      clearPersistedFirstTouch(storage);
+    },
   };
 }
 
 interface GrowthRuntimeWindow extends Window {
   __royalGrowthAttribution?: BrowserGrowthAttributionRuntime;
+  __royalMeasurementConsent?: {
+    get?: () => { marketing?: boolean } | null;
+  };
 }
 
 export function getBrowserGrowthAttributionRuntime(
@@ -516,7 +556,10 @@ export function getBrowserGrowthAttributionRuntime(
     }
 
     runtimeWindow.__royalGrowthAttribution =
-      createBrowserGrowthAttributionRuntime(storage);
+      createBrowserGrowthAttributionRuntime(
+        storage,
+        () => runtimeWindow.__royalMeasurementConsent?.get?.()?.marketing === true,
+      );
   }
 
   return runtimeWindow.__royalGrowthAttribution;
