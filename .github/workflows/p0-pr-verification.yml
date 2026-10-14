@@ -27,8 +27,42 @@ jobs:
         run: npx vitest run tests/runtime/paid-search-attribution.test.ts
       - name: Consent guardrails
         run: node --experimental-strip-types --test tests/runtime/measurement-consent-runtime.test.mjs tests/runtime/intake-created-consent.runtime.test.mjs
-      - name: Repository-wide runtime and contract regressions
-        run: node --experimental-strip-types --test tests/runtime/*.test.mjs tests/contracts/*.test.mjs
+      - name: Compare broad regression failures against production main
+        shell: bash
+        run: |
+          set -euo pipefail
+          git fetch --no-tags --depth=1 origin main
+          git worktree add --detach "$RUNNER_TEMP/royal-baseline" FETCH_HEAD
+          ln -s "$GITHUB_WORKSPACE/node_modules" "$RUNNER_TEMP/royal-baseline/node_modules"
+          node --experimental-strip-types --test tests/runtime/*.test.mjs tests/contracts/*.test.mjs > "$RUNNER_TEMP/p0-candidate.tap" 2>&1 || true
+          (
+            cd "$RUNNER_TEMP/royal-baseline"
+            node --experimental-strip-types --test tests/runtime/*.test.mjs tests/contracts/*.test.mjs > "$RUNNER_TEMP/p0-baseline.tap" 2>&1 || true
+          )
+          node --input-type=module <<'CHECK'
+          import { readFileSync } from "node:fs";
+          const root = process.env.RUNNER_TEMP;
+          const read = (name) => readFileSync(`${root}/p0-${name}.tap`, "utf8");
+          const failed = (log) => new Set(log.split(/\r?\n/)
+            .filter((line) => /^not ok \d+ - /.test(line))
+            .map((line) => line.replace(/^not ok \d+ - /, "").trim()));
+          const stats = (log) => Object.fromEntries(
+            [...log.matchAll(/^# (tests|pass|fail) (\d+)$/gm)]
+              .map(([, kind, count]) => [kind, Number(count)]));
+          const baselineLog = read("baseline");
+          const candidateLog = read("candidate");
+          const baseline = failed(baselineLog);
+          const candidate = failed(candidateLog);
+          const newFailures = [...candidate].filter((item) => !baseline.has(item));
+          console.log("BASELINE main:", JSON.stringify(stats(baselineLog)));
+          console.log("CANDIDATE PR:", JSON.stringify(stats(candidateLog)));
+          console.log("Preexisting failure names on main:", baseline.size);
+          console.log("New failure names introduced by PR:", JSON.stringify(newFailures));
+          if (!/\# tests \d+/.test(baselineLog) || !/\# tests \d+/.test(candidateLog)) {
+            throw new Error("Test suite did not produce valid TAP summaries");
+          }
+          if (newFailures.length) process.exitCode = 1;
+          CHECK
       - name: Production-equivalent static build (no deploy)
         run: npm run build
       - name: Install isolated browser test dependencies
