@@ -3,6 +3,7 @@
 ## Delivered in this PR
 - Normalize external `utm_medium=cpc` and `utm_medium=ppc` to the existing canonical Atlas value `paid_search`.
 - Preserve the supported `utm_source=google`, `utm_campaign` and page references through the existing first-touch and submission-touch flow.
+- When Marketing measurement consent is granted (or was already granted), persist observed first-touch attribution before a full-page navigation. Do not persist merely on page observation or Analytics-only consent.
 - Keep the public API and the Atlas database schema unchanged.
 - Add unit tests for canonicalization and non-storage of Google click identifiers.
 
