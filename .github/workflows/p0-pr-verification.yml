@@ -29,3 +29,9 @@ jobs:
         run: node --experimental-strip-types --test tests/runtime/measurement-consent-runtime.test.mjs tests/runtime/intake-created-consent.runtime.test.mjs
       - name: Production-equivalent static build (no deploy)
         run: npm run build
+      - name: Install isolated browser test dependencies
+        run: |
+          npm install --global pnpm@10.17.1
+          npx playwright install --with-deps chromium
+      - name: Browser regression tests in Preview mock
+        run: npx playwright test tests/browser/paid-search-attribution.spec.ts
