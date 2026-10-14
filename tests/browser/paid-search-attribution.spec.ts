@@ -65,4 +65,81 @@ test.describe("P0 paid acquisition across real Astro page navigation (Preview mo
     expect(await page.evaluate((key) => localStorage.getItem(key), storageKey))
       .toBeNull();
   });
+  test("grant → navigate → revoke → submit keeps the intake but omits paid attribution", async ({ page }) => {
+    await page.addInitScript(() => {
+      let choice = { analytics: false, marketing: true };
+      (window as any).__royalMeasurementConsent = {
+        get: () => choice,
+      };
+      (window as any).__setTestMarketing = (marketing: boolean) => {
+        choice = { ...choice, marketing };
+        window.dispatchEvent(new CustomEvent("royal:measurement-consent-changed", {
+          detail: choice,
+        }));
+      };
+    });
+
+    const received: Array<Record<string, unknown>> = [];
+    await page.route("**/api/site-lead", async (route) => {
+      received.push(route.request().postDataJSON());
+      await route.fulfill({
+        status: 201,
+        contentType: "application/json",
+        body: JSON.stringify({ ok: true, caseId: "case-consent-test", replay: false }),
+      });
+    });
+
+    await page.goto("/lp/fibra-rj?utm_source=google&utm_medium=cpc&utm_campaign=consent_revoke");
+    await expect.poll(() => page.evaluate((key) => localStorage.getItem(key), storageKey))
+      .not.toBeNull();
+
+    await page.goto("/lp/vazamento-rj");
+    await page.evaluate(() => (window as any).__setTestMarketing(false));
+
+    await expect.poll(() => page.evaluate((key) => localStorage.getItem(key), storageKey))
+      .toBeNull();
+
+    await page.locator("#vazamento-nome").fill("Pessoa Teste");
+    await page.locator("#vazamento-telefone").fill("21987654321");
+    await page.locator("#vazamento-cidade").fill("Rio de Janeiro");
+    await page.locator("#vazamento-consentimento").check();
+    await page.locator("[data-vazamento-intake-form] [data-submit-btn]").click();
+
+    await expect.poll(() => received.length).toBe(1);
+    expect(received[0]).toHaveProperty("consent", true);
+    expect(received[0]).not.toHaveProperty("attribution");
+    expect(await page.evaluate((key) => localStorage.getItem(key), storageKey))
+      .toBeNull();
+  });
+
+  test("refusing Marketing from the start still allows intake without campaign metadata", async ({ page }) => {
+    await page.addInitScript(() => {
+      (window as any).__royalMeasurementConsent = {
+        get: () => ({ analytics: true, marketing: false }),
+      };
+    });
+
+    const received: Array<Record<string, unknown>> = [];
+    await page.route("**/api/site-lead", async (route) => {
+      received.push(route.request().postDataJSON());
+      await route.fulfill({
+        status: 201,
+        contentType: "application/json",
+        body: JSON.stringify({ ok: true, caseId: "case-denied-test", replay: false }),
+      });
+    });
+
+    await page.goto("/lp/vazamento-rj?utm_source=google&utm_medium=cpc&utm_campaign=denied_campaign");
+    await page.locator("#vazamento-nome").fill("Pessoa Teste");
+    await page.locator("#vazamento-telefone").fill("21987654321");
+    await page.locator("#vazamento-cidade").fill("Rio de Janeiro");
+    await page.locator("#vazamento-consentimento").check();
+    await page.locator("[data-vazamento-intake-form] [data-submit-btn]").click();
+
+    await expect.poll(() => received.length).toBe(1);
+    expect(received[0]).not.toHaveProperty("attribution");
+    expect(await page.evaluate((key) => localStorage.getItem(key), storageKey))
+      .toBeNull();
+  });
+
 });
