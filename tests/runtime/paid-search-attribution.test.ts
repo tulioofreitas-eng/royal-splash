@@ -48,8 +48,9 @@ describe("P0 paid search UTM normalization", () => {
     const storage = {
       getItem: (key: string) => records.get(key) ?? null,
       setItem: (key: string, value: string) => { records.set(key, value); },
+      removeItem: (key: string) => { records.delete(key); },
     };
-    const runtime = createBrowserGrowthAttributionRuntime(storage);
+    const runtime = createBrowserGrowthAttributionRuntime(storage, () => true);
     const url = urlFor(
       "cpc",
       "&gclid=TEST-CONSENT-PENDING&gbraid=TEST-BRAID&wbraid=TEST-WBRAID",
@@ -70,15 +71,16 @@ describe("P0 paid search UTM normalization", () => {
     const storage = {
       getItem: (key: string) => records.get(key) ?? null,
       setItem: (key: string, value: string) => { records.set(key, value); },
+      removeItem: (key: string) => { records.delete(key); },
     };
-    const entry = createBrowserGrowthAttributionRuntime(storage);
+    const entry = createBrowserGrowthAttributionRuntime(storage, () => true);
     entry.observe({ url: urlFor("CPC"), now: NOW });
 
     // Observation alone cannot persist information before authorization.
     expect(records.size).toBe(0);
     entry.persistAfterConsent(NOW);
 
-    const laterPage = createBrowserGrowthAttributionRuntime(storage);
+    const laterPage = createBrowserGrowthAttributionRuntime(storage, () => true);
     laterPage.observe({
       url: new URL("https://www.royalsplash.com.br/inicie-seu-projeto"),
       now: new Date(NOW.getTime() + 60_000),
@@ -96,6 +98,74 @@ describe("P0 paid search UTM normalization", () => {
     laterPage.persistAfterConsent(new Date(NOW.getTime() + 60_000));
     expect(JSON.parse(records.get(GROWTH_FIRST_TOUCH_STORAGE_KEY) ?? "{}")
       .firstTouch.landingPageRef).toBe("/lp/fibra-rj");
+  });
+
+
+  it("refuses to persist or read attribution without Marketing consent, even if caller requests it", () => {
+    const records = new Map<string, string>();
+    const storage = {
+      getItem: (key: string) => records.get(key) ?? null,
+      setItem: (key: string, value: string) => { records.set(key, value); },
+      removeItem: (key: string) => { records.delete(key); },
+    };
+    const runtime = createBrowserGrowthAttributionRuntime(storage, () => false);
+    runtime.observe({ url: urlFor("CPC"), now: NOW });
+    expect(runtime.persistAfterConsent(NOW)).toBeUndefined();
+    expect(records.size).toBe(0);
+
+    // A stale entry from a previously authorized visit must never be read.
+    records.set(GROWTH_FIRST_TOUCH_STORAGE_KEY, JSON.stringify({
+      version: 1,
+      firstTouch: observeFirstTouch({ url: urlFor("CPC"), now: NOW }),
+    }));
+    expect(runtime.readPersisted(NOW)).toBeUndefined();
+    expect(records.size).toBe(0);
+  });
+
+  it("deletes first touch and clears in-memory state on Marketing revocation", () => {
+    const records = new Map<string, string>();
+    let marketing = true;
+    const storage = {
+      getItem: (key: string) => records.get(key) ?? null,
+      setItem: (key: string, value: string) => { records.set(key, value); },
+      removeItem: (key: string) => { records.delete(key); },
+    };
+    const runtime = createBrowserGrowthAttributionRuntime(storage, () => marketing);
+    runtime.observe({ url: urlFor("CPC"), now: NOW });
+    expect(runtime.persistAfterConsent(NOW)?.medium).toBe("paid_search");
+    expect(records.has(GROWTH_FIRST_TOUCH_STORAGE_KEY)).toBe(true);
+
+    marketing = false;
+    runtime.revokeMarketingConsent();
+    expect(records.has(GROWTH_FIRST_TOUCH_STORAGE_KEY)).toBe(false);
+    expect(runtime.getObservedFirstTouch()).toBeUndefined();
+    expect(runtime.readPersisted(NOW)).toBeUndefined();
+    expect(runtime.persistAfterConsent(NOW)).toBeUndefined();
+
+    // Re-granting never resurrects the pre-revocation campaign.
+    marketing = true;
+    expect(runtime.persistAfterConsent(NOW)).toBeUndefined();
+    runtime.observe({
+      url: new URL("https://www.royalsplash.com.br/inicie-seu-projeto"),
+      now: NOW,
+    });
+    expect(runtime.persistAfterConsent(NOW)?.campaignRef).toBeUndefined();
+  });
+
+  it("physically erases expired localStorage records after the 30-day TTL", () => {
+    const records = new Map<string, string>();
+    const storage = {
+      getItem: (key: string) => records.get(key) ?? null,
+      setItem: (key: string, value: string) => { records.set(key, value); },
+      removeItem: (key: string) => { records.delete(key); },
+    };
+    const runtime = createBrowserGrowthAttributionRuntime(storage, () => true);
+    runtime.observe({ url: urlFor("cpc"), now: NOW });
+    runtime.persistAfterConsent(NOW);
+    expect(records.size).toBe(1);
+    expect(runtime.readPersisted(new Date(NOW.getTime() + 31 * 24 * 60 * 60 * 1000)))
+      .toBeUndefined();
+    expect(records.size).toBe(0);
   });
 
   it("wires persistent navigation attribution only to Marketing consent", () => {
