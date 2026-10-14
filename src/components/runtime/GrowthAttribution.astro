@@ -5,13 +5,32 @@
 
   const runtime = getBrowserGrowthAttributionRuntime(window);
 
+  interface MeasurementWindow extends Window {
+    __royalMeasurementConsent?: {
+      get?: () => { marketing?: boolean } | null;
+    };
+  }
+
+  // The first touch is observed in memory without writing to persistent
+  // storage. Persistence across full-page navigation requires an explicit
+  // Marketing measurement choice. Do not persist on Analytics-only consent.
+  const persistIfMarketingGranted = () => {
+    const choice = (window as MeasurementWindow).__royalMeasurementConsent?.get?.();
+    if (choice?.marketing === true) {
+      runtime.persistAfterConsent();
+    }
+  };
+
   const observeCurrentPage = () => {
     runtime.observe({
       url: new URL(window.location.href),
       referrer: document.referrer,
     });
+    // Restore a previously granted Marketing preference on fresh page load.
+    persistIfMarketingGranted();
   };
 
   observeCurrentPage();
   document.addEventListener("astro:page-load", observeCurrentPage);
+  window.addEventListener("royal:measurement-consent-changed", persistIfMarketingGranted);
 </script>
