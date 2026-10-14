@@ -42,6 +42,14 @@ jobs:
                 isDirect: info.isDirect,
                 range: info.range,
                 fixAvailable: info.fixAvailable,
+                advisories: (info.via || [])
+                  .filter((x) => typeof x === "object")
+                  .map((x) => ({
+                    title: x.title,
+                    url: x.url,
+                    advisorySeverity: x.severity,
+                    affectedRange: x.range,
+                  })),
               }));
             console.log(JSON.stringify({
               scope,
