@@ -1,0 +1,31 @@
+name: Royal Splash P0 Review (WhatsApp observability)
+on:
+  pull_request:
+    branches: [main]
+    paths:
+      - 'src/**'
+      - 'tests/**'
+      - 'docs/architecture/**'
+      - '.github/workflows/p0-pr-verification.yml'
+permissions:
+  contents: read
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - name: Checkout pull request head
+        uses: actions/checkout@v4
+      - name: Set up Node 22
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22.16.0'
+          cache: npm
+      - name: Install from lockfile
+        run: npm ci
+      - name: Targeted P0 tests
+        run: node --experimental-strip-types --test tests/runtime/whatsapp-click-api.runtime.test.mjs tests/runtime/whatsapp-click-gtm-event.runtime.test.mjs
+      - name: Consent guardrails
+        run: node --experimental-strip-types --test tests/runtime/measurement-consent-runtime.test.mjs tests/runtime/intake-created-consent.runtime.test.mjs
+      - name: Production-equivalent static build (no deploy)
+        run: npm run build
