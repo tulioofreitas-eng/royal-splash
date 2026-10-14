@@ -272,6 +272,14 @@ export function normalizeGrowthAttribution(
 
 function normalizedUrlMedium(value: string | null): GrowthMedium | undefined {
   const normalized = value?.trim().toLowerCase();
+
+  // External acquisition links commonly use CPC/PPC even though the
+  // canonical Atlas contract calls this channel "paid_search".
+  // Normalize at the URL boundary; do not expand the persisted enum.
+  if (normalized === "cpc" || normalized === "ppc") {
+    return "paid_search";
+  }
+
   return normalized &&
     GROWTH_MEDIUM_ALLOW.includes(normalized as GrowthMedium)
     ? normalized as GrowthMedium
