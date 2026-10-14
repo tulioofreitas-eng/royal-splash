@@ -107,7 +107,7 @@
   import { observeFirstTouch, observeSubmissionTouch } from "../../growth/attribution.ts";
   import { setupIntakeAttachmentField } from "../../growth/intake-attachments.ts";
   import { emitIntakeCreatedOnce } from "../../growth/emitIntakeCreatedOnce.ts";
-  import { getMeasurementRequestHeaders } from "../../privacy/measurement-request.ts";
+  import { getMeasurementRequestHeaders, isMarketingMeasurementAllowed } from "../../privacy/measurement-request.ts";
 
   // Expose for testing
   (window as any).__emitIntakeCreatedOnce = emitIntakeCreatedOnce;
@@ -256,10 +256,13 @@
         const consentCapturedAt = new Date().toISOString();
 
         // Capture attribution
+        const marketingAllowed = isMarketingMeasurementAllowed(window);
         const runtime = (window as any).__royalGrowthAttribution;
-        runtime?.persistAfterConsent?.();
-        const firstTouch = runtime?.readPersisted?.();
-        const submissionTouch = observeSubmissionTouch(new URL(window.location.href));
+        if (marketingAllowed) runtime?.persistAfterConsent?.();
+        const firstTouch = marketingAllowed ? runtime?.readPersisted?.() : undefined;
+        const submissionTouch = marketingAllowed
+          ? observeSubmissionTouch(new URL(window.location.href))
+          : undefined;
 
         const prazo = fields.prazo.value.trim();
         const prazoParts = [];
