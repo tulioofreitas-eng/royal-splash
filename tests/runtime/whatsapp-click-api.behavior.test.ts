@@ -13,7 +13,7 @@ vi.mock("../../src/safety/runtime.ts", () => ({
 }));
 
 vi.mock("../../src/safety/production-supabase.ts", () => ({
-  createProductionSupabaseClient: async () => {
+  createRoyalWhatsAppClickSupabaseClient: async () => {
     if (state.clientThrows) throw new Error("sensitive provider exception");
     return {
       from: (table: string) => ({
