@@ -53,7 +53,7 @@ describe("Royal Splash dedicated WhatsApp Supabase configuration", () => {
         secretKey: invalidSecret,
       })).toThrow(RoyalWhatsAppSupabaseConfigError);
     });
-  });
+  }
 
   it("never echoes the credential or URL contents in configuration errors", () => {
     const sensitiveTestMarker = "SYNTHETIC_NOT_A_REAL_SECRET";
