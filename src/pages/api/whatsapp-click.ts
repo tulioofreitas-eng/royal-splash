@@ -11,6 +11,8 @@ const MAX_BODY_BYTES = 1024;
 const ALLOWED_PRODUCTION_HOSTS = new Set([
   "www.royalsplash.com.br",
   "royalsplash.com.br",
+  // Existing Vercel production alias (verified in project domain metadata).
+  "royal-splash.vercel.app",
 ]);
 
 type ClickError =
