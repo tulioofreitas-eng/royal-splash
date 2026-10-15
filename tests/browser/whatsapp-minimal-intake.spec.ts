@@ -137,4 +137,24 @@ test.describe("minimal WhatsApp Intake handoff", () => {
     });
   }
 
+  test("two rapid handoff observations produce one page-only diagnostic POST", async ({ page }) => {
+    let count = 0;
+    await page.route("**/api/whatsapp-click", route => {
+      count += 1;
+      return route.fulfill({
+        status: 200,
+        contentType: "application/json",
+        body: JSON.stringify({ ok: true, mock: true }),
+      });
+    });
+
+    await page.goto("/lp/fibra-rj");
+    await page.evaluate(() => {
+      window.dispatchEvent(new Event("site:whatsapp-handoff-initiated"));
+      window.dispatchEvent(new Event("site:whatsapp-handoff-initiated"));
+    });
+
+    await expect.poll(() => count).toBe(1);
+  });
+
 });
