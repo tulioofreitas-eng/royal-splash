@@ -24,7 +24,9 @@ test("legacy page-only click contract, mock isolation and nonblocking browser re
 
   assert.match(api, /createRoyalWhatsAppClickSupabaseClient/);
   assert.doesNotMatch(api, /createProductionSupabaseClient/);
-  assert.match(api, /pagina = normalizeWhatsAppClickPage\(corpo\?\.pagina\)/);
+  assert.match(api, /const pagina = normalizeWhatsAppClickPage\(/);
+  assert.match(api, /isAllowedSameOriginRequest\(request\)/);
+  assert.match(api, /readBoundedJson\(request\)/);
   assert.match(api, /leadProvider === "mock"[\s\S]*?jsonResponse\(200, \{ ok: true, mock: true \}\)/);
   assert.match(api, /supabase\.from\("cliques_whatsapp"\)\.insert\(\{[\s\S]*?empresa_id: EMPRESA_ID,[\s\S]*?pagina,/);
   assert.match(button, /fetch\('\/api\/whatsapp-click',[\s\S]*?keepalive: true,[\s\S]*?\}\)\.catch/);
