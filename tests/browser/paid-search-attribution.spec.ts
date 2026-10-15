@@ -1,4 +1,11 @@
 import { expect, test } from "@playwright/test";
+import { readFileSync } from "node:fs";
+
+const consentHead = readFileSync(
+  new URL("../../src/components/GTMHead.astro", import.meta.url), "utf8",
+);
+const inlineConsentScript = consentHead.match(/<script is:inline>([\s\S]*?)<\/script>/)?.[1];
+if (!inlineConsentScript) throw new Error("GTM consent manager source not found");
 
 const storageKey = "royal_growth_first_touch.v1";
 
@@ -140,6 +147,96 @@ test.describe("P0 paid acquisition across real Astro page navigation (Preview mo
     expect(received[0]).not.toHaveProperty("attribution");
     expect(await page.evaluate((key) => localStorage.getItem(key), storageKey))
       .toBeNull();
+  });
+
+  test("two real tabs: Marketing revocation is propagated and strips submitted attribution", async ({ page, context }) => {
+    await context.route("https://www.googletagmanager.com/**", route =>
+      route.fulfill({ status: 200, contentType: "application/javascript", body: "" }),
+    );
+
+    const payloads: Array<Record<string, unknown>> = [];
+    await page.route("**/api/site-lead", route => {
+      payloads.push(route.request().postDataJSON());
+      return route.fulfill({
+        status: 201,
+        contentType: "application/json",
+        body: JSON.stringify({ ok: true, caseId: "case-cross-tab", replay: false }),
+      });
+    });
+
+    await page.goto("/lp/vazamento-rj?utm_source=google&utm_medium=CPC&utm_campaign=revocation_tabs");
+    await page.addScriptTag({ content: inlineConsentScript });
+    const tab2 = await context.newPage();
+    try {
+      await page.evaluate(() => (window as any).__royalMeasurementConsent.update({
+        version: 1, analytics: false, marketing: true,
+      }));
+      await expect.poll(() => page.evaluate(key => localStorage.getItem(key), storageKey))
+        .not.toBeNull();
+
+      await tab2.goto("/lp/reforma-rj");
+      await tab2.addScriptTag({ content: inlineConsentScript });
+      expect(await tab2.evaluate(() => (window as any).__royalMeasurementConsent.get().marketing))
+        .toBe(true);
+
+      // Revocation on tab 2 must invalidate consent and attributed data in
+      // the original tab without refresh, navigation or another grant.
+      await tab2.evaluate(() => (window as any).__royalMeasurementConsent.update({
+        version: 1, analytics: false, marketing: false,
+      }));
+
+      await expect.poll(() => page.evaluate(() =>
+        (window as any).__royalMeasurementConsent.get()?.marketing,
+      )).toBe(false);
+      await expect.poll(() => page.evaluate(key => localStorage.getItem(key), storageKey))
+        .toBeNull();
+
+      await page.locator("#vazamento-nome").fill("Pessoa Teste");
+      await page.locator("#vazamento-telefone").fill("21987654321");
+      await page.locator("#vazamento-cidade").fill("Rio de Janeiro");
+      await page.locator("#vazamento-consentimento").check();
+      await page.locator("[data-vazamento-intake-form] [data-submit-btn]").click();
+
+      await expect.poll(() => payloads.length).toBe(1);
+      expect(payloads[0]).not.toHaveProperty("attribution");
+      expect(await page.evaluate(() =>
+        (window as any).__royalMeasurementConsent.get()?.marketing,
+      )).toBe(false);
+      expect(await page.evaluate(key => localStorage.getItem(key), storageKey))
+        .toBeNull();
+    } finally {
+      await tab2.close();
+    }
+  });
+
+  test("two tabs: clearing consent storage revokes permission and GTM flags in the first tab", async ({ page, context }) => {
+    await context.route("https://www.googletagmanager.com/**", route =>
+      route.fulfill({ status: 200, contentType: "application/javascript", body: "" }),
+    );
+    await page.goto("/lp/fibra-rj?utm_source=google&utm_medium=cpc&utm_campaign=clear_storage");
+    await page.addScriptTag({ content: inlineConsentScript });
+    await page.evaluate(() => (window as any).__royalMeasurementConsent.update({
+      version: 1, analytics: true, marketing: true,
+    }));
+    await expect.poll(() => page.evaluate(key => localStorage.getItem(key), storageKey))
+      .not.toBeNull();
+    const tab2 = await context.newPage();
+    try {
+      await tab2.goto("/lp/reforma-rj");
+      await tab2.evaluate(() => localStorage.removeItem("royal_measurement_consent.v1"));
+      await expect.poll(() => page.evaluate(() =>
+        (window as any).__royalMeasurementConsent.get(),
+      )).toBeNull();
+      await expect.poll(() => page.evaluate(key => localStorage.getItem(key), storageKey))
+        .toBeNull();
+      const deniedEvent = await page.evaluate(() => (window as any).dataLayer
+        .filter((entry: any) => entry?.event === "royal_measurement_consent").at(-1));
+      expect(deniedEvent).toMatchObject({
+        analytics_consent: false, marketing_consent: false,
+      });
+    } finally {
+      await tab2.close();
+    }
   });
 
 });
