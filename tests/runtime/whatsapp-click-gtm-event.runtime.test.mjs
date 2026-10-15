@@ -152,20 +152,20 @@ test("BotaoWhatsapp (floating button, present on all 7 LPs) also emits whatsapp_
 
   assert.match(
     registrarBody,
-    /fetch\('\/api\/whatsapp-click',\s*\{\s*method:\s*'POST',\s*headers:\s*\{\s*'Content-Type':\s*'application\/json'\s*\},\s*body:\s*JSON\.stringify\(\{\s*pagina:\s*window\.location\.pathname\s*\}\),\s*\}\)/,
-    "the pre-existing whatsapp-click POST from the floating button must remain unchanged",
+    /fetch\('\/api\/whatsapp-click',\s*\{\s*method:\s*'POST',\s*headers:\s*\{\s*'Content-Type':\s*'application\/json'\s*\},\s*body:\s*JSON\.stringify\(\{\s*pagina:\s*window\.location\.pathname\s*\}\),\s*keepalive:\s*true,\s*\}\)/,
+    "the floating button must use a page-only keepalive POST",
   );
 });
 
 test("BotaoWhatsapp: consent, Atlas and lead-capture code paths are untouched by the GTM bridge", async () => {
   const source = await readFile(botaoUrl, "utf8");
 
-  assert.match(source, /const MODAL_ATIVO = false;/, "modal activation flag must remain as-is");
+  assert.match(source, /const MODAL_ATIVO = true;/, "modal activation flag must remain as-is");
 
   assert.match(
     source,
-    /fetch\('\/api\/lead',\s*\{/,
-    "the qualified-lead /api/lead POST inside the (currently disabled) modal flow must remain untouched",
+    /fetch\('\/api\/site-lead',\s*\{/,
+    "the minimal /api/site-lead POST in the active modal must remain intact",
   );
 
   const emitCallSites =

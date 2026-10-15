@@ -92,4 +92,69 @@ test.describe("minimal WhatsApp Intake handoff", () => {
     );
     expect(intakeCreatedCount).toBe(0);
   });
+  for (const [scenario, abortRequest] of [
+    ["HTTP 503", false],
+    ["network abort", true],
+  ] as const) {
+    test(`keeps WhatsApp handoff immediate when click diagnostics encounter ${scenario}`, async ({ page }) => {
+      await page.addInitScript(() => {
+        (window as any).__unhandledPromiseRejections = [];
+        window.addEventListener("unhandledrejection", (event) => {
+          (window as any).__unhandledPromiseRejections.push(String(event.reason));
+        });
+      });
+
+      await page.route("**/api/site-lead", (route) => route.fulfill({
+        status: 201,
+        contentType: "application/json",
+        body: JSON.stringify({ ok: true, caseId: "case-whatsapp-test", replay: false }),
+      }));
+
+      await page.route("**/api/whatsapp-click", (route) =>
+        abortRequest
+          ? route.abort("failed")
+          : route.fulfill({
+              status: 503,
+              contentType: "application/json",
+              body: JSON.stringify({ ok: false, error: "persistence_failed" }),
+            }),
+      );
+
+      await page.goto("/lp/fibra-rj");
+      await page.locator("#btn-abrir-whatsapp").click();
+      await page.locator("#wa-nome").fill("Pessoa Teste");
+      await page.locator("#wa-telefone").fill("(21) 99999-1234");
+      await page.locator("#wa-consentimento").check();
+      await page.locator("#wa-enviar").click();
+
+      await expect.poll(() =>
+        page.evaluate(() => (window as any).__openedWhatsAppUrl),
+      ).toContain("wa.me/5521982590643");
+
+      expect(await page.evaluate(() =>
+        (window as any).__unhandledPromiseRejections,
+      )).toEqual([]);
+    });
+  }
+
+  test("two rapid handoff observations produce one page-only diagnostic POST", async ({ page }) => {
+    let count = 0;
+    await page.route("**/api/whatsapp-click", route => {
+      count += 1;
+      return route.fulfill({
+        status: 200,
+        contentType: "application/json",
+        body: JSON.stringify({ ok: true, mock: true }),
+      });
+    });
+
+    await page.goto("/lp/fibra-rj");
+    await page.evaluate(() => {
+      window.dispatchEvent(new Event("site:whatsapp-handoff-initiated"));
+      window.dispatchEvent(new Event("site:whatsapp-handoff-initiated"));
+    });
+
+    await expect.poll(() => count).toBe(1);
+  });
+
 });
