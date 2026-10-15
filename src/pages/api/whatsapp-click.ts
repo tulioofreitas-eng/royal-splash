@@ -46,10 +46,10 @@ export const POST: APIRoute = async ({ request }) => {
       return jsonResponse(200, { ok: true, mock: true });
     }
 
-    const { createProductionSupabaseClient } =
+    const { createRoyalWhatsAppClickSupabaseClient } =
       await import("../../safety/production-supabase.ts");
 
-    const supabase = await createProductionSupabaseClient();
+    const supabase = await createRoyalWhatsAppClickSupabaseClient();
     const { error } = await supabase.from("cliques_whatsapp").insert({
       empresa_id: EMPRESA_ID,
       pagina,
