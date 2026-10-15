@@ -61,6 +61,7 @@ const { serviceIntent, ctaSurface = "floating_button" } = Astro.props;
   import { observeSubmissionTouch } from "../growth/attribution.ts";
   import { emitIntakeCreatedOnce } from "../growth/emitIntakeCreatedOnce.ts";
   import { getMeasurementRequestHeaders } from "../privacy/measurement-request.ts";
+  import { claimWhatsAppDiagnosticClick } from "../growth/whatsapp-click.ts";
 
   const MODAL_ATIVO = true;
   const NUMERO_WHATSAPP = '5521982590643';
@@ -113,6 +114,8 @@ const { serviceIntent, ctaSurface = "floating_button" } = Astro.props;
     const ctaSurface = btn?.getAttribute('data-cta-surface');
 
     emitWhatsAppClickEvent(serviceIntent || undefined, ctaSurface || undefined);
+
+    if (!claimWhatsAppDiagnosticClick(window, window.location.pathname)) return;
 
     fetch('/api/whatsapp-click', {
       method: 'POST',
