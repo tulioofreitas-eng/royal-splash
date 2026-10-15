@@ -29,12 +29,26 @@ vi.mock("../../src/safety/production-supabase.ts", () => ({
 
 import { POST } from "../../src/pages/api/whatsapp-click.ts";
 
-const endpoint = async (body: unknown) => {
-  const request = new Request("https://www.royalsplash.com.br/api/whatsapp-click", {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify(body),
-  });
+const endpoint = async (body: unknown, options: {
+  origin?: string | null;
+  site?: string | null;
+  contentType?: string;
+  url?: string;
+  rawBody?: string;
+} = {}) => {
+  const headers: Record<string, string> = {
+    "Content-Type": options.contentType ?? "application/json",
+    ...(options.origin === null ? {} : {
+      Origin: options.origin ?? "https://www.royalsplash.com.br",
+    }),
+    ...(options.site === null ? {} : {
+      "Sec-Fetch-Site": options.site ?? "same-origin",
+    }),
+  };
+  const request = new Request(
+    options.url ?? "https://www.royalsplash.com.br/api/whatsapp-click",
+    { method: "POST", headers, body: options.rawBody ?? JSON.stringify(body) },
+  );
   return POST({ request } as Parameters<typeof POST>[0]);
 };
 
@@ -117,12 +131,9 @@ describe("P0 WhatsApp click endpoint behavior with isolated provider doubles", (
     }
   });
 
-  it("keeps the documented page-only contract for an invalid path", async () => {
+  it("rejects unrecognized pages before creating a database row", async () => {
     const response = await endpoint({ pagina: "/path-that-is-not-allowed" });
-    expect(response.status).toBe(200);
-    expect(state.inserted[0]).toMatchObject({
-      table: "cliques_whatsapp",
-      value: { pagina: null },
-    });
+    expect(response.status).toBe(400);
+    expect(state.inserted).toEqual([]);
   });
 });
