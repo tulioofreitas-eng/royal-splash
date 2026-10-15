@@ -136,4 +136,33 @@ describe("P0 WhatsApp click endpoint behavior with isolated provider doubles", (
     expect(response.status).toBe(400);
     expect(state.inserted).toEqual([]);
   });
+  it.each([
+    ["different origin", { origin: "https://different.example" }],
+    ["absent origin", { origin: null }],
+    ["cross-site request", { site: "cross-site" }],
+    ["non-origin request host", { url: "https://different.example/api/whatsapp-click" }],
+  ])("rejects %s", async (_name, options) => {
+    const response = await endpoint({ pagina: "/lp/fibra-rj" }, options);
+    expect(response.status).toBe(403);
+    expect(state.inserted).toEqual([]);
+  });
+
+  it("rejects malformed, expanded or oversized data before any privileged insert", async () => {
+    expect((await endpoint(null, { rawBody: '{"pagina":' })).status).toBe(400);
+    expect((await endpoint({ pagina: "/lp/fibra-rj", extra: true })).status).toBe(400);
+    expect((await endpoint({ pagina: "/lp/fibra-rj" }, {
+      contentType: "text/plain",
+    })).status).toBe(415);
+    expect((await endpoint(null, {
+      rawBody: "x".repeat(2048),
+    })).status).toBe(413);
+    expect(state.inserted).toEqual([]);
+  });
+
+  it("allows a same-origin request without optional fetch-site header", async () => {
+    const response = await endpoint({ pagina: "/lp/fibra-rj" }, { site: null });
+    expect(response.status).toBe(200);
+    expect(state.inserted).toHaveLength(1);
+  });
+
 });
