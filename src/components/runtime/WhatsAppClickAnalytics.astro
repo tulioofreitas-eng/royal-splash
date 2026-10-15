@@ -1,4 +1,6 @@
 <script>
+  import { claimWhatsAppDiagnosticClick } from "../../growth/whatsapp-click.ts";
+
   interface WhatsAppAnalyticsWindow extends Window {
     __royalWhatsAppClickAnalyticsInstalled?: boolean;
     __royalWhatsAppClickEventLastEmittedAt?: number;
@@ -44,6 +46,8 @@
 
     const recordWhatsAppClick = () => {
       emitWhatsAppClickEvent();
+
+      if (!claimWhatsAppDiagnosticClick(window, window.location.pathname)) return;
 
       fetch("/api/whatsapp-click", {
         method: "POST",
