@@ -64,7 +64,7 @@ jobs:
           if (newFailures.length) process.exitCode = 1;
           CHECK
       - name: Isolated API behavior tests
-        run: npx vitest run tests/runtime/whatsapp-click-api.behavior.test.ts tests/runtime/royal-whatsapp-supabase-config.test.ts
+        run: npx vitest run tests/runtime/whatsapp-click-api.behavior.test.ts tests/runtime/royal-whatsapp-supabase-config.test.ts tests/runtime/whatsapp-click-dedup.test.ts
       - name: Production-equivalent static build (no deploy)
         run: npm run build
       - name: Install isolated browser test dependencies
