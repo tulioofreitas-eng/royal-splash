@@ -106,6 +106,7 @@
     observeSubmissionTouch,
   } from "../../growth/attribution.ts";
   import { buildProjectWhatsAppUrl, composeProjectMessage, type ProjectContext } from "../../utils/whatsapp-composer.ts";
+  import { isMarketingMeasurementAllowed } from "../../privacy/measurement-request.ts";
 
   interface FormAnalyticsWindow extends Window { __projectFormAnalyticsEvents?: Array<Record<string, unknown>> }
   const form = document.querySelector<HTMLFormElement>("[data-project-start-form]");
@@ -217,8 +218,13 @@
         referrer: document.referrer,
         now,
       });
-      const firstTouch = growthRuntime.persistAfterConsent(now);
-      const submissionTouch = observeSubmissionTouch(currentUrl);
+      const marketingAllowed = isMarketingMeasurementAllowed(window);
+      const firstTouch = marketingAllowed
+        ? growthRuntime.persistAfterConsent(now)
+        : undefined;
+      const submissionTouch = marketingAllowed
+        ? observeSubmissionTouch(currentUrl)
+        : undefined;
       const attribution = composeGrowthAttribution(
         firstTouch,
         submissionTouch,
