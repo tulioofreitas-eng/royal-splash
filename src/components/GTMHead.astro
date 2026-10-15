@@ -82,16 +82,13 @@ const { allowProductionAnalytics } = getCurrentEnvironmentContract();
       }
 
       function pushConsentCategoryEvent(choice) {
-        if (!choice) {
-          return;
-        }
-
+        // Null (cleared storage) must revoke stale GTM DLV category flags.
         w.dataLayer.push({
           event: "royal_measurement_consent",
           analytics_consent:
-            choice.analytics === true,
+            !!choice && choice.analytics === true,
           marketing_consent:
-            choice.marketing === true,
+            !!choice && choice.marketing === true,
         });
       }
 
@@ -133,55 +130,70 @@ const { allowProductionAnalytics } = getCurrentEnvironmentContract();
         googleConsentState(storedChoice),
       );
 
+      // Keep every open tab synchronized: storage changes do not fire on
+      // the tab that made them, so both update() and storage events pass
+      // through this same consent and attribution notification boundary.
+      function sameChoice(a, b) {
+        return (!!a === !!b) &&
+          (!a || (
+            a.version === b.version &&
+            a.analytics === b.analytics &&
+            a.marketing === b.marketing
+          ));
+      }
+
+      function applyChoice(choice) {
+        if (sameChoice(currentChoice, choice)) return;
+
+        currentChoice = choice;
+        w.gtag("consent", "update", googleConsentState(choice));
+        w.dispatchEvent(
+          new CustomEvent("royal:measurement-consent-changed", {
+            detail: choice,
+          }),
+        );
+
+        if (shouldLoadContainer(choice)) {
+          loadContainer();
+        }
+        if (loaded) {
+          pushConsentCategoryEvent(choice);
+        }
+      }
+
+      // Re-read the durable choice at use time, not only on page load.
+      // Missing, cleared or malformed storage fails closed for Marketing.
+      function reconcileStoredChoice() {
+        var latest = readStoredChoice();
+        applyChoice(latest);
+        return currentChoice;
+      }
+
       w.__royalMeasurementConsent = {
         version: VERSION,
-
         hasChoice: function () {
-          return currentChoice !== null;
+          return reconcileStoredChoice() !== null;
         },
-
         get: function () {
-          return currentChoice;
+          return reconcileStoredChoice();
         },
-
         update: function (value) {
           var choice = normalizeChoice(value);
-
-          if (!choice) {
-            return false;
-          }
-
-          currentChoice = choice;
+          if (!choice) return false;
           persistChoice(choice);
-
-          w.gtag(
-            "consent",
-            "update",
-            googleConsentState(choice),
-          );
-
-          w.dispatchEvent(
-            new CustomEvent(
-              "royal:measurement-consent-changed",
-              { detail: choice },
-            ),
-          );
-
-          if (shouldLoadContainer(choice)) {
-            loadContainer();
-          }
-
-          // Once GTM has been loaded on this page, keep its category-routing
-          // data model synchronized even when the visitor revokes every
-          // optional category. This prevents stale true DLV values after a
-          // granted -> deny-all transition.
-          if (loaded) {
-            pushConsentCategoryEvent(choice);
-          }
-
+          applyChoice(choice);
+          // Storage restrictions fail closed instead of claiming durable
+          // cross-tab permission that cannot be synchronized.
+          reconcileStoredChoice();
           return true;
         },
       };
+
+      w.addEventListener("storage", function (event) {
+        if (event.storageArea !== w.localStorage) return;
+        if (event.key !== STORAGE_KEY && event.key !== null) return;
+        reconcileStoredChoice();
+      });
 
       if (shouldLoadContainer(storedChoice)) {
         loadContainer();
