@@ -405,6 +405,8 @@ const projectStartIsCurrent =
     width: clamp(8.5rem, 38vw, 13rem);
     max-width: 100%;
     height: auto;
+    /* The SVG artwork sits high in its viewBox: center its visible shape, not its canvas. */
+    transform: translateY(clamp(0.25rem, 0.55vw, 0.425rem));
   }
 
   .site-header[data-site-header-visual="brand"]
