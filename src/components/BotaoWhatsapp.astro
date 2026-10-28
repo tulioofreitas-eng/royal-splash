@@ -61,6 +61,7 @@ const { serviceIntent, ctaSurface = "floating_button" } = Astro.props;
   import { observeSubmissionTouch } from "../growth/attribution.ts";
   import { emitIntakeCreatedOnce } from "../growth/emitIntakeCreatedOnce.ts";
   import { getMeasurementRequestHeaders } from "../privacy/measurement-request.ts";
+  import { claimWhatsAppDiagnosticClick } from "../growth/whatsapp-click.ts";
 
   const MODAL_ATIVO = true;
   const NUMERO_WHATSAPP = '5521982590643';
@@ -114,11 +115,16 @@ const { serviceIntent, ctaSurface = "floating_button" } = Astro.props;
 
     emitWhatsAppClickEvent(serviceIntent || undefined, ctaSurface || undefined);
 
+    if (!claimWhatsAppDiagnosticClick(window, window.location.pathname)) return;
+
     fetch('/api/whatsapp-click', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ pagina: window.location.pathname }),
-    }).catch(() => {});
+      keepalive: true,
+    }).catch(() => {
+      // Diagnostics must never block the WhatsApp handoff.
+    });
   }
 
   function buildContextualWhatsAppUrl(userName = "Visitante"): string {
