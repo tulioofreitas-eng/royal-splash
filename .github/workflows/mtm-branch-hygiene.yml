@@ -1,0 +1,52 @@
+name: MTM | Auditoria semanal de branches (sem exclusoes)
+on:
+  schedule:
+    - cron: "20 9 * * 1"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pull-requests: read
+
+jobs:
+  audit:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - name: Analisar branches sem modificar o repositorio
+        shell: bash
+        env:
+          GH_TOKEN: ${{ github.token }}
+          REPOSITORY: ${{ github.repository }}
+          DEFAULT_BRANCH: ${{ github.event.repository.default_branch }}
+        run: |
+          set -euo pipefail
+          tmp="$(mktemp -d)"
+          trap 'rm -rf "$tmp"' EXIT
+          cutoff="$(date -u -d '45 days ago' +%s)"
+          gh api --paginate "repos/$REPOSITORY/pulls?state=open&per_page=100" --jq '.[] | [.head.ref, (.head.repo.full_name // ""), .base.ref] | @tsv' > "$tmp/open-prs"
+          gh api --paginate "repos/$REPOSITORY/branches?per_page=100" --jq '.[] | [.name, (.protected | tostring), .commit.sha] | @tsv' > "$tmp/branches"
+          echo '## MTM - auditoria de branches (dry-run)' >> "$GITHUB_STEP_SUMMARY"
+          count=0
+          while IFS=$'\t' read -r branch protected sha; do
+            [ -n "$branch" ] || continue
+            [ "$protected" = false ] || continue
+            case "$branch" in
+              "$DEFAULT_BRANCH"|main|master|dev|develop|development|staging|production|hotfix/*|safety/*|checkpoint/*|candidate/*|release/*|backup/*|restore/*|*migration*|*migracao*|*security*|*auth*) continue ;;
+            esac
+            if awk -F '\t' -v b="$branch" -v r="$REPOSITORY" '($1==b && $2==r) || $3==b {found=1} END {exit !found}' "$tmp/open-prs"; then
+              continue
+            fi
+            committed="$(gh api "repos/$REPOSITORY/commits/$sha" --jq '.commit.committer.date // .commit.author.date')"
+            [ -n "$committed" ] && [ "$committed" != null ] || exit 1
+            stamp="$(date -u -d "$committed" +%s)"
+            [ "$stamp" -le "$cutoff" ] || continue
+            cmp="$(gh api "repos/$REPOSITORY/compare/$DEFAULT_BRANCH...$branch" --jq '[.status, (.ahead_by | tostring)] | @tsv')"
+            IFS=$'\t' read -r status ahead <<< "$cmp"
+            [ "$ahead" = 0 ] || continue
+            case "$status" in behind|identical) ;; *) continue ;; esac
+            printf '%s\n' "- Candidata: $branch (ultimo commit: $committed)" >> "$GITHUB_STEP_SUMMARY"
+            count=$((count + 1))
+          done < "$tmp/branches"
+          echo "Candidatas identificadas: $count" >> "$GITHUB_STEP_SUMMARY"
+          echo "Nenhuma branch foi excluida. Proxima fase exige revisao e habilitacao separada." >> "$GITHUB_STEP_SUMMARY"
