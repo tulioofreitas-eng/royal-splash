@@ -5,13 +5,47 @@
 
   const runtime = getBrowserGrowthAttributionRuntime(window);
 
+  interface MeasurementWindow extends Window {
+    __royalMeasurementConsent?: {
+      get?: () => { marketing?: boolean } | null;
+    };
+  }
+
+  const getChoice = () =>
+    (window as MeasurementWindow).__royalMeasurementConsent?.get?.();
+
+  // A new grant can save the current observed touch; a revocation must
+  // physically remove stored attribution and forget in-memory observations.
+  const onMarketingConsentChanged = () => {
+    const choice = getChoice();
+    if (choice?.marketing === true) {
+      if (!runtime.getObservedFirstTouch()) {
+        runtime.observe({
+          url: new URL(window.location.href),
+          referrer: document.referrer,
+        });
+      }
+      runtime.persistAfterConsent();
+    } else {
+      runtime.revokeMarketingConsent();
+    }
+  };
+
   const observeCurrentPage = () => {
     runtime.observe({
       url: new URL(window.location.href),
       referrer: document.referrer,
     });
+
+    const choice = getChoice();
+    if (choice?.marketing === true) {
+      runtime.persistAfterConsent();
+    } else if (choice?.marketing === false) {
+      runtime.revokeMarketingConsent();
+    }
   };
 
   observeCurrentPage();
   document.addEventListener("astro:page-load", observeCurrentPage);
+  window.addEventListener("royal:measurement-consent-changed", onMarketingConsentChanged);
 </script>

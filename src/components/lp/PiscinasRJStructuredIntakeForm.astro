@@ -107,7 +107,7 @@
   import { observeFirstTouch, observeSubmissionTouch } from "../../growth/attribution.ts";
   import { setupIntakeAttachmentField } from "../../growth/intake-attachments.ts";
   import { emitIntakeCreatedOnce } from "../../growth/emitIntakeCreatedOnce.ts";
-  import { getMeasurementRequestHeaders } from "../../privacy/measurement-request.ts";
+  import { getMeasurementRequestHeaders, isMarketingMeasurementAllowed } from "../../privacy/measurement-request.ts";
 
   const form = document.querySelector<HTMLFormElement>("[data-piscinas-rj-intake-form]");
 
@@ -244,8 +244,13 @@
         const consentCapturedAt = new Date().toISOString();
 
         // Capture attribution
-        const firstTouch = (window as any).__royalGrowthAttribution?.readPersisted?.();
-        const submissionTouch = observeSubmissionTouch(new URL(window.location.href));
+        const marketingAllowed = isMarketingMeasurementAllowed(window);
+        const runtime = (window as any).__royalGrowthAttribution;
+        if (marketingAllowed) runtime?.persistAfterConsent?.();
+        const firstTouch = marketingAllowed ? runtime?.readPersisted?.() : undefined;
+        const submissionTouch = marketingAllowed
+          ? observeSubmissionTouch(new URL(window.location.href))
+          : undefined;
 
         const payload: any = {
           submissionRef: pendingSubmissionRef,

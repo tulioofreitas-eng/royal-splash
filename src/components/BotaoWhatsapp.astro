@@ -60,7 +60,7 @@ const { serviceIntent, ctaSurface = "floating_button" } = Astro.props;
   } from "../utils/whatsapp-composer.ts";
   import { observeSubmissionTouch } from "../growth/attribution.ts";
   import { emitIntakeCreatedOnce } from "../growth/emitIntakeCreatedOnce.ts";
-  import { getMeasurementRequestHeaders } from "../privacy/measurement-request.ts";
+  import { getMeasurementRequestHeaders, isMarketingMeasurementAllowed } from "../privacy/measurement-request.ts";
 
   const MODAL_ATIVO = true;
   const NUMERO_WHATSAPP = '5521982590643';
@@ -190,9 +190,12 @@ const { serviceIntent, ctaSurface = "floating_button" } = Astro.props;
   ): void {
     const submissionRef = `RS-whatsapp-${crypto.randomUUID()}`;
     const runtime = (window as any).__royalGrowthAttribution;
-    runtime?.persistAfterConsent?.();
-    const firstTouch = runtime?.readPersisted?.();
-    const submissionTouch = observeSubmissionTouch(new URL(window.location.href));
+    const marketingAllowed = isMarketingMeasurementAllowed(window);
+    if (marketingAllowed) runtime?.persistAfterConsent?.();
+    const firstTouch = marketingAllowed ? runtime?.readPersisted?.() : undefined;
+    const submissionTouch = marketingAllowed
+      ? observeSubmissionTouch(new URL(window.location.href))
+      : undefined;
 
     const payload: any = {
       submissionRef,
